@@ -2,23 +2,30 @@ package biz.craftline.server.feature.businesstype.api.mapper;
 
 import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
 import biz.craftline.server.feature.businesstype.api.dto.BusinessTypeDTO;
+import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
 public class BusinessTypeDTOMapper {
 
+    @Autowired
+    BusinessServiceDTOMapper mapper;
+
     public BusinessTypeDTO toDTO(BusinessType domain) {
-        //var list = domain.services().stream().map(BusinessServiceDTO::toDTO).collect(Collectors.toSet());
-        //if( list==null) list = new HashSet<>();
         return new BusinessTypeDTO(domain.getId(), domain.getBusinessName(), domain.getDescription(), domain.getStatus(), new ArrayList<>());
     }
 
     public BusinessType toDomain(BusinessTypeDTO dto) {
-        var list = dto.getServices().stream().map(BusinessServiceDTO::toDomain).toList();
+        List<BusinessService> list = List.of();
+        if( dto.getServices()!=null){
+            list=dto.getServices().stream().map(mapper::toDomain).toList();
+        }
         return new BusinessType(dto.getId(), dto.getBusinessName(), dto.getDescription(), dto.getStatus(), list);
     }
 }

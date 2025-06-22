@@ -16,5 +16,5 @@ public interface BusinessEntityService {
 
     Optional<Business> findById(Long id);
 
-    Business save(BusinessEntity entity);
+    Business save(Business business);
 }

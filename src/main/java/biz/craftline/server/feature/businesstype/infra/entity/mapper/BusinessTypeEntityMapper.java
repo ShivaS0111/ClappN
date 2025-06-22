@@ -9,6 +9,7 @@ import java.util.HashSet;
 public class BusinessTypeEntityMapper {
 
     public BusinessTypeEntity toEntity(BusinessType domain){
+        if(domain==null) return null;
         var entity = new BusinessTypeEntity();
         entity.setId(domain.getId());
         entity.setBusinessName(domain.getBusinessName());
@@ -19,6 +20,7 @@ public class BusinessTypeEntityMapper {
 
 
      public BusinessType toDomain(BusinessTypeEntity entity){
+         if(entity==null) return null;
         return new BusinessType(
                 entity.getId(),
                 entity.getBusinessName(),

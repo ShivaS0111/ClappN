@@ -1,7 +1,10 @@
 package biz.craftline.server.feature.businessstore.infra.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,7 +12,10 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 @Entity(name = "business")
 public class BusinessEntity {
 

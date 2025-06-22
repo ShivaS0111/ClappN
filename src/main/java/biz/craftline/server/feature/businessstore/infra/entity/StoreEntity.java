@@ -3,14 +3,20 @@ package biz.craftline.server.feature.businessstore.infra.entity;
 import biz.craftline.server.feature.address.infra.entity.AddressEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
 import java.util.Set;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 @Entity(name = "store")
 public class StoreEntity {
 
@@ -41,9 +47,7 @@ public class StoreEntity {
     @JoinColumn(name = "business_id", referencedColumnName = "id")
     private BusinessEntity business;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private AddressEntity address;
+    private long address;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "store_services",

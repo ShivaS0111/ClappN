@@ -1,9 +1,14 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
+import biz.craftline.server.feature.businessstore.api.dto.BusinessDTO;
 import biz.craftline.server.feature.businessstore.api.dto.StoreDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreDTOMapper;
+import biz.craftline.server.feature.businessstore.api.request.AddNewStoreRequest;
+import biz.craftline.server.feature.businessstore.domain.model.Business;
 import biz.craftline.server.feature.businessstore.domain.model.Store;
+import biz.craftline.server.feature.businessstore.domain.service.BusinessEntityService;
 import biz.craftline.server.feature.businessstore.domain.service.StoreService;
+import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.util.APIResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,31 +28,43 @@ public class StoreController {
     @Autowired
     private StoreService service;
 
-    @GetMapping("/list")
-    public ResponseEntity<APIResponse<List<Store>>> list() {
-        List<Store> list = service.findAll();
-        return APIResponse.success(list);
-    }
+    @Autowired
+    private BusinessEntityService businessService;
 
-    @PostMapping("/search")
-    public ResponseEntity<APIResponse<List<StoreDTO>>> search(@RequestBody String keyword) {
+    @GetMapping("/list")
+    public ResponseEntity<APIResponse<List<StoreDTO>>> list() {
         List<Store> list = service.findAll();
         List<StoreDTO> dtoList = list.stream().map( mapper::toDTO).toList();
         return APIResponse.success(dtoList);
     }
 
-    //@PostMapping(name = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PostMapping("/add")
-    public ResponseEntity<APIResponse<StoreDTO>> addStore(@RequestBody StoreDTO storeDTO) {
-        Store store = service.save(mapper.toDomain(storeDTO));
-        return APIResponse.success(mapper.toDTO(store));
+    @GetMapping("/list/{businessId}")
+    public ResponseEntity<APIResponse<List<StoreDTO>>> list(@PathVariable long businessId) {
+        List<Store> list = service.findStoresByBusiness(businessId);
+        List<StoreDTO> dtoList = list.stream().map( mapper::toDTO).toList();
+        return APIResponse.success(dtoList);
     }
 
+    @PostMapping("/search")
+    public ResponseEntity<APIResponse<List<StoreDTO>>> search(@RequestBody String keyword) {
+        List<Store> list = service.findAll();
+        List<StoreDTO> dtoList = list.stream().map( mapper::toDTO ).toList();
+        return APIResponse.success(dtoList);
+    }
 
-   /* @PostMapping(name = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<APIResponse<StoreDTO>> add(@RequestBody StoreDTO storeDTO) {
-        //System.out.println("===>StoreDTO: "+storeDTO.toString());
-        Store entity = service.save(StoreDTO.getStore(storeDTO));
-        return ResponseEntity.ok(APIResponse.success(StoreDTO.getStoreDTO(entity)));
-    }*/
+    @PostMapping("/add")
+    public ResponseEntity<APIResponse<StoreDTO>> addStore(@RequestBody AddNewStoreRequest request) {
+
+        Business business =null;
+        if(request.getBusinessId()!=null){
+            business = businessService.findById(request.getBusinessId()).get();
+        }
+
+        Store storeDomain = mapper.toDomain(request);
+        storeDomain.setBusiness(business);
+
+        Store savedStore = service.save(storeDomain);
+        return APIResponse.success(mapper.toDTO(savedStore));
+    }
+
 }

@@ -3,8 +3,12 @@ package biz.craftline.server.feature.businesstype.infra.entity.mapper;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BusinessServiceEntityMapper {
+
+    @Autowired
+    BusinessTypeEntityMapper mapper;
 
     public BusinessServiceEntity toEntity(BusinessService domain) {
         BusinessServiceEntity entity = new BusinessServiceEntity();
@@ -13,7 +17,7 @@ public class BusinessServiceEntityMapper {
         entity.setDescription(domain.getDescription());
         entity.setStatus(domain.getStatus());
         entity.setAmount(domain.getAmount());
-        entity.setBusinessType(domain.getBusinessType());
+        entity.setBusinessType(mapper.toEntity(domain.getBusinessType()));
         entity.setCurrency(domain.getCurrency());
         return entity;
     }
@@ -24,7 +28,7 @@ public class BusinessServiceEntityMapper {
                 entity.getServiceName(),
                 entity.getDescription(),
                 entity.getStatus(),
-                entity.getBusinessType(),
+                mapper.toDomain(entity.getBusinessType()),
                 entity.getAmount(),
                 entity.getCreatedBy()
         );

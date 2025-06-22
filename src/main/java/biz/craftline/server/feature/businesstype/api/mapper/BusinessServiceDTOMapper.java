@@ -1,6 +1,7 @@
 package biz.craftline.server.feature.businesstype.api.mapper;
 
 import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
+import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessServiceRequest;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 
 public class BusinessServiceDTOMapper {
@@ -29,5 +30,15 @@ public class BusinessServiceDTOMapper {
                 dto.getAmount(),
                 dto.getCurrency()
         );
+    }
+
+    public BusinessService toDomain(AddNewBusinessServiceRequest dto){
+        return BusinessService.builder()
+                //.id(dto.getId())
+                .serviceName(dto.getName())
+                .description(dto.getDesc())
+                .amount(dto.getAmount())
+                .currency(dto.getCurrency())
+                .build();
     }
 }

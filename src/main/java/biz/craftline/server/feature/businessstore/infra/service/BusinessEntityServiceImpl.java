@@ -40,7 +40,8 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
     }
 
     @Override
-    public Business save(BusinessEntity entity) {
+    public Business save(Business business) {
+        BusinessEntity entity = mapper.toEntity(business);
         return mapper.toDomain(businessEntityRepository.save(entity));
     }
 }

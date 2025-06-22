@@ -34,6 +34,11 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public List<Store> findStoresByBusiness(long business) {
+        return storeRepository.findByBusinessId(business).stream().map(storeEntityMapper::toDomain).toList();
+    }
+
+    @Override
     public void deleteBusinessTypeById(Long id) {
         storeRepository.deleteBusinessTypeById(id);
     }

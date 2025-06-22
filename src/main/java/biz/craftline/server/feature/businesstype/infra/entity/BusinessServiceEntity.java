@@ -25,8 +25,9 @@ public class BusinessServiceEntity {
 
     private int status;
 
-    @Column(name = "business_type")
-    private Long businessType;
+    @ManyToOne
+    @JoinColumn(name = "business_type", nullable = false)
+    private BusinessTypeEntity businessType;
 
     private float amount;
 

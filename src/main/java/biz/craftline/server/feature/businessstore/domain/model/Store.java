@@ -1,11 +1,17 @@
 package biz.craftline.server.feature.businessstore.domain.model;
 
 import biz.craftline.server.feature.address.domain.model.Address;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 public class Store {
     private Long id;
 
@@ -15,9 +21,11 @@ public class Store {
 
     private int status;
 
-    //private Business business;
+    private long businessType;
 
-    private Address address;
+    private Business business;
+
+    private long address;
 
     private Set<StoreOfferedService> services = Set.of();
 

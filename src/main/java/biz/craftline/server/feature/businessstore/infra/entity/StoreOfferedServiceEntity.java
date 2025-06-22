@@ -2,13 +2,19 @@ package biz.craftline.server.feature.businessstore.infra.entity;
 
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 @Entity(name = "store_offered_service")
 public class StoreOfferedServiceEntity {
 

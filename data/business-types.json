@@ -1,85 +1,79 @@
-{
-  "success": true,
-  "message": "Success",
-  "statusCode": 200,
-  "timestamp": "2025-06-22T15:29:42.63575",
-  "data": [
-    {
-      "id": 1,
-      "businessName": "Retail Store",
-      "description": "A place that sells goods directly to consumers.",
-      "status": 0,
-      "services": []
-    },
-    {
-      "id": 2,
-      "businessName": "Restaurant",
-      "description": "An establishment where meals are prepared and served to customers.",
-      "status": 0,
-      "services": []
-    },
-    {
-      "id": 3,
-      "businessName": "IT Services",
-      "description": "A business offering technology solutions, support, and consulting.",
-      "status": 0,
-      "services": []
-    },
-    {
-      "id": 4,
-      "businessName": "Construction",
-      "description": "A business involved in building infrastructure, homes, and commercial properties.",
-      "status": 0,
-      "services": []
-    },
-    {
-      "id": 5,
-      "businessName": "Healthcare Clinic",
-      "description": "Provides medical services to patients on an outpatient basis.",
-      "status": 0,
-      "services": []
-    },
-    {
-      "id": 6,
-      "businessName": "Education & Training",
-      "description": "Offers educational courses and professional training.",
-      "status": 0,
-      "services": []
-    },
-    {
-      "id": 7,
-      "businessName": "Logistics & Transportation",
-      "description": "Handles the movement of goods and people from one place to another.",
-      "status": 0,
-      "services": []
-    },
-    {
-      "id": 8,
-      "businessName": "Financial Services",
-      "description": "Provides banking, investment, insurance, and other money-related services.",
-      "status": 0,
-      "services": []
-    },
-    {
-      "id": 9,
-      "businessName": "Real Estate",
-      "description": "Deals with buying, selling, and managing properties.",
-      "status": 0,
-      "services": []
-    },
-    {
-      "id": 10,
-      "businessName": "Entertainment",
-      "description": "Produces and distributes content for leisure, including movies, music, and events.",
-      "status": 0,
-      "services": []
-    },
-    {
-      "id": 11,
-      "businessName": "Bike Mechanic Services",
-      "description": "jkhk jj",
-      "status": 0,
-      "services": []
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "businessName": "Retail Store",
+    "description": "A place that sells goods directly to consumers.",
+    "status": 0,
+    "services": []
+  },
+  {
+    "id": 2,
+    "businessName": "Restaurant",
+    "description": "An establishment where meals are prepared and served to customers.",
+    "status": 0,
+    "services": []
+  },
+  {
+    "id": 3,
+    "businessName": "IT Services",
+    "description": "A business offering technology solutions, support, and consulting.",
+    "status": 0,
+    "services": []
+  },
+  {
+    "id": 4,
+    "businessName": "Construction",
+    "description": "A business involved in building infrastructure, homes, and commercial properties.",
+    "status": 0,
+    "services": []
+  },
+  {
+    "id": 5,
+    "businessName": "Healthcare Clinic",
+    "description": "Provides medical services to patients on an outpatient basis.",
+    "status": 0,
+    "services": []
+  },
+  {
+    "id": 6,
+    "businessName": "Education & Training",
+    "description": "Offers educational courses and professional training.",
+    "status": 0,
+    "services": []
+  },
+  {
+    "id": 7,
+    "businessName": "Logistics & Transportation",
+    "description": "Handles the movement of goods and people from one place to another.",
+    "status": 0,
+    "services": []
+  },
+  {
+    "id": 8,
+    "businessName": "Financial Services",
+    "description": "Provides banking, investment, insurance, and other money-related services.",
+    "status": 0,
+    "services": []
+  },
+  {
+    "id": 9,
+    "businessName": "Real Estate",
+    "description": "Deals with buying, selling, and managing properties.",
+    "status": 0,
+    "services": []
+  },
+  {
+    "id": 10,
+    "businessName": "Entertainment",
+    "description": "Produces and distributes content for leisure, including movies, music, and events.",
+    "status": 0,
+    "services": []
+  },
+  {
+    "id": 11,
+    "businessName": "Bike Mechanic Services",
+    "description": "jkhk jj",
+    "status": 0,
+    "services": []
+  }
+]

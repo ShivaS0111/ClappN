@@ -2,6 +2,7 @@ package biz.craftline.server.feature.businesstype.api.controller;
 
 import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
 import biz.craftline.server.feature.businesstype.api.mapper.BusinessServiceDTOMapper;
+import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessServiceRequest;
 import biz.craftline.server.feature.businesstype.api.request.SearchServiceByBusinessRequest;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -67,16 +69,49 @@ public class BusinessServiceController {
         return APIResponse.success(mapper.toDTO(bs));
     }
 
-    @PostMapping("/add-all")
-    public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> addAll(@RequestBody List<BusinessServiceDTO> dtos) {
+    @PostMapping("/add-all2")
+    public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> addAll2(@RequestBody List<AddNewBusinessServiceRequest> request) {
+
+        List<Long> businessTypeIds = request.stream().map( AddNewBusinessServiceRequest::getBusinessType).toList();
+        Map<Long, BusinessType> businessTypeMap = businessTypeService.findAllByIds(businessTypeIds)
+                .stream()
+                .collect(Collectors.toMap(BusinessType::getId, Function.identity()));
+
         List<BusinessServiceDTO> list = new ArrayList<>();
-        for (BusinessServiceDTO dto: dtos){
+        for (AddNewBusinessServiceRequest dto: request){
             try {
-                BusinessService bs = service.save(mapper.toDomain(dto));
-                list.add(mapper.toDTO(bs));
+                BusinessService bs = mapper.toDomain(dto);
+                bs.setBusinessType(businessTypeMap.get( dto.getBusinessType()));
+                list.add(mapper.toDTO(service.save(bs)));
             }catch (Exception e){ e.printStackTrace();}
         }
         return APIResponse.success(list);
+    }
+
+    @PostMapping("/add-all")
+    public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> addAll(
+            @RequestBody List<AddNewBusinessServiceRequest> requests) {
+
+        Map<Long, BusinessType> businessTypeMap = businessTypeService
+                .findAllByIds(requests.stream().map(AddNewBusinessServiceRequest::getBusinessType).toList())
+                .stream()
+                .collect(Collectors.toMap(BusinessType::getId, Function.identity()));
+
+        List<BusinessService> servicesList = requests.stream()
+                .map(request -> {
+                    try {
+                        BusinessService domain = mapper.toDomain(request);
+                        domain.setBusinessType(businessTypeMap.get(request.getBusinessType()));
+                        return domain;
+                    } catch (Exception e) {
+                        e.printStackTrace(); // You may want to log this properly instead
+                        return null; // Or handle errors differently
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toList();
+        List<BusinessService> result = service.save(servicesList);
+        return APIResponse.success( result!=null?result.parallelStream().map(mapper::toDTO).toList(): new ArrayList<>());
     }
 
     @PostMapping("/add-all1")
