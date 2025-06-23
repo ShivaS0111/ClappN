@@ -4,6 +4,7 @@ import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedServiceDTO
 import biz.craftline.server.feature.businessstore.api.dto.StoreServicePriceDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreOfferedServiceDTOMapper;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreServicePriceDTOMapper;
+import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOfferedServiceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.domain.model.StoreServicePrice;
 import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
@@ -48,8 +49,8 @@ public class StoreOfferedServiceController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<APIResponse<String>> save(@RequestBody StoreOfferedServiceDTO dto) {
-        storeOfferedService.save( serviceMapper.toDomain(dto));
+    public ResponseEntity<APIResponse<String>> save(@RequestBody AddNewStoreOfferedServiceRequest req) {
+        storeOfferedService.save( serviceMapper.toDomain(req));
         return APIResponse.success("success");
     }
 

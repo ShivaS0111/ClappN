@@ -23,6 +23,7 @@ public class StoreEntityMapper {
                 .storeName(entity.getStoreName())
                 .description(entity.getDescription())
                 .business(business)
+                .businessType(entity.getBusinessType())
                 .build();
     }
 
@@ -31,6 +32,7 @@ public class StoreEntityMapper {
                 .id(store.getId())
                 .storeName(store.getStoreName())
                 .description(store.getDescription())
+                .businessType(store.getBusinessType())
                 .build();
     }
 }

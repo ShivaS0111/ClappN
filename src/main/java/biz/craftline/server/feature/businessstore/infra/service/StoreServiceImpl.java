@@ -41,7 +41,11 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public List<Store> findStoresByBusiness(long business) {
-        return storeRepository.findByBusinessId(business).stream().map(storeEntityMapper::toDomain).toList();
+        System.out.println("==>BusinessId:{}"+ business);
+        return storeRepository.findByBusinessId(business)
+                .stream()
+                .map(storeEntityMapper::toDomain)
+                .toList();
     }
 
     @Override

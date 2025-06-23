@@ -10,6 +10,7 @@ import biz.craftline.server.feature.businessstore.domain.service.BusinessEntityS
 import biz.craftline.server.feature.businessstore.domain.service.StoreService;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.util.APIResponse;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class StoreController {
     }
 
     @GetMapping("/list/{businessId}")
-    public ResponseEntity<APIResponse<List<StoreDTO>>> list(@PathVariable long businessId) {
+    public ResponseEntity<APIResponse<List<StoreDTO>>> list(@PathVariable("businessId") long businessId) {
         List<Store> list = service.findStoresByBusiness(businessId);
         List<StoreDTO> dtoList = list.stream().map( mapper::toDTO).toList();
         return APIResponse.success(dtoList);

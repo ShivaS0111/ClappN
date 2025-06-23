@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.infra.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,6 +43,7 @@ public class BusinessEntity {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "business")
     private Set<StoreEntity> stores = new HashSet<>();
 

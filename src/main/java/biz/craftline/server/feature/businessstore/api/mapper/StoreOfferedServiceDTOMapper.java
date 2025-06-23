@@ -1,7 +1,9 @@
 package biz.craftline.server.feature.businessstore.api.mapper;
 
 import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedServiceDTO;
+import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOfferedServiceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
+import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,15 @@ public class StoreOfferedServiceDTOMapper {
                 .aliasName(store.getAliasName())
                 .storeId(store.getStoreId())
                 .service(store.getService())
+                .build();
+    }
+
+    public StoreOfferedService toDomain(AddNewStoreOfferedServiceRequest req) {
+        return StoreOfferedService.builder()
+                .id(req.getId())
+                .aliasName(req.getAliasName())
+                .storeId(req.getStoreId())
+                .service(BusinessService.builder().id(req.getBusinessServiceId()).build())
                 .build();
     }
 }

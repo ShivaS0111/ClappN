@@ -6,6 +6,8 @@ import biz.craftline.server.feature.businessstore.domain.service.ServicesOffered
 import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
 import biz.craftline.server.feature.businessstore.infra.entity.mapper.StoreOfferedServiceEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.ServicesOfferedByStoreRepository;
+import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
+import biz.craftline.server.feature.businesstype.infra.repository.BusinessServicesJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
     @Autowired
     ServicesOfferedByStoreRepository servicesOfferedByStoreRepository;
 
+    @Autowired
+    BusinessServicesJpaRepository businessServicesJpaRepository;
+
 
     @Override
     public void deleteStoreServiceById(Long id) {
@@ -37,7 +42,13 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
 
     @Override
     public StoreOfferedService save(StoreOfferedService domain) {
-        StoreOfferedServiceEntity en = servicesOfferedByStoreRepository.save(mapper.toEntity(domain));
+        BusinessServiceEntity businessServiceEntity = null;
+        if(domain.getService().getId()!=null){
+            businessServiceEntity = businessServicesJpaRepository.findById(domain.getService().getId() ).get();
+        }
+        StoreOfferedServiceEntity entity= mapper.toEntity(domain);
+        entity.setService(businessServiceEntity);
+        StoreOfferedServiceEntity en = servicesOfferedByStoreRepository.save(entity);
         return mapper.toDomain(en);
     }
 

@@ -24,9 +24,12 @@ public class BusinessEntityMapper {
     public Business toDomain(BusinessEntity entity){
 
         Set<Store> stores=null;
-        if(entity.getStores()!=null){
-            stores =entity.getStores().stream().map( item-> storeEntityMapper.toDomain(item)).collect(Collectors.toSet());
-        }
+        /*if(entity.getStores()!=null) {
+            stores =entity.getStores()
+                    .stream()
+                    .map( item-> storeEntityMapper.toDomain(item))
+                    .collect(Collectors.toSet());
+        }*/
         return Business.builder()
                 .id(entity.getId())
                 .businessName(entity.getBusinessName())

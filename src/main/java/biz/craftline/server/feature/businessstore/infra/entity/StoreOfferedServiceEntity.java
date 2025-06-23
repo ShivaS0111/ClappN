@@ -1,6 +1,7 @@
 package biz.craftline.server.feature.businessstore.infra.entity;
 
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +11,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,5 +51,9 @@ public class StoreOfferedServiceEntity {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @JsonBackReference("store-service")
+    @ManyToMany(mappedBy = "services")
+    private Set<StoreEntity> stores = new HashSet<>();
 
 }
