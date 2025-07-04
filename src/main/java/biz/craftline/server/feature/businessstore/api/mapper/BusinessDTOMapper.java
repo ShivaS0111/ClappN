@@ -4,13 +4,10 @@ import biz.craftline.server.feature.businessstore.api.dto.BusinessDTO;
 import biz.craftline.server.feature.businessstore.api.dto.StoreDTO;
 import biz.craftline.server.feature.businessstore.api.request.AddNewBusinessRequest;
 import biz.craftline.server.feature.businessstore.domain.model.Business;
-import biz.craftline.server.feature.businessstore.infra.entity.mapper.StoreEntityMapper;
-import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

@@ -36,6 +36,13 @@ public interface BusinessServicesJpaRepository extends JpaRepository<BusinessSer
                                                                    @Param("businessTypeId") Long businessTypeId,
                                                                    Pageable pageable);*/
 
+    @Query("SELECT bs FROM business_service bs WHERE bs.businessType.id = :businessTypeId " +
+            "AND (LOWER(bs.serviceName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(bs.description) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+    List<BusinessServiceEntity> searchByKeywordAndBusinessType(@Param("keyword") String keyword,
+                                                               @Param("businessTypeId") Long businessTypeId);
+
+
 
     List<BusinessServiceEntity> save(List<BusinessServiceEntity> list);
 

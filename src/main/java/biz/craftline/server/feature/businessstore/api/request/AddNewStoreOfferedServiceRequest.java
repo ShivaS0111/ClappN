@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AddNewStoreOfferedServiceRequest {
 
-    private Long id;
-
     private String aliasName;
 
     private Long storeId;

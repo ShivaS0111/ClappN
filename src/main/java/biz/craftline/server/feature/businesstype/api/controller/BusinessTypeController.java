@@ -43,7 +43,8 @@ public class BusinessTypeController {
 
     @PostMapping("/add")
     public ResponseEntity<APIResponse<BusinessTypeDTO>> add(@RequestBody AddNewBusinessTypeRequest request) {
-        System.out.println("===>BusinessType: " + request + ", name:" + request.getBusinessName() + ", desc:" + request.getDescription());
+        System.out.println("===>BusinessType: " + request + ", name:"
+                + request.getBusinessName() + ", desc:" + request.getDescription());
         BusinessTypeDTO dto =  BusinessTypeDTO.builder()
                 .businessName(request.getBusinessName())
                 .description(request.getDescription())
@@ -55,7 +56,8 @@ public class BusinessTypeController {
     @PostMapping("/add-all")
     public ResponseEntity<APIResponse<List<BusinessTypeDTO>>> addAll(@RequestBody List<AddNewBusinessTypeRequest> requests) {
         var list =requests.stream().map( request-> {
-            System.out.println("===>BusinessType: " + request + ", name:" + request.getBusinessName() + ", desc:" + request.getDescription());
+            System.out.println("===>BusinessType: " + request + ", name:" + request.getBusinessName()
+                    + ", desc:" + request.getDescription());
             BusinessTypeDTO dto =  BusinessTypeDTO.builder()
                     .businessName(request.getBusinessName())
                     .description(request.getDescription())
@@ -72,4 +74,5 @@ public class BusinessTypeController {
         businessType.setServices(services);
         return APIResponse.success(mapper.toDTO(businessType));
     }
+
 }

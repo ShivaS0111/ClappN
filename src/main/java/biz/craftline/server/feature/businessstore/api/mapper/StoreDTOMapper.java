@@ -52,6 +52,7 @@ public class StoreDTOMapper {
                 .storeName(store.getStoreName())
                 .description(store.getDescription())
                 .business(businessDTO)
+                .businessType(store.getBusinessType())
                 .address(store.getAddress())
                 .build();
     }

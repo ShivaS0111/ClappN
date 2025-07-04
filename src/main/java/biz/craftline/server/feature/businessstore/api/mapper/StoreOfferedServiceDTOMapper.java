@@ -30,7 +30,6 @@ public class StoreOfferedServiceDTOMapper {
 
     public StoreOfferedService toDomain(AddNewStoreOfferedServiceRequest req) {
         return StoreOfferedService.builder()
-                .id(req.getId())
                 .aliasName(req.getAliasName())
                 .storeId(req.getStoreId())
                 .service(BusinessService.builder().id(req.getBusinessServiceId()).build())
