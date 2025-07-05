@@ -2,6 +2,7 @@ package biz.craftline.server.feature.businessstore.infra.entity;
 
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,12 +35,12 @@ public class StoreOfferedServiceEntity {
 
     private int status;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "business_service", referencedColumnName = "id")
     private BusinessServiceEntity service;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "price", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "price", referencedColumnName = "id", nullable = true)
     private StoreServicePriceEntity price;
 
     private long createdBy;

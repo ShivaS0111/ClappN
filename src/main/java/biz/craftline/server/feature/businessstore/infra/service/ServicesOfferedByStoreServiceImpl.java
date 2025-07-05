@@ -47,6 +47,7 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
             businessServiceEntity = businessServicesJpaRepository.findById(domain.getService().getId() ).get();
         }
         StoreOfferedServiceEntity entity= mapper.toEntity(domain);
+        //entity.setPrice( );
         entity.setService(businessServiceEntity);
         StoreOfferedServiceEntity en = servicesOfferedByStoreRepository.save(entity);
         return mapper.toDomain(en);

@@ -76,7 +76,7 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
     @Override
     public List<BusinessService> findAllByBusinessTypeId(Long businessTypeId) {
         //return repository.findAllByBusinessTypeId(businessTypeId).stream().map(mapper::toDomain).toList();
-        return repository.findAll().stream().map(mapper::toDomain).toList();
+        return repository.findAllByBusinessTypeId(businessTypeId).stream().map(mapper::toDomain).toList();
 
     }
 

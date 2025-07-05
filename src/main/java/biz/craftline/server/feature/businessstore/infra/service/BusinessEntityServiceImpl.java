@@ -44,4 +44,10 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
         BusinessEntity entity = mapper.toEntity(business);
         return mapper.toDomain(businessEntityRepository.save(entity));
     }
+
+    @Override
+    public List<Business> search(String keyword) {
+        //businessEntityRepository
+        return List.of();
+    }
 }

@@ -42,8 +42,7 @@ public interface BusinessServicesJpaRepository extends JpaRepository<BusinessSer
     List<BusinessServiceEntity> searchByKeywordAndBusinessType(@Param("keyword") String keyword,
                                                                @Param("businessTypeId") Long businessTypeId);
 
-
-
+    List<BusinessServiceEntity> findAllByBusinessTypeId(Long businessTypeId);
     List<BusinessServiceEntity> save(List<BusinessServiceEntity> list);
 
 }

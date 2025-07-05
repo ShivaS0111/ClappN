@@ -40,7 +40,7 @@ public class BusinessEntityController {
 
     @PostMapping("/search")
     public ResponseEntity<APIResponse<List<BusinessDTO>>> search(@RequestBody String keyword) {
-        List<Business> list = service.findAll();
+        List<Business> list = service.search(keyword);
         List<BusinessDTO> dtoList = list.stream().map( mapper::toDTO).toList();
         return APIResponse.success(dtoList);
     }

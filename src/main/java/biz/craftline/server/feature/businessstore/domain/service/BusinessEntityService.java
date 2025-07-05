@@ -17,4 +17,6 @@ public interface BusinessEntityService {
     Optional<Business> findById(Long id);
 
     Business save(Business business);
+
+    List<Business> search(String keyword);
 }

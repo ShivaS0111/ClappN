@@ -19,7 +19,7 @@ public class StoreServicePriceEntityMapper {
 
     public StoreServicePriceEntity toEntity(StoreServicePrice store){
         return StoreServicePriceEntity.builder()
-                .id(store.getId())
+                //.id(store.getId())
                 .serviceId(store.getServiceId())
                 .price(store.getPrice())
                 .currencyId(store.getCurrencyId())
