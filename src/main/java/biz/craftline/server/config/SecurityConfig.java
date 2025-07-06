@@ -20,13 +20,17 @@ public class SecurityConfig {
                 //.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(getPublicEndPoints()).permitAll()
-                        /*.requestMatchers("/auth/**").permitAll()
+
+                        /*
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/users/list").hasAuthority("ADMIN")
                         .requestMatchers("/roles/list").hasAuthority("SUPER_ADMIN")
-                        //.requestMatchers("/business-types/**").hasAuthority("SUPER_ADMIN")
+                        .requestMatchers("/business-types/**").hasAuthority("SUPER_ADMIN")
                         .requestMatchers("/service/**").hasAuthority("SUPER_ADMIN")
                         .requestMatchers("/business/**").hasAuthority("SUPER_ADMIN")
-                        .requestMatchers("/stores/**").hasAuthority("SUPER_ADMIN")*/
+                        .requestMatchers("/stores/**").hasAuthority("SUPER_ADMIN")
+                        */
+
                         .anyRequest()
                         .authenticated()).csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exceptionHandling ->

@@ -15,16 +15,16 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+
+@Entity(name = "store_offered_service")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
-@Entity(name = "store_offered_service")
 public class StoreOfferedServiceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
     private Long id;
 
     @Column(name = "alias_name")
@@ -52,5 +52,4 @@ public class StoreOfferedServiceEntity {
     @JsonBackReference("store-service")
     @ManyToMany(mappedBy = "services")
     private Set<StoreEntity> stores = new HashSet<>();
-
 }

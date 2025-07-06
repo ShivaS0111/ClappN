@@ -1,12 +1,12 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
 import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedServiceDTO;
-import biz.craftline.server.feature.businessstore.api.dto.StoreProductPriceDTO;
+import biz.craftline.server.feature.businessstore.api.dto.StoreItemPriceDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreOfferedServiceDTOMapper;
-import biz.craftline.server.feature.businessstore.api.mapper.StoreProductPriceDTOMapper;
+import biz.craftline.server.feature.businessstore.api.mapper.StoreItemPriceDTOMapper;
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOfferedServiceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
-import biz.craftline.server.feature.businessstore.domain.model.StoreProductPrice;
+import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
 import biz.craftline.server.feature.businessstore.domain.service.StoreProductPriceService;
 import biz.craftline.server.util.APIResponse;
@@ -29,7 +29,7 @@ public class StoreOfferedServiceController {
     StoreOfferedServiceDTOMapper serviceMapper;
 
     @Autowired
-    StoreProductPriceDTOMapper priceMapper;
+    StoreItemPriceDTOMapper priceMapper;
 
     @Autowired
     private ServicesOfferedByStoreService storeOfferedService;
@@ -54,21 +54,15 @@ public class StoreOfferedServiceController {
         return APIResponse.success("success");
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<APIResponse<String>> save(@RequestBody StoreProductPriceDTO dto) {
-        priceHandleService.save( priceMapper.toDomain(dto));
-        return APIResponse.success("success");
-    }
-
-    @GetMapping("/price-list/{productId}/{productType}")
-    public ResponseEntity<APIResponse<List<StoreProductPriceDTO>>> priceList(
-            @PathVariable("productId") Long productId,
-            @PathVariable("productType") Long productType
+    @GetMapping("/service-price-list/{serviceId}")
+    public ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> priceList(
+            @PathVariable("serviceId") Long serviceId
     ) {
-        List<StoreProductPrice> list = priceHandleService.findAllByProductIdAndProductType(productId, productType);
-        List<StoreProductPriceDTO> dtoList = list.stream()
+        List<StoreItemPrice> list = priceHandleService.findAllByServiceId(serviceId);
+        List<StoreItemPriceDTO> dtoList = list.stream()
                 .map(priceMapper::toDTO)
                 .collect(Collectors.toList());
+
         return APIResponse.success(dtoList);
     }
 

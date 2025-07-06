@@ -1,7 +1,6 @@
 package biz.craftline.server.feature.businessstore.domain.service;
 
-import biz.craftline.server.feature.businessstore.api.dto.StoreProductPriceDTO;
-import biz.craftline.server.feature.businessstore.domain.model.StoreProductPrice;
+import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +9,19 @@ import java.util.Optional;
 @Service
 public interface StoreProductPriceService {
 
-    StoreProductPrice save(StoreProductPrice entity);
+    StoreItemPrice save(StoreItemPrice entity);
 
-    List<StoreProductPrice> findAllByProductIdAndProductType(Long productId, Long productType);
+    List<StoreItemPrice> findAllByServiceId(Long serviceId);
 
-    Optional<StoreProductPrice> getConvertedPrice(Long id, String countryCode, String currency);
+    List<StoreItemPrice> findAllByProductLotId(Long productLotId);
+
+    Optional<StoreItemPrice> findByServiceId(Long serviceId);
+
+    Optional<StoreItemPrice> findByProductLotId(Long productLotId);
+
+    //Optional<StoreItemPrice> findByProductId(Long productLotId);
+
+    Optional<StoreItemPrice> updateServicePrice(StoreItemPrice itemPrice);
+    Optional<StoreItemPrice> updateProductPrice(StoreItemPrice itemPrice);
+    Optional<StoreItemPrice> updateProductLotPrice(StoreItemPrice itemPrice);
 }

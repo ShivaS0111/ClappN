@@ -10,44 +10,28 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
 
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Entity(name = "store_product")
 @Data
-@Entity(name = "store_product_price")
-public class StoreProductPriceEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class StoreProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
     private Long id;
 
-    @Column(name = "product_id")
-    private Long productId;
+    private String name;
 
-    @Column(name = "product_type")
-    private Integer productType;
-
-    @Column(name = "price")
-    private Double price;
-
-    @Column(name = "currency_id")
-    private String currencyId;
-
-    private Date validFrom;
-
-    private Date validTo;
+    private String description;
 
     private int status;
 
-    private long createdBy;
-
     @CreationTimestamp
-    @Column(updatable = false, name = "created_at")
+    @Column(updatable = false)
     private Date createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
     private Date updatedAt;
 }
+

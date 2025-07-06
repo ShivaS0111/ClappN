@@ -26,7 +26,6 @@ public class BusinessDTO {
 
     private long createdBy;
 
-
     private Set<StoreDTO> stores = new HashSet<>();
 
 }

@@ -3,7 +3,7 @@ package biz.craftline.server.feature.businessstore.api.mapper;
 import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedServiceDTO;
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOfferedServiceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
-import biz.craftline.server.feature.businessstore.domain.model.StoreProductPrice;
+import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +32,7 @@ public class StoreOfferedServiceDTOMapper {
         return StoreOfferedService.builder()
                 .aliasName(req.getAliasName())
                 .storeId(req.getStoreId())
-                .price(StoreProductPrice.builder().id(req.getStoreServicePriceId()).build())
+                .price(StoreItemPrice.builder().id(req.getStoreServicePriceId()).build())
                 .service(BusinessService.builder().id(req.getBusinessServiceId()).build())
                 .build();
     }

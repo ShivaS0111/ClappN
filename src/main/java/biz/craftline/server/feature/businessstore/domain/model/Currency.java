@@ -9,19 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class StoreProductPrice {
-
+public class Currency {
     private Long id;
-
-    private Long productId;
-
-    private Integer productType;
-
-    private Double price;
-
-    private String currencyId;
-
-    private String countryId;
-
-    private int status;
+    private String code;
+    private String name;
+    private String symbol;
 }

@@ -22,5 +22,5 @@ public class StoreOfferedServiceDTO {
 
     private BusinessService service;
 
-    private StoreProductPriceDTO price;
+    private StoreItemPriceDTO price;
 }

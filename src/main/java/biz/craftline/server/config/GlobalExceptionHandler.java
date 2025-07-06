@@ -38,7 +38,6 @@ public class GlobalExceptionHandler {
         return APIResponse.error("Data duplication error", HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleSecurityException(Exception exception) {
         ProblemDetail errorDetail = null;
@@ -75,4 +74,5 @@ public class GlobalExceptionHandler {
         }
         return errorDetail;
     }
+
 }

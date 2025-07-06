@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class StoreOfferedServiceEntityMapper {
 
     @Autowired
-    StoreProductPriceEntityMapper entityMapper;
+    StoreItemPriceEntityMapper entityMapper;
     @Autowired
     BusinessServiceEntityMapper businessServiceEntityMapper;
 
