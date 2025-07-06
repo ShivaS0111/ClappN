@@ -3,7 +3,9 @@ package biz.craftline.server.feature.businesstype.api.mapper;
 import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
 import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessServiceRequest;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BusinessServiceDTOMapper {
 
     public BusinessServiceDTOMapper(){}

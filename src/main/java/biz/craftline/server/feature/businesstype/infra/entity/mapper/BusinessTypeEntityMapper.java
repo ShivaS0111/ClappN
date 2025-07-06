@@ -2,10 +2,12 @@ package biz.craftline.server.feature.businesstype.infra.entity.mapper;
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessTypeEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
+@Component
 public class BusinessTypeEntityMapper {
 
     public BusinessTypeEntity toEntity(BusinessType domain){

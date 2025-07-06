@@ -1,0 +1,336 @@
+{
+	"info": {
+		"_postman_id": "6c488214-c9cb-440a-9881-523bee444552",
+		"name": "ClappN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37348047",
+		"_collection_link": "https://web.postman.co/workspace/e9a61577-c337-40b0-8cc7-7e2973c5f2e9/collection/37348047-6c488214-c9cb-440a-9881-523bee444552?action=share&source=collection_link&creator=37348047"
+	},
+	"item": [
+		{
+			"name": "BusinessType",
+			"item": [
+				{
+					"name": "business-type",
+					"item": [
+						{
+							"name": "business-type/list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/business-type/list",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"business-type",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "business-type/details/{id}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/business-type/details/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"business-type",
+										"details",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "business-type/add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"businessName\": \"String\",\r\n  \"description\": \"String\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/business-type/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"business-type",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "business-type/add-all",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"businessName\": \"String\",\r\n  \"description\": \"String\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/business-type/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"business-type",
+										"add"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "businesstore",
+			"item": [
+				{
+					"name": "business",
+					"item": [
+						{
+							"name": "list",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"businessName\": \"Sri Laxmi Venkateshwara Companies Ltd\",\r\n  \"description\": \"Sri Laxmi Venkateshwara Companies Ltd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/business/list",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"business",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"businessName\": \"Sri Laxmi Venkateshwara Companies Ltd\",\r\n  \"description\": \"Sri Laxmi Venkateshwara Companies Ltd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/business/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"business",
+										"add"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "stores",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/stores/list",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"stores",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"keyword\": \"CS IT\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/stores/search",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"stores",
+										"search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"storeName\": \"CS Infra Services\",\r\n  \"description\": \"CS Infra Services\",\r\n  \"status\": 0,\r\n  \"businessType\": 3,\r\n  \"businessId\": 1,\r\n  \"address\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/stores/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"stores",
+										"add"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "store-service",
+					"item": [
+						{
+							"name": "save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"aliasName\": \"Static Website Development\",\r\n  \"storeId\": 1,\r\n  \"status\": 0,\r\n  \"businessServiceId\": 22,\r\n  \"storeServicePriceId\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/store-service/save",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"store-service",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/store-service/list/3",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"store-service",
+										"list",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:9090",
+			"type": "string"
+		}
+	]
+}

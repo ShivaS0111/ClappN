@@ -4,7 +4,9 @@ import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BusinessServiceEntityMapper {
 
     @Autowired

@@ -39,10 +39,6 @@ public class StoreOfferedServiceEntity {
     @JoinColumn(name = "business_service", referencedColumnName = "id")
     private BusinessServiceEntity service;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "price", referencedColumnName = "id", nullable = true)
-    private StoreServicePriceEntity price;
-
     private long createdBy;
 
     @CreationTimestamp

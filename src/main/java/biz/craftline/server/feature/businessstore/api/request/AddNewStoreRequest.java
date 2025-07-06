@@ -17,6 +17,7 @@ import java.util.Set;
 @Builder
 public class AddNewStoreRequest {
 
+
     private String storeName;
 
     private String description;

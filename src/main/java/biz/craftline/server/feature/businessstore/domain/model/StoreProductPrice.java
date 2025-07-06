@@ -9,15 +9,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class StoreServicePrice {
+public class StoreProductPrice {
 
     private Long id;
 
-    private Long serviceId;
+    private Long productId;
+
+    private Integer productType;
 
     private Double price;
 
     private String currencyId;
+
+    private String countryId;
 
     private int status;
 }

@@ -23,5 +23,5 @@ public class StoreOfferedService {
 
     private BusinessService service;
 
-    private StoreServicePrice price;
+    private StoreProductPrice price;
 }

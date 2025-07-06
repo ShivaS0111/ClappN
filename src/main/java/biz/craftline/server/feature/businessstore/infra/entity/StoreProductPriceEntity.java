@@ -15,22 +15,29 @@ import java.sql.Date;
 @NoArgsConstructor
 @Builder
 @Data
-@Entity(name = "store_service_price")
-public class StoreServicePriceEntity {
+@Entity(name = "store_product_price")
+public class StoreProductPriceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private Long id;
 
-    @Column(name = "service_id")
-    private Long serviceId;
+    @Column(name = "product_id")
+    private Long productId;
+
+    @Column(name = "product_type")
+    private Integer productType;
 
     @Column(name = "price")
     private Double price;
 
     @Column(name = "currency_id")
     private String currencyId;
+
+    private Date validFrom;
+
+    private Date validTo;
 
     private int status;
 

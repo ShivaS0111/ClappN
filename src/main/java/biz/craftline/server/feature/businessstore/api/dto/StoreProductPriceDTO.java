@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class StoreServicePriceDTO {
+public class StoreProductPriceDTO {
 
     private Long id;
 
@@ -18,6 +18,7 @@ public class StoreServicePriceDTO {
     private Double price;
 
     private String currencyId;
+    private String countryId;
 
     private int status;
 }

@@ -1,14 +1,14 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
 import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedServiceDTO;
-import biz.craftline.server.feature.businessstore.api.dto.StoreServicePriceDTO;
+import biz.craftline.server.feature.businessstore.api.dto.StoreProductPriceDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreOfferedServiceDTOMapper;
-import biz.craftline.server.feature.businessstore.api.mapper.StoreServicePriceDTOMapper;
+import biz.craftline.server.feature.businessstore.api.mapper.StoreProductPriceDTOMapper;
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOfferedServiceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
-import biz.craftline.server.feature.businessstore.domain.model.StoreServicePrice;
+import biz.craftline.server.feature.businessstore.domain.model.StoreProductPrice;
 import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
-import biz.craftline.server.feature.businessstore.domain.service.StoreServicePriceHandleService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreProductPriceService;
 import biz.craftline.server.util.APIResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +29,13 @@ public class StoreOfferedServiceController {
     StoreOfferedServiceDTOMapper serviceMapper;
 
     @Autowired
-    StoreServicePriceDTOMapper priceMapper;
+    StoreProductPriceDTOMapper priceMapper;
 
     @Autowired
     private ServicesOfferedByStoreService storeOfferedService;
 
     @Autowired
-    private StoreServicePriceHandleService priceHandleService;
+    private StoreProductPriceService priceHandleService;
 
     @GetMapping("/list/{storeId}")
     public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> list(@PathVariable("storeId") Long storeId) {
@@ -55,15 +55,18 @@ public class StoreOfferedServiceController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<APIResponse<String>> save(@RequestBody StoreServicePriceDTO dto) {
+    public ResponseEntity<APIResponse<String>> save(@RequestBody StoreProductPriceDTO dto) {
         priceHandleService.save( priceMapper.toDomain(dto));
         return APIResponse.success("success");
     }
 
-    @GetMapping("/price-list/{serviceId}")
-    public ResponseEntity<APIResponse<List<StoreServicePriceDTO>>> priceList(@PathVariable("serviceId") Long serviceId) {
-        List<StoreServicePrice> list = priceHandleService.findAll(serviceId);
-        List<StoreServicePriceDTO> dtoList = list.stream()
+    @GetMapping("/price-list/{productId}/{productType}")
+    public ResponseEntity<APIResponse<List<StoreProductPriceDTO>>> priceList(
+            @PathVariable("productId") Long productId,
+            @PathVariable("productType") Long productType
+    ) {
+        List<StoreProductPrice> list = priceHandleService.findAllByProductIdAndProductType(productId, productType);
+        List<StoreProductPriceDTO> dtoList = list.stream()
                 .map(priceMapper::toDTO)
                 .collect(Collectors.toList());
         return APIResponse.success(dtoList);
