@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface StoreItemPriceHandleRepository extends JpaRepository<StoreItemPriceEntity, Long> {
 
-    List<StoreItemPriceEntity> findAllByItemIdAndItemType(Long itemId, Long itemType);
+    //List<StoreItemPriceEntity> findAllByItemIdAndItemType(Long itemId, Long itemType);
 
     /*@Query("""
         SELECT p FROM store_product_price p
