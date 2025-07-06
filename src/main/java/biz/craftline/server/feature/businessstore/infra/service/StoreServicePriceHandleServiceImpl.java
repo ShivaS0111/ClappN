@@ -51,7 +51,7 @@ public class StoreServicePriceHandleServiceImpl implements StoreProductPriceServ
 
     @Override
     public Optional<StoreItemPrice> findByProductLotId(Long productLotId) {
-        StoreItemPriceEntity storeItemPrice = repository.findByProductLot(productLotId)
+        StoreItemPriceEntity storeItemPrice = repository.findByProductLotId(productLotId)
                 .orElseThrow(() -> new RuntimeException("Product Lot Price not configured yet"));
         return Optional.of(mapper.toDomain(storeItemPrice));
     }
@@ -106,7 +106,7 @@ public class StoreServicePriceHandleServiceImpl implements StoreProductPriceServ
 
     @Override
     public Optional<StoreItemPrice> updateProductLotPrice(StoreItemPrice itemPrice) {
-        Optional<StoreItemPriceEntity> storeItemPriceOptional = repository.findByProductLot(itemPrice.getServiceId());
+        Optional<StoreItemPriceEntity> storeItemPriceOptional = repository.findByProductLotId(itemPrice.getServiceId());
 
         if(storeItemPriceOptional.isPresent()){
             StoreItemPriceEntity storeItemPrice = storeItemPriceOptional.get();
