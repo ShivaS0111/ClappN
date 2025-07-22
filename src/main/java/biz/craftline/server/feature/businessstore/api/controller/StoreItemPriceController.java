@@ -7,11 +7,14 @@ import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businessstore.domain.service.StoreProductPriceService;
 import biz.craftline.server.util.APIResponse;
 import jakarta.websocket.server.PathParam;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/store-item")
+@AllArgsConstructor
+@RequestMapping("/store-item")
+@RestController
 public class StoreItemPriceController {
 
     @Autowired

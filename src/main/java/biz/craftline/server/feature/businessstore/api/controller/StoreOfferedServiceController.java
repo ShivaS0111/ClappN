@@ -65,5 +65,4 @@ public class StoreOfferedServiceController {
 
         return APIResponse.success(dtoList);
     }
-
 }

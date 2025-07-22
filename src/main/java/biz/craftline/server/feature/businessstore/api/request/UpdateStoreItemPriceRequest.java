@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class UpdateStoreItemPriceRequest {
+
     private Long id;
 
     private Long productLotId;
