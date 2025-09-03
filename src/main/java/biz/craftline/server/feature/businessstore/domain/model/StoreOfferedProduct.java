@@ -1,4 +1,4 @@
-package biz.craftline.server.feature.businessstore.api.dto;
+package biz.craftline.server.feature.businessstore.domain.model;
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import lombok.AllArgsConstructor;
@@ -6,11 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class StoreOfferedServiceDTO {
+public class StoreOfferedProduct {
 
     private Long id;
 
@@ -20,7 +21,7 @@ public class StoreOfferedServiceDTO {
 
     private int status;
 
-    private BusinessService  service;
+    private BusinessService service;
 
-    private StoreItemPriceDTO price;
+    private StoreItemPrice price;
 }

@@ -35,9 +35,12 @@ public class StoreOfferedServiceEntity {
 
     private int status;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "business_service", referencedColumnName = "id")
-    private BusinessServiceEntity service;
+    private BusinessServiceEntity service*/;
+
+    @Column(name = "business_service")
+    private Long serviceId;
 
     private long createdBy;
 

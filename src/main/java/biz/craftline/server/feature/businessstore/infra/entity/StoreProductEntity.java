@@ -27,6 +27,9 @@ public class StoreProductEntity {
 
     private int status;
 
+    @Column(name = "business_product")
+    private Long productId;
+
     @CreationTimestamp
     @Column(updatable = false)
     private Date createdAt;

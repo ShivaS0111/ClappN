@@ -1,0 +1,39 @@
+package biz.craftline.server.feature.businesstype.infra.entity.mapper;
+
+import biz.craftline.server.feature.businesstype.domain.model.BusinessProduct;
+import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
+import biz.craftline.server.feature.businesstype.infra.entity.BusinessProductEntity;
+import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class BusinessProductEntityMapper {
+
+    @Autowired
+    BusinessTypeEntityMapper mapper;
+
+    public BusinessProductEntity toEntity(BusinessProduct domain) {
+        BusinessProductEntity entity = new BusinessProductEntity();
+        entity.setId(domain.getId());
+        entity.setName(domain.getName());
+        entity.setDescription(domain.getDescription());
+        entity.setStatus(domain.getStatus());
+        entity.setAmount(domain.getAmount());
+        entity.setBusinessType(mapper.toEntity(domain.getBusinessType()));
+        entity.setCurrency(domain.getCurrency());
+        return entity;
+    }
+
+    public BusinessProduct toDomain(BusinessProductEntity entity) {
+        return new BusinessProduct(
+                entity.getId(),
+                entity.getName(),
+                entity.getDescription(),
+                entity.getStatus(),
+                mapper.toDomain(entity.getBusinessType()),
+                entity.getAmount(),
+                entity.getCreatedBy()
+        );
+    }
+}
