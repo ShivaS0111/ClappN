@@ -5,6 +5,7 @@ import biz.craftline.server.feature.businesstype.api.mapper.CategoryDTOMapper;
 import biz.craftline.server.feature.businesstype.api.request.AddCategoryRequest;
 import biz.craftline.server.feature.businesstype.domain.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +18,13 @@ public class CategoryController {
 
     private final CategoryService service;
 
-    @PostMapping
+    @Autowired
+    CategoryDTOMapper categoryDTOMapper;
+
+    @PostMapping("/add")
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody AddCategoryRequest request) {
         return ResponseEntity.ok(
-                CategoryDTOMapper.toDTO(service.createCategory(request.getName(), request.getParentId()))
+                categoryDTOMapper.toDTO(service.createCategory(request.getName(), request.getParentId()))
         );
     }
 
@@ -28,7 +32,7 @@ public class CategoryController {
     public ResponseEntity<List<CategoryDTO>> getCategoryTree() {
         return ResponseEntity.ok(
                 service.getCategoryTree().stream()
-                        .map(CategoryDTOMapper::toDTO)
+                        .map(categoryDTOMapper::toDTO)
                         .toList()
         );
     }
@@ -37,7 +41,7 @@ public class CategoryController {
     public ResponseEntity<List<CategoryDTO>> getCategoryPath(@PathVariable Long id) {
         return ResponseEntity.ok(
                 service.getCategoryPath(id).stream()
-                        .map(CategoryDTOMapper::toDTO)
+                        .map(categoryDTOMapper::toDTO)
                         .toList()
         );
     }

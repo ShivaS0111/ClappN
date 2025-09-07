@@ -2,6 +2,7 @@ package biz.craftline.server.feature.businesstype.api.dto;
 
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
+import biz.craftline.server.feature.businesstype.domain.model.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class BusinessProductDTO {
 
     private int status;
 
-    private BusinessType businessType;
+    private Category category;
 
     private float amount;
 

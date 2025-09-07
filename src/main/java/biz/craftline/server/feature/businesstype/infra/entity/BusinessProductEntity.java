@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businesstype.infra.entity;
 
+import biz.craftline.server.feature.businesstype.domain.model.Category;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,8 +27,8 @@ public class BusinessProductEntity {
     private int status;
 
     @ManyToOne
-    @JoinColumn(name = "business_type", nullable = false)
-    private BusinessTypeEntity businessType;
+    @JoinColumn(name = "category", nullable = false)
+    private CategoryEntity category;
 
     private float amount;
 

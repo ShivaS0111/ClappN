@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class BusinessProductEntityMapper {
 
     @Autowired
-    BusinessTypeEntityMapper mapper;
+    CategoryEntityMapper mapper;
 
     public BusinessProductEntity toEntity(BusinessProduct domain) {
         BusinessProductEntity entity = new BusinessProductEntity();
@@ -18,7 +18,7 @@ public class BusinessProductEntityMapper {
         entity.setDescription(domain.getDescription());
         entity.setStatus(domain.getStatus());
         entity.setAmount(domain.getAmount());
-        entity.setBusinessType(mapper.toEntity(domain.getBusinessType()));
+        entity.setCategory(mapper.toEntity(domain.getCategory()));
         entity.setCurrency(domain.getCurrency());
         return entity;
     }
@@ -29,7 +29,7 @@ public class BusinessProductEntityMapper {
                 entity.getName(),
                 entity.getDescription(),
                 entity.getStatus(),
-                mapper.toDomain(entity.getBusinessType()),
+                mapper.toDomain(entity.getCategory()),
                 entity.getAmount(),
                 entity.getCreatedBy()
         );

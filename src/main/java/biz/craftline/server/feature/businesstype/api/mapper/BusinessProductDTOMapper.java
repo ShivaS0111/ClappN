@@ -19,7 +19,7 @@ public class BusinessProductDTOMapper {
                 domain.getName(),
                 domain.getDescription(),
                 domain.getStatus(),
-                domain.getBusinessType(),
+                domain.getCategory(),
                 domain.getAmount(),
                 domain.getCurrency()
         );
@@ -31,7 +31,7 @@ public class BusinessProductDTOMapper {
                 dto.getName(),
                 dto.getDesc(),
                 dto.getStatus(),
-                dto.getBusinessType(),
+                dto.getCategory(),
                 dto.getAmount(),
                 dto.getCurrency()
         );

@@ -14,7 +14,7 @@ public class BusinessProduct {
     private String name;
     private String description;
     private int status;
-    private BusinessType businessType;
+    private Category category;
     private float amount;
     private Long currency;
 }

@@ -2,12 +2,15 @@ package biz.craftline.server.feature.businesstype.api.mapper;
 
 import biz.craftline.server.feature.businesstype.api.dto.CategoryDTO;
 import biz.craftline.server.feature.businesstype.domain.model.Category;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+
+@Component
 public class CategoryDTOMapper {
 
-    public static CategoryDTO toDTO(Category category) {
+    public  CategoryDTO toDTO(Category category) {
         if (category == null) return null;
 
         return CategoryDTO.builder()
@@ -15,13 +18,13 @@ public class CategoryDTOMapper {
                 .name(category.getName())
                 .children(category.getChildren() != null
                         ? category.getChildren().stream()
-                        .map(CategoryDTOMapper::toDTO)
+                        .map(this::toDTO )
                         .collect(Collectors.toList())
                         : null)
                 .build();
     }
 
-    public static Category toDomain(CategoryDTO dto) {
+    public  Category toDomain(CategoryDTO dto) {
         if (dto == null) return null;
 
         Category category = new Category();
@@ -31,7 +34,7 @@ public class CategoryDTOMapper {
         if (dto.getChildren() != null) {
             category.setChildren(dto.getChildren()
                     .stream()
-                    .map(CategoryDTOMapper::toDomain)
+                    .map(this::toDomain)
                     .collect(Collectors.toList()));
         }
 
