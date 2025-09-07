@@ -1,12 +1,11 @@
-package biz.craftline.server.feature.businessstore.infra.service;
+package biz.craftline.server.feature.businessstore.application.service;
 
 
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
-import biz.craftline.server.feature.businessstore.infra.entity.mapper.StoreOfferedServiceEntityMapper;
+import biz.craftline.server.feature.businessstore.infra.mapper.StoreOfferedServiceEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.ServicesOfferedByStoreRepository;
-import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessServicesJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +41,8 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
 
     @Override
     public StoreOfferedService save(StoreOfferedService domain) {
-        BusinessServiceEntity businessServiceEntity = null;
-        if(domain.getService().getId()!=null){
-            businessServiceEntity = businessServicesJpaRepository.findById(domain.getService().getId() ).get();
-        }
         StoreOfferedServiceEntity entity= mapper.toEntity(domain);
-        //entity.setPrice( );
-        entity.setService(businessServiceEntity);
+        entity.setServiceId(domain.getService());
         StoreOfferedServiceEntity en = servicesOfferedByStoreRepository.save(entity);
         return mapper.toDomain(en);
     }

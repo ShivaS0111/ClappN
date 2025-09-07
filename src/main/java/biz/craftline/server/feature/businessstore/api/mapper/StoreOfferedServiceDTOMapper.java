@@ -33,7 +33,7 @@ public class StoreOfferedServiceDTOMapper {
                 .aliasName(req.getAliasName())
                 .storeId(req.getStoreId())
                 .price(StoreItemPrice.builder().id(req.getStoreServicePriceId()).build())
-                .service(BusinessService.builder().id(req.getBusinessServiceId()).build())
+                .service(req.getBusinessServiceId())
                 .build();
     }
 }

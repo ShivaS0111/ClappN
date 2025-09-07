@@ -20,7 +20,7 @@ public class StoreOfferedServiceDTO {
 
     private int status;
 
-    private BusinessService  service;
+    private long  service;
 
     private StoreItemPriceDTO price;
 }

@@ -1,11 +1,10 @@
-package biz.craftline.server.feature.businessstore.infra.service;
+package biz.craftline.server.feature.businessstore.application.service;
 
-import biz.craftline.server.feature.businessstore.domain.model.Business;
 import biz.craftline.server.feature.businessstore.domain.model.Store;
 import biz.craftline.server.feature.businessstore.domain.service.StoreService;
 import biz.craftline.server.feature.businessstore.infra.entity.BusinessEntity;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreEntity;
-import biz.craftline.server.feature.businessstore.infra.entity.mapper.StoreEntityMapper;
+import biz.craftline.server.feature.businessstore.infra.mapper.StoreEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.BusinessEntityJpaRepository;
 import biz.craftline.server.feature.businessstore.infra.repository.StoreRepository;
 import lombok.AllArgsConstructor;

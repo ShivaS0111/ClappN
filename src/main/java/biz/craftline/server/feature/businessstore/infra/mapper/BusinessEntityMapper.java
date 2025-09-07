@@ -1,17 +1,13 @@
-package biz.craftline.server.feature.businessstore.infra.entity.mapper;
+package biz.craftline.server.feature.businessstore.infra.mapper;
 
-import biz.craftline.server.feature.businessstore.api.dto.StoreDTO;
 import biz.craftline.server.feature.businessstore.domain.model.Business;
 import biz.craftline.server.feature.businessstore.domain.model.Store;
 import biz.craftline.server.feature.businessstore.infra.entity.BusinessEntity;
-import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Component

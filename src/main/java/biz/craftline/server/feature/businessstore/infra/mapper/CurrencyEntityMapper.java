@@ -1,15 +1,10 @@
-package biz.craftline.server.feature.businessstore.infra.entity.mapper;
+package biz.craftline.server.feature.businessstore.infra.mapper;
 
-import biz.craftline.server.feature.businessstore.domain.model.Business;
 import biz.craftline.server.feature.businessstore.domain.model.Currency;
-import biz.craftline.server.feature.businessstore.domain.model.Store;
-import biz.craftline.server.feature.businessstore.infra.entity.BusinessEntity;
 import biz.craftline.server.feature.businessstore.infra.entity.CurrencyEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 
 @Component

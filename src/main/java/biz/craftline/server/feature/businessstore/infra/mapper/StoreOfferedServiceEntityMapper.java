@@ -1,8 +1,8 @@
-package biz.craftline.server.feature.businessstore.infra.entity.mapper;
+package biz.craftline.server.feature.businessstore.infra.mapper;
 
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
-import biz.craftline.server.feature.businesstype.infra.entity.mapper.BusinessServiceEntityMapper;
+import biz.craftline.server.feature.businesstype.infra.mapper.BusinessServiceEntityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ public class StoreOfferedServiceEntityMapper {
         return StoreOfferedService.builder()
                 .id(dto.getId())
                 .storeId(dto.getStoreId())
-                .service( businessServiceEntityMapper.toDomain(dto.getService()) )
+                .service(dto.getServiceId() )
                 .aliasName( dto.getAliasName())
                 .build();
     }

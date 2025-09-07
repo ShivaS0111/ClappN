@@ -1,6 +1,6 @@
 package biz.craftline.server.feature.businessstore.infra.entity;
 
-import biz.craftline.server.feature.businessstore.infra.config.enums.PriceType;
+import biz.craftline.server.feature.businessstore.application.enums.PriceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity(name = "store_item_price")

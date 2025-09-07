@@ -1,21 +1,20 @@
-package biz.craftline.server.feature.businesstype.infra.entity.mapper;
+package biz.craftline.server.feature.businesstype.infra.mapper;
 
-import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
-import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
-import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
+import biz.craftline.server.feature.businesstype.domain.model.BusinessProduct;
+import biz.craftline.server.feature.businesstype.infra.entity.BusinessProductEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BusinessServiceEntityMapper {
+public class BusinessProductEntityMapper {
 
     @Autowired
     BusinessTypeEntityMapper mapper;
 
-    public BusinessServiceEntity toEntity(BusinessService domain) {
-        BusinessServiceEntity entity = new BusinessServiceEntity();
+    public BusinessProductEntity toEntity(BusinessProduct domain) {
+        BusinessProductEntity entity = new BusinessProductEntity();
         entity.setId(domain.getId());
-        entity.setServiceName(domain.getServiceName());
+        entity.setName(domain.getName());
         entity.setDescription(domain.getDescription());
         entity.setStatus(domain.getStatus());
         entity.setAmount(domain.getAmount());
@@ -24,10 +23,10 @@ public class BusinessServiceEntityMapper {
         return entity;
     }
 
-    public BusinessService toDomain(BusinessServiceEntity entity) {
-        return new BusinessService(
+    public BusinessProduct toDomain(BusinessProductEntity entity) {
+        return new BusinessProduct(
                 entity.getId(),
-                entity.getServiceName(),
+                entity.getName(),
                 entity.getDescription(),
                 entity.getStatus(),
                 mapper.toDomain(entity.getBusinessType()),

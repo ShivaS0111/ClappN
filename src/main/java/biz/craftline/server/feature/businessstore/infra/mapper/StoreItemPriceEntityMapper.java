@@ -1,4 +1,4 @@
-package biz.craftline.server.feature.businessstore.infra.entity.mapper;
+package biz.craftline.server.feature.businessstore.infra.mapper;
 
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businessstore.infra.entity.ProductLotEntity;

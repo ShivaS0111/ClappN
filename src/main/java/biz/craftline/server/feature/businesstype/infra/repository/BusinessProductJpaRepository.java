@@ -13,7 +13,7 @@ import java.util.List;
 public interface BusinessProductJpaRepository extends JpaRepository<BusinessProductEntity, Long> {
 
     @Query("SELECT bs FROM business_product bs WHERE bs.businessType.id = :businessTypeId " +
-            "AND (LOWER(bs.serviceName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "AND (LOWER(bs.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(bs.description) LIKE LOWER(CONCAT('%', :keyword, '%')))")
     List<BusinessProductEntity> searchByKeywordAndBusinessType(@Param("keyword") String keyword,
                                                                @Param("businessTypeId") Long businessTypeId);

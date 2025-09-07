@@ -1,9 +1,9 @@
-package biz.craftline.server.feature.businessstore.infra.service;
+package biz.craftline.server.feature.businessstore.application.service;
 
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businessstore.domain.service.StoreProductPriceService;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreItemPriceEntity;
-import biz.craftline.server.feature.businessstore.infra.entity.mapper.StoreItemPriceEntityMapper;
+import biz.craftline.server.feature.businessstore.infra.mapper.StoreItemPriceEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.StoreItemPriceHandleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

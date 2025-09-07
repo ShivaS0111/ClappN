@@ -1,4 +1,4 @@
-package biz.craftline.server.feature.businessstore.infra.config.enums;
+package biz.craftline.server.feature.businessstore.application.enums;
 
 public enum PriceType {
     DEFAULT,          // Regular price

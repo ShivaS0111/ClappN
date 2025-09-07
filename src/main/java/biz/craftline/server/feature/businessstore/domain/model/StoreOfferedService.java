@@ -21,7 +21,7 @@ public class StoreOfferedService {
 
     private int status;
 
-    private BusinessService service;
+    private long service;
 
     private StoreItemPrice price;
 }

@@ -1,9 +1,9 @@
-package biz.craftline.server.feature.businesstype.infra.service;
+package biz.craftline.server.feature.businesstype.application.service;
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import biz.craftline.server.feature.businesstype.domain.service.BusinessTypeService;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessTypeEntity;
-import biz.craftline.server.feature.businesstype.infra.entity.mapper.BusinessTypeEntityMapper;
+import biz.craftline.server.feature.businesstype.infra.mapper.BusinessTypeEntityMapper;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessTypeJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

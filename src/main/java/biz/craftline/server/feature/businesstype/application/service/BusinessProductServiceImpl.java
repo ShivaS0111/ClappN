@@ -1,15 +1,10 @@
-package biz.craftline.server.feature.businesstype.infra.service;
+package biz.craftline.server.feature.businesstype.application.service;
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessProduct;
-import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.feature.businesstype.domain.service.BusinessProductsService;
-import biz.craftline.server.feature.businesstype.domain.service.BusinessServicesService;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessProductEntity;
-import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
-import biz.craftline.server.feature.businesstype.infra.entity.mapper.BusinessProductEntityMapper;
-import biz.craftline.server.feature.businesstype.infra.entity.mapper.BusinessServiceEntityMapper;
+import biz.craftline.server.feature.businesstype.infra.mapper.BusinessProductEntityMapper;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessProductJpaRepository;
-import biz.craftline.server.feature.businesstype.infra.repository.BusinessServicesJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessTypeJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
