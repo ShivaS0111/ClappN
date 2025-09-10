@@ -5,17 +5,25 @@ import biz.craftline.server.feature.businessstore.api.dto.StoreDTO;
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreRequest;
 import biz.craftline.server.feature.businessstore.domain.model.Business;
 import biz.craftline.server.feature.businessstore.domain.model.Store;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper for converting between StoreDTO, AddNewStoreRequest, and Store domain model.
+ */
 @Component
 public class StoreDTOMapper {
+    private final BusinessDTOMapper mapper;
 
-    @Autowired
-    BusinessDTOMapper mapper;
+    public StoreDTOMapper(BusinessDTOMapper mapper) {
+        this.mapper = mapper;
+    }
 
-    public Store toDomain(AddNewStoreRequest request){
-
+    /**
+     * Converts an AddNewStoreRequest to a Store domain model.
+     * @param request the AddNewStoreRequest
+     * @return the Store domain model
+     */
+    public Store toDomain(AddNewStoreRequest request) {
         return Store.builder()
                 .storeName(request.getStoreName())
                 .description(request.getDescription())
@@ -24,10 +32,14 @@ public class StoreDTOMapper {
                 .build();
     }
 
-    public Store toDomain(StoreDTO dto){
-
-        Business business=null;
-        if(dto.getBusiness()!=null){
+    /**
+     * Converts a StoreDTO to a Store domain model.
+     * @param dto the StoreDTO
+     * @return the Store domain model
+     */
+    public Store toDomain(StoreDTO dto) {
+        Business business = null;
+        if (dto.getBusiness() != null) {
             business = mapper.toDomain(dto.getBusiness());
         }
         return Store.builder()
@@ -40,13 +52,16 @@ public class StoreDTOMapper {
                 .build();
     }
 
-    public StoreDTO toDTO(Store store){
-
-        BusinessDTO businessDTO=null;
-        if(store.getBusiness()!=null){
+    /**
+     * Converts a Store domain model to a StoreDTO.
+     * @param store the Store domain model
+     * @return the StoreDTO
+     */
+    public StoreDTO toDTO(Store store) {
+        BusinessDTO businessDTO = null;
+        if (store.getBusiness() != null) {
             businessDTO = mapper.toDTO(store.getBusiness());
         }
-
         return StoreDTO.builder()
                 .id(store.getId())
                 .storeName(store.getStoreName())
@@ -56,5 +71,4 @@ public class StoreDTOMapper {
                 .address(store.getAddress())
                 .build();
     }
-
 }

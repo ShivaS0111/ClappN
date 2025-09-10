@@ -4,6 +4,9 @@ import biz.craftline.server.feature.businessstore.api.dto.BusinessDTO;
 import biz.craftline.server.feature.businessstore.api.dto.StoreDTO;
 import biz.craftline.server.feature.businessstore.api.request.AddNewBusinessRequest;
 import biz.craftline.server.feature.businessstore.domain.model.Business;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Data
 @Component
 public class BusinessDTOMapper {
 

@@ -3,32 +3,48 @@ package biz.craftline.server.feature.user.infra.entity;
 import biz.craftline.server.feature.address.infra.entity.AddressEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+/**
+ * Entity representing a user in the system.
+ */
 @Data
 @Entity(name = "user")
 public class UserEntity implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private Integer id;
 
+    /** Full name of the user */
+    @NotNull(message = "Full name is required")
+    @Size(min = 2, max = 100, message = "Full name must be between 2 and 100 characters")
     @Column(nullable = false, name = "full_name")
     private String fullName;
 
+    /** Email address of the user */
+    @NotNull(message = "Email is required")
+    @Email(message = "Email should be valid")
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
+    /** Hashed password of the user */
+    @NotNull(message = "Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters")
     @Column(nullable = false)
     private String password;
 
@@ -49,15 +65,14 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        /*return roles.stream().map(RoleEntity::getName)
-                .map(SimpleGrantedAuthority::new)
-                .toList();*/
-        return List.of();
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 
     @Override

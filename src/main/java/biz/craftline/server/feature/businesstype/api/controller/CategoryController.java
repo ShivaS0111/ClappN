@@ -4,6 +4,7 @@ import biz.craftline.server.feature.businesstype.api.dto.CategoryDTO;
 import biz.craftline.server.feature.businesstype.api.mapper.CategoryDTOMapper;
 import biz.craftline.server.feature.businesstype.api.request.AddCategoryRequest;
 import biz.craftline.server.feature.businesstype.api.request.SearchCategoryRequest;
+import biz.craftline.server.feature.businesstype.api.request.SearchRequest;
 import biz.craftline.server.feature.businesstype.domain.service.CategoryService;
 import biz.craftline.server.util.APIResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class CategoryController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<APIResponse<List<CategoryDTO>>> createCategory(@RequestBody SearchCategoryRequest request) {
+    public ResponseEntity<APIResponse<List<CategoryDTO>>> createCategory(@RequestBody SearchRequest request) {
         return APIResponse.success(
                 service.searchCategory(request.keyword()).stream()
                         .map(categoryDTOMapper::toDTO)

@@ -6,6 +6,7 @@ import biz.craftline.server.feature.businesstype.api.mapper.BusinessProductDTOMa
 import biz.craftline.server.feature.businesstype.api.mapper.BusinessServiceDTOMapper;
 import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessProductRequest;
 import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessServiceRequest;
+import biz.craftline.server.feature.businesstype.api.request.SearchRequest;
 import biz.craftline.server.feature.businesstype.api.request.SearchServiceByBusinessRequest;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessProduct;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
@@ -49,7 +50,7 @@ public class BusinessProductController {
 
     @PostMapping("/search")
     public ResponseEntity<APIResponse<List<BusinessProductDTO>>> search(
-            @RequestBody SearchServiceByBusinessRequest search) {
+            @RequestBody SearchRequest search) {
         List<BusinessProduct> list = service.findBySearch(search.keyword());
         System.out.println("===>Keyword: " + search.keyword() + ", resp:  " + list);
         return APIResponse.success(convertToDTOList(list));
