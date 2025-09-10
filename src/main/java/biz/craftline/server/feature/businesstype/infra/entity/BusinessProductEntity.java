@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -26,9 +28,13 @@ public class BusinessProductEntity {
 
     private int status;
 
-    @ManyToOne
-    @JoinColumn(name = "category", nullable = false)
-    private CategoryEntity category;
+    @ManyToMany
+    @JoinTable(
+            name = "business_product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<CategoryEntity> categories = new ArrayList<>();
 
     private float amount;
 

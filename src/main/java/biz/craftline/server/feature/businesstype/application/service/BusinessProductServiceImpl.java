@@ -66,18 +66,12 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
     }
 
 
-    @Override
-    public List<BusinessProduct> findAllByBusinessTypeId(Long businessTypeId) {
-        //return repository.findAllByBusinessTypeId(businessTypeId).stream().map(mapper::toDomain).toList();
-        return repository.findAllByBusinessTypeId(businessTypeId).stream().map(mapper::toDomain).toList();
-
-    }
 
     @Override
     public List<BusinessProduct> findByBusinessIdAndSearch(Long id, String keyword) {
         //return repository.findByBusinessId(id).stream().map(mapper::toDomain).toList();
         //return repository.searchByKeywordAndBusinessTypeId(keyword, id).stream().map(mapper::toDomain).toList();
-        return repository.searchByKeywordAndBusinessType(keyword, id).stream().map(mapper::toDomain).toList();
+        return repository.searchByKeyword(keyword).stream().map(mapper::toDomain).toList();
 
     }
 

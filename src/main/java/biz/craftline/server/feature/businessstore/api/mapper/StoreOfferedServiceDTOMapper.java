@@ -4,18 +4,23 @@ import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedServiceDTO
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOfferedServiceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
+import biz.craftline.server.feature.businesstype.api.mapper.BusinessServiceDTOMapper;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StoreOfferedServiceDTOMapper {
+
+    @Autowired
+    BusinessServiceDTOMapper dtoMapper;
 
     public StoreOfferedService toDomain(StoreOfferedServiceDTO dto) {
         return StoreOfferedService.builder()
                 .id(dto.getId())
                 .aliasName(dto.getAliasName())
                 .storeId(dto.getStoreId())
-                .service(dto.getService())
+                .service(dtoMapper.toDomain(dto.getService()))
                 .build();
     }
 
@@ -24,7 +29,7 @@ public class StoreOfferedServiceDTOMapper {
                 .id(store.getId())
                 .aliasName(store.getAliasName())
                 .storeId(store.getStoreId())
-                .service(store.getService())
+                .service(dtoMapper.toDTO(store.getService()))
                 .build();
     }
 
@@ -33,7 +38,7 @@ public class StoreOfferedServiceDTOMapper {
                 .aliasName(req.getAliasName())
                 .storeId(req.getStoreId())
                 .price(StoreItemPrice.builder().id(req.getStoreServicePriceId()).build())
-                .service(req.getBusinessServiceId())
+                .serviceId(req.getBusinessServiceId())
                 .build();
     }
 }

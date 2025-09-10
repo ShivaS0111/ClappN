@@ -42,7 +42,7 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
     @Override
     public StoreOfferedService save(StoreOfferedService domain) {
         StoreOfferedServiceEntity entity= mapper.toEntity(domain);
-        entity.setServiceId(domain.getService());
+        //entity.setService(domain.getService());
         StoreOfferedServiceEntity en = servicesOfferedByStoreRepository.save(entity);
         return mapper.toDomain(en);
     }

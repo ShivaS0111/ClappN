@@ -29,6 +29,11 @@ public class BusinessTypeServiceImpl implements BusinessTypeService {
     }
 
     @Override
+    public List<BusinessType> findByNameContaining(String keyword) {
+        return repository.findByNameContaining(keyword).parallelStream().map( mapper::toDomain).toList();
+    }
+
+    @Override
     public void deleteBusinessTypeById(Long id) {
         Optional<BusinessTypeEntity> typeOp = repository.findById(id);
         if (typeOp.isPresent()) {

@@ -37,7 +37,7 @@ public class BusinessTypeController {
 
     @GetMapping("/search")
     public ResponseEntity<APIResponse<List<BusinessTypeDTO>>> search(@RequestBody String keyword) {
-        List<BusinessType> list = service.findAll();
+        List<BusinessType> list = service.findByNameContaining(keyword);
         return APIResponse.success(list.stream().map(mapper::toDTO).toList());
     }
 
@@ -67,12 +67,12 @@ public class BusinessTypeController {
         return APIResponse.success( list );
     }
 
-    @GetMapping("/details/{id}")
+   /* @GetMapping("/details/{id}")
     public ResponseEntity<APIResponse<BusinessTypeDTO>> details(@PathVariable("id") String id) {
         BusinessType businessType = service.findById(Long.valueOf(id)).orElseThrow();
         List<BusinessService> services =  businessService.findAllByBusinessTypeId(businessType.getId());
         businessType.setServices(services);
         return APIResponse.success(mapper.toDTO(businessType));
-    }
+    }*/
 
 }

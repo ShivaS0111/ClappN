@@ -46,7 +46,6 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
 
     @Override
     public List<Business> search(String keyword) {
-        //businessEntityRepository
-        return List.of();
+        return businessEntityRepository.findByNameContaining(keyword.toLowerCase()).stream().map(mapper::toDomain).toList();
     }
 }

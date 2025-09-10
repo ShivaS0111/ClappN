@@ -6,12 +6,18 @@ import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessProdu
 import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessServiceRequest;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessProduct;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
+import biz.craftline.server.feature.businesstype.domain.model.Category;
+import biz.craftline.server.feature.businesstype.domain.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class BusinessProductDTOMapper {
 
-    public BusinessProductDTOMapper(){}
+    @Autowired
+    CategoryService categoryService;
 
     public BusinessProductDTO toDTO(BusinessProduct domain){
         return new BusinessProductDTO(
@@ -19,7 +25,7 @@ public class BusinessProductDTOMapper {
                 domain.getName(),
                 domain.getDescription(),
                 domain.getStatus(),
-                domain.getCategory(),
+                domain.getCategories(),
                 domain.getAmount(),
                 domain.getCurrency()
         );
@@ -31,17 +37,19 @@ public class BusinessProductDTOMapper {
                 dto.getName(),
                 dto.getDesc(),
                 dto.getStatus(),
-                dto.getCategory(),
+                dto.getCategories(),
                 dto.getAmount(),
                 dto.getCurrency()
         );
     }
 
     public BusinessProduct toDomain(AddNewBusinessProductRequest dto){
+        List<Category> categoryList = categoryService.findAllByIds( dto.getCategories());
         return BusinessProduct.builder()
                 //.id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDesc())
+                .categories(categoryList)
                 .amount(dto.getAmount())
                 .currency(dto.getCurrency())
                 .build();

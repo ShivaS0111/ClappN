@@ -56,13 +56,6 @@ public class BusinessServiceController {
         return APIResponse.success(convertToDTOList(list));
     }
 
-    @GetMapping("/business-type/{id}")
-    public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> searchByBusiness(
-            @PathVariable("id") long businessType) {
-        List<BusinessService> list = service.findAllByBusinessTypeId(businessType);
-        return APIResponse.success(convertToDTOList(list));
-    }
-
     @PostMapping("/add")
     public ResponseEntity<APIResponse<BusinessServiceDTO>> add(@RequestBody BusinessServiceDTO dto) {
         BusinessService bs = service.save(mapper.toDomain(dto));

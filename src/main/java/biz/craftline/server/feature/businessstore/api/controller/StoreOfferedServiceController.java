@@ -49,9 +49,9 @@ public class StoreOfferedServiceController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<APIResponse<String>> save(@RequestBody AddNewStoreOfferedServiceRequest req) {
-        storeOfferedService.save( serviceMapper.toDomain(req));
-        return APIResponse.success("success");
+    public ResponseEntity<APIResponse<StoreOfferedServiceDTO>> save(@RequestBody AddNewStoreOfferedServiceRequest req) {
+        StoreOfferedService service = storeOfferedService.save( serviceMapper.toDomain(req));
+        return APIResponse.success(serviceMapper.toDTO(service));
     }
 
     @GetMapping("/service-price-list/{serviceId}")

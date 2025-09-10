@@ -18,6 +18,7 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryJpaRepository repository;
+    private final CategoryEntityMapper categoryEntityMapper;
 
     @Override
     public Category createCategory(String name, Long parentId) {
@@ -30,13 +31,20 @@ public class CategoryServiceImpl implements CategoryService {
                 .name(name)
                 .parent(parent)
                 .build();
-        return CategoryEntityMapper.toDomain(repository.save(entity));
+        return categoryEntityMapper.toDomain(repository.save(entity));
+    }
+
+    @Override
+    public List<Category> searchCategory(String keyword) {
+        return repository.searchByKeyword(keyword).stream()
+                .map(categoryEntityMapper::toDomain)
+                .toList();
     }
 
     @Override
     public List<Category> getCategoryTree() {
         return repository.findByParentIsNull().stream()
-                .map(CategoryEntityMapper::toDomain)
+                .map(categoryEntityMapper::toDomain)
                 .toList();
     }
 
@@ -47,9 +55,14 @@ public class CategoryServiceImpl implements CategoryService {
 
         List<Category> path = new ArrayList<>();
         while (current != null) {
-            path.add(0, CategoryEntityMapper.toDomain(current));
+            path.add(0, categoryEntityMapper.toDomain(current));
             current = current.getParent();
         }
         return path;
+    }
+
+    @Override
+    public List<Category> findAllByIds(List<Long> categories) {
+        return repository.findAllById( categories ).stream().map( categoryEntityMapper::toDomain).toList();
     }
 }

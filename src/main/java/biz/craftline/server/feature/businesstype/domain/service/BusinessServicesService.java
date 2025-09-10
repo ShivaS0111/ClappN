@@ -18,8 +18,6 @@ public interface BusinessServicesService {
 
     List<BusinessService> save(List<BusinessService> businessService);
 
-    List<BusinessService> findAllByBusinessTypeId(Long businessTypeId);
-
     List<BusinessService> findByBusinessIdAndSearch(Long id, String keyword);
 
     List<BusinessService> findBySearch(String keyword);

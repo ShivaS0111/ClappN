@@ -10,18 +10,17 @@ import biz.craftline.server.feature.businesstype.api.request.SearchServiceByBusi
 import biz.craftline.server.feature.businesstype.domain.model.BusinessProduct;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
+import biz.craftline.server.feature.businesstype.domain.model.Category;
 import biz.craftline.server.feature.businesstype.domain.service.BusinessProductsService;
 import biz.craftline.server.feature.businesstype.domain.service.BusinessServicesService;
 import biz.craftline.server.feature.businesstype.domain.service.BusinessTypeService;
+import biz.craftline.server.feature.businesstype.domain.service.CategoryService;
 import biz.craftline.server.util.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -37,6 +36,9 @@ public class BusinessProductController {
 
     @Autowired
     private BusinessTypeService businessTypeService;
+
+    @Autowired
+    private CategoryService categoryService;
 
 
     @GetMapping("/list")
@@ -60,12 +62,12 @@ public class BusinessProductController {
         return APIResponse.success(convertToDTOList(list));
     }
 
-    @GetMapping("/business-type/{id}")
+    /*@GetMapping("/business-type/{id}")
     public ResponseEntity<APIResponse<List<BusinessProductDTO>>> searchByBusiness(
             @PathVariable("id") long businessType) {
         List<BusinessProduct> list = service.findAllByBusinessTypeId(businessType);
         return APIResponse.success(convertToDTOList(list));
-    }
+    }*/
 
     @PostMapping("/add")
     public ResponseEntity<APIResponse<BusinessProductDTO>> add(@RequestBody BusinessProductDTO dto) {
@@ -73,49 +75,41 @@ public class BusinessProductController {
         return APIResponse.success(mapper.toDTO(bs));
     }
 
-    @PostMapping("/add-all2")
-    public ResponseEntity<APIResponse<List<BusinessProductDTO>>> addAll2(@RequestBody List<AddNewBusinessProductRequest> request) {
-
-        List<Long> businessTypeIds = request.stream().map( AddNewBusinessProductRequest::getBusinessType).toList();
-        Map<Long, BusinessType> businessTypeMap = businessTypeService.findAllByIds(businessTypeIds)
-                .stream()
-                .collect(Collectors.toMap(BusinessType::getId, Function.identity()));
-
-        List<BusinessProductDTO> list = new ArrayList<>();
-        for (AddNewBusinessProductRequest dto: request){
-            try {
-                BusinessProduct bs = mapper.toDomain(dto);
-                bs.setBusinessType(businessTypeMap.get( dto.getBusinessType()));
-                list.add(mapper.toDTO(service.save(bs)));
-            }catch (Exception e){ e.printStackTrace();}
-        }
-        return APIResponse.success(list);
-    }
-
     @PostMapping("/add-all")
     public ResponseEntity<APIResponse<List<BusinessProductDTO>>> addAll(
             @RequestBody List<AddNewBusinessProductRequest> requests) {
+        if (requests == null || requests.isEmpty()) {
+            return APIResponse.success(Collections.emptyList());
+        }
 
-        Map<Long, BusinessType> businessTypeMap = businessTypeService
-                .findAllByIds(requests.stream().map(AddNewBusinessProductRequest::getBusinessType).toList())
+        Set<Long> categoryIds = requests.stream()
+                .flatMap(r -> r.getCategories().stream())
+                .collect(Collectors.toSet());
+
+        Map<Long, Category> categoryMap = categoryService.findAllByIds(categoryIds.stream().toList())
                 .stream()
-                .collect(Collectors.toMap(BusinessType::getId, Function.identity()));
+                .collect(Collectors.toMap(Category::getId, c -> c));
 
-        List<BusinessProduct> servicesList = requests.stream()
+        List<BusinessProduct> products = requests.stream()
                 .map(request -> {
-                    try {
-                        BusinessProduct domain = mapper.toDomain(request);
-                        domain.setBusinessType(businessTypeMap.get(request.getBusinessType()));
-                        return domain;
-                    } catch (Exception e) {
-                        e.printStackTrace(); // You may want to log this properly instead
-                        return null; // Or handle errors differently
-                    }
+                    BusinessProduct product = mapper.toDomain(request);
+                    List<Category> matchedCategories = request.getCategories().stream()
+                            .map(categoryMap::get)
+                            .filter(Objects::nonNull)
+                            .toList();
+                    product.setCategories(matchedCategories);
+                    return product;
                 })
-                .filter(Objects::nonNull)
                 .toList();
-        List<BusinessProduct> result = service.save(servicesList);
-        return APIResponse.success( result!=null?result.parallelStream().map(mapper::toDTO).toList(): new ArrayList<>());
+
+        List<BusinessProduct> savedProducts = service.save(products);
+
+        List<BusinessProductDTO> dtos = savedProducts.stream()
+                .map(mapper::toDTO)
+                .toList();
+
+        return APIResponse.success(dtos);
+
     }
 
     @PostMapping("/add-all1")
@@ -128,4 +122,3 @@ public class BusinessProductController {
         return list.parallelStream().map(mapper::toDTO).toList();
     }
 }
-

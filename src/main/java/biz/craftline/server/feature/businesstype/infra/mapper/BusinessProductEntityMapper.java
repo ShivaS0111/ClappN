@@ -18,7 +18,9 @@ public class BusinessProductEntityMapper {
         entity.setDescription(domain.getDescription());
         entity.setStatus(domain.getStatus());
         entity.setAmount(domain.getAmount());
-        entity.setCategory(mapper.toEntity(domain.getCategory()));
+
+        entity.setCategories(domain.getCategories().stream().map(mapper::toEntity).toList());
+
         entity.setCurrency(domain.getCurrency());
         return entity;
     }
@@ -29,7 +31,7 @@ public class BusinessProductEntityMapper {
                 entity.getName(),
                 entity.getDescription(),
                 entity.getStatus(),
-                mapper.toDomain(entity.getCategory()),
+                entity.getCategories().stream().map(mapper::toDomain).toList(),
                 entity.getAmount(),
                 entity.getCreatedBy()
         );

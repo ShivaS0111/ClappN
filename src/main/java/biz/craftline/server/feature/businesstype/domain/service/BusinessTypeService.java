@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface BusinessTypeService {
 
     List<BusinessType> findAll();
+    List<BusinessType> findByNameContaining(String keyword);
 
     void deleteBusinessTypeById(Long id);
 

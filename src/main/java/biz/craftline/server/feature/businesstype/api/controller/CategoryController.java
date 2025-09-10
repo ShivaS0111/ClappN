@@ -3,7 +3,9 @@ package biz.craftline.server.feature.businesstype.api.controller;
 import biz.craftline.server.feature.businesstype.api.dto.CategoryDTO;
 import biz.craftline.server.feature.businesstype.api.mapper.CategoryDTOMapper;
 import biz.craftline.server.feature.businesstype.api.request.AddCategoryRequest;
+import biz.craftline.server.feature.businesstype.api.request.SearchCategoryRequest;
 import biz.craftline.server.feature.businesstype.domain.service.CategoryService;
+import biz.craftline.server.util.APIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +24,24 @@ public class CategoryController {
     CategoryDTOMapper categoryDTOMapper;
 
     @PostMapping("/add")
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody AddCategoryRequest request) {
-        return ResponseEntity.ok(
+    public ResponseEntity<APIResponse<CategoryDTO>> createCategory(@RequestBody AddCategoryRequest request) {
+        return APIResponse.success(
                 categoryDTOMapper.toDTO(service.createCategory(request.getName(), request.getParentId()))
         );
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<APIResponse<List<CategoryDTO>>> createCategory(@RequestBody SearchCategoryRequest request) {
+        return APIResponse.success(
+                service.searchCategory(request.keyword()).stream()
+                        .map(categoryDTOMapper::toDTO)
+                        .toList()
+        );
+    }
+
     @GetMapping("/tree")
-    public ResponseEntity<List<CategoryDTO>> getCategoryTree() {
-        return ResponseEntity.ok(
+    public ResponseEntity<APIResponse<List<CategoryDTO>>> getCategoryTree() {
+        return APIResponse.success(
                 service.getCategoryTree().stream()
                         .map(categoryDTOMapper::toDTO)
                         .toList()
@@ -38,8 +49,8 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}/path")
-    public ResponseEntity<List<CategoryDTO>> getCategoryPath(@PathVariable Long id) {
-        return ResponseEntity.ok(
+    public ResponseEntity<APIResponse<List<CategoryDTO>>> getCategoryPath(@PathVariable Long id) {
+        return APIResponse.success(
                 service.getCategoryPath(id).stream()
                         .map(categoryDTOMapper::toDTO)
                         .toList()

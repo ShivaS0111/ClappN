@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -19,8 +21,8 @@ public class AddNewBusinessProductRequest {
 
     private int status;
 
-    @NotNull(message = "businessType should not be null")
-    private long businessType;
+    //@NotNull(message = "categories should not be null")
+    private List<Long> categories;
 
     private float amount;
 

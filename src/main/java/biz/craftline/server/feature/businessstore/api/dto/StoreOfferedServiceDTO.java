@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.api.dto;
 
+import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class StoreOfferedServiceDTO {
 
     private int status;
 
-    private long  service;
+    private BusinessServiceDTO service;
 
     private StoreItemPriceDTO price;
 }
