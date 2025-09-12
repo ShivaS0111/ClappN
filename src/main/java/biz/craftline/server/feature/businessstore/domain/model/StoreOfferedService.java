@@ -4,6 +4,7 @@ import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
+@EqualsAndHashCode
 public class StoreOfferedService {
 
     private Long id;

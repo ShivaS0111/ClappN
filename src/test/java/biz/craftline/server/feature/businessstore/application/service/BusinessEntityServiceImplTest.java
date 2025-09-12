@@ -41,6 +41,7 @@ class BusinessEntityServiceImplTest {
         when(mapper.toDomain(entity1)).thenReturn(business1);
         when(mapper.toDomain(entity2)).thenReturn(business2);
         List<Business> result = service.findAll();
+        result.sort((a, b) -> Long.compare(a.getId(), b.getId()));
         assertEquals(2, result.size());
         assertEquals(business1, result.get(0));
         assertEquals(business2, result.get(1));
@@ -90,4 +91,3 @@ class BusinessEntityServiceImplTest {
         assertEquals(business, result.get(0));
     }
 }
-

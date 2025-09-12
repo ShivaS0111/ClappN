@@ -4,6 +4,7 @@ import biz.craftline.server.feature.businessstore.api.dto.StoreDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreDTOMapper;
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreRequest;
 import biz.craftline.server.feature.businessstore.domain.model.Store;
+import biz.craftline.server.feature.businessstore.domain.service.BusinessEntityService;
 import biz.craftline.server.feature.businessstore.domain.service.StoreService;
 import biz.craftline.server.util.APIResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,12 +28,15 @@ class StoreControllerTest {
     @Mock
     private StoreDTOMapper mapper;
 
-    @InjectMocks
+    @Mock
+    private BusinessEntityService businessService;
+
     private StoreController storeController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        storeController = new StoreController(mapper, storeService, businessService);
     }
 
     @Test
@@ -65,14 +67,13 @@ class StoreControllerTest {
         when(mapper.toDTO(any(Store.class))).thenReturn(expectedDto);
 
         // Act
-        ResponseEntity<APIResponse<StoreDTO>> response = storeController.addStore(request);
+        APIResponse<StoreDTO> response = storeController.addStore(request).getBody();
 
         // Assert
         assertNotNull(response);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("Store created successfully", response.getBody().getMessage());
-        assertEquals(expectedDto, response.getBody().getData());
+        assertTrue(response.isSuccess());
+        assertEquals("Store created successfully", response.getMessage());
+        assertEquals(expectedDto, response.getData());
     }
 
     @Test
@@ -92,14 +93,13 @@ class StoreControllerTest {
         when(mapper.toDTO(stores.get(1))).thenReturn(expectedDtos.get(1));
 
         // Act
-        ResponseEntity<APIResponse<List<StoreDTO>>> response = storeController.list(businessId);
+        APIResponse<List<StoreDTO>> response = storeController.list(businessId).getBody();
 
         // Assert
         assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("Stores retrieved successfully", response.getBody().getMessage());
-        assertEquals(expectedDtos, response.getBody().getData());
-        assertEquals(2, response.getBody().getData().size());
+        assertTrue(response.isSuccess());
+        assertEquals("Stores retrieved successfully", response.getMessage());
+        assertEquals(expectedDtos, response.getData());
+        assertEquals(2, response.getData().size());
     }
 }

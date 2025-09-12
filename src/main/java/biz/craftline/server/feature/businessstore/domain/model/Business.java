@@ -9,6 +9,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Builder
+@EqualsAndHashCode
 public class Business {
 
     private Long id;

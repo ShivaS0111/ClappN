@@ -11,7 +11,7 @@ import biz.craftline.server.feature.businessstore.domain.service.ServicesOffered
 import biz.craftline.server.feature.businessstore.domain.service.StoreProductPriceService;
 import biz.craftline.server.util.APIResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,35 +23,24 @@ import java.util.stream.Collectors;
 @RequestMapping("/store-service")
 @RestController
 public class StoreOfferedServiceController {
-
-
-    @Autowired
-    StoreOfferedServiceDTOMapper serviceMapper;
-
-    @Autowired
-    StoreItemPriceDTOMapper priceMapper;
-
-    @Autowired
-    private ServicesOfferedByStoreService storeOfferedService;
-
-    @Autowired
-    private StoreProductPriceService priceHandleService;
+    private final StoreOfferedServiceDTOMapper serviceMapper;
+    private final StoreItemPriceDTOMapper priceMapper;
+    private final ServicesOfferedByStoreService storeOfferedService;
+    private final StoreProductPriceService priceHandleService;
 
     @GetMapping("/list/{storeId}")
     public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> list(@PathVariable("storeId") Long storeId) {
-        //if( storeId==null ) throw new
         Optional<List<StoreOfferedService>> list = storeOfferedService.findServicesByStoreId(storeId);
         List<StoreOfferedServiceDTO> dtoList = list.orElseThrow().stream()
                 .map(serviceMapper::toDTO)
                 .collect(Collectors.toList());
-        return APIResponse.success(dtoList);
+        return APIResponse.success(dtoList, "Store services retrieved successfully");
     }
-
 
     @PostMapping("/save")
     public ResponseEntity<APIResponse<StoreOfferedServiceDTO>> save(@RequestBody AddNewStoreOfferedServiceRequest req) {
-        StoreOfferedService service = storeOfferedService.save( serviceMapper.toDomain(req));
-        return APIResponse.success(serviceMapper.toDTO(service));
+        StoreOfferedService service = storeOfferedService.save(serviceMapper.toDomain(req));
+        return APIResponse.success(serviceMapper.toDTO(service), "Service added to store successfully", HttpStatus.CREATED);
     }
 
     @GetMapping("/service-price-list/{serviceId}")
@@ -62,7 +51,6 @@ public class StoreOfferedServiceController {
         List<StoreItemPriceDTO> dtoList = list.stream()
                 .map(priceMapper::toDTO)
                 .collect(Collectors.toList());
-
         return APIResponse.success(dtoList);
     }
 }

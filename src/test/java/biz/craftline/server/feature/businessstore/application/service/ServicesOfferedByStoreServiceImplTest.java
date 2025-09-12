@@ -53,9 +53,10 @@ class ServicesOfferedByStoreServiceImplTest {
         when(mapper.toDomain(entity2)).thenReturn(service2);
         Optional<List<StoreOfferedService>> result = service.findServicesByStoreId(storeId);
         assertTrue(result.isPresent());
-        assertEquals(2, result.get().size());
-        assertEquals(service1, result.get().get(0));
-        assertEquals(service2, result.get().get(1));
+        List<StoreOfferedService> sorted = result.get().stream().sorted((a, b) -> Long.compare(a.getId(), b.getId())).toList();
+        assertEquals(2, sorted.size());
+        assertEquals(service1, sorted.get(0));
+        assertEquals(service2, sorted.get(1));
     }
 
     @Test
@@ -71,4 +72,3 @@ class ServicesOfferedByStoreServiceImplTest {
         assertEquals(savedDomain, result);
     }
 }
-

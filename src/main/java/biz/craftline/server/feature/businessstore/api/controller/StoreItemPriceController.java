@@ -23,12 +23,13 @@ public class StoreItemPriceController {
     @Autowired
     StoreItemPriceDTOMapper mapper;
 
-    @PostMapping("/service-price/update")
-    public ResponseEntity<APIResponse<StoreItemPriceDTO>> updatePrice(
-            @RequestBody UpdateStoreItemPriceRequest dto) {
 
-        StoreItemPrice price = service.updateServicePrice(mapper.toDomain(dto))
-                .orElseThrow(() -> new RuntimeException("Service price not found"));
+    @GetMapping("/lot-product-price/{lotId}")
+    public ResponseEntity<APIResponse<StoreItemPriceDTO>> findByProductLotId(
+            @PathParam("lotId") Long lotId) {
+
+        StoreItemPrice price = service.findByProductLotId(lotId)
+                .orElseThrow(() -> new RuntimeException("productId price not found"));
         StoreItemPriceDTO priceDTO = mapper.toDTO(price);
         return APIResponse.success(priceDTO);
     }
@@ -43,6 +44,16 @@ public class StoreItemPriceController {
         return APIResponse.success(priceDTO);
     }
 
+    /*
+    @GetMapping("/product-price/{productId}")
+    public ResponseEntity<APIResponse<StoreItemPriceDTO>> getProductPrice(
+            @PathParam("productId") Long productId) {
+
+        StoreItemPrice price = service.findByProductId(productId)
+                .orElseThrow(() -> new RuntimeException("productId price not found"));
+        StoreItemPriceDTO priceDTO = mapper.toDTO(price);
+        return APIResponse.success(priceDTO);
+    }
     @PostMapping("/product-price/update")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> updateProductPrice(
             @RequestBody UpdateStoreItemPriceRequest dto) {
@@ -51,7 +62,7 @@ public class StoreItemPriceController {
                 .orElseThrow(() -> new RuntimeException("Service price not found"));
         StoreItemPriceDTO priceDTO = mapper.toDTO(price);
         return APIResponse.success(priceDTO);
-    }
+    }*/
 
     @GetMapping("/service-price/{serviceId}")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> getServicePrice(
@@ -63,23 +74,12 @@ public class StoreItemPriceController {
         return APIResponse.success(priceDTO);
     }
 
-    /*
-    @GetMapping("/product-price/{productId}")
-    public ResponseEntity<APIResponse<StoreItemPriceDTO>> getProductPrice(
-            @PathParam("productId") Long productId) {
+    @PostMapping("/service-price/update")
+    public ResponseEntity<APIResponse<StoreItemPriceDTO>> updatePrice(
+            @RequestBody UpdateStoreItemPriceRequest dto) {
 
-        StoreItemPrice price = service.findByProductId(productId)
-                .orElseThrow(() -> new RuntimeException("productId price not found"));
-        StoreItemPriceDTO priceDTO = mapper.toDTO(price);
-        return APIResponse.success(priceDTO);
-    }*/
-
-    @GetMapping("/lot-product-price/{lotId}")
-    public ResponseEntity<APIResponse<StoreItemPriceDTO>> findByProductLotId(
-            @PathParam("lotId") Long lotId) {
-
-        StoreItemPrice price = service.findByProductLotId(lotId)
-                .orElseThrow(() -> new RuntimeException("productId price not found"));
+        StoreItemPrice price = service.updateServicePrice(mapper.toDomain(dto))
+                .orElseThrow(() -> new RuntimeException("Service price not found"));
         StoreItemPriceDTO priceDTO = mapper.toDTO(price);
         return APIResponse.success(priceDTO);
     }

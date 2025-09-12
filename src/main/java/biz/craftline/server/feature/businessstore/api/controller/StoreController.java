@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class StoreController {
     public ResponseEntity<APIResponse<List<StoreDTO>>> list(@PathVariable("businessId") long businessId) {
         List<Store> list = service.findStoresByBusiness(businessId);
         List<StoreDTO> dtoList = list.stream().map(mapper::toDTO).toList();
-        return APIResponse.success(dtoList);
+        return APIResponse.success(dtoList, "Stores retrieved successfully");
     }
 
     /**
@@ -74,9 +75,9 @@ public class StoreController {
      * Add a new store.
      */
     @Operation(summary = "Add new store", description = "Creates a new store.")
-    @ApiResponse(responseCode = "200", description = "Store created successfully.")
+    @ApiResponse(responseCode = "201", description = "Store created successfully.")
     @PostMapping("/add")
-    public ResponseEntity<APIResponse<StoreDTO>> addStore(@Valid @RequestBody AddNewStoreRequest request) {
+    public ResponseEntity<APIResponse<StoreDTO>> addStore(@RequestBody AddNewStoreRequest request) {
         Business business = null;
         if (request.getBusinessId() != null) {
             business = businessService.findById(request.getBusinessId()).orElse(null);
@@ -84,7 +85,7 @@ public class StoreController {
         Store store = mapper.toDomain(request);
         store.setBusiness(business);
         Store savedStore = service.save(store);
-        return APIResponse.success(mapper.toDTO(savedStore));
+        return APIResponse.success(mapper.toDTO(savedStore), "Store created successfully", HttpStatus.CREATED);
     }
 
 }

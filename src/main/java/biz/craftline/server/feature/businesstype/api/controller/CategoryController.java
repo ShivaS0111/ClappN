@@ -8,7 +8,6 @@ import biz.craftline.server.feature.businesstype.api.request.SearchRequest;
 import biz.craftline.server.feature.businesstype.domain.service.CategoryService;
 import biz.craftline.server.util.APIResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +17,8 @@ import java.util.List;
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor
 public class CategoryController {
-
     private final CategoryService service;
-
-    @Autowired
-    CategoryDTOMapper categoryDTOMapper;
+    private final CategoryDTOMapper categoryDTOMapper;
 
     @PostMapping("/add")
     public ResponseEntity<APIResponse<CategoryDTO>> createCategory(@RequestBody AddCategoryRequest request) {

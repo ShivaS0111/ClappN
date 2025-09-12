@@ -44,6 +44,7 @@ class StoreServiceImplTest {
         when(storeEntityMapper.toDomain(entity1)).thenReturn(store1);
         when(storeEntityMapper.toDomain(entity2)).thenReturn(store2);
         List<Store> result = service.findAll();
+        result.sort((a, b) -> Long.compare(a.getId(), b.getId()));
         assertEquals(2, result.size());
         assertEquals(store1, result.get(0));
         assertEquals(store2, result.get(1));
@@ -92,4 +93,3 @@ class StoreServiceImplTest {
         assertEquals(store, result.get());
     }
 }
-

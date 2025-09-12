@@ -1,9 +1,12 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
 import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedServiceDTO;
+import biz.craftline.server.feature.businessstore.api.mapper.StoreItemPriceDTOMapper;
+import biz.craftline.server.feature.businessstore.api.mapper.StoreOfferedServiceDTOMapper;
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOfferedServiceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreProductPriceService;
 import biz.craftline.server.util.APIResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,16 +25,20 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 class StoreOfferedServiceControllerTest {
-
     @Mock
     private ServicesOfferedByStoreService servicesOfferedByStoreService;
-
-    @InjectMocks
+    @Mock
+    private StoreOfferedServiceDTOMapper serviceMapper;
+    @Mock
+    private StoreItemPriceDTOMapper priceMapper;
+    @Mock
+    private StoreProductPriceService priceHandleService;
     private StoreOfferedServiceController storeOfferedServiceController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        storeOfferedServiceController = new StoreOfferedServiceController(serviceMapper, priceMapper, servicesOfferedByStoreService, priceHandleService);
     }
 
     @Test
