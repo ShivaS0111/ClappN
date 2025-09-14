@@ -16,7 +16,7 @@ public class StoreItemPriceDTOMapper {
     public StoreItemPrice toDomain(UpdateStoreItemPriceRequest request) {
         return StoreItemPrice.builder()
                 .id(request.getId())
-                .lotId(request.getProductLotId())
+                .productLotId(request.getProductLotId())
                 .serviceId(request.getServiceId())
                 .price(request.getPrice())
                 .currency(
@@ -31,7 +31,7 @@ public class StoreItemPriceDTOMapper {
     public StoreItemPrice toDomain(StoreItemPriceDTO dto) {
         return StoreItemPrice.builder()
                 .id(dto.getId())
-                .lotId(dto.getProductLotId())
+                .productLotId(dto.getProductLotId())
                 .serviceId(dto.getServiceId())
                 .price(dto.getPrice())
                 .currency(

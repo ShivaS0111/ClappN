@@ -6,11 +6,10 @@ import biz.craftline.server.feature.businessstore.api.mapper.StoreOfferedService
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOfferedServiceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
-import biz.craftline.server.feature.businessstore.domain.service.StoreProductPriceService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService;
 import biz.craftline.server.util.APIResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
@@ -32,7 +31,7 @@ class StoreOfferedServiceControllerTest {
     @Mock
     private StoreItemPriceDTOMapper priceMapper;
     @Mock
-    private StoreProductPriceService priceHandleService;
+    private StoreItemPriceService priceHandleService;
     private StoreOfferedServiceController storeOfferedServiceController;
 
     @BeforeEach

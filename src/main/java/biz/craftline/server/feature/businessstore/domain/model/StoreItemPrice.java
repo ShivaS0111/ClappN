@@ -15,7 +15,7 @@ public class StoreItemPrice {
 
     private Long serviceId;
 
-    private Long lotId;
+    private Long productLotId;
 
     private Double price;
 

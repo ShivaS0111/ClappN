@@ -4,7 +4,7 @@ import biz.craftline.server.feature.businessstore.api.dto.StoreItemPriceDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreItemPriceDTOMapper;
 import biz.craftline.server.feature.businessstore.api.request.UpdateStoreItemPriceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
-import biz.craftline.server.feature.businessstore.domain.service.StoreProductPriceService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService;
 import biz.craftline.server.util.APIResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 class StoreItemPriceControllerTest {
 
     @Mock
-    private StoreProductPriceService storeProductPriceService;
+    private StoreItemPriceService storeItemPriceService;
 
     @Mock
     private StoreItemPriceDTOMapper mapper;
@@ -52,7 +52,7 @@ class StoreItemPriceControllerTest {
                 .price(29.99)
                 .build();
         when(mapper.toDomain(any(UpdateStoreItemPriceRequest.class))).thenReturn(domainModel);
-        when(storeProductPriceService.updateServicePrice(any(StoreItemPrice.class))).thenReturn(java.util.Optional.of(domainModel));
+        when(storeItemPriceService.updateServicePrice(any(StoreItemPrice.class))).thenReturn(java.util.Optional.of(domainModel));
         when(mapper.toDTO(any(StoreItemPrice.class))).thenReturn(expectedDto);
         // Act
         ResponseEntity<APIResponse<StoreItemPriceDTO>> response = storeItemPriceController.updatePrice(request);
@@ -77,7 +77,7 @@ class StoreItemPriceControllerTest {
                 .serviceId(serviceId)
                 .price(29.99)
                 .build();
-        when(storeProductPriceService.findByServiceId(serviceId)).thenReturn(java.util.Optional.of(domainModel));
+        when(storeItemPriceService.findByServiceId(serviceId)).thenReturn(java.util.Optional.of(domainModel));
         when(mapper.toDTO(domainModel)).thenReturn(expectedDto);
         // Act
         ResponseEntity<APIResponse<StoreItemPriceDTO>> response = storeItemPriceController.getServicePrice(serviceId);

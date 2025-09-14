@@ -1,6 +1,5 @@
 package biz.craftline.server.feature.businessstore.domain.model;
 
-import biz.craftline.server.feature.address.domain.model.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

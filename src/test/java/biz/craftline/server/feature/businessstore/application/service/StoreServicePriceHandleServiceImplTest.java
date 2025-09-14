@@ -24,7 +24,7 @@ class StoreServicePriceHandleServiceImplTest {
     @Mock
     private StoreItemPriceEntityMapper mapper;
     @InjectMocks
-    private StoreServicePriceHandleServiceImpl service;
+    private StoreItemPriceServiceImpl service;
 
     @BeforeEach
     void setUp() {

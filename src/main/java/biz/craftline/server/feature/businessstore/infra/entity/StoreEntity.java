@@ -1,8 +1,6 @@
 package biz.craftline.server.feature.businessstore.infra.entity;
 
-import biz.craftline.server.feature.address.infra.entity.AddressEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

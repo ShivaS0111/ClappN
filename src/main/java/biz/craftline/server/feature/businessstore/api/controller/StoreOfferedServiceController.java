@@ -8,7 +8,7 @@ import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOffered
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
-import biz.craftline.server.feature.businessstore.domain.service.StoreProductPriceService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService;
 import biz.craftline.server.util.APIResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ public class StoreOfferedServiceController {
     private final StoreOfferedServiceDTOMapper serviceMapper;
     private final StoreItemPriceDTOMapper priceMapper;
     private final ServicesOfferedByStoreService storeOfferedService;
-    private final StoreProductPriceService priceHandleService;
+    private final StoreItemPriceService priceHandleService;
 
     @GetMapping("/list/{storeId}")
     public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> list(@PathVariable("storeId") Long storeId) {

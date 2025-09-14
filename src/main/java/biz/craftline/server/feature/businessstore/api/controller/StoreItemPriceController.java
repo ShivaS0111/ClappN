@@ -4,7 +4,7 @@ import biz.craftline.server.feature.businessstore.api.dto.StoreItemPriceDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreItemPriceDTOMapper;
 import biz.craftline.server.feature.businessstore.api.request.UpdateStoreItemPriceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
-import biz.craftline.server.feature.businessstore.domain.service.StoreProductPriceService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService;
 import biz.craftline.server.util.APIResponse;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class StoreItemPriceController {
 
     @Autowired
-    StoreProductPriceService service;
+    StoreItemPriceService service;
 
     @Autowired
     StoreItemPriceDTOMapper mapper;
