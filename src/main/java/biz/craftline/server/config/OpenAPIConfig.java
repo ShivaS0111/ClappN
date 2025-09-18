@@ -6,12 +6,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition(
-        info = @Info(
-                title = "Craftline API",
-                version = "1.0",
-                description = "Backend services for Craftline app"
-        )
+    info = @Info(
+        title = "ClappN API",
+        version = "1.0",
+        description = "API Documentation for ClappN Application"
+    )
 )
 public class OpenAPIConfig {
 }
-

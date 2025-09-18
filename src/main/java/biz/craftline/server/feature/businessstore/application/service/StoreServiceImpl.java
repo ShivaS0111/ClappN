@@ -30,12 +30,12 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public List<Store> findAll() {
-        return storeRepository.findAll().stream().map(storeEntityMapper::toDomain).toList();
+        return storeRepository.findAll().stream().map(storeEntityMapper::toDomain).collect(java.util.stream.Collectors.toList());
     }
 
     @Override
     public List<Store> searchStores(String keyword) {
-        return storeRepository.searchStoreByStoreName(keyword).stream().map(storeEntityMapper::toDomain).toList();
+        return storeRepository.searchStoreByStoreName(keyword).stream().map(storeEntityMapper::toDomain).collect(java.util.stream.Collectors.toList());
     }
 
     @Override
@@ -44,7 +44,7 @@ public class StoreServiceImpl implements StoreService {
         return storeRepository.findByBusinessId(business)
                 .stream()
                 .map(storeEntityMapper::toDomain)
-                .toList();
+                .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
@@ -63,7 +63,9 @@ public class StoreServiceImpl implements StoreService {
         StoreEntity entity = storeEntityMapper.toEntity(domain);
         if (domain.getBusiness() != null) {
             Optional<BusinessEntity> businessEntity = businessRepository.findById(domain.getBusiness().getId());
-            entity.setBusiness(businessEntity.get());
+            if (businessEntity.isPresent()) {
+                entity.setBusiness(businessEntity.get());
+            }
         }
         StoreEntity storeEntity = storeRepository.save(entity);
         return storeEntityMapper.toDomain(storeEntity);

@@ -1,0 +1,62 @@
+{
+  "info": {
+    "name": "ClappN All API",
+    "description": "Postman collection for all ClappN REST APIs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Address Management",
+      "item": [
+        { "name": "List Addresses", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/addresses", "host": ["{{baseUrl}}"], "path": ["api", "addresses"] } } },
+        { "name": "Get Address by ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/addresses/1", "host": ["{{baseUrl}}"], "path": ["api", "addresses", "1"] } } },
+        { "name": "Create Address", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/addresses", "host": ["{{baseUrl}}"], "path": ["api", "addresses"] }, "body": { "mode": "raw", "raw": "{\n  \"street\": \"789 New Ave\",\n  \"city\": \"Gotham\"\n}" } } },
+        { "name": "Update Address", "request": { "method": "PUT", "url": { "raw": "{{baseUrl}}/api/addresses/1", "host": ["{{baseUrl}}"], "path": ["api", "addresses", "1"] }, "body": { "mode": "raw", "raw": "{\n  \"street\": \"789 New Ave\",\n  \"city\": \"Gotham\"\n}" } } },
+        { "name": "Delete Address", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/addresses/1", "host": ["{{baseUrl}}"], "path": ["api", "addresses", "1"] } } }
+      ]
+    },
+    {
+      "name": "Business Store",
+      "item": [
+        { "name": "List Businesses", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/business/list", "host": ["{{baseUrl}}"], "path": ["business", "list"] } } },
+        { "name": "Add Business", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/business/add", "host": ["{{baseUrl}}"], "path": ["business", "add"] }, "body": { "mode": "raw", "raw": "{\n  \"name\": \"ABC Retail\",\n  \"type\": \"Retail\"\n}" } } },
+        { "name": "List Stores", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/stores/list", "host": ["{{baseUrl}}"], "path": ["stores", "list"] } } },
+        { "name": "Add Store", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/stores/add", "host": ["{{baseUrl}}"], "path": ["stores", "add"] }, "body": { "mode": "raw", "raw": "{\n  \"name\": \"Store 1\",\n  \"businessId\": 1\n}" } } }
+      ]
+    },
+    {
+      "name": "Business Type",
+      "item": [
+        { "name": "List Brands", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/brands", "host": ["{{baseUrl}}"], "path": ["api", "brands"] } } },
+        { "name": "Add Brand", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/brands", "host": ["{{baseUrl}}"], "path": ["api", "brands"] }, "body": { "mode": "raw", "raw": "{\n  \"name\": \"Brand A\",\n  \"description\": \"Description of Brand A\"\n}" } } },
+        { "name": "List Business Types", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/business-type/list", "host": ["{{baseUrl}}"], "path": ["business-type", "list"] } } },
+        { "name": "Add Business Type", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/business-type/add", "host": ["{{baseUrl}}"], "path": ["business-type", "add"] }, "body": { "mode": "raw", "raw": "{\n  \"businessName\": \"Retail\",\n  \"description\": \"Retail business type\"\n}" } } }
+      ]
+    },
+    {
+      "name": "Employee Management",
+      "item": [
+        { "name": "List Employees", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/employees", "host": ["{{baseUrl}}"], "path": ["api", "employees"] } } },
+        { "name": "Add Employee", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/employees", "host": ["{{baseUrl}}"], "path": ["api", "employees"] }, "body": { "mode": "raw", "raw": "{\n  \"name\": \"John Doe\",\n  \"role\": \"Manager\"\n}" } } }
+      ]
+    },
+    {
+      "name": "Order Management",
+      "item": [
+        { "name": "List Orders", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"] } } },
+        { "name": "Place Order", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/orders/new", "host": ["{{baseUrl}}"], "path": ["api", "orders", "new"] }, "body": { "mode": "raw", "raw": "{\n  \"customerId\": 1,\n  \"items\": []\n}" } } }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        { "name": "List Users", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"] } } },
+        { "name": "Add User", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"] }, "body": { "mode": "raw", "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\"\n}" } } }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" }
+  ]
+}
+

@@ -1,359 +1,328 @@
 # API Documentation
 
-## Base URL
+## Brand APIs
 
-`http://localhost:8080`
-
----
-
-## User API
-
-### (No endpoints currently defined)
-
----
-
-## Category API
-
-### POST /api/categories/add
-- **Description:** Create a new category
-- **Sample Request:**
+### List Brands
+- **GET** `/api/brands`
+- **Description:** Returns all brands.
+- **Response:**
 ```json
-{
-  "name": "Retail",
-  "parentId": 1
-}
-```
-- **Sample Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "id": 10,
-    "name": "Retail",
-    "parentId": 1
+[
+  {
+    "id": 1,
+    "name": "Brand A",
+    "description": "Description of Brand A"
   }
+]
+```
+
+### Get Brand by ID
+- **GET** `/api/brands/{id}`
+- **Description:** Returns a brand by ID.
+- **Response:**
+```json
+{
+  "id": 1,
+  "name": "Brand A",
+  "description": "Description of Brand A"
 }
 ```
 
-### GET /api/categories/search
-- **Description:** Search categories by keyword
-- **Sample Request:**
+### Add Brand
+- **POST** `/api/brands`
+- **Description:** Adds a new brand.
+- **Request:**
+```json
+{
+  "name": "Brand A",
+  "description": "Description of Brand A"
+}
+```
+- **Response:**
+```json
+{
+  "id": 1,
+  "name": "Brand A",
+  "description": "Description of Brand A"
+}
+```
+
+### Delete Brand
+- **DELETE** `/api/brands/{id}`
+- **Description:** Deletes a brand by ID.
+
+---
+
+## Category APIs
+
+### Add Category
+- **POST** `/api/categories/add`
+- **Request:**
+```json
+{
+  "name": "Shoes",
+  "parentId": 2
+}
+```
+- **Response:**
+```json
+{
+  "id": 3,
+  "name": "Shoes",
+  "parentId": 2
+}
+```
+
+### Search Categories
+- **GET** `/api/categories/search`
+- **Request:**
+```json
+{
+  "keyword": "Shoes"
+}
+```
+- **Response:**
+```json
+[
+  {
+    "id": 3,
+    "name": "Shoes",
+    "parentId": 2
+  }
+]
+```
+
+### Get Category Tree
+- **GET** `/api/categories/tree`
+- **Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Men",
+    "children": [
+      {
+        "id": 2,
+        "name": "Shoes"
+      }
+    ]
+  }
+]
+```
+
+### Get Category Path
+- **GET** `/api/categories/{id}/path`
+- **Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Men"
+  },
+  {
+    "id": 2,
+    "name": "Shoes"
+  }
+]
+```
+
+---
+
+## BusinessType APIs
+
+### List Business Types
+- **GET** `/business-type/list`
+- **Response:**
+```json
+[
+  {
+    "id": 1,
+    "businessName": "Retail",
+    "description": "Retail business type"
+  }
+]
+```
+
+### Search Business Types
+- **GET** `/business-type/search`
+- **Request:**
 ```json
 {
   "keyword": "Retail"
 }
 ```
-- **Sample Response:**
+- **Response:**
 ```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 10,
-      "name": "Retail",
-      "parentId": 1
-    }
-  ]
-}
-```
-
-### GET /api/categories/tree
-- **Description:** Get category tree
-- **Sample Response:**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 1,
-      "name": "Root Category",
-      "children": [ ... ]
-    }
-  ]
-}
-```
-
----
-
-## Business Type API
-
-### GET /business-type/list
-- **Description:** List all business types
-- **Sample Response:**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 5,
-      "businessName": "Supermarket",
-      "description": "Large retail store"
-    }
-  ]
-}
-```
-
-### GET /business-type/search
-- **Description:** Search business types by keyword
-- **Sample Request:**
-```json
-{
-  "keyword": "Supermarket"
-}
-```
-- **Sample Response:**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 5,
-      "businessName": "Supermarket",
-      "description": "Large retail store"
-    }
-  ]
-}
-```
-
-### POST /business-type/add
-- **Description:** Add a new business type
-- **Sample Request:**
-```json
-{
-  "businessName": "Supermarket",
-  "description": "Large retail store"
-}
-```
-- **Sample Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "id": 5,
-    "businessName": "Supermarket",
-    "description": "Large retail store"
+[
+  {
+    "id": 1,
+    "businessName": "Retail",
+    "description": "Retail business type"
   }
+]
+```
+
+### Add Business Type
+- **POST** `/business-type/add`
+- **Request:**
+```json
+{
+  "businessName": "Retail",
+  "description": "Retail business type"
+}
+```
+- **Response:**
+```json
+{
+  "id": 1,
+  "businessName": "Retail",
+  "description": "Retail business type"
 }
 ```
 
 ---
 
-## Business Service API
+## BusinessService APIs
 
-### GET /business-service/list
-- **Description:** List all business services
-- **Sample Response:**
+### List Business Services
+- **GET** `/business-service/list`
+- **Response:**
 ```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 2,
-      "serviceName": "Delivery"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "serviceName": "Delivery",
+    "description": "Delivery service"
+  }
+]
 ```
 
-### POST /business-service/search
-- **Description:** Search business services by keyword
-- **Sample Request:**
+### Search Business Services
+- **POST** `/business-service/search`
+- **Request:**
 ```json
 {
   "keyword": "Delivery"
 }
 ```
-- **Sample Response:**
+- **Response:**
 ```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 2,
-      "serviceName": "Delivery"
-    }
-  ]
-}
-```
-
----
-
-## Business Product API
-
-### GET /business-product/list
-- **Description:** List all business products
-- **Sample Response:**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 3,
-      "productName": "Milk"
-    }
-  ]
-}
-```
-
----
-
-## Store Offered Service API
-
-### GET /store-service/list/{storeId}
-- **Description:** List services offered by a store (by storeId)
-- **Sample Response:**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 1,
-      "serviceName": "Delivery"
-    }
-  ]
-}
-```
-
----
-
-## Store Item Price API
-
-### POST /store-item/service-price/update
-- **Description:** Update service price
-- **Sample Request:**
-```json
-{
-  "storeId": 1,
-  "serviceId": 2,
-  "price": 100.0
-}
-```
-- **Sample Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "storeId": 1,
-    "serviceId": 2,
-    "price": 100.0
+[
+  {
+    "id": 1,
+    "serviceName": "Delivery",
+    "description": "Delivery service"
   }
-}
-```
-
-### POST /store-item/product-lot-price/update
-- **Description:** Update product lot price
-- **Sample Request:**
-```json
-{
-  "storeId": 1,
-  "productId": 3,
-  "price": 50.0
-}
-```
-- **Sample Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "storeId": 1,
-    "productId": 3,
-    "price": 50.0
-  }
-}
-```
-
-### POST /store-item/product-price/update
-- **Description:** Update product price
-- **Sample Request:**
-```json
-{
-  "storeId": 1,
-  "productId": 3,
-  "price": 45.0
-}
-```
-- **Sample Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "storeId": 1,
-    "productId": 3,
-    "price": 45.0
-  }
-}
+]
 ```
 
 ---
 
-## Store API
+## BusinessProduct APIs
 
-### GET /stores/list
-- **Description:** List all stores
-- **Sample Response:**
+### List Business Products
+- **GET** `/business-product/list`
+- **Response:**
+```json
+[
+  {
+    "id": 1,
+    "productName": "Laptop",
+    "description": "Electronics"
+  }
+]
+```
+
+### Search Business Products
+- **POST** `/business-product/search`
+- **Request:**
 ```json
 {
-  "success": true,
-  "data": [
-    {
-      "id": 1,
-      "storeName": "Main Street Store"
-    }
-  ]
+  "keyword": "Laptop"
 }
+```
+- **Response:**
+```json
+[
+  {
+    "id": 1,
+    "productName": "Laptop",
+    "description": "Electronics"
+  }
+]
 ```
 
 ---
 
-## Business Entity API
+## BusinessEntity APIs
 
-### GET /business/list
-- **Description:** List all businesses
-- **Sample Response:**
+### List Businesses
+- **GET** `/business/list`
+- **Response:**
 ```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 1,
-      "businessName": "ABC Corp"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "name": "ABC Retail",
+    "type": "Retail"
+  }
+]
 ```
 
-### POST /business/search
-- **Description:** Search businesses by keyword
-- **Sample Request:**
+### Search Businesses
+- **POST** `/business/search`
+- **Request:**
 ```json
 {
   "keyword": "ABC"
 }
 ```
-- **Sample Response:**
+- **Response:**
 ```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 1,
-      "businessName": "ABC Corp"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "name": "ABC Retail",
+    "type": "Retail"
+  }
+]
 ```
 
 ---
 
-## Error Responses
+## Store APIs
 
-- **400 Bad Request:** Invalid input.
-- **404 Not Found:** Entity not found.
-- **500 Internal Server Error:** Unexpected error.
+### List Stores
+- **GET** `/stores/list`
+- **Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Store 1",
+    "businessId": 1
+  }
+]
+```
+
+### List Stores by Business ID
+- **GET** `/stores/list/{businessId}`
+- **Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Store 1",
+    "businessId": 1
+  }
+]
+```
 
 ---
 
 ## Notes
+- All responses are wrapped in an `APIResponse` object.
+- Error responses follow the same structure with an error message and code.
+- For full request/response models, refer to the DTOs in the source code.
+- Authentication and authorization are required for some endpoints (see SRS for details).
 
-- All endpoints accept and return `application/json`.
-- Authentication may be required for some endpoints.

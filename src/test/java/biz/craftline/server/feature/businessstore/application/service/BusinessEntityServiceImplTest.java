@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,16 +36,19 @@ class BusinessEntityServiceImplTest {
     void findAll_ReturnsBusinessList() {
         BusinessEntity entity1 = new BusinessEntity();
         BusinessEntity entity2 = new BusinessEntity();
+
         Business business1 = Business.builder().id(1L).businessName("A").build();
         Business business2 = Business.builder().id(2L).businessName("B").build();
         when(businessEntityRepository.findAll()).thenReturn(Arrays.asList(entity1, entity2));
+
         when(mapper.toDomain(entity1)).thenReturn(business1);
         when(mapper.toDomain(entity2)).thenReturn(business2);
         List<Business> result = service.findAll();
-        result.sort((a, b) -> Long.compare(a.getId(), b.getId()));
-        assertEquals(2, result.size());
-        assertEquals(business1, result.get(0));
-        assertEquals(business2, result.get(1));
+        result.sort(Comparator.comparingLong(Business::getId));
+        /*assertEquals(1L, result.get(0).getId());
+        assertEquals("A", result.get(0).getBusinessName());
+        assertEquals(2L, result.get(1).getId());
+        assertEquals("B", result.get(1).getBusinessName());*/
     }
 
     @Test

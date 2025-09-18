@@ -25,7 +25,7 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
 
     @Override
     public List<Business> findAll() {
-        return businessEntityRepository.findAll().stream().map(mapper::toDomain).toList();
+        return businessEntityRepository.findAll().stream().map(mapper::toDomain).collect(java.util.stream.Collectors.toList());
     }
 
     @Override
@@ -46,6 +46,6 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
 
     @Override
     public List<Business> search(String keyword) {
-        return businessEntityRepository.findByNameContaining(keyword.toLowerCase()).stream().map(mapper::toDomain).toList();
+        return businessEntityRepository.findByNameContaining(keyword.toLowerCase()).stream().map(mapper::toDomain).collect(java.util.stream.Collectors.toList());
     }
 }
