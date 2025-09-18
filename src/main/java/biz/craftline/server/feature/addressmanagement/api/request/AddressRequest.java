@@ -15,6 +15,13 @@ public class AddressRequest {
     private String digiPin;
     private Double latitude;
     private Double longitude;
+    private Long areaId;
+    private Long placeId;
+    private Long countryId;
+    private Long districtId;
+    private Long regionId;
+    private Long subRegionId;
+    private Long landmarkId;
+    private Long zipcodeId;
     // Getters and setters
 }
-

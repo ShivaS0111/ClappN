@@ -33,12 +33,6 @@ public class AddressEntity {
     @Column(nullable = false)
     private String postalCode;
 
-    @NotNull
-    @Size(min = 2, max = 50)
-    @Column(nullable = false)
-    private String country;
-
-
     private String digiPin;
     private Double latitude;
     private Double longitude;
@@ -50,5 +44,36 @@ public class AddressEntity {
     @NotNull
     @Column(nullable = false)
     private Long referenceId; // ID of the linked entity (business, store, user, etc.)
-}
 
+    @ManyToOne
+    @JoinColumn(name = "area_id")
+    private AreaEntity area;
+
+    @ManyToOne
+    @JoinColumn(name = "place_id")
+    private PlaceEntity place;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private CountryEntity country;
+
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    private DistrictEntity district;
+
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private RegionEntity region;
+
+    @ManyToOne
+    @JoinColumn(name = "subregion_id")
+    private SubRegionEntity subRegion;
+
+    @ManyToOne
+    @JoinColumn(name = "landmark_id")
+    private LandmarkEntity landmark;
+
+    @ManyToOne
+    @JoinColumn(name = "zipcode_id")
+    private ZipcodeEntity zipcode;
+}

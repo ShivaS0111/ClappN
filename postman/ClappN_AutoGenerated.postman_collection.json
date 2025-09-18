@@ -1,0 +1,128 @@
+{
+  "info": {
+    "name": "ClappN API Collection",
+    "description": "Auto-generated Postman collection for ClappN APIs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"] }
+          },
+          "response": [ { "body": "[{\"id\":1,\"username\":\"john\",\"email\":\"john@example.com\"}]" } ]
+        },
+        {
+          "name": "Get User By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/users/1", "host": ["{{baseUrl}}"], "path": ["api", "users", "1"] }
+          },
+          "response": [ { "body": "{\"id\":1,\"username\":\"john\",\"email\":\"john@example.com\"}" } ]
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"john\",\n  \"email\": \"john@example.com\",\n  \"password\": \"secret\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"] }
+          },
+          "response": [ { "body": "{\"id\":1,\"username\":\"john\",\"email\":\"john@example.com\"}" } ]
+        }
+      ]
+    },
+    {
+      "name": "Role Management",
+      "item": [
+        {
+          "name": "Get All Roles",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/roles", "host": ["{{baseUrl}}"], "path": ["api", "roles"] } },
+          "response": [ { "body": "[{\"id\":1,\"name\":\"ADMIN\",\"description\":\"Administrator role\"}]" } ]
+        },
+        {
+          "name": "Create Role",
+          "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"ADMIN\",\n  \"description\": \"Administrator role\"\n}" }, "url": { "raw": "{{baseUrl}}/api/roles", "host": ["{{baseUrl}}"], "path": ["api", "roles"] } },
+          "response": [ { "body": "{\"id\":1,\"name\":\"ADMIN\",\"description\":\"Administrator role\"}" } ]
+        }
+      ]
+    },
+    {
+      "name": "Permission Management",
+      "item": [
+        {
+          "name": "Get All Permissions",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/permissions", "host": ["{{baseUrl}}"], "path": ["api", "permissions"] } },
+          "response": [ { "body": "[{\"id\":1,\"name\":\"READ_USER\",\"description\":\"Can read user data\"}]" } ]
+        },
+        {
+          "name": "Create Permission",
+          "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"READ_USER\",\n  \"description\": \"Can read user data\"\n}" }, "url": { "raw": "{{baseUrl}}/api/permissions", "host": ["{{baseUrl}}"], "path": ["api", "permissions"] } },
+          "response": [ { "body": "{\"id\":1,\"name\":\"READ_USER\",\"description\":\"Can read user data\"}" } ]
+        }
+      ]
+    },
+    {
+      "name": "Employee Management",
+      "item": [
+        {
+          "name": "Get All Employees",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/employees", "host": ["{{baseUrl}}"], "path": ["api", "employees"] } },
+          "response": [ { "body": "[{\"id\":10,\"name\":\"Jane Doe\",\"roleId\":2,\"storeId\":5}]" } ]
+        },
+        {
+          "name": "Create Employee",
+          "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Jane Doe\",\n  \"roleId\": 2,\n  \"storeId\": 5\n}" }, "url": { "raw": "{{baseUrl}}/api/employees", "host": ["{{baseUrl}}"], "path": ["api", "employees"] } },
+          "response": [ { "body": "{\"id\":10,\"name\":\"Jane Doe\",\"roleId\":2,\"storeId\":5}" } ]
+        }
+      ]
+    },
+    {
+      "name": "Order Management",
+      "item": [
+        {
+          "name": "Get All Orders",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"] } },
+          "response": [ { "body": "[{\"orderId\":100,\"status\":\"PLACED\",\"total\":150.0}]" } ]
+        },
+        {
+          "name": "Get Order By ID",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/orders/100", "host": ["{{baseUrl}}"], "path": ["api", "orders", "100"] } },
+          "response": [ { "body": "{\"orderId\":100,\"status\":\"PLACED\",\"total\":150.0}" } ]
+        },
+        {
+          "name": "Create Order",
+          "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"customerId\": 1,\n  \"items\": [{ \"productId\": 2, \"quantity\": 3 }],\n  \"deliveryInfoId\": 5\n}" }, "url": { "raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"] } },
+          "response": [ { "body": "{\"orderId\":100,\"status\":\"PLACED\",\"total\":150.0}" } ]
+        }
+      ]
+    },
+    {
+      "name": "Address Management",
+      "item": [
+        {
+          "name": "Get All Addresses",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/addresses", "host": ["{{baseUrl}}"], "path": ["api", "addresses"] } },
+          "response": [ { "body": "[{\"id\":1,\"type\":\"business\",\"referenceId\":1,\"addressLine\":\"123 Main St\"}]" } ]
+        },
+        {
+          "name": "Get Address By ID",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/addresses/1", "host": ["{{baseUrl}}"], "path": ["api", "addresses", "1"] } },
+          "response": [ { "body": "{\"id\":1,\"type\":\"business\",\"referenceId\":1,\"addressLine\":\"123 Main St\"}" } ]
+        },
+        {
+          "name": "Create Address",
+          "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"type\": \"business\",\n  \"referenceId\": 1,\n  \"addressLine\": \"123 Main St\"\n}" }, "url": { "raw": "{{baseUrl}}/api/addresses", "host": ["{{baseUrl}}"], "path": ["api", "addresses"] } },
+          "response": [ { "body": "{\"id\":1,\"type\":\"business\",\"referenceId\":1,\"addressLine\":\"123 Main St\"}" } ]
+        }
+      ]
+    }
+  ]
+}
+

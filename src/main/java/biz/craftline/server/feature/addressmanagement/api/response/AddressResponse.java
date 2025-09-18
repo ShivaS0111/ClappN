@@ -1,4 +1,3 @@
-
 package biz.craftline.server.feature.addressmanagement.api.response;
 
 import lombok.Data;
@@ -18,5 +17,21 @@ public class AddressResponse {
     private String digiPin;
     private Double latitude;
     private Double longitude;
+    private Long areaId;
+    private String areaName;
+    private Long placeId;
+    private String placeName;
+    private Long countryId;
+    private String countryName;
+    private Long districtId;
+    private String districtName;
+    private Long regionId;
+    private String regionName;
+    private Long subRegionId;
+    private String subRegionName;
+    private Long landmarkId;
+    private String landmarkName;
+    private Long zipcodeId;
+    private String zipcodeName;
     // Getters and setters
 }

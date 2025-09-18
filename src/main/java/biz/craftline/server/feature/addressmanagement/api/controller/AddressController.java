@@ -50,5 +50,39 @@ public class AddressController {
     public void deleteAddress(@PathVariable Long id) {
         addressService.deleteAddress(id);
     }
-}
 
+    @GetMapping("/search/area")
+    public List<AddressResponse> getAddressesByArea(@RequestParam String area) {
+        return addressService.getAddressesByArea(area).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
+    }
+
+    @GetMapping("/search/place")
+    public List<AddressResponse> getAddressesByPlace(@RequestParam String place) {
+        return addressService.getAddressesByPlace(place).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
+    }
+
+    @GetMapping("/search/district")
+    public List<AddressResponse> getAddressesByDistrict(@RequestParam String district) {
+        return addressService.getAddressesByDistrict(district).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
+    }
+
+    @GetMapping("/search/region")
+    public List<AddressResponse> getAddressesByRegion(@RequestParam String region) {
+        return addressService.getAddressesByRegion(region).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
+    }
+
+    @GetMapping("/search/subregion")
+    public List<AddressResponse> getAddressesBySubRegion(@RequestParam String subRegion) {
+        return addressService.getAddressesBySubRegion(subRegion).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
+    }
+
+    @GetMapping("/search/landmark")
+    public List<AddressResponse> getAddressesByLandmark(@RequestParam String landmark) {
+        return addressService.getAddressesByLandmark(landmark).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
+    }
+
+    @GetMapping("/search/zipcode")
+    public List<AddressResponse> getAddressesByZipcode(@RequestParam String zipcode) {
+        return addressService.getAddressesByZipcode(zipcode).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
+    }
+}

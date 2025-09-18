@@ -1,0 +1,2280 @@
+{
+  "info": {
+    "name": "ClApp All Controllers",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+
+    {
+      "name": "BusinessType",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/businesstype",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businesstype"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/businesstype/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businesstype",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Sample Type\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/businesstype",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businesstype"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Updated Type\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/businesstype/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businesstype",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/businesstype/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businesstype",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/category",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "category"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/category/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "category",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Sample Category\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/category",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "category"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Updated Category\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/category/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "category",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/category/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "category",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "BusinessProduct",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/businessproduct",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businessproduct"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/businessproduct/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businessproduct",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Sample Product\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/businessproduct",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businessproduct"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Updated Product\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/businessproduct/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businessproduct",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/businessproduct/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businessproduct",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "BusinessService",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/businessservice",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businessservice"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/businessservice/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businessservice",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Sample Service\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/businessservice",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businessservice"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Updated Service\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/businessservice/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businessservice",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/businessservice/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "businessservice",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "BusinessEntity",
+      "item": [
+        {
+          "name": "Get All Business Entities",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/business-entity",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "business-entity"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Business Entity By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/business-entity/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "business-entity",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Business Entity",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sample Entity\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/business-entity",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "business-entity"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Business Entity",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Entity\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/business-entity/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "business-entity",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Business Entity",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/business-entity/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "business-entity",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Store",
+      "item": [
+        {
+          "name": "Get All Stores",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/store",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Store By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/store/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Store",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sample Store\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/store",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Store",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Store\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/store/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Store",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/store/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "StoreItemPrice",
+      "item": [
+        {
+          "name": "Get All Store Item Prices",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/store-item-price",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-item-price"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Store Item Price By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/store-item-price/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-item-price",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Store Item Price",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": 1,\n  \"itemId\": 1,\n  \"price\": 100.0\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/store-item-price",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-item-price"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Store Item Price",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 120.0\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/store-item-price/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-item-price",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Store Item Price",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/store-item-price/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-item-price",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "StoreOfferedPackage",
+      "item": [
+        {
+          "name": "Get All Store Offered Packages",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/store-offered-package",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-package"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Store Offered Package By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/store-offered-package/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-package",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Store Offered Package",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": 1,\n  \"packageName\": \"Sample Package\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/store-offered-package",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-package"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Store Offered Package",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"packageName\": \"Updated Package\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/store-offered-package/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-package",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Store Offered Package",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/store-offered-package/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-package",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "StoreOfferedProduct",
+      "item": [
+        {
+          "name": "Get All Store Offered Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/store-offered-product",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-product"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Store Offered Product By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/store-offered-product/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-product",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Store Offered Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": 1,\n  \"productName\": \"Sample Product\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/store-offered-product",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-product"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Store Offered Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productName\": \"Updated Product\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/store-offered-product/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-product",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Store Offered Product",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/store-offered-product/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-product",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "StoreOfferedService",
+      "item": [
+        {
+          "name": "Get All Store Offered Services",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/store-offered-service",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-service"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Store Offered Service By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/store-offered-service/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-service",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Store Offered Service",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": 1,\n  \"serviceName\": \"Sample Service\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/store-offered-service",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-service"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Store Offered Service",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serviceName\": \"Updated Service\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/store-offered-service/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-service",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Store Offered Service",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/store-offered-service/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "store-offered-service",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "BookingDetails",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/bookingdetails",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bookingdetails"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/bookingdetails/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bookingdetails",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"details\": \"Sample Booking\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/bookingdetails",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bookingdetails"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"details\": \"Updated Booking\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/bookingdetails/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bookingdetails",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/bookingdetails/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bookingdetails",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "DeliveryInfo",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/deliveryinfo",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "deliveryinfo"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/deliveryinfo/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "deliveryinfo",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"info\": \"Sample Delivery\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/deliveryinfo",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "deliveryinfo"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"info\": \"Updated Delivery\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/deliveryinfo/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "deliveryinfo",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/deliveryinfo/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "deliveryinfo",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Order",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/order",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "order"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/order/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "order",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"order\": \"Sample Order\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/order",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "order"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"order\": \"Updated Order\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/order/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "order",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/order/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "order",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "OrderItem",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/orderitem",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "orderitem"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/orderitem/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "orderitem",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"item\": \"Sample Item\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/orderitem",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "orderitem"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"item\": \"Updated Item\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/orderitem/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "orderitem",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/orderitem/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "orderitem",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PaymentInfo",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/paymentinfo",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "paymentinfo"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/paymentinfo/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "paymentinfo",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"info\": \"Sample Payment\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/paymentinfo",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "paymentinfo"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"info\": \"Updated Payment\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/paymentinfo/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "paymentinfo",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/paymentinfo/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "paymentinfo",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "VirtualProductDetails",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/virtualproductdetails",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "virtualproductdetails"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/virtualproductdetails/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "virtualproductdetails",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"details\": \"Sample Virtual Product\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/virtualproductdetails",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "virtualproductdetails"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"details\": \"Updated Virtual Product\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/virtualproductdetails/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "virtualproductdetails",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/virtualproductdetails/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "virtualproductdetails",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Permission",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/permission",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "permission"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/permission/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "permission",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Sample Permission\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/permission",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "permission"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Updated Permission\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/permission/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "permission",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/permission/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "permission",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Role",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/role",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "role"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/role/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "role",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Sample Role\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/role",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "role"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Updated Role\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/role/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "role",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/role/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "role",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/user",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "user"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/user/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Sample User\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/user",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "user"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Updated User\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/user/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/user/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Address",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/address",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "address"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/address/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "address",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"address\": \"Sample Address\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/address",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "address"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"address\": \"Updated Address\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/address/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "address",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/address/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "address",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employee",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/employee",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "employee"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{host}}/api/employee/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "employee",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Sample Employee\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/employee",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "employee"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Updated Employee\" }"
+            },
+            "url": {
+              "raw": "{{host}}/api/employee/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "employee",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{host}}/api/employee/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "employee",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -26,8 +26,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 //.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers(getPublicEndPoints()).permitAll()
-
+                        //.requestMatchers(getPublicEndPoints()).permitAll()
+                        .requestMatchers("/**").permitAll()
                         /*
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/users/list").hasAuthority("ADMIN")
@@ -61,7 +61,16 @@ public class SecurityConfig {
     }
 
     private String[] getPublicEndPoints() {
-        return new String[]{"/public/**", "/swagger-ui/**", "/**"};
+        return new String[]{
+                "/public/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/v3/api-docs",
+                "/v3/api-docs/**",
+                "/api/swagger-ui.html",
+                "/api/v3/api-docs",
+                "/api/v3/api-docs/**",
+                "/webjars/**"
+        };
     }
 }
-
