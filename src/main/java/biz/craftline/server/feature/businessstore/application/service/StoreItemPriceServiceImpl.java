@@ -31,6 +31,14 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
     }
 
     @Override
+    public List<StoreItemPrice> findAll() {
+        return repository.findAll()
+                .parallelStream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
     public List<StoreItemPrice> findAllByProductLotId(Long productLotId) {
         return repository.findAllByProductLotId(productLotId)
                 .parallelStream()

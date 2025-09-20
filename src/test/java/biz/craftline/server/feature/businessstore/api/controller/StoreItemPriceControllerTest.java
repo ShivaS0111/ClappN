@@ -14,6 +14,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -61,6 +64,48 @@ class StoreItemPriceControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(expectedDto, response.getBody().getData());
+    }
+
+    @Test
+    void getAllPrices_Success() {
+        // Arrange
+        List<StoreItemPrice> domainModels = Arrays.asList(
+                StoreItemPrice.builder()
+                        .id(1L)
+                        .serviceId(1L)
+                        .price(29.99)
+                        .build(),
+                StoreItemPrice.builder()
+                        .id(2L)
+                        .productLotId(2L)
+                        .price(15.50)
+                        .build()
+        );
+        List<StoreItemPriceDTO> expectedDtos = Arrays.asList(
+                StoreItemPriceDTO.builder()
+                        .id(1L)
+                        .serviceId(1L)
+                        .price(29.99)
+                        .build(),
+                StoreItemPriceDTO.builder()
+                        .id(2L)
+                        .productLotId(2L)
+                        .price(15.50)
+                        .build()
+        );
+        when(storeItemPriceService.findAll()).thenReturn(domainModels);
+        when(mapper.toDTO(domainModels.get(0))).thenReturn(expectedDtos.get(0));
+        when(mapper.toDTO(domainModels.get(1))).thenReturn(expectedDtos.get(1));
+        
+        // Act
+        ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> response = storeItemPriceController.getAllPrices();
+        
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().getData().size());
+        assertEquals(expectedDtos, response.getBody().getData());
     }
 
     @Test
