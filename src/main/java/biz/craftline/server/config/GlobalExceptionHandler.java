@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ProblemDetail handleSecurityException(Exception exception) {
+    public ProblemDetail handleGeneralException(Exception exception) {
         ProblemDetail errorDetail = null;
         log.error("Unhandled exception: {}", exception.getMessage(), exception);
         // TODO send this stack trace to an observability tool
@@ -62,10 +62,12 @@ public class GlobalExceptionHandler {
         if (exception instanceof AccountStatusException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
             errorDetail.setProperty("description", "The account is locked");
+            return errorDetail;
         }
         if (exception instanceof AccessDeniedException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
             errorDetail.setProperty("description", "Access denied");
+            return errorDetail;
         }
         if (errorDetail == null) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), "Internal server error");

@@ -64,7 +64,7 @@ public class APIResponse<T> {
         body.setSuccess(false);
         body.setMessage(message);
         body.setStatusCode(status.value());
-        //body.setTimestamp(LocalDateTime.now());
+        body.setTimestamp(LocalDateTime.now());
         body.setErrors(errors);
         return new ResponseEntity<>(body, status);
     }

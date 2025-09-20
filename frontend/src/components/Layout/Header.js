@@ -114,19 +114,19 @@ const Header = ({ title, subtitle }) => {
             {showProfile && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                 <div className="py-2">
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Profile Settings
-                  </a>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  </button>
+                  <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Account Settings
-                  </a>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  </button>
+                  <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Help & Support
-                  </a>
+                  </button>
                   <div className="border-t border-gray-100 mt-2 pt-2">
-                    <a href="#" className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                    <button className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                       Sign Out
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>

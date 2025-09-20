@@ -7,13 +7,10 @@ import {
   Star, 
   Mail, 
   Phone, 
-  MapPin,
   Filter,
   Download,
-  MoreVertical,
   Users
 } from 'lucide-react';
-import clsx from 'clsx';
 
 const VendorList = ({ vendors, onEdit, onDelete, onView, onAdd }) => {
   const [searchTerm, setSearchTerm] = useState('');

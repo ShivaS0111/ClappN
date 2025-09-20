@@ -5,8 +5,6 @@ import {
   Trash2, 
   Eye, 
   Package, 
-  DollarSign, 
-  TrendingUp,
   AlertTriangle,
   Filter,
   Download,

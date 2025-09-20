@@ -2,13 +2,10 @@ import React from 'react';
 import { 
   Users, 
   Package, 
-  ShoppingBag, 
   DollarSign, 
   TrendingUp, 
   TrendingDown,
   Star,
-  Calendar,
-  Eye,
   BarChart3
 } from 'lucide-react';
 import RevenueChart from '../Charts/RevenueChart';
