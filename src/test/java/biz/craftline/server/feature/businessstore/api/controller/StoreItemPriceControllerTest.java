@@ -47,12 +47,16 @@ class StoreItemPriceControllerTest {
         StoreItemPrice domainModel = StoreItemPrice.builder()
                 .id(1L)
                 .serviceId(1L)
+                .itemName("Delivery Service")
                 .price(29.99)
+                .status(1)
                 .build();
         StoreItemPriceDTO expectedDto = StoreItemPriceDTO.builder()
                 .id(1L)
                 .serviceId(1L)
+                .itemName("Delivery Service")
                 .price(29.99)
+                .status(1)
                 .build();
         when(mapper.toDomain(any(UpdateStoreItemPriceRequest.class))).thenReturn(domainModel);
         when(storeItemPriceService.updateServicePrice(any(StoreItemPrice.class))).thenReturn(java.util.Optional.of(domainModel));
@@ -73,24 +77,32 @@ class StoreItemPriceControllerTest {
                 StoreItemPrice.builder()
                         .id(1L)
                         .serviceId(1L)
+                        .itemName("Delivery Service")
                         .price(29.99)
+                        .status(1)
                         .build(),
                 StoreItemPrice.builder()
                         .id(2L)
                         .productLotId(2L)
+                        .itemName("Product A")
                         .price(15.50)
+                        .status(1)
                         .build()
         );
         List<StoreItemPriceDTO> expectedDtos = Arrays.asList(
                 StoreItemPriceDTO.builder()
                         .id(1L)
                         .serviceId(1L)
+                        .itemName("Delivery Service")
                         .price(29.99)
+                        .status(1)
                         .build(),
                 StoreItemPriceDTO.builder()
                         .id(2L)
                         .productLotId(2L)
+                        .itemName("Product A")
                         .price(15.50)
+                        .status(1)
                         .build()
         );
         when(storeItemPriceService.findAll()).thenReturn(domainModels);
@@ -115,12 +127,16 @@ class StoreItemPriceControllerTest {
         StoreItemPrice domainModel = StoreItemPrice.builder()
                 .id(1L)
                 .serviceId(serviceId)
+                .itemName("Delivery Service")
                 .price(29.99)
+                .status(1)
                 .build();
         StoreItemPriceDTO expectedDto = StoreItemPriceDTO.builder()
                 .id(1L)
                 .serviceId(serviceId)
+                .itemName("Delivery Service")
                 .price(29.99)
+                .status(1)
                 .build();
         when(storeItemPriceService.findByServiceId(serviceId)).thenReturn(java.util.Optional.of(domainModel));
         when(mapper.toDTO(domainModel)).thenReturn(expectedDto);

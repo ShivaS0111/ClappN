@@ -17,6 +17,8 @@ public class StoreItemPrice {
 
     private Long productLotId;
 
+    private String itemName;
+
     private Double price;
 
     private Currency currency;

@@ -21,17 +21,25 @@ public class StoreItemPriceEntityMapper {
         }
         StoreItemPrice.StoreItemPriceBuilder builder = StoreItemPrice.builder()
                 .id(entity.getId())
-                .price(entity.getPrice());
+                .price(entity.getPrice())
+                .status(entity.getStatus());
 
-        if(  entity.getProductLot()!=null &&  entity.getProductLot().getProduct()!=null ) {
+        // Extract item name from related entities
+        String itemName = "Unknown Item";
+        if (entity.getProductLot() != null && entity.getProductLot().getProduct() != null) {
             builder.productLotId(entity.getProductLot().getId());
+            itemName = entity.getProductLot().getProduct().getName();
         }
+        if (entity.getService() != null) {
+            builder.serviceId(entity.getService().getId());
+            itemName = entity.getService().getAliasName() != null ? 
+                entity.getService().getAliasName() : "Service";
+        }
+        builder.itemName(itemName);
 
-        if(  entity.getCurrency()!=null)
+        if (entity.getCurrency() != null)
             builder.currency(currencyEntityMapper.toDomain(entity.getCurrency()));
 
-        if(  entity.getService()!=null)
-            builder.serviceId(entity.getService().getId());
         return builder.build();
     }
 
