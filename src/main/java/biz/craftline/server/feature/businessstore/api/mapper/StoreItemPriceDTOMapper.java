@@ -33,6 +33,7 @@ public class StoreItemPriceDTOMapper {
                 .id(dto.getId())
                 .productLotId(dto.getProductLotId())
                 .serviceId(dto.getServiceId())
+                .itemName(dto.getItemName())
                 .price(dto.getPrice())
                 .currency(
                         currencyMapper.toDomain(dto.getCurrency()) != null
@@ -40,6 +41,7 @@ public class StoreItemPriceDTOMapper {
                                 : null
                 )
                 .countryId(dto.getCountryId())
+                .status(dto.getStatus())
                 .build();
     }
 
@@ -47,6 +49,8 @@ public class StoreItemPriceDTOMapper {
         return StoreItemPriceDTO.builder()
                 .id(store.getId())
                 .serviceId(store.getServiceId())
+                .productLotId(store.getProductLotId())
+                .itemName(store.getItemName())
                 .price(store.getPrice())
                 .currency(
                         store.getCurrency() != null
@@ -54,6 +58,7 @@ public class StoreItemPriceDTOMapper {
                                 : null
                 )
                 .countryId(store.getCountryId())
+                .status(store.getStatus())
                 .build();
     }
 }
