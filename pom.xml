@@ -54,6 +54,12 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
+		<!-- Spring AOP for permission aspects -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
 		<!-- ✅ MySQL JDBC Driver -->
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -123,6 +129,37 @@
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
 
+		<!-- JWT Authentication -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.3</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.3</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.3</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Flyway for database migrations -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+		<!-- Flyway MySQL driver for MySQL 8.0 support -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+		</dependency>
+
 		<!-- ✅ H2 Database (for testing) -->
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -152,6 +189,24 @@
 							<version>1.5.5.Final</version>
 						</path>
 					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+
+			<!-- Flyway Maven plugin: allows running migration info/migrate from Maven -->
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>9.22.1</version>
+				<configuration>
+					<!-- Prefer environment variables for CI; fallback to empty -->
+					<url>${env.FLYWAY_URL}</url>
+					<user>${env.FLYWAY_USER}</user>
+					<password>${env.FLYWAY_PASSWORD}</password>
+					<locations>
+						<location>classpath:db/migration</location>
+					</locations>
+					<baselineOnMigrate>true</baselineOnMigrate>
+					<baselineVersion>1</baselineVersion>
 				</configuration>
 			</plugin>
 		</plugins>

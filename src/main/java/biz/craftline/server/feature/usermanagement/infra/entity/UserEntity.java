@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Date;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,6 +62,13 @@ public class UserEntity implements UserDetails {
     @JsonManagedReference
     private Set<RoleEntity> roles = Set.of();
 
+    // User-specific permissions that override role permissions
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UserAllowedPermissionEntity> allowedPermissions = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UserDeniedPermissionEntity> deniedPermissions = new HashSet<>();
+
     // Account status fields
     @Column(nullable = false)
     private boolean enabled = true;
@@ -76,8 +84,27 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+        // Implement hierarchical permission system as Spring Security authorities
+        // Priority: 1. User Denied > 2. User Allowed > 3. Role-based permissions
+
+        Set<String> effectivePermissions = new HashSet<>();
+
+        // Start with role-based permissions (Priority 3 - lowest)
+        roles.stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .forEach(permission -> effectivePermissions.add(permission.getName()));
+
+        // Add user-specific allowed permissions (Priority 2)
+        allowedPermissions
+                .forEach(userPermission -> effectivePermissions.add(userPermission.getPermission().getName()));
+
+        // Remove user-specific denied permissions (Priority 1 - highest)
+        deniedPermissions
+                .forEach(userPermission -> effectivePermissions.remove(userPermission.getPermission().getName()));
+
+        // Convert permissions to Spring Security authorities
+        return effectivePermissions.stream()
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
@@ -106,16 +133,12 @@ public class UserEntity implements UserDetails {
         return enabled;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    /*public UserEntity addRole(RoleEntity role) {
-        //roles.add(role);
+    public UserEntity addRole(RoleEntity role) {
+        roles.add(role);
         return this;
     }
 
     public void deleteRole(RoleEntity role) {
-        //roles.remove(role);
-    }*/
+        roles.remove(role);
+    }
 }
