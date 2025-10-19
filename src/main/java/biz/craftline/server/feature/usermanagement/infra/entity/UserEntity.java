@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,14 +15,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * Entity representing a user in the system.
  */
-@Data
+@Setter
+@Getter
 @Entity(name = "user")
 public class UserEntity implements UserDetails {
     @Id
@@ -48,18 +53,25 @@ public class UserEntity implements UserDetails {
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
-    private Date createdAt;
+    private Timestamp createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @JsonManagedReference
-    private Set<RoleEntity> roles = Set.of();
+    private Set<RoleEntity> roles = new HashSet<>();
+
+    // User-specific permissions that override role permissions
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<UserAllowedPermissionEntity> allowedPermissions = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<UserDeniedPermissionEntity> deniedPermissions = new HashSet<>();
 
     // Account status fields
     @Column(nullable = false)
@@ -76,8 +88,27 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+        // Implement hierarchical permission system as Spring Security authorities
+        // Priority: 1. User Denied > 2. User Allowed > 3. Role-based permissions
+
+        Set<String> effectivePermissions = new HashSet<>();
+
+        // Start with role-based permissions (Priority 3 - lowest)
+        roles.stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .forEach(permission -> effectivePermissions.add(permission.getName()));
+
+        // Add user-specific allowed permissions (Priority 2)
+        allowedPermissions
+                .forEach(userPermission -> effectivePermissions.add(userPermission.getPermission().getName()));
+
+        // Remove user-specific denied permissions (Priority 1 - highest)
+        deniedPermissions
+                .forEach(userPermission -> effectivePermissions.remove(userPermission.getPermission().getName()));
+
+        // Convert permissions to Spring Security authorities
+        return effectivePermissions.stream()
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
@@ -106,16 +137,12 @@ public class UserEntity implements UserDetails {
         return enabled;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    /*public UserEntity addRole(RoleEntity role) {
-        //roles.add(role);
+    public UserEntity addRole(RoleEntity role) {
+        roles.add(role);
         return this;
     }
 
     public void deleteRole(RoleEntity role) {
-        //roles.remove(role);
-    }*/
+        roles.remove(role);
+    }
 }

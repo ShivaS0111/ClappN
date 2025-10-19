@@ -59,6 +59,14 @@ public class APIResponse<T> {
         return error(message, status, null);
     }
 
+    public static <T> ResponseEntity<APIResponse<T>> badRequest(String message) {
+        return error(message, HttpStatus.BAD_REQUEST, null);
+    }
+
+    public static <T> ResponseEntity<APIResponse<T>> unauthorised(String message) {
+        return error(message, HttpStatus.UNAUTHORIZED, null);
+    }
+
     public static <T> ResponseEntity<APIResponse<T>> error(String message, HttpStatus status, List<String> errors) {
         APIResponse<T> body = new APIResponse<>();
         body.setSuccess(false);

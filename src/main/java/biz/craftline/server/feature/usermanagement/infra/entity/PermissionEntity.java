@@ -14,6 +14,12 @@ public class PermissionEntity {
 
     @Column
     private String description;
+    public PermissionEntity(){}
+
+    public PermissionEntity(String permissionName) {
+        this.name =permissionName;
+        this.description = "";
+    }
 
     public Long getId() {
         return id;
