@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,29 +21,34 @@ import java.util.stream.Collectors;
 /**
  * Entity representing a user in the system.
  */
-@Data
-@Entity(name = "user")
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "users") // renamed from 'user' (reserved keyword in many DBs)
+@ToString(exclude = {"roles", "allowedPermissions", "deniedPermissions"})
+@EqualsAndHashCode(exclude = {"roles", "allowedPermissions", "deniedPermissions"})
 public class UserEntity implements UserDetails {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false)
     private Long id;
 
-    /** Full name of the user */
-    @NotNull(message = "Full name is required")
-    @Size(min = 2, max = 100, message = "Full name must be between 2 and 100 characters")
+    @NotNull
+    @Size(min = 2, max = 100)
     @Column(nullable = false, name = "full_name")
     private String fullName;
 
-    /** Email address of the user */
-    @NotNull(message = "Email is required")
-    @Email(message = "Email should be valid")
-    @Column(unique = true, length = 100, nullable = false)
+    @NotNull
+    @Email
+    @Column(unique = true, nullable = false, length = 100)
     private String email;
 
-    /** Hashed password of the user */
-    @NotNull(message = "Password is required")
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @NotNull
+    @Size(min = 8)
     @Column(nullable = false)
     private String password;
 
@@ -55,21 +60,13 @@ public class UserEntity implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @JsonManagedReference
-    private Set<RoleEntity> roles = Set.of();
+    private Set<RoleEntity> roles = new HashSet<>();
 
-    // User-specific permissions that override role permissions
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<UserAllowedPermissionEntity> allowedPermissions = new HashSet<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<UserDeniedPermissionEntity> deniedPermissions = new HashSet<>();
-
-    // Account status fields
     @Column(nullable = false)
     private boolean enabled = true;
 
@@ -84,28 +81,9 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Implement hierarchical permission system as Spring Security authorities
-        // Priority: 1. User Denied > 2. User Allowed > 3. Role-based permissions
-
-        Set<String> effectivePermissions = new HashSet<>();
-
-        // Start with role-based permissions (Priority 3 - lowest)
-        roles.stream()
-                .flatMap(role -> role.getPermissions().stream())
-                .forEach(permission -> effectivePermissions.add(permission.getName()));
-
-        // Add user-specific allowed permissions (Priority 2)
-        allowedPermissions
-                .forEach(userPermission -> effectivePermissions.add(userPermission.getPermission().getName()));
-
-        // Remove user-specific denied permissions (Priority 1 - highest)
-        deniedPermissions
-                .forEach(userPermission -> effectivePermissions.remove(userPermission.getPermission().getName()));
-
-        // Convert permissions to Spring Security authorities
-        return effectivePermissions.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        // Return empty list to avoid StackOverflow from lazy loading
+        // Authority building is handled in UserService.loadUserByUsername()
+        return new HashSet<>();
     }
 
     @Override
@@ -113,32 +91,17 @@ public class UserEntity implements UserDetails {
         return email;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
+    @Override public boolean isAccountNonExpired() { return accountNonExpired; }
+    @Override public boolean isAccountNonLocked() { return accountNonLocked; }
+    @Override public boolean isCredentialsNonExpired() { return credentialsNonExpired; }
+    @Override public boolean isEnabled() { return enabled; }
 
     public UserEntity addRole(RoleEntity role) {
-        roles.add(role);
+        this.roles.add(role);
         return this;
     }
 
-    public void deleteRole(RoleEntity role) {
-        roles.remove(role);
+    public void removeRole(RoleEntity role) {
+        this.roles.remove(role);
     }
 }

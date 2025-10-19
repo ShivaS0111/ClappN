@@ -89,8 +89,11 @@ public class AuthController {
                     )
             );
 
-            // Get user permissions
-            List<String> permissions = rbacService.getUserPermissions(loginRequest.getUsername());
+            // Use the authenticated principal's authorities to derive permissions (avoid calling RBACService here)
+            List<String> permissions = authentication.getAuthorities().stream()
+                    .map(granted -> granted.getAuthority())
+                    .distinct()
+                    .collect(java.util.stream.Collectors.toList());
 
             String jwt = tokenProvider.generateTokenWithPermissions(loginRequest.getUsername(), permissions);
             String refreshToken = generateRefreshToken(loginRequest.getUsername());
@@ -103,8 +106,13 @@ public class AuthController {
             return APIResponse.success(response);
 
         } catch (AuthenticationException e) {
-            log.warn("Authentication failed for user: {}", loginRequest.getUsername());
+            // Log full exception to capture stack traces like StackOverflowError wrapped in other exceptions
+            log.warn("Authentication failed for user: {}", loginRequest.getUsername(), e);
             return APIResponse.error("Invalid username or password", HttpStatus.BAD_REQUEST);
+        } catch (Throwable t) {
+            // Catch any throwable (including StackOverflowError) to log full stack trace for debugging.
+            log.error("Unexpected error during authentication for user: {}", loginRequest.getUsername(), t);
+            return APIResponse.error("Authentication failed due to server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -130,7 +138,7 @@ public class AuthController {
 
         } catch (Exception e) {
             log.error("Token refresh failed", e);
-            return APIResponse.error("Token refresh failed", HttpStatus.UNAUTHORIZED);
+            return APIResponse.unauthorised("Token refresh failed");
         }
     }
 

@@ -41,8 +41,8 @@ public class UserController {
     @PostMapping
     public ResponseEntity<APIResponse<UserDto>> createUser(@RequestBody UserCreateRequest request) {
         User user = UserMapper.toDomain(request);
-        User created = userService.createUser(user);
-        return APIResponse.success(UserMapper.toDto(created));
+        User savedUser = userService.createUserWithHashedPassword(user);
+        return APIResponse.success(UserMapper.toDto(savedUser));
     }
 
     @PutMapping("/{id}")

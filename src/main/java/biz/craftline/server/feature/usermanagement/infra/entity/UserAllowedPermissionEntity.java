@@ -1,18 +1,22 @@
 package biz.craftline.server.feature.usermanagement.infra.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 /**
  * Entity representing user-specific allowed permissions that override role permissions
  */
-@Data
-@Entity
-@Table(name = "user_allowed_permissions")
+
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "user_allowed_permissions")
+@ToString(exclude = {"user", "permission"})
+@EqualsAndHashCode(exclude = {"user", "permission"})
 public class UserAllowedPermissionEntity {
 
     @Id
@@ -20,21 +24,19 @@ public class UserAllowedPermissionEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "permission_id", nullable = false)
     private PermissionEntity permission;
 
+    private Long userId;
+
     @Column(name = "granted_by")
-    private String grantedBy; // Who granted this permission
+    private Long grantedBy;
 
     @Column(name = "reason")
-    private String reason; // Reason for granting this permission
+    private String reason;
 
     public UserAllowedPermissionEntity(UserEntity user, PermissionEntity permission) {
-        this.user = user;
+        this.userId = user.getId();
         this.permission = permission;
     }
 }

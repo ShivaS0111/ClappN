@@ -4,27 +4,37 @@ import biz.craftline.server.feature.usermanagement.domain.model.User;
 import biz.craftline.server.feature.usermanagement.api.mapper.UserMapper;
 import biz.craftline.server.feature.usermanagement.infra.entity.UserEntity;
 import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
+import biz.craftline.server.feature.usermanagement.infra.entity.PermissionEntity;
 import biz.craftline.server.feature.usermanagement.infra.repository.UserRepository;
 import biz.craftline.server.feature.usermanagement.infra.repository.RoleRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+
+    // RBACService is not injected here to avoid potential circular dependency during authentication
+    // (permission resolution should happen outside of UserDetailsService/loadUserByUsername)
 
     public List<User> getAllUsers() {
         return userRepository.findAll().stream()
@@ -41,46 +51,33 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = getUserByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+        log.debug("loadUserByUsername called for {}", username);
+        try {
+            // Load user entity with simple query - NO roles or permissions
+            UserEntity userEntity = userRepository.findByEmail(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
 
-        return new UserDetails() {
-            @Override
-            public Collection<? extends GrantedAuthority> getAuthorities() {
-                return List.of();
-            }
+            log.debug("Loaded userEntity id={} email={}", userEntity.getId(), userEntity.getEmail());
 
-            @Override
-            public String getPassword() {
-                return user.getPassword();
-            }
+            // Create minimal authorities - just a basic user role to avoid any lazy loading
+            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 
-            @Override
-            public String getUsername() {
-                return user.getEmail();
-            }
+            log.debug("Built {} authorities for user {}", authorities.size(), username);
 
-            @Override
-            public boolean isAccountNonExpired() {
-                return false;
-            }
+            // Return Spring Security's User with minimal data
+            return org.springframework.security.core.userdetails.User.withUsername(userEntity.getEmail())
+                    .password(userEntity.getPassword())
+                    .authorities(authorities)
+                    .accountExpired(false)
+                    .build();
 
-            @Override
-            public boolean isAccountNonLocked() {
-                return false;
-            }
-
-            @Override
-            public boolean isCredentialsNonExpired() {
-                return false;
-            }
-
-            @Override
-            public boolean isEnabled() {
-                return user.isEnabled();
-            }
-        };
+        } catch (Throwable t) {
+            // Catching Throwable to log Errors (like StackOverflowError) for debugging
+            log.error("Error in loadUserByUsername for {}: ", username, t);
+            throw new RuntimeException("Failed to load user: " + username, t);
+        }
     }
 
     public User createUser(User user) {

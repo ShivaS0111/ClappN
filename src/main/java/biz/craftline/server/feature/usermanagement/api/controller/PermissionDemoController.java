@@ -89,11 +89,11 @@ public class PermissionDemoController {
         return APIResponse.success(demo);
     }
 
-    /*
-    @PostMapping("/simulate/scenario")
+
+   /* @PostMapping("/simulate/scenario")
     @PreAuthorize("hasAuthority('MANAGE_USER_PERMISSIONS')")
     public ResponseEntity<APIResponse<String>> simulatePermissionScenario(
-            @RequestParam String targetUser,
+            @RequestParam Long targetUserId,
             @RequestParam String permission,
             @RequestParam String action) { // grant, deny, remove
 
@@ -103,13 +103,13 @@ public class PermissionDemoController {
 
         switch (action.toLowerCase()) {
             case "grant":
-                success = userPermissionService.grantPermissionToUser(targetUser, permission, currentUser, reason);
+                success = userPermissionService.grantPermissionToUser(targetUserId, permission, currentUser, reason);
                 break;
             case "deny":
-                success = userPermissionService.denyPermissionToUser(targetUser, permission, currentUser, reason);
+                success = userPermissionService.denyPermissionToUser(targetUserId, permission, currentUser, reason);
                 break;
             case "remove":
-                success = userPermissionService.removeUserPermissionOverride(targetUser, permission);
+                success = userPermissionService.removeUserPermissionOverride(targetUserId, permission);
                 break;
             default:
                 return APIResponse.error("Invalid action. Use: grant, deny, or remove", HttpStatus.BAD_REQUEST);
@@ -117,11 +117,11 @@ public class PermissionDemoController {
 
         if (success) {
             return APIResponse.success(
-                String.format("Successfully %sed permission '%s' for user '%s'", action, permission, targetUser));
+                String.format("Successfully %sed permission '%s' for user '%s'", action, permission, targetUserId));
         } else {
             return APIResponse.error(
-                String.format("Failed to %s permission '%s' for user '%s'", action, permission, targetUser) , HttpStatus.BAD_REQUEST);
+                String.format("Failed to %s permission '%s' for user '%s'", action, permission, targetUserId) , HttpStatus.BAD_REQUEST);
         }
-    }
-     */
+    }*/
+
 }

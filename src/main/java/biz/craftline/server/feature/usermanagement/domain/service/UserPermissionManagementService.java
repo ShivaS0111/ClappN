@@ -2,6 +2,7 @@ package biz.craftline.server.feature.usermanagement.domain.service;
 
 import biz.craftline.server.feature.usermanagement.api.mapper.PermissionMapper;
 import biz.craftline.server.feature.usermanagement.domain.model.Permission;
+import biz.craftline.server.feature.usermanagement.domain.model.User;
 import biz.craftline.server.feature.usermanagement.infra.entity.PermissionEntity;
 import biz.craftline.server.feature.usermanagement.infra.entity.UserAllowedPermissionEntity;
 import biz.craftline.server.feature.usermanagement.infra.entity.UserDeniedPermissionEntity;
@@ -83,4 +84,104 @@ public class UserPermissionManagementService {
             return permissionRepository.save(new PermissionEntity(permissionName));
         });
     }
+
+/*
+    *//**
+     * Grant a specific permission to a user (overrides role-based permissions)
+     *//*
+    public boolean grantPermissionToUser(String targetUsername, String permissionName, String grantedBy, String reason) {
+        try {
+            User user = findUserByUsername(targetUsername);
+            Permission permission = findOrCreatePermission(permissionName);
+
+            // Check if override already exists
+            Optional<User> existingOverride =
+                    userPermissionOverrideRepository.findByUserAndPermission(user, permission);
+
+            if (existingOverride.isPresent()) {
+                // Update existing override
+                UserPermissionOverride override = existingOverride.get();
+                override.setAllowed(true);
+                override.setGrantedBy(grantedBy);
+                override.setReason(reason);
+                userPermissionOverrideRepository.save(override);
+                log.info("Updated permission override for user '{}' - granted '{}'", targetUsername, permissionName);
+            } else {
+                // Create new override
+                UserPermissionOverride override = new UserPermissionOverride(user, permission, true, grantedBy, reason);
+                userPermissionOverrideRepository.save(override);
+                log.info("Created new permission override for user '{}' - granted '{}'", targetUsername, permissionName);
+            }
+
+            return true;
+        } catch (Exception e) {
+            log.error("Failed to grant permission '{}' to user '{}'", permissionName, targetUsername, e);
+            return false;
+        }
+    }
+
+    *//**
+     * Deny a specific permission for a user (overrides role-based permissions)
+     *//*
+    public boolean denyPermissionToUser(String targetUsername, String permissionName, String grantedBy, String reason) {
+        try {
+            User user = findUserByUsername(targetUsername);
+            Permission permission = findOrCreatePermission(permissionName);
+
+            // Check if override already exists
+            Optional<UserPermissionOverride> existingOverride =
+                    userPermissionOverrideRepository.findByUserAndPermission(user, permission);
+
+            if (existingOverride.isPresent()) {
+                // Update existing override
+                UserPermissionOverride override = existingOverride.get();
+                override.setAllowed(false);
+                override.setGrantedBy(grantedBy);
+                override.setReason(reason);
+                userPermissionOverrideRepository.save(override);
+                log.info("Updated permission override for user '{}' - denied '{}'", targetUsername, permissionName);
+            } else {
+                // Create new override
+                UserPermissionOverride override = new UserPermissionOverride(user, permission, false, grantedBy, reason);
+                userPermissionOverrideRepository.save(override);
+                log.info("Created new permission override for user '{}' - denied '{}'", targetUsername, permissionName);
+            }
+
+            return true;
+        } catch (Exception e) {
+            log.error("Failed to deny permission '{}' for user '{}'", permissionName, targetUsername, e);
+            return false;
+        }
+    }
+
+    *//**
+     * Remove a user-specific permission override (falls back to role-based permissions)
+     *//*
+    public boolean removeUserPermissionOverride(String targetUsername, String permissionName) {
+        try {
+            User user = findUserByUsername(targetUsername);
+            Permission permission = findPermissionByName(permissionName);
+
+            if (permission == null) {
+                log.warn("Permission '{}' not found", permissionName);
+                return false;
+            }
+
+            Optional<UserPermissionOverride> existingOverride =
+                    userPermissionOverrideRepository.findByUserAndPermission(user, permission);
+
+            if (existingOverride.isPresent()) {
+                userPermissionOverrideRepository.delete(existingOverride.get());
+                log.info("Removed permission override for user '{}' - permission '{}'", targetUsername, permissionName);
+                return true;
+            } else {
+                log.warn("No permission override found for user '{}' and permission '{}'", targetUsername, permissionName);
+                return false;
+            }
+        } catch (Exception e) {
+            log.error("Failed to remove permission override for user '{}' and permission '{}'", targetUsername, permissionName, e);
+            return false;
+        }
+    }*/
+
 }

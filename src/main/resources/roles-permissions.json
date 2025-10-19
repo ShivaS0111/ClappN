@@ -1,0 +1,204 @@
+{
+  "rolePermissions": {
+    "SystemAdmin": {
+      "description": "Complete system oversight and administration",
+      "permissions": ["*"],
+      "note": "Wildcard permission grants access to all system functions"
+    },
+    "BusinessOwner": {
+      "description": "Owns and has ultimate authority over business entities",
+      "permissions": [
+        "user.create", "user.read", "user.update", "user.delete", "user.permissions",
+        "store.create", "store.read", "store.update", "store.delete", "store.metrics",
+        "product.create", "product.read", "product.update", "product.delete", "product.inventory",
+        "service.create", "service.read", "service.update", "service.delete",
+        "order.create", "order.read", "order.update", "order.cancel", "order.refund",
+        "finance.view", "finance.reports", "finance.pricing", "finance.coupons",
+        "reports.sales", "reports.inventory", "reports.user", "reports.system",
+        "marketing.campaigns", "marketing.packages", "marketing.analytics",
+        "security.access", "security.audit"
+      ]
+    },
+    "BusinessAdmin": {
+      "description": "Administrative support for business operations",
+      "permissions": [
+        "user.read", "user.update", "user.permissions",
+        "store.read", "store.update", "store.metrics",
+        "product.create", "product.read", "product.update", "product.inventory",
+        "service.create", "service.read", "service.update",
+        "order.read", "order.update", "order.cancel", "order.refund",
+        "finance.view", "finance.reports", "finance.pricing",
+        "reports.sales", "reports.inventory", "reports.user",
+        "marketing.campaigns", "marketing.packages", "marketing.analytics"
+      ]
+    },
+    "BusinessManager": {
+      "description": "Day-to-day business operations management",
+      "permissions": [
+        "user.read", "user.update",
+        "store.read", "store.update", "store.metrics",
+        "product.read", "product.update", "product.inventory",
+        "service.read", "service.update",
+        "order.create", "order.read", "order.update", "order.cancel",
+        "finance.view", "finance.reports",
+        "reports.sales", "reports.inventory", "reports.user"
+      ]
+    },
+    "StoreOwner": {
+      "description": "Owns and operates individual store locations",
+      "permissions": [
+        "user.read", "user.update",
+        "store.read", "store.update", "store.metrics",
+        "product.read", "product.update", "product.inventory",
+        "service.read", "service.update",
+        "order.create", "order.read", "order.update", "order.cancel",
+        "finance.view", "finance.pricing",
+        "reports.sales", "reports.inventory"
+      ]
+    },
+    "StoreManager": {
+      "description": "Manages daily store operations",
+      "permissions": [
+        "user.read",
+        "store.read", "store.update", "store.metrics",
+        "product.read", "product.update", "product.inventory",
+        "service.read", "service.update",
+        "order.create", "order.read", "order.update", "order.cancel",
+        "finance.view",
+        "reports.sales", "reports.inventory"
+      ]
+    },
+    "InventoryManager": {
+      "description": "Dedicated inventory and stock control management",
+      "permissions": [
+        "product.read", "product.update", "product.inventory",
+        "service.read", "service.update",
+        "store.read", "store.metrics",
+        "reports.inventory", "reports.system",
+        "order.read", "order.update"
+      ]
+    },
+    "SalesManager": {
+      "description": "Sales operations and performance management",
+      "permissions": [
+        "user.read", "user.update",
+        "product.read", "product.update",
+        "service.read", "service.update",
+        "order.create", "order.read", "order.update", "order.cancel", "order.refund",
+        "finance.view", "finance.pricing", "finance.coupons",
+        "reports.sales", "reports.user",
+        "marketing.campaigns", "marketing.packages", "marketing.analytics"
+      ]
+    },
+    "FinanceManager": {
+      "description": "Financial operations and reporting",
+      "permissions": [
+        "finance.view", "finance.reports", "finance.pricing", "finance.coupons",
+        "order.read", "order.refund",
+        "reports.sales", "reports.system",
+        "product.read", "service.read",
+        "store.read", "store.metrics"
+      ]
+    },
+    "MarketingManager": {
+      "description": "Marketing campaigns and customer engagement",
+      "permissions": [
+        "marketing.campaigns", "marketing.packages", "marketing.analytics",
+        "finance.coupons", "finance.pricing",
+        "product.read", "product.update",
+        "service.read", "service.update",
+        "reports.sales", "reports.user",
+        "user.read"
+      ]
+    },
+    "SecurityOfficer": {
+      "description": "System security and access control",
+      "permissions": [
+        "security.monitor", "security.access", "security.audit",
+        "user.read", "user.permissions",
+        "system.logs", "system.maintenance",
+        "reports.system", "reports.user"
+      ]
+    },
+    "CustomerService": {
+      "description": "Customer support and service management",
+      "permissions": [
+        "user.read", "user.update",
+        "order.read", "order.update", "order.cancel", "order.refund",
+        "product.read", "service.read",
+        "finance.view",
+        "reports.user"
+      ]
+    },
+    "MaintenanceStaff": {
+      "description": "System and facility maintenance",
+      "permissions": [
+        "system.maintenance", "system.logs",
+        "store.read", "store.update",
+        "product.read", "product.inventory",
+        "reports.system"
+      ]
+    },
+    "InventoryStaff": {
+      "description": "Hands-on inventory management",
+      "permissions": [
+        "product.read", "product.update", "product.inventory",
+        "service.read",
+        "store.read",
+        "reports.inventory",
+        "order.read"
+      ]
+    },
+    "Cashier": {
+      "description": "Point-of-sale operations",
+      "permissions": [
+        "order.create", "order.read", "order.update",
+        "product.read", "service.read",
+        "finance.view",
+        "user.read"
+      ]
+    },
+    "SalesAssociate": {
+      "description": "Customer-facing sales support",
+      "permissions": [
+        "product.read", "service.read",
+        "order.create", "order.read", "order.update",
+        "user.read",
+        "store.read"
+      ]
+    },
+    "Customer": {
+      "description": "End-user access to products and services",
+      "permissions": [
+        "product.read", "service.read",
+        "order.create", "order.read",
+        "user.read", "user.update"
+      ]
+    },
+    "Guest": {
+      "description": "Unregistered visitor access",
+      "permissions": [
+        "product.read", "service.read"
+      ]
+    }
+  },
+  "permissionCategories": {
+    "user": ["user.create", "user.read", "user.update", "user.delete", "user.permissions"],
+    "store": ["store.create", "store.read", "store.update", "store.delete", "store.metrics"],
+    "product": ["product.create", "product.read", "product.update", "product.delete", "product.inventory"],
+    "service": ["service.create", "service.read", "service.update", "service.delete"],
+    "order": ["order.create", "order.read", "order.update", "order.cancel", "order.refund"],
+    "finance": ["finance.view", "finance.reports", "finance.pricing", "finance.coupons"],
+    "reports": ["reports.sales", "reports.inventory", "reports.user", "reports.system"],
+    "system": ["system.settings", "system.backup", "system.logs", "system.maintenance"],
+    "security": ["security.monitor", "security.access", "security.audit"],
+    "marketing": ["marketing.campaigns", "marketing.packages", "marketing.analytics"]
+  },
+  "permissionHierarchy": {
+    "admin": ["*"],
+    "management": ["*.view", "*.read", "*.update", "*.reports"],
+    "staff": ["*.read", "*.update"],
+    "customer": ["*.read"]
+  }
+}
+

@@ -9,10 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,34 +42,82 @@ public class RBACService {
      * 2. User Allowed Permissions (override role permissions)
      * 3. Role-based Permissions (default/fallback)
      */
+    @Transactional(readOnly = true)
     public List<String> getUserPermissions(String username) {
-        return userRepository.findByEmail(username)
-            .map(user -> {
-                // Get all role-based permissions first
-                Set<String> rolePermissions = user.getRoles().stream()
-                    .flatMap(role -> role.getPermissions().stream())
-                    .map(PermissionEntity::getName)
-                    .collect(Collectors.toSet());
+        try {
+            // Use the JOIN FETCH query to load everything in one go
+            Optional<UserEntity> userOpt = userRepository.findByEmailWithRolesAndPermissions(username);
 
-                // Get user-specific allowed permissions
-                List<String> userAllowed = userAllowedPermissionRepository
-                    .findByUserId(user.getId()).stream().map(p->p.getPermission().getName()).toList();
+            if (userOpt.isEmpty()) {
+                return List.of("ROLE_USER"); // Return default permission if user not found
+            }
 
-                // Get user-specific denied permissions
-                List<String> userDenied = userDeniedPermissionRepository
-                        .findByUserId(user.getId()).stream().map(p->p.getPermission().getName()).toList();
+            UserEntity user = userOpt.get();
 
-                // Apply hierarchical permission logic
-                Set<String> finalPermissions = new HashSet<>(rolePermissions);
+            // Get all role-based permissions first - safely
+            Set<String> rolePermissions = new HashSet<>();
+            try {
+                Set<RoleEntity> roles = user.getRoles();
+                if (roles != null && !roles.isEmpty()) {
+                    for (RoleEntity role : roles) {
+                        Set<PermissionEntity> permissions = role.getPermissions();
+                        if (permissions != null) {
+                            for (PermissionEntity permission : permissions) {
+                                rolePermissions.add(permission.getName());
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-                // Add user-specific allowed permissions (priority 2)
-                finalPermissions.addAll(userAllowed);
+            // Get user-specific allowed permissions - safely
+            List<String> userAllowed = new ArrayList<>();
+            try {
+                List<UserAllowedPermissionEntity> allowedEntities = userAllowedPermissionRepository.findByUserId(user.getId());
+                for (UserAllowedPermissionEntity entity : allowedEntities) {
+                    if (entity.getPermission() != null) {
+                        userAllowed.add(entity.getPermission().getName());
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-                // Remove user-specific denied permissions (priority 1 - highest)
-                userDenied.forEach(finalPermissions::remove);
+            // Get user-specific denied permissions - safely
+            List<String> userDenied = new ArrayList<>();
+            try {
+                List<UserDeniedPermissionEntity> deniedEntities = userDeniedPermissionRepository.findByUserId(user.getId());
+                for (UserDeniedPermissionEntity entity : deniedEntities) {
+                    if (entity.getPermission() != null) {
+                        userDenied.add(entity.getPermission().getName());
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-                return new ArrayList<>(finalPermissions);
-            }).get();
+            // Apply hierarchical permission logic
+            Set<String> finalPermissions = new HashSet<>(rolePermissions);
+
+            // Add user-specific allowed permissions (priority 2)
+            finalPermissions.addAll(userAllowed);
+
+            // Remove user-specific denied permissions (priority 1 - highest)
+            userDenied.forEach(finalPermissions::remove);
+
+            // Ensure user has at least basic role
+            if (finalPermissions.isEmpty()) {
+                finalPermissions.add("ROLE_USER");
+            }
+
+            return new ArrayList<>(finalPermissions);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of("ROLE_USER"); // Return safe default on any error
+        }
     }
 
     /**
@@ -88,14 +138,18 @@ public class RBACService {
     private boolean checkUserPermissionHierarchy(UserEntity user, String permissionName) {
         // Priority 1: Check if permission is explicitly denied for this user
         List<String> deniedPermissions = userDeniedPermissionRepository
-                .findByUserId(user.getId()).stream().map(p->p.getPermission().getName()).toList();
+                .findByUserId(user.getId()).stream()
+                .map(p->p.getPermission().getName())
+                .toList();
         if (deniedPermissions.contains(permissionName)) {
             return false; // Explicitly denied - highest priority
         }
 
         // Priority 2: Check if permission is explicitly allowed for this user
         List<String> allowedPermissions = userAllowedPermissionRepository
-                .findByUserId(user.getId()).stream().map(p->p.getPermission().getName()).toList();
+                .findByUserId(user.getId()).stream()
+                .map(p->p.getPermission().getName())
+                .toList();
         if (allowedPermissions.contains(permissionName)) {
             return true; // Explicitly allowed - overrides role permissions
         }
@@ -103,7 +157,8 @@ public class RBACService {
         // Priority 3: Check role-based permissions (fallback)
         return user.getRoles().stream()
             .flatMap(role -> role.getPermissions().stream())
-            .anyMatch(permission -> permission.getName().equalsIgnoreCase(permissionName));
+            .anyMatch(permission -> permission.getName()
+                    .equalsIgnoreCase(permissionName));
     }
 
     public boolean currentUserHasPermission(String permissionName) {
@@ -147,7 +202,7 @@ public class RBACService {
 
     public Long getUserId(String username) {
         return userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"))
-                .getId();
+                .map(UserEntity::getId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

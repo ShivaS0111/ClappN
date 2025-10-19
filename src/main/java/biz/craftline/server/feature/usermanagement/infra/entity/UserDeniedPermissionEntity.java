@@ -1,40 +1,41 @@
 package biz.craftline.server.feature.usermanagement.infra.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 /**
  * Entity representing user-specific allowed permissions that override role permissions
  */
-@Data
-@Entity
-@Table(name = "user_denied_permissions")
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "user_denied_permissions")
+@ToString(exclude = {"user", "permission"})
+@EqualsAndHashCode(exclude = {"user", "permission"})
 public class UserDeniedPermissionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "permission_id", nullable = false)
     private PermissionEntity permission;
 
     @Column(name = "denied_by")
-    private String deniedBy; // Who deniedBy this permission
+    private String deniedBy;
 
     @Column(name = "reason")
-    private String reason; // Reason for denied this permission
+    private String reason;
 
     public UserDeniedPermissionEntity(UserEntity user, PermissionEntity permission) {
-        this.user = user;
+        this.userId = user.getId();
         this.permission = permission;
     }
 }

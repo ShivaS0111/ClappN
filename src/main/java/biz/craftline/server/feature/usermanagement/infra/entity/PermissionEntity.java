@@ -1,9 +1,20 @@
 package biz.craftline.server.feature.usermanagement.infra.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.Set;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "permission")
+@ToString(exclude = {"roles"})
+@EqualsAndHashCode(exclude = {"roles"})
 public class PermissionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +25,12 @@ public class PermissionEntity {
 
     @Column
     private String description;
+
+    @ManyToMany(mappedBy = "permissions")
+    // Tell Jackson to ignore the back-reference from the Permission back to the Role.
+    @JsonBackReference
+    private Set<RoleEntity> roles;
+
     public PermissionEntity(){}
 
     public PermissionEntity(String permissionName) {
@@ -21,27 +38,4 @@ public class PermissionEntity {
         this.description = "";
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }
