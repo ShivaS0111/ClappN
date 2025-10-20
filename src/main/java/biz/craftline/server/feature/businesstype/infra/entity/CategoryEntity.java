@@ -6,13 +6,13 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Entity
 @Table(name = "categories")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class CategoryEntity {
 
     @Id
@@ -20,14 +20,16 @@ public class CategoryEntity {
     private Long id;
 
     private String name;
+    private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private CategoryEntity parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<CategoryEntity> children = new ArrayList<>();
+    private List<CategoryEntity> children;
+
+    private int status=1; // 1: active, 0: inactive
 }

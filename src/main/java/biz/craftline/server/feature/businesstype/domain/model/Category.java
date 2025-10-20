@@ -12,7 +12,9 @@ import java.util.List;
 public class Category {
     private Long id;
     private String name;
-    private Category parent;
+    private String description;
+    private Long parentId;
     @Builder.Default
     private List<Category> children = new ArrayList<>();
+    private Integer status;
 }

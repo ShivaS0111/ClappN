@@ -1,16 +1,34 @@
 package biz.craftline.server.feature.businessstore.api.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 public class StoreOfferedProductDTO {
+
     private Long id;
-    private Long storeId;
-    private Long productId;
-    private String productName;
+
+    private String aliasName;
+
     private String description;
-    private String currency;
-    private Double price;
+    private Long storeId;
+
     private int status;
-    // Add other relevant fields as needed
+
+    private Long businessProductId;
+
+    private Long createdBy;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    private StoreItemPriceDTO price;
 }

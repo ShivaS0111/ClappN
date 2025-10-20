@@ -17,7 +17,4 @@ public class BusinessTypeDTO {
      String description;
      int status;
      List<BusinessServiceDTO> services;
-
-
-
 }

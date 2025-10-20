@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,11 +18,12 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Builder
-@Entity(name = "store")
+@Entity
+@Table(name = "store")
 public class StoreEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
@@ -34,30 +35,39 @@ public class StoreEntity {
 
     private int status;
 
-    private long createdBy;
+    @Column(name = "created_by")
+    private Long createdBy;
 
-    private long businessType;
+    @Column(name = "business_type")
+    private Long businessType;
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
-    private Date createdAt;
+    private Timestamp createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "business_id", referencedColumnName = "id")
+    @JsonBackReference
     private BusinessEntity business;
 
-    private long address;
+    @Column(name = "address_id")
+    private Long addressId;
 
-    @JsonManagedReference("store-service")
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "store_services",
             joinColumns = @JoinColumn(name = "store_id"),
             inverseJoinColumns = @JoinColumn(name = "store_service_id"))
+    @JsonManagedReference("store-service")
     private Set<StoreOfferedServiceEntity> services = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "store_products",
+            joinColumns = @JoinColumn(name = "store_id"),
+            inverseJoinColumns = @JoinColumn(name = "store_product_id"))
+    @JsonManagedReference("store-product")
+    private Set<StoreProductEntity> products = new HashSet<>();
 }

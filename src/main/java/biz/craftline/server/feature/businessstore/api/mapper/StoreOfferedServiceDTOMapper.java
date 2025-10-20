@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.api.mapper;
 
+import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedProductDTO;
 import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedServiceDTO;
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOfferedServiceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
@@ -16,29 +17,38 @@ public class StoreOfferedServiceDTOMapper {
     BusinessServiceDTOMapper dtoMapper;
 
     public StoreOfferedService toDomain(StoreOfferedServiceDTO dto) {
-        return StoreOfferedService.builder()
-                .id(dto.getId())
-                .aliasName(dto.getAliasName())
-                .storeId(dto.getStoreId())
-                .service(dtoMapper.toDomain(dto.getService()))
-                .build();
+        StoreOfferedService service = new StoreOfferedService();
+        service.setId(dto.getId());
+        service.setAliasName(dto.getAliasName());
+        service.setDescription(dto.getDescription());
+        service.setStatus(dto.getStatus());
+        service.setBusinessServiceId(dto.getBusinessServiceId());
+        service.setCreatedBy(dto.getCreatedBy());
+        service.setCreatedAt(dto.getCreatedAt());
+        service.setUpdatedAt(dto.getUpdatedAt());
+        return service;
     }
 
-    public StoreOfferedServiceDTO toDTO(StoreOfferedService store) {
-        return StoreOfferedServiceDTO.builder()
-                .id(store.getId())
-                .aliasName(store.getAliasName())
-                .storeId(store.getStoreId())
-                .service(dtoMapper.toDTO(store.getService()))
-                .build();
+    public StoreOfferedServiceDTO toDTO(StoreOfferedService service) {
+
+        StoreOfferedServiceDTO dto = new StoreOfferedServiceDTO();
+        dto.setId(service.getId());
+        dto.setAliasName(service.getAliasName());
+        dto.setDescription(service.getDescription());
+        dto.setStatus(service.getStatus());
+        dto.setBusinessServiceId(service.getBusinessServiceId());
+        dto.setCreatedBy(service.getCreatedBy());
+        dto.setCreatedAt(service.getCreatedAt());
+        dto.setUpdatedAt(service.getUpdatedAt());
+        return dto;
     }
 
     public StoreOfferedService toDomain(AddNewStoreOfferedServiceRequest req) {
-        return StoreOfferedService.builder()
-                .aliasName(req.getAliasName())
-                .storeId(req.getStoreId())
-                .price(StoreItemPrice.builder().id(req.getStoreServicePriceId()).build())
-                .serviceId(req.getBusinessServiceId())
-                .build();
+        StoreOfferedService service = new StoreOfferedService();
+        service.setAliasName(req.getAliasName());
+        service.setDescription(req.getDescription());
+        service.setStatus(req.getStatus());
+        service.setBusinessServiceId(req.getBusinessServiceId());
+        return service;
     }
 }

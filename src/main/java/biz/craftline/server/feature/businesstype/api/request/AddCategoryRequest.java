@@ -1,16 +1,22 @@
 package biz.craftline.server.feature.businesstype.api.request;
 
-import lombok.Builder;
 import lombok.Data;
 
-@Builder
 @Data
 public class AddCategoryRequest {
     private String name;
-    private Long parentId; // optional
+    private String description;
+    private Long parentId;
+    private int status;
 
-    public AddCategoryRequest(String name, Long parentId) {
+    public AddCategoryRequest(String name,
+                              String description,
+                              Long parentId,
+                              int status){
         this.name = name;
+        this.description = description;
         this.parentId = parentId;
+        this.status = status;
+
     }
 }

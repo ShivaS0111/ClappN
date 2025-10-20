@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface CategoryJpaRepository extends JpaRepository<CategoryEntity, Long> {
+
     List<CategoryEntity> findByParentIsNull();
 
     @Query("SELECT c FROM CategoryEntity  c WHERE (LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')) )")

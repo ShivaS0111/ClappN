@@ -22,4 +22,6 @@ public interface BusinessServicesService {
 
     List<BusinessService> findBySearch(String keyword);
 
+    List<BusinessService> findByBusinessTypeId(Long businessTypeId);
+
 }

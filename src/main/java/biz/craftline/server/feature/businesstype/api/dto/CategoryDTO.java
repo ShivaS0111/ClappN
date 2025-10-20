@@ -11,5 +11,9 @@ import java.util.List;
 public class CategoryDTO {
     private Long id;
     private String name;
+    private String description;
+    private Long parentId;
+    //private CategoryDTO parent;
     private List<CategoryDTO> children;
+    private Integer status;
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/business-type")
+@RequestMapping("/api/business-type")
 public class BusinessTypeController {
 
     @Autowired
@@ -54,6 +54,21 @@ public class BusinessTypeController {
         return APIResponse.success(mapper.toDTO(businessType));
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<APIResponse<BusinessTypeDTO>> update(@PathVariable("id") Long id,
+                                                               @RequestBody AddNewBusinessTypeRequest request) {
+        BusinessType existing = service.findById(id).orElseThrow();
+        if (request.getBusinessName() != null) {
+            existing.setBusinessName(request.getBusinessName());
+        }
+        if (request.getDescription() != null) {
+            existing.setDescription(request.getDescription());
+        }
+        existing.setStatus(request.getStatus());
+        BusinessType updated = service.save(existing);
+        return APIResponse.success(mapper.toDTO(updated));
+    }
+
     @PostMapping("/add-all")
     public ResponseEntity<APIResponse<List<BusinessTypeDTO>>> addAll(@RequestBody List<AddNewBusinessTypeRequest> requests) {
         var list =requests.stream().map( request-> {
@@ -68,12 +83,18 @@ public class BusinessTypeController {
         return APIResponse.success( list );
     }
 
-   /* @GetMapping("/details/{id}")
+   @GetMapping("/details/{id}")
     public ResponseEntity<APIResponse<BusinessTypeDTO>> details(@PathVariable("id") String id) {
         BusinessType businessType = service.findById(Long.valueOf(id)).orElseThrow();
-        List<BusinessService> services =  businessService.findAllByBusinessTypeId(businessType.getId());
+        List<BusinessService> services =  businessService.findByBusinessTypeId(businessType.getId());
         businessType.setServices(services);
         return APIResponse.success(mapper.toDTO(businessType));
-    }*/
+    }
+
+   @DeleteMapping("/{id}")
+    public ResponseEntity<APIResponse<String>> delete(@PathVariable("id") String id) {
+        service.deleteBusinessTypeById(Long.valueOf(id));
+        return APIResponse.success("Deleted successfully");
+    }
 
 }

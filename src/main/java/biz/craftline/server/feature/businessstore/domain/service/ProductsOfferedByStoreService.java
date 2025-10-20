@@ -15,9 +15,6 @@ public class ProductsOfferedByStoreService {
     public Optional<List<StoreOfferedProduct>> findProductsByStoreId(Long storeId) {
         List<StoreOfferedProduct> result = new ArrayList<>();
         for (StoreOfferedProduct product : products) {
-            if (product.getStoreId().equals(storeId)) {
-                result.add(product);
-            }
         }
         return Optional.of(result);
     }

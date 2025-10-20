@@ -20,7 +20,6 @@ public class BusinessProductEntityMapper {
         entity.setAmount(domain.getAmount());
 
         entity.setCategories(domain.getCategories().stream().map(mapper::toEntity).toList());
-
         entity.setCurrency(domain.getCurrency());
         return entity;
     }

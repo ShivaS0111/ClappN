@@ -2,14 +2,23 @@ package biz.craftline.server.feature.businessstore.api.request;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class AddNewStoreOfferedProductRequest {
-    private Long storeId;
-    private Long productId;
-    private String productName;
+
+    private String aliasName;
+
     private String description;
-    private String currency;
-    private Double price;
+    private Long storeId;
+
     private int status;
-    // Add other relevant fields as needed
+
+    private Long businessProductId;
+
+    private Long createdBy;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }

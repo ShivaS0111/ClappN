@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.infra.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,9 +9,12 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity(name = "store_product")
+@Entity
+@Table(name = "store_product")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,23 +22,28 @@ import java.sql.Date;
 public class StoreProductEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(name = "alias_name")
+    private String aliasName;
 
     private String description;
+    private Long storeId;
 
     private int status;
 
-    @Column(name = "business_product")
-    private Long productId;
+    @Column(name = "business_product_id")
+    private Long businessProductId;
+
+    @Column(name = "created_by")
+    private Long createdBy;
 
     @CreationTimestamp
-    @Column(updatable = false)
-    private Date createdAt;
+    @Column(updatable = false, name = "created_at")
+    private Timestamp createdAt;
 
     @UpdateTimestamp
-    private Date updatedAt;
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
 }
-

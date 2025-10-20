@@ -1,10 +1,10 @@
 package biz.craftline.server.feature.businesstype.api.controller;
 
+import biz.craftline.server.feature.businesstype.api.dto.BusinessTypeDTO;
 import biz.craftline.server.feature.businesstype.api.dto.CategoryDTO;
 import biz.craftline.server.feature.businesstype.api.mapper.CategoryDTOMapper;
-import biz.craftline.server.feature.businesstype.api.request.AddCategoryRequest;
-import biz.craftline.server.feature.businesstype.api.request.SearchCategoryRequest;
-import biz.craftline.server.feature.businesstype.api.request.SearchRequest;
+import biz.craftline.server.feature.businesstype.api.request.*;
+import biz.craftline.server.feature.businesstype.domain.model.Category;
 import biz.craftline.server.feature.businesstype.domain.service.CategoryService;
 import biz.craftline.server.util.APIResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,33 @@ public class CategoryController {
     private final CategoryService service;
     private final CategoryDTOMapper categoryDTOMapper;
 
+    @GetMapping("/list")
+    public ResponseEntity<APIResponse<List<CategoryDTO>>> list() {
+        return APIResponse.success(
+                service.findAll().stream()
+                        .map(categoryDTOMapper::toDTO)
+                        .toList()
+        );
+    }
+
     @PostMapping("/add")
     public ResponseEntity<APIResponse<CategoryDTO>> createCategory(@RequestBody AddCategoryRequest request) {
         return APIResponse.success(
                 categoryDTOMapper.toDTO(service.createCategory(request.getName(), request.getParentId()))
         );
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<APIResponse<CategoryDTO>> update(@PathVariable("id") Long id,
+                                                               @RequestBody AddCategoryRequest request) {
+
+        Category categoryInput = categoryDTOMapper.toDomain(request);
+        Category category = service.update(id,  categoryInput);
+        return APIResponse.success(
+                categoryDTOMapper.toDTO(category)
+        );
+    }
+
 
     @GetMapping("/search")
     public ResponseEntity<APIResponse<List<CategoryDTO>>> createCategory(@RequestBody SearchRequest request) {

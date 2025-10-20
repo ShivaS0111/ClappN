@@ -13,12 +13,10 @@ public class AddNewStoreOfferedServiceRequest {
 
     private String aliasName;
 
-    private Long storeId;
+    private String description;
 
     private int status;
 
     private long businessServiceId;
-
-    private long storeServicePriceId;
 
 }

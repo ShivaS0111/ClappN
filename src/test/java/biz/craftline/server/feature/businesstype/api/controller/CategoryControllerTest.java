@@ -30,7 +30,7 @@ class CategoryControllerTest {
 
     @Test
     void testCreateCategory() {
-        AddCategoryRequest req = new AddCategoryRequest("Shoes", null);
+        AddCategoryRequest req = new AddCategoryRequest("Shoes", null, 1L, 1);
         Category category = new Category();
         when(service.createCategory("Shoes", null)).thenReturn(category);
         CategoryDTO dto = new CategoryDTO();

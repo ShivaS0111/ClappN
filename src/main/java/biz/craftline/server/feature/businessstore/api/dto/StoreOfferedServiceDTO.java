@@ -1,11 +1,11 @@
 package biz.craftline.server.feature.businessstore.api.dto;
 
-import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
-import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,11 +17,19 @@ public class StoreOfferedServiceDTO {
 
     private String aliasName;
 
+    private String description;
+
     private Long storeId;
 
     private int status;
 
-    private BusinessServiceDTO service;
+    private Long businessServiceId;
+
+    private Long createdBy;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     private StoreItemPriceDTO price;
 }

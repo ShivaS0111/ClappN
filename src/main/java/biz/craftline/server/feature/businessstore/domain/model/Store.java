@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -22,12 +24,21 @@ public class Store {
 
     private int status;
 
-    private long businessType;
+    private Long businessType;
+
+    private Long createdBy;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     private Business business;
 
-    private long address;
+    private Long addressId;
 
-    private Set<StoreOfferedService> services = Set.of();
+    @Builder.Default
+    private Set<StoreOfferedService> services = new HashSet<>();
 
+    @Builder.Default
+    private Set<StoreOfferedProduct> products = new HashSet<>();
 }

@@ -25,23 +25,18 @@ public class BusinessTypeServiceImpl implements BusinessTypeService {
 
     @Override
     public List<BusinessType> findAll() {
-        return repository.findAll().parallelStream().map( mapper::toDomain).toList();
+        return repository.findAll().parallelStream().map(mapper::toDomain).toList();
     }
 
     @Override
     public List<BusinessType> findByNameContaining(String keyword) {
-        return repository.findByNameContaining(keyword).parallelStream().map( mapper::toDomain).toList();
+        return repository.findByNameContaining(keyword).parallelStream().map(mapper::toDomain).toList();
     }
 
     @Override
     public void deleteBusinessTypeById(Long id) {
-        Optional<BusinessTypeEntity> typeOp = repository.findById(id);
-        if (typeOp.isPresent()) {
-            BusinessTypeEntity type = typeOp.get();
-            //type.setStatus(2);
-            repository.save(type);
-        }
-
+        BusinessTypeEntity type = repository.findById(id).orElseThrow(() -> new RuntimeException("Business Type not found:: " + id));
+        repository.delete(type);
     }
 
     @Override
@@ -59,7 +54,7 @@ public class BusinessTypeServiceImpl implements BusinessTypeService {
 
     @Override
     public List<BusinessType> findAllByIds(List<Long> businessTypeId) {
-        return repository.findAllById( businessTypeId ).stream().map( mapper::toDomain).toList();
+        return repository.findAllById(businessTypeId).stream().map(mapper::toDomain).toList();
     }
 }
 

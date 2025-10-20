@@ -1,12 +1,12 @@
 package biz.craftline.server.feature.businessstore.domain.model;
 
-import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,13 +19,18 @@ public class StoreOfferedService {
 
     private String aliasName;
 
+    private String description;
     private Long storeId;
 
     private int status;
 
-    private Long serviceId;
+    private Long businessServiceId;
 
-    private BusinessService service;
+    private Long createdBy;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     private StoreItemPrice price;
 }

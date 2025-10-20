@@ -20,8 +20,10 @@ public class StoreEntityMapper {
                 .id(entity.getId())
                 .storeName(entity.getStoreName())
                 .description(entity.getDescription())
-                .business(business)
+                .status(entity.getStatus())
                 .businessType(entity.getBusinessType())
+                .business(business)
+                .addressId(entity.getAddressId())
                 .build();
     }
 
@@ -30,7 +32,10 @@ public class StoreEntityMapper {
                 .id(store.getId())
                 .storeName(store.getStoreName())
                 .description(store.getDescription())
+                .status(store.getStatus())
                 .businessType(store.getBusinessType())
+                .business( store.getBusiness() != null ? mapper.toEntity(store.getBusiness()) : null)
+                .addressId(store.getAddressId())
                 .build();
     }
 }

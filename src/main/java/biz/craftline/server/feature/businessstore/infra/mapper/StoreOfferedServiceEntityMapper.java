@@ -12,35 +12,27 @@ import org.springframework.stereotype.Service;
 @Component
 public class StoreOfferedServiceEntityMapper {
 
-    @Autowired
-    StoreItemPriceEntityMapper entityMapper;
-
-    @Autowired
-    BusinessServiceEntityMapper businessServiceEntityMapper;
-
-    @Autowired
-    BusinessServicesJpaRepository businessServicesJpaRepository;
-
-    public StoreOfferedService toDomain(StoreOfferedServiceEntity dto){
-        return StoreOfferedService.builder()
-                .id(dto.getId())
-                .storeId(dto.getStoreId())
-                .service( businessServiceEntityMapper.toDomain( dto.getService()) )
-                .aliasName( dto.getAliasName())
-                .build();
+    public StoreOfferedService toDomain(StoreOfferedServiceEntity entity){
+        StoreOfferedService service = new StoreOfferedService();
+        service.setId(entity.getId());
+        service.setAliasName(entity.getAliasName());
+        service.setDescription(entity.getDescription());
+        service.setStatus(entity.getStatus());
+        service.setStoreId(entity.getStoreId());
+        service.setBusinessServiceId(entity.getBusinessServiceId());
+        service.setCreatedBy(entity.getCreatedBy());
+        return service;
     }
 
     public StoreOfferedServiceEntity toEntity(StoreOfferedService store){
-        BusinessServiceEntity entity=null;
-        if( store.getServiceId()!=null){
-            entity = businessServicesJpaRepository.findById(store.getServiceId()).orElse(null);
-        }
-        return StoreOfferedServiceEntity.builder()
-                .id(store.getId())
-                .storeId(store.getStoreId())
-                .aliasName( store.getAliasName())
-                .service(entity)
-                //.price(entityMapper.toEntity(store.getPrice()))
-                .build();
+        StoreOfferedServiceEntity entity = new StoreOfferedServiceEntity();
+        entity.setId(store.getId());
+        entity.setAliasName(store.getAliasName());
+        entity.setDescription(store.getDescription());
+        entity.setStoreId(store.getStoreId());
+        entity.setStatus(store.getStatus());
+        entity.setBusinessServiceId(store.getBusinessServiceId());
+        entity.setCreatedBy(store.getCreatedBy());
+        return entity;
     }
 }

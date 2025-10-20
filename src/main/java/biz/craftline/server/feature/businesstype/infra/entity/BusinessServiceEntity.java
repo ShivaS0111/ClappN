@@ -2,13 +2,16 @@ package biz.craftline.server.feature.businesstype.infra.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
 
 
-@Data
+@Setter
+@Getter
 @Entity(name = "business_service")
 public class BusinessServiceEntity {
 

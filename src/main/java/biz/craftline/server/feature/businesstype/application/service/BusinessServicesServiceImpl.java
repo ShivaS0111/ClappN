@@ -81,5 +81,10 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
         //return repository.searchByKeyword(keyword).stream().map(mapper::toDomain).toList();
         return repository.findAll().stream().map(mapper::toDomain).toList();
     }
+
+    @Override
+    public List<BusinessService> findByBusinessTypeId(Long businessTypeId) {
+        return repository.findByBusinessType_Id(businessTypeId).stream().map(mapper::toDomain).toList();
+    }
 }
 

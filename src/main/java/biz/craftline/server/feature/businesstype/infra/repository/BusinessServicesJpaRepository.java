@@ -1,6 +1,7 @@
 package biz.craftline.server.feature.businesstype.infra.repository;
 
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
+import biz.craftline.server.feature.businesstype.infra.entity.BusinessTypeEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -43,5 +44,11 @@ public interface BusinessServicesJpaRepository extends JpaRepository<BusinessSer
                                                                @Param("businessTypeId") Long businessTypeId);
 
     List<BusinessServiceEntity> save(List<BusinessServiceEntity> list);
+
+    // Method 1: Using the business type's ID
+    List<BusinessServiceEntity> findByBusinessType_Id(Long businessTypeId);
+
+    // (Optional) Method 2: Using the BusinessTypeEntity directly
+    List<BusinessServiceEntity> findByBusinessType(BusinessTypeEntity businessType);
 
 }

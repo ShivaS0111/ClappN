@@ -20,6 +20,7 @@ public class StoreDTOMapper {
 
     /**
      * Converts an AddNewStoreRequest to a Store domain model.
+     *
      * @param request the AddNewStoreRequest
      * @return the Store domain model
      */
@@ -27,13 +28,16 @@ public class StoreDTOMapper {
         return Store.builder()
                 .storeName(request.getStoreName())
                 .description(request.getDescription())
+                .status(request.getStatus())
+                .business(Business.builder().id(request.getBusinessId()).build())
                 .businessType(request.getBusinessType())
-                .address(request.getAddress())
+                .addressId(request.getAddress())
                 .build();
     }
 
     /**
      * Converts a StoreDTO to a Store domain model.
+     *
      * @param dto the StoreDTO
      * @return the Store domain model
      */
@@ -46,14 +50,17 @@ public class StoreDTOMapper {
                 .id(dto.getId())
                 .storeName(dto.getStoreName())
                 .description(dto.getDescription())
+                .status(dto.getStatus())
                 .business(business)
                 .businessType(dto.getBusinessType())
-                .address(dto.getAddress())
+                .business( dto.getBusiness() != null ? mapper.toDomain(dto.getBusiness()) : null)
+                .addressId(dto.getAddressId())
                 .build();
     }
 
     /**
      * Converts a Store domain model to a StoreDTO.
+     *
      * @param store the Store domain model
      * @return the StoreDTO
      */
@@ -66,9 +73,11 @@ public class StoreDTOMapper {
                 .id(store.getId())
                 .storeName(store.getStoreName())
                 .description(store.getDescription())
+                .status(store.getStatus())
                 .business(businessDTO)
                 .businessType(store.getBusinessType())
-                .address(store.getAddress())
+                .business( store.getBusiness() != null ? mapper.toDTO(store.getBusiness()) : null)
+                .addressId(store.getAddressId())
                 .build();
     }
 }

@@ -35,6 +35,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> findAll() {
+        return repository.findAll().stream()
+                .map(categoryEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Override
     public List<Category> searchCategory(String keyword) {
         return repository.searchByKeyword(keyword).stream()
                 .map(categoryEntityMapper::toDomain)
@@ -64,5 +71,27 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAllByIds(List<Long> categories) {
         return repository.findAllById( categories ).stream().map( categoryEntityMapper::toDomain).toList();
+    }
+
+    @Override
+    public Category save(Category category) {
+        CategoryEntity categoryEntity = repository.save( categoryEntityMapper.toEntity(category) );
+        return categoryEntityMapper.toDomain(categoryEntity);
+    }
+
+    @Override
+    public Category update(Long categoryId, Category category) {
+        CategoryEntity categoryEntity = repository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
+        categoryEntity.setName(category.getName());
+        categoryEntity.setStatus(category.getStatus());
+        if (category.getParentId() != null) {
+            CategoryEntity parent = repository.findById(category.getParentId())
+                    .orElseThrow(() -> new RuntimeException("Parent not found"));
+            categoryEntity.setParent(parent);
+        } else {
+            categoryEntity.setParent(null);
+        }
+        categoryEntity = repository.save(categoryEntity);
+        return categoryEntityMapper.toDomain(categoryEntity);
     }
 }

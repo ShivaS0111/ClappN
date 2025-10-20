@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,14 +38,14 @@ public class BusinessEntity {
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
-    private Date createdAt;
+    private Timestamp createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "business")
+    @JsonManagedReference
     private Set<StoreEntity> stores = new HashSet<>();
 
 }
