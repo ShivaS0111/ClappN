@@ -17,6 +17,8 @@ public class StoreItemPriceDTO {
 
     private Long serviceId;
 
+    private String itemName;
+
     private Double price;
 
     private CurrencyDTO currency;
