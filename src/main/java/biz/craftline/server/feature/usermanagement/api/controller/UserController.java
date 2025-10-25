@@ -40,9 +40,19 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<APIResponse<UserDto>> createUser(@RequestBody UserCreateRequest request) {
-        User user = UserMapper.toDomain(request);
-        User created = userService.createUser(user);
-        return APIResponse.success(UserMapper.toDto(created));
+        try{
+            User existingUser = userService.getUserByEmail(request.getEmail()).orElse(null);
+            if(existingUser!=null) {
+                throw new RuntimeException("User with this email already exists");
+            }
+
+            User user = UserMapper.toDomain(request);
+            User created = userService.createUserWithHashedPassword(user);
+            return APIResponse.success(UserMapper.toDto(created));
+        } catch (RuntimeException ex){
+            // Proceed to create user
+            throw ex;
+        }
     }
 
     @PutMapping("/{id}")

@@ -25,7 +25,7 @@ public class BusinessTypeEntity {
     private String description;
 
     @Column(name = "status")
-    private int status = 0;
+    private Integer  status = 0;
 
     @Column(name = "created_by")
     private Long createdBy;

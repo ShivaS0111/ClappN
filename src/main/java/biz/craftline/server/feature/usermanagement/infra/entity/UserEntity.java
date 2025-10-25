@@ -67,10 +67,10 @@ public class UserEntity implements UserDetails {
     private Set<RoleEntity> roles = new HashSet<>();
 
     // User-specific permissions that override role permissions
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserAllowedPermissionEntity> allowedPermissions = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserDeniedPermissionEntity> deniedPermissions = new HashSet<>();
 
     // Account status fields

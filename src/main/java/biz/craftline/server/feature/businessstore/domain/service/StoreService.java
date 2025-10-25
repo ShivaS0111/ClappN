@@ -13,6 +13,8 @@ public interface StoreService {
 
     List<Store> searchStores(String keyword);
 
+    Store findStoreById(long storeId);
+
     List<Store> findStoresByBusiness(long business);
 
     void deleteBusinessTypeById(Long id);

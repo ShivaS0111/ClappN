@@ -7,6 +7,7 @@ import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServi
 import biz.craftline.server.feature.businessstore.infra.mapper.StoreOfferedServiceEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.ServicesOfferedByStoreRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessServicesJpaRepository;
+import biz.craftline.server.util.UserUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,10 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
 
     @Override
     public StoreOfferedService save(StoreOfferedService domain) {
+        long userId = UserUtil.getCurrentUserId();
         StoreOfferedServiceEntity entity= mapper.toEntity(domain);
         //entity.setService(domain.getService());
+        entity.setCreatedBy(userId);
         StoreOfferedServiceEntity en = servicesOfferedByStoreRepository.save(entity);
         return mapper.toDomain(en);
     }

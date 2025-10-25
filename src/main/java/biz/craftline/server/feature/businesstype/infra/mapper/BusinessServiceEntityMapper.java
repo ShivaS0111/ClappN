@@ -1,7 +1,9 @@
 package biz.craftline.server.feature.businesstype.infra.mapper;
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
+import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
+import biz.craftline.server.feature.businesstype.infra.entity.BusinessTypeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

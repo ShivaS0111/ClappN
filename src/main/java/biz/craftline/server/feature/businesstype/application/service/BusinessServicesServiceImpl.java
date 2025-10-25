@@ -1,8 +1,10 @@
 package biz.craftline.server.feature.businesstype.application.service;
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
+import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import biz.craftline.server.feature.businesstype.domain.service.BusinessServicesService;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
+import biz.craftline.server.feature.businesstype.infra.entity.BusinessTypeEntity;
 import biz.craftline.server.feature.businesstype.infra.mapper.BusinessServiceEntityMapper;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessServicesJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessTypeJpaRepository;
@@ -49,6 +51,10 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
     @Override
     public BusinessService save(BusinessService businessService) {
         BusinessServiceEntity entity = mapper.toEntity(businessService);
+        Long businessTypeId = businessService.getBusinessType().getId();
+        BusinessTypeEntity typeEntity = businessTypeJpaRepository.findById(businessTypeId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Business Type ID: " + businessTypeId));
+        entity.setBusinessType(typeEntity);
         return mapper.toDomain(repository.save(entity));
     }
 

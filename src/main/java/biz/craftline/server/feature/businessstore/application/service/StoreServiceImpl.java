@@ -48,6 +48,13 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public Store findStoreById(long storeId) {
+         StoreEntity storeEntity = storeRepository.findById(storeId)
+                .orElseThrow(()->new RuntimeException("Store not found: "+storeId));
+         return storeEntityMapper.toDomain(storeEntity);
+    }
+
+    @Override
     public void deleteBusinessTypeById(Long id) {
         storeRepository.deleteBusinessTypeById(id);
     }
@@ -60,6 +67,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Store save(Store domain) {
+        Long loggedUserId =1L; // TODO: get logged in user id from security context
         StoreEntity entity = storeEntityMapper.toEntity(domain);
         if (domain.getBusiness() != null) {
             Optional<BusinessEntity> businessEntity = businessRepository.findById(domain.getBusiness().getId());
@@ -67,6 +75,7 @@ public class StoreServiceImpl implements StoreService {
                 entity.setBusiness(businessEntity.get());
             }
         }
+        entity.setCreatedBy(loggedUserId);
         StoreEntity storeEntity = storeRepository.save(entity);
         return storeEntityMapper.toDomain(storeEntity);
     }

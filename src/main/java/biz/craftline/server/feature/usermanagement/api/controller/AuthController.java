@@ -37,8 +37,8 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<APIResponse<RegisterResponse>> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         try {
-          /*   // Check if user already exists
-            Optional<User> existingUser = userService.getUserByEmail(registerRequest.getEmail());
+            // Check if user already exists
+            Optional<User> existingUser = service.getUserByEmail(registerRequest.getEmail());
             if (existingUser.isPresent()) {
                 return APIResponse.error("User with this email already exists", HttpStatus.BAD_REQUEST);
             }
@@ -53,7 +53,7 @@ public class AuthController {
             newUser.setAccountNonExpired(true);
             newUser.setCredentialsNonExpired(true);
 
-            User savedUser = userService.createUserWithHashedPassword(newUser);
+            User savedUser = service.createUserWithHashedPassword(newUser);
 
             log.info("New user registered: {}", savedUser.getEmail());
 
@@ -64,8 +64,7 @@ public class AuthController {
                     "User registered successfully"
             );
 
-            return APIResponse.success(response);*/
-            throw new IllegalStateException("Registration is disabled in this demo");
+            return APIResponse.success(response);
 
         } catch (Exception e) {
             log.error("Registration failed for email: {}", registerRequest.getEmail(), e);

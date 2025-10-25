@@ -27,7 +27,7 @@ public class BusinessTypeEntityMapper {
                 entity.getId(),
                 entity.getBusinessName(),
                 entity.getDescription(),
-                entity.getStatus(),
+                entity.getStatus()!=null ? 1 : 0,
                 new ArrayList<>()
         );
     }

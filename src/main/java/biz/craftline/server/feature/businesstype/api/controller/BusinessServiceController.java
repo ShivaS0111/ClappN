@@ -58,7 +58,7 @@ public class BusinessServiceController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<APIResponse<BusinessServiceDTO>> add(@RequestBody BusinessServiceDTO dto) {
+    public ResponseEntity<APIResponse<BusinessServiceDTO>> add(@RequestBody AddNewBusinessServiceRequest dto) {
         BusinessService bs = service.save(mapper.toDomain(dto));
         return APIResponse.success(mapper.toDTO(bs));
     }

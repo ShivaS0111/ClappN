@@ -86,7 +86,7 @@ public class UserService implements UserDetailsService {
         };
     }
 
-    public User createUser(User user) {
+    private User createUser(User user) {
         UserEntity entity = UserMapper.toEntity(user);
         UserEntity saved = userRepository.save(entity);
         return UserMapper.toDomain(saved);

@@ -3,6 +3,7 @@ package biz.craftline.server.feature.businesstype.api.mapper;
 import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
 import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessServiceRequest;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
+import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -40,6 +41,7 @@ public class BusinessServiceDTOMapper {
                 .serviceName(dto.getName())
                 .description(dto.getDesc())
                 .amount(dto.getAmount())
+                .businessType( BusinessType.builder().id(dto.getBusinessType()).build())
                 .currency(dto.getCurrency())
                 .build();
     }

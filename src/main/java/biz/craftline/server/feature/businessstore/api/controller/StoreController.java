@@ -12,18 +12,24 @@ import biz.craftline.server.util.APIResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 /**
  * REST controller for managing stores.
  */
+@Slf4j
 @RequestMapping("/stores")
 @RestController
 public class StoreController {
+
+    private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
+
 
     private final StoreDTOMapper mapper;
     private final StoreService service;
@@ -52,8 +58,21 @@ public class StoreController {
      */
     @Operation(summary = "List stores by business ID", description = "Returns all stores for a given business.")
     @ApiResponse(responseCode = "200", description = "List of stores returned successfully.")
+    @GetMapping("/{storeId}")
+    public ResponseEntity<APIResponse<StoreDTO>> storeDetails(@PathVariable("storeId") long storeId) {
+        logger.info("Store: {}", storeId);
+        Store store = service.findStoreById(storeId);
+        return APIResponse.success(mapper.toDTO(store), "Store retrieved successfully");
+    }
+
+    /**
+     * List stores by business ID.
+     */
+    @Operation(summary = "List stores by business ID", description = "Returns all stores for a given business.")
+    @ApiResponse(responseCode = "200", description = "List of stores returned successfully.")
     @GetMapping("/list/{businessId}")
     public ResponseEntity<APIResponse<List<StoreDTO>>> list(@PathVariable("businessId") long businessId) {
+        logger.info("businessId: {}", businessId);
         List<Store> list = service.findStoresByBusiness(businessId);
         List<StoreDTO> dtoList = list.stream().map(mapper::toDTO).toList();
         return APIResponse.success(dtoList, "Stores retrieved successfully");
