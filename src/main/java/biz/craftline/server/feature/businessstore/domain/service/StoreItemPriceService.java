@@ -11,6 +11,8 @@ public interface StoreItemPriceService {
 
     StoreItemPrice save(StoreItemPrice entity);
 
+    List<StoreItemPrice> findAll();
+
     List<StoreItemPrice> findAllByServiceId(Long serviceId);
 
     List<StoreItemPrice> findAllByProductLotId(Long productLotId);

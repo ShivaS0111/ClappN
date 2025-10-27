@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RequestMapping("/store-item")
 @RestController
@@ -23,6 +25,14 @@ public class StoreItemPriceController {
     @Autowired
     StoreItemPriceDTOMapper mapper;
 
+    @GetMapping("-price/list")
+    public ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> getAllPrices() {
+        List<StoreItemPrice> prices = service.findAll();
+        List<StoreItemPriceDTO> priceDTOs = prices.stream()
+                .map(mapper::toDTO)
+                .toList();
+        return APIResponse.success(priceDTOs);
+    }
 
     @GetMapping("/lot-product-price/{lotId}")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> findByProductLotId(
