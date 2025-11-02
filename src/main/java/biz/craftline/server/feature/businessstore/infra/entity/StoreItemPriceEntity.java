@@ -33,13 +33,7 @@ public class StoreItemPriceEntity {
     @Column(nullable = false)
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "currency_id", nullable = false)
-    private CurrencyEntity currency;
-
-    @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
-    private CountryEntity country;
+    private Long currency;
 
     // New: quantity threshold for bulk pricing
     @Column(name = "min_quantity")

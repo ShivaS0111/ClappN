@@ -28,7 +28,7 @@ public interface StoreItemPriceHandleRepository extends JpaRepository<StoreItemP
     List<StoreItemPriceEntity> findAllByProductLotId(Long productLotId);
     //List<StoreItemPriceEntity> findAllByProductId(Long productLotId);
 
-    Optional<StoreItemPriceEntity> findByServiceId( Long serviceId );
+    List<StoreItemPriceEntity> findByServiceIdOrderByIdDesc( Long serviceId );
     //Optional<StoreItemPriceEntity> findByProductId( Long itemId );
     Optional<StoreItemPriceEntity> findByProductLotId( Long productLotId );
 

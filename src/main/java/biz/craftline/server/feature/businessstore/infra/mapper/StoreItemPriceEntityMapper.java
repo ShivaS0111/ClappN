@@ -28,7 +28,7 @@ public class StoreItemPriceEntityMapper {
         }
 
         if(  entity.getCurrency()!=null)
-            builder.currency(currencyEntityMapper.toDomain(entity.getCurrency()));
+            builder.currency(entity.getCurrency());
 
         if(  entity.getService()!=null)
             builder.serviceId(entity.getService().getId());
@@ -51,7 +51,7 @@ public class StoreItemPriceEntityMapper {
             builder.service(StoreOfferedServiceEntity.builder().id(store.getServiceId()).build());
         }
         if (store.getCurrency() != null) {
-            builder.currency(currencyEntityMapper.toEntity(store.getCurrency()));
+            builder.currency(store.getCurrency());
         }
         return builder.build();
 

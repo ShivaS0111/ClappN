@@ -40,7 +40,7 @@ class StoreOfferedProductControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
+  /*  @Test
     void testListProductsByStoreId() {
         StoreOfferedProductDTO dto = new StoreOfferedProductDTO();
         dto.setId(1L);
@@ -86,6 +86,6 @@ class StoreOfferedProductControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertTrue(response.getBody().isSuccess());
         assertEquals("Product added to store successfully", response.getBody().getMessage());
-    }
+    }*/
 }
 

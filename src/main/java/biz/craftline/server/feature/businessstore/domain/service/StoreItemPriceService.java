@@ -19,7 +19,7 @@ public interface StoreItemPriceService {
 
     List<StoreItemPrice> findAllByProductId(Long productId);
 
-    Optional<StoreItemPrice> findByServiceId(Long serviceId);
+    List<StoreItemPrice> findByServiceId(Long serviceId);
 
     Optional<StoreItemPrice> findByProductLotId(Long productLotId);
 

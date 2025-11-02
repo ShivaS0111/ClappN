@@ -2,6 +2,7 @@ package biz.craftline.server.feature.businessstore.domain.service;
 
 
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
+import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface ServicesOfferedByStoreService {
     Optional<List<StoreOfferedService>> findServicesByStoreId(Long id);
 
     StoreOfferedService save(StoreOfferedService entity);
+
+    StoreOfferedService findById(Long id);
 }

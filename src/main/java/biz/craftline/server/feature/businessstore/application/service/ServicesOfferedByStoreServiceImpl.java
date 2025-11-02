@@ -50,4 +50,11 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
         return mapper.toDomain(en);
     }
 
+    @Override
+    public StoreOfferedService findById(Long id) {
+        Optional<StoreOfferedServiceEntity>  service = servicesOfferedByStoreRepository.findById(id);
+        service.orElseThrow(() -> new RuntimeException("Service not found with id: " + id));
+        return mapper.toDomain(service.get());
+    }
+
 }

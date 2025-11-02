@@ -1,6 +1,7 @@
 package biz.craftline.server.feature.businessstore.api.mapper;
 
 import biz.craftline.server.feature.businessstore.api.dto.StoreItemPriceDTO;
+import biz.craftline.server.feature.businessstore.api.request.AddStoreItemPriceRequest;
 import biz.craftline.server.feature.businessstore.api.request.UpdateStoreItemPriceRequest;
 import biz.craftline.server.feature.businessstore.domain.model.Currency;
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
@@ -19,11 +20,17 @@ public class StoreItemPriceDTOMapper {
                 .productLotId(request.getProductLotId())
                 .serviceId(request.getServiceId())
                 .price(request.getPrice())
-                .currency(
-                        Currency.builder()
-                                .id(request.getCurrencyId())
-                                .build()
-                )
+                .currency(request.getCurrencyId())
+                .countryId(request.getCountryId())
+                .build();
+    }
+
+    public StoreItemPrice toDomain(AddStoreItemPriceRequest request) {
+        return StoreItemPrice.builder()
+                .productLotId(request.getProductLotId())
+                .serviceId(request.getServiceId())
+                .price(request.getPrice())
+                .currency(request.getCurrencyId())
                 .countryId(request.getCountryId())
                 .build();
     }
@@ -34,11 +41,7 @@ public class StoreItemPriceDTOMapper {
                 .productLotId(dto.getProductLotId())
                 .serviceId(dto.getServiceId())
                 .price(dto.getPrice())
-                .currency(
-                        currencyMapper.toDomain(dto.getCurrency()) != null
-                                ? currencyMapper.toDomain(dto.getCurrency())
-                                : null
-                )
+                .currency(dto.getCurrency())
                 .countryId(dto.getCountryId())
                 .build();
     }
@@ -48,12 +51,6 @@ public class StoreItemPriceDTOMapper {
                 .id(store.getId())
                 .serviceId(store.getServiceId())
                 .price(store.getPrice())
-                .currency(
-                        store.getCurrency() != null
-                                ? currencyMapper.toDTO(store.getCurrency())
-                                : null
-                )
-                .countryId(store.getCountryId())
-                .build();
+                .currency(store.getCurrency()).build();
     }
 }

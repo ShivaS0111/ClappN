@@ -1,10 +1,17 @@
 package biz.craftline.server.feature.businessstore.application.service;
 
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
+import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
+import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
 import biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreService;
+import biz.craftline.server.feature.businessstore.infra.entity.ProductLotEntity;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreItemPriceEntity;
+import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
 import biz.craftline.server.feature.businessstore.infra.mapper.StoreItemPriceEntityMapper;
+import biz.craftline.server.feature.businessstore.infra.repository.ServicesOfferedByStoreRepository;
 import biz.craftline.server.feature.businessstore.infra.repository.StoreItemPriceHandleRepository;
+import com.sun.jdi.request.InvalidRequestStateException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,6 +24,10 @@ import java.util.Optional;
 @AllArgsConstructor
 @Repository
 public class StoreItemPriceServiceImpl implements StoreItemPriceService {
+
+    @Autowired
+    private final ServicesOfferedByStoreRepository servicesOfferedByStoreRepository;
+
 
     @Autowired
     StoreItemPriceEntityMapper mapper;
@@ -56,9 +67,9 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
     }
 
     @Override
-    public Optional<StoreItemPrice> findByServiceId(Long serviceId) {
-        Optional<StoreItemPriceEntity> storeItemPriceOptional = repository.findByServiceId(serviceId);
-        return storeItemPriceOptional.map(mapper::toDomain);
+    public List<StoreItemPrice> findByServiceId(Long serviceId) {
+        List<StoreItemPriceEntity> storeItemPriceOptional = repository.findByServiceIdOrderByIdDesc(serviceId);
+        return storeItemPriceOptional.stream().map(mapper::toDomain).toList();
     }
 
     @Override
@@ -87,16 +98,48 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
     @Transactional
     @Override
     public Optional<StoreItemPrice> updateServicePrice(StoreItemPrice itemPrice) {
-        Optional<StoreItemPriceEntity> storeItemPriceOptional = repository.findByServiceId(itemPrice.getServiceId());
+        List<StoreItemPriceEntity> storeItemPriceOptional = repository.findByServiceIdOrderByIdDesc(itemPrice.getServiceId());
 
-        if(storeItemPriceOptional.isPresent()){
-            StoreItemPriceEntity storeItemPrice = storeItemPriceOptional.get();
+        if(!storeItemPriceOptional.isEmpty()){
+            StoreItemPriceEntity storeItemPrice = storeItemPriceOptional.stream().findFirst().get();
             // Set the validTo to current time to mark it as no longer valid
             storeItemPrice.setValidTo(LocalDateTime.now());
             repository.save(storeItemPrice);
         }
+        StoreItemPriceEntity saverEntity = mapper.toEntity(itemPrice);
 
-        StoreItemPriceEntity entity = repository.save( mapper.toEntity(itemPrice) );
+        if(saverEntity.getService()!=null || saverEntity.getProductLot()!=null){
+            if (itemPrice.getServiceId() != null) {
+                StoreOfferedServiceEntity serviceEntity = servicesOfferedByStoreRepository.findById(itemPrice.getServiceId())
+                        .orElseThrow(() -> new RuntimeException("Service not found with id: " + itemPrice.getServiceId()));
+                saverEntity.setService(serviceEntity);
+                saverEntity.setProductLot(null);
+            } else if (itemPrice.getProductLotId() != null) {
+                /*ProductLotEntity productLot = productLotRepository.findById(itemPrice.getProductLotId())
+                        .orElseThrow(() -> new RuntimeException("Product lot not found with id: " + itemPrice.getProductLotId()));
+                saverEntity.setService(null);
+                saverEntity.setProductLot(productLot);*/
+
+            } else {
+                throw new InvalidRequestStateException("Either Service or Product Lot must be provided for updating price");
+            }
+
+        }else if(itemPrice.getServiceId() != null){
+            servicesOfferedByStoreRepository.findById(itemPrice.getServiceId());
+            StoreOfferedServiceEntity serviceEntity = servicesOfferedByStoreRepository.findById(itemPrice.getServiceId())
+                    .orElseThrow(() -> new RuntimeException("Service not found with id: " + itemPrice.getServiceId()));
+            saverEntity.setService(serviceEntity);
+            saverEntity.setProductLot(null);
+        }else if(itemPrice.getProductLotId() != null){
+            /*ProductLotEntity productLotEntity = productLotRepository.findById(itemPrice.getProductLotId())
+            .orElseThrow(() -> new RuntimeException("Product lot not found with id: " + itemPrice.getProductLotId()));
+            saverEntity.setService(null);
+    saverEntity.setProductLot(productLotEntity);*/
+        }else{
+            throw new InvalidRequestStateException("Either Service or Product Lot must be provided for updating price");
+        }
+
+        StoreItemPriceEntity entity = repository.save( saverEntity );
         return Optional.of( mapper.toDomain(entity) );
     }
 

@@ -11,4 +11,5 @@ public interface ServicesOfferedByStoreRepository extends JpaRepository<StoreOff
     void deleteStoreServiceById(Long id);
 
     Optional<List<StoreOfferedServiceEntity>> findServicesByStoreId(Long id);
+
 }

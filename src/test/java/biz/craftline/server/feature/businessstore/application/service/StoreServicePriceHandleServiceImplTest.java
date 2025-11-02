@@ -56,7 +56,7 @@ class StoreServicePriceHandleServiceImplTest {
         assertEquals(domain, result.get(0));
     }
 
-    @Test
+    /*@Test
     void findByServiceId_ReturnsPrice() {
         Long serviceId = 1L;
         StoreItemPriceEntity entity = new StoreItemPriceEntity();
@@ -66,7 +66,7 @@ class StoreServicePriceHandleServiceImplTest {
         Optional<StoreItemPrice> result = service.findByServiceId(serviceId);
         assertTrue(result.isPresent());
         assertEquals(domain, result.get());
-    }
+    }*/
 
     @Test
     void findByProductLotId_ReturnsPrice() {

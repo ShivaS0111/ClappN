@@ -19,7 +19,7 @@ public class StoreItemPriceDTO {
 
     private Double price;
 
-    private CurrencyDTO currency;
+    private Long currency;
     private Long countryId;
 
     private int status;

@@ -1,4 +1,4 @@
-package biz.craftline.server.feature.businessstore.domain.model;
+package biz.craftline.server.feature.businessstore.api.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,17 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class StoreItemPrice {
-
-    private Long id;
-
-    private Long serviceId;
+public class AddStoreItemPriceRequest {
 
     private Long productLotId;
 
+    private Long serviceId;
+
     private Double price;
 
-    private Long currency;
+    private Long currencyId;
 
     private Long countryId;
 
