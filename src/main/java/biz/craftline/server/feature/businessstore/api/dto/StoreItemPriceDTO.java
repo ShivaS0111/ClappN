@@ -13,9 +13,9 @@ public class StoreItemPriceDTO {
 
     private Long id;
 
-    private Long productLotId;
+    private Long itemType;
 
-    private Long serviceId;
+    private Long itemId;
 
     private Double price;
 

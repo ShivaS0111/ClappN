@@ -12,9 +12,6 @@ import java.time.LocalDateTime;
 @Component
 public class StoreItemPriceEntityMapper {
 
-    @Autowired
-    CurrencyEntityMapper currencyEntityMapper;
-
     public StoreItemPrice toDomain(StoreItemPriceEntity entity){
         if (entity == null) {
             return null;
@@ -23,15 +20,14 @@ public class StoreItemPriceEntityMapper {
                 .id(entity.getId())
                 .price(entity.getPrice());
 
-        if(  entity.getProductLot()!=null &&  entity.getProductLot().getProduct()!=null ) {
-            builder.productLotId(entity.getProductLot().getId());
-        }
+        builder.itemType(entity.getItemType());
+        builder.itemId(entity.getItemId());
 
         if(  entity.getCurrency()!=null)
             builder.currency(entity.getCurrency());
 
         if(  entity.getService()!=null)
-            builder.serviceId(entity.getService().getId());
+            builder.itemId(entity.getService().getId());
         return builder.build();
     }
 
@@ -44,12 +40,17 @@ public class StoreItemPriceEntityMapper {
                 .createdBy(0L) // Default value, should be set by service layer
                 .validFrom(LocalDateTime.now());
 
-        if (store.getProductLotId() != null) {
-            builder.productLot(ProductLotEntity.builder().id(store.getProductLotId()).build());
+        if( store.getItemType()!=null && store.getItemId()!=null){
+            if(store.getItemType() == 1 ){
+                builder.productLot(ProductLotEntity.builder().id(store.getItemId()).build());
+            }else if(store.getItemType() == 2 ){
+                builder.service(StoreOfferedServiceEntity.builder().id(store.getItemId()).build());
+            }
         }
-        if (store.getServiceId() != null) {
-            builder.service(StoreOfferedServiceEntity.builder().id(store.getServiceId()).build());
-        }
+
+        builder.itemType(store.getItemType());
+        builder.itemId(store.getItemId());
+
         if (store.getCurrency() != null) {
             builder.currency(store.getCurrency());
         }

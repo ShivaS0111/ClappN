@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("/store-item")
+@RequestMapping("/store")
 @RestController
 public class StoreItemPriceController {
 
@@ -27,59 +27,60 @@ public class StoreItemPriceController {
     StoreItemPriceDTOMapper mapper;
 
 
-    @GetMapping("/lot-product-price/{lotId}")
-    public ResponseEntity<APIResponse<StoreItemPriceDTO>> findByProductLotId(
-            @PathVariable("lotId") Long lotId) {
+    @PostMapping("/lot/price/add")
+    public ResponseEntity<APIResponse<StoreItemPriceDTO>> addStoreItemLotPrice(
+            @RequestBody AddStoreItemPriceRequest dto) {
 
-        StoreItemPrice price = service.findByProductLotId(lotId)
-                .orElseThrow(() -> new RuntimeException("productId price not found"));
+        StoreItemPrice price = service.updateLotPrice(mapper.toDomain(dto))
+                .orElseThrow(() -> new RuntimeException("Lot price not found"));
         StoreItemPriceDTO priceDTO = mapper.toDTO(price);
         return APIResponse.success(priceDTO);
     }
 
-    @PostMapping("/product-lot-price/update")
+    @PostMapping("/lot/price/update")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> updateProductLotPrice(
             @RequestBody UpdateStoreItemPriceRequest dto) {
 
-        StoreItemPrice price = service.updateProductLotPrice(mapper.toDomain(dto))
+        StoreItemPrice price = service.updateLotPrice(mapper.toDomain(dto))
+                .orElseThrow(() -> new RuntimeException("Lot price not found"));
+        StoreItemPriceDTO priceDTO = mapper.toDTO(price);
+        return APIResponse.success(priceDTO);
+    }
+
+    @GetMapping("/lot/{lotId}/price")
+    public ResponseEntity<APIResponse<StoreItemPriceDTO>> findPriceByLotId(
+            @PathVariable("lotId") Long lotId) {
+
+        StoreItemPrice price = service.findByLotId(lotId)
+                .orElseThrow(() -> new RuntimeException("lotid price not found"));
+        StoreItemPriceDTO priceDTO = mapper.toDTO(price);
+        return APIResponse.success(priceDTO);
+    }
+
+    @GetMapping("/lot/{lotId}/prices")
+    public ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> findPricesByLotId(
+            @PathVariable("lotId") Long lotId) {
+
+        List<StoreItemPriceDTO> prices = service.findAllByLotId(lotId).stream().map(mapper::toDTO).toList();
+        return APIResponse.success(prices);
+    }
+
+
+
+
+
+
+    @PostMapping("/service/price/add")
+    public ResponseEntity<APIResponse<StoreItemPriceDTO>> addStoreItemServicePrice(
+            @RequestBody AddStoreItemPriceRequest dto) {
+
+        StoreItemPrice price = service.updateServicePrice(mapper.toDomain(dto))
                 .orElseThrow(() -> new RuntimeException("Service price not found"));
         StoreItemPriceDTO priceDTO = mapper.toDTO(price);
         return APIResponse.success(priceDTO);
     }
 
-    /*
-    @GetMapping("/product-price/{productId}")
-    public ResponseEntity<APIResponse<StoreItemPriceDTO>> getProductPrice(
-            @PathVariable("productId") Long productId) {
-
-        StoreItemPrice price = service.findByProductId(productId)
-                .orElseThrow(() -> new RuntimeException("productId price not found"));
-        StoreItemPriceDTO priceDTO = mapper.toDTO(price);
-        return APIResponse.success(priceDTO);
-    }
-    @PostMapping("/product-price/update")
-    public ResponseEntity<APIResponse<StoreItemPriceDTO>> updateProductPrice(
-            @RequestBody UpdateStoreItemPriceRequest dto) {
-
-        StoreItemPrice price = service.updateProductPrice(mapper.toDomain(dto))
-                .orElseThrow(() -> new RuntimeException("Service price not found"));
-        StoreItemPriceDTO priceDTO = mapper.toDTO(price);
-        return APIResponse.success(priceDTO);
-    }*/
-
-    @GetMapping("/service-price/{serviceId}")
-    public ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> getServicePrice(
-            @PathVariable("serviceId") Long serviceId) {
-        System.out.println("===>Serviceid: "+ serviceId);
-        List<StoreItemPrice> prices = service.findByServiceId(serviceId);
-                //.orElseThrow(() -> new RuntimeException("Service price not found:"+ serviceId));
-        List<StoreItemPriceDTO> priceDTO = prices.stream()
-                .map(price->mapper.toDTO(price))
-                .toList();
-        return APIResponse.success(priceDTO);
-    }
-
-    @PostMapping("/service-price/update")
+    @PostMapping("/service/price/update")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> updatePrice(
             @RequestBody UpdateStoreItemPriceRequest dto) {
 
@@ -89,13 +90,24 @@ public class StoreItemPriceController {
         return APIResponse.success(priceDTO);
     }
 
-    @PostMapping("/service-price/add")
-    public ResponseEntity<APIResponse<StoreItemPriceDTO>> addStoreItemServicePrice(
-            @RequestBody AddStoreItemPriceRequest dto) {
+    @GetMapping("/service/{serviceId}/price")
+    public ResponseEntity<APIResponse<StoreItemPriceDTO>> getServicePrice(
+            @PathVariable("serviceId") Long serviceId) {
 
-        StoreItemPrice price = service.updateServicePrice(mapper.toDomain(dto))
-                .orElseThrow(() -> new RuntimeException("Service price not found"));
+        StoreItemPrice price = service.findByServiceId(serviceId)
+                .orElseThrow(() -> new RuntimeException("serviceId price not found"));
         StoreItemPriceDTO priceDTO = mapper.toDTO(price);
+        return APIResponse.success(priceDTO);
+    }
+
+    @GetMapping("/service/{serviceId}/prices")
+    public ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> getServicePrices(
+            @PathVariable("serviceId") Long serviceId) {
+        System.out.println("===>Serviceid: "+ serviceId);
+        List<StoreItemPrice> prices = service.findAllByServiceId(serviceId);
+        List<StoreItemPriceDTO> priceDTO = prices.stream()
+                .map(price->mapper.toDTO(price))
+                .toList();
         return APIResponse.success(priceDTO);
     }
 

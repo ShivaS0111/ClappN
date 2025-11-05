@@ -45,12 +45,12 @@ class StoreItemPriceControllerTest {
                 .build();
         StoreItemPrice domainModel = StoreItemPrice.builder()
                 .id(1L)
-                .serviceId(1L)
+                .itemId(1L)
                 .price(29.99)
                 .build();
         StoreItemPriceDTO expectedDto = StoreItemPriceDTO.builder()
                 .id(1L)
-                .serviceId(1L)
+                .itemId(1L)
                 .price(29.99)
                 .build();
         when(mapper.toDomain(any(UpdateStoreItemPriceRequest.class))).thenReturn(domainModel);
@@ -71,18 +71,18 @@ class StoreItemPriceControllerTest {
         Long serviceId = 1L;
         StoreItemPrice domainModel = StoreItemPrice.builder()
                 .id(1L)
-                .serviceId(serviceId)
+                .itemId(serviceId)
                 .price(29.99)
                 .build();
         StoreItemPriceDTO expectedDto = StoreItemPriceDTO.builder()
                 .id(1L)
-                .serviceId(serviceId)
+                .itemId(serviceId)
                 .price(29.99)
                 .build();
         //when(storeItemPriceService.findByServiceId(serviceId)).thenReturn(java.util.Optional.of(domainModel));
         //when(mapper.toDTO(domainModel)).thenReturn(expectedDto);
         // Act
-        ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> response = storeItemPriceController.getServicePrice(serviceId);
+        ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> response = storeItemPriceController.getServicePrices(serviceId);
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());

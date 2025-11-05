@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AddStoreItemPriceRequest {
 
-    private Long productLotId;
+    private Long itemType;
 
-    private Long serviceId;
+    private Long itemId;
 
     private Double price;
 

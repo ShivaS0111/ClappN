@@ -33,13 +33,11 @@ public class ProductLotEntity {
 
     private double unitPrice;
 
-    @ManyToOne
-    @JoinColumn(name = "currency_id", nullable = false)
+    @Column(name = "currency_id")
     private CurrencyEntity currency;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
-    private CountryEntity country;
+    @Column(name = "country_id")
+    private Long country;
 
     private boolean active = true;
 

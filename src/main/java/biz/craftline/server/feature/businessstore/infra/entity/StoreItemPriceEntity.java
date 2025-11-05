@@ -22,6 +22,12 @@ public class StoreItemPriceEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "item_type")
+    private Long itemType;
+
+    @Column(name = "item_id")
+    private Long itemId;
+
     @ManyToOne
     @JoinColumn(name = "product_lot_id")
     private ProductLotEntity productLot;
@@ -60,8 +66,8 @@ public class StoreItemPriceEntity {
     @PrePersist
     @PreUpdate
     public void validate() {
-        if ((productLot == null && service == null) || (productLot != null && service != null)) {
-            throw new IllegalStateException("Exactly one of productLot or service must be set.");
+        if ((itemType == null || itemId != null)) {
+            throw new IllegalStateException("itemType & itemId must set");
         }
     }
 }
