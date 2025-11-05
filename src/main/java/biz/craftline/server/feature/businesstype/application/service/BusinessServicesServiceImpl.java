@@ -9,6 +9,7 @@ import biz.craftline.server.feature.businesstype.infra.mapper.BusinessServiceEnt
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessServicesJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessTypeJpaRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class BusinessServicesServiceImpl implements BusinessServicesService {
@@ -65,8 +67,13 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
                 .map(businessService -> mapper.toEntity(businessService)).toList();
         List<BusinessService> list = new ArrayList<>();
         for ( BusinessServiceEntity entity: serviceEntities ){
-            BusinessServiceEntity savedEntity = repository.save(entity);
-            list.add( mapper.toDomain(savedEntity));
+            try {
+                BusinessServiceEntity savedEntity = repository.save(entity);
+                list.add(mapper.toDomain(savedEntity));
+            } catch (Exception e) {
+                //throw new RuntimeException(e);
+                log.error("{}, ==>  {}", e.getMessage(), mapper.toDomain(entity));
+            }
         }
         return list;
     }

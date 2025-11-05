@@ -4,12 +4,16 @@ import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
 import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessServiceRequest;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BusinessServiceDTOMapper {
 
-    public BusinessServiceDTOMapper(){}
+    @Lazy
+    @Autowired
+    BusinessTypeDTOMapper businessTypeDTOMapper;
 
     public BusinessServiceDTO toDTO(BusinessService domain){
         return new BusinessServiceDTO(
@@ -17,7 +21,7 @@ public class BusinessServiceDTOMapper {
                 domain.getServiceName(),
                 domain.getDescription(),
                 domain.getStatus(),
-                domain.getBusinessType(),
+                businessTypeDTOMapper.toDTO(domain.getBusinessType()),
                 domain.getAmount(),
                 domain.getCurrency()
         );
@@ -29,7 +33,7 @@ public class BusinessServiceDTOMapper {
                 dto.getName(),
                 dto.getDesc(),
                 dto.getStatus(),
-                dto.getBusinessType(),
+                businessTypeDTOMapper.toDomain(dto.getBusinessType()),
                 dto.getAmount(),
                 dto.getCurrency()
         );

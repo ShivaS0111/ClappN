@@ -11,7 +11,6 @@ import biz.craftline.server.feature.businessstore.domain.service.StoreService;
 import biz.craftline.server.util.APIResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +34,8 @@ public class StoreController {
     private final StoreService service;
     private final BusinessEntityService businessService;
 
-    public StoreController(StoreDTOMapper mapper, StoreService service, BusinessEntityService businessService) {
+    public StoreController(StoreDTOMapper mapper, StoreService service,
+                           BusinessEntityService businessService) {
         this.mapper = mapper;
         this.service = service;
         this.businessService = businessService;
@@ -104,7 +104,10 @@ public class StoreController {
         Store store = mapper.toDomain(request);
         store.setBusiness(business);
         Store savedStore = service.save(store);
-        return APIResponse.success(mapper.toDTO(savedStore), "Store created successfully", HttpStatus.CREATED);
+        return APIResponse.success(
+                mapper.toDTO(savedStore),
+                "Store created successfully",
+                HttpStatus.CREATED);
     }
 
 }

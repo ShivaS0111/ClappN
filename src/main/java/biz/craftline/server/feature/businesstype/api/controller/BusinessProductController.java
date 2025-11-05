@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/business-product")
@@ -71,7 +72,7 @@ public class BusinessProductController {
     }*/
 
     @PostMapping("/add")
-    public ResponseEntity<APIResponse<BusinessProductDTO>> add(@RequestBody BusinessProductDTO dto) {
+    public ResponseEntity<APIResponse<BusinessProductDTO>> add(@RequestBody AddNewBusinessProductRequest dto) {
         BusinessProduct bs = service.save(mapper.toDomain(dto));
         return APIResponse.success(mapper.toDTO(bs));
     }
@@ -84,7 +85,10 @@ public class BusinessProductController {
         }
 
         Set<Long> categoryIds = requests.stream()
-                .flatMap(r -> r.getCategories().stream())
+                .flatMap(r -> (r.getCategories() != null ?
+                        categoryService.findAllByIds(r.getCategories()).stream()
+                                .map(Category::getId)
+                        : Stream.empty()))
                 .collect(Collectors.toSet());
 
         Map<Long, Category> categoryMap = categoryService.findAllByIds(categoryIds.stream().toList())

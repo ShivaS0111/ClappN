@@ -5,6 +5,7 @@ import biz.craftline.server.feature.businesstype.api.dto.BusinessTypeDTO;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Component
 public class BusinessTypeDTOMapper {
 
+    @Lazy
     @Autowired
     BusinessServiceDTOMapper mapper;
 

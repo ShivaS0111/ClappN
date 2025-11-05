@@ -1,16 +1,15 @@
 package biz.craftline.server.feature.businessstore.infra.mapper;
 
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedProduct;
-import biz.craftline.server.feature.businessstore.infra.entity.StoreProductEntity;
+import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedProductEntity;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Component
 public class StoreProductEntityMapper {
 
-    public StoreOfferedProduct toDomain(StoreProductEntity entity) {
+    public StoreOfferedProduct toDomain(StoreOfferedProductEntity entity) {
         if (entity == null) {
             return null;
         }
@@ -28,12 +27,12 @@ public class StoreProductEntityMapper {
                 .build();
     }
 
-    public StoreProductEntity toEntity(StoreOfferedProduct domain) {
+    public StoreOfferedProductEntity toEntity(StoreOfferedProduct domain) {
         if (domain == null) {
             return null;
         }
 
-        return StoreProductEntity.builder()
+        return StoreOfferedProductEntity.builder()
                 .id(domain.getId())
                 .aliasName(domain.getAliasName())
                 .description(domain.getDescription())

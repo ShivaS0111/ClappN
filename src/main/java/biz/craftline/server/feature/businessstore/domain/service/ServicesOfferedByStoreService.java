@@ -17,5 +17,7 @@ public interface ServicesOfferedByStoreService {
 
     StoreOfferedService save(StoreOfferedService entity);
 
+    List<StoreOfferedService> save(List<StoreOfferedService> entity);
+
     StoreOfferedService findById(Long id);
 }

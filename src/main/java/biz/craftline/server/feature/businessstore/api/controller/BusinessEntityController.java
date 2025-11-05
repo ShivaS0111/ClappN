@@ -60,7 +60,8 @@ public class BusinessEntityController {
     @Operation(summary = "Add new business", description = "Creates a new business.")
     @ApiResponse(responseCode = "200", description = "Business created successfully.")
     @PostMapping("/add")
-    public ResponseEntity<APIResponse<BusinessDTO>> addBusiness(@Valid @RequestBody AddNewBusinessRequest request) {
+    public ResponseEntity<APIResponse<BusinessDTO>> addBusiness(
+            @Valid @RequestBody AddNewBusinessRequest request) {
         Business business = mapper.toDomain(request);
         Business savedBusiness = service.save(business);
         return APIResponse.success(mapper.toDTO(savedBusiness));

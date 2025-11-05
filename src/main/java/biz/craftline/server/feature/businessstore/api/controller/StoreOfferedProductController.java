@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/store-product")
 @RestController
 public class StoreOfferedProductController {
+
     private final StoreOfferedProductDTOMapper productMapper;
     private final StoreItemPriceDTOMapper priceMapper;
     private final ProductsOfferedByStoreService storeOfferedProductService;
@@ -40,7 +41,22 @@ public class StoreOfferedProductController {
     @PostMapping("/save")
     public ResponseEntity<APIResponse<StoreOfferedProductDTO>> save(@RequestBody AddNewStoreOfferedProductRequest req) {
         StoreOfferedProduct product = storeOfferedProductService.save(productMapper.toDomain(req));
-        return APIResponse.success(productMapper.toDTO(product), "Product added to store successfully", HttpStatus.CREATED);
+        return APIResponse.success(productMapper.toDTO(product),
+                "Product added to store successfully",
+                HttpStatus.CREATED);
+    }
+
+    @PostMapping("/add-all")
+    public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> save(
+            @RequestBody List<AddNewStoreOfferedProductRequest> requests) {
+        if(requests==null || requests.isEmpty()) return APIResponse.badRequest("Invalid request");
+
+        List<StoreOfferedProduct> product = storeOfferedProductService.save(requests.stream()
+                .map(productMapper::toDomain)
+                .toList());
+        return APIResponse.success(product.stream().map(productMapper::toDTO).toList(),
+                "Products added to store successfully",
+                HttpStatus.CREATED);
     }
 
     @GetMapping("/product-price-list/{lotId}")
@@ -53,4 +69,5 @@ public class StoreOfferedProductController {
                 .collect(Collectors.toList());
         return APIResponse.success(dtoList);
     }
+
 }

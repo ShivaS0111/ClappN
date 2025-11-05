@@ -73,7 +73,9 @@ public class StoreItemPriceController {
         System.out.println("===>Serviceid: "+ serviceId);
         List<StoreItemPrice> prices = service.findByServiceId(serviceId);
                 //.orElseThrow(() -> new RuntimeException("Service price not found:"+ serviceId));
-        List<StoreItemPriceDTO> priceDTO = prices.stream().map(price->mapper.toDTO(price)).toList();
+        List<StoreItemPriceDTO> priceDTO = prices.stream()
+                .map(price->mapper.toDTO(price))
+                .toList();
         return APIResponse.success(priceDTO);
     }
 

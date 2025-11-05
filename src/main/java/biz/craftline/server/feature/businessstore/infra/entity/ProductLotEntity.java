@@ -23,7 +23,7 @@ public class ProductLotEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private StoreProductEntity product;
+    private StoreOfferedProductEntity product;
 
     private String lotCode;
 

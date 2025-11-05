@@ -1,6 +1,5 @@
 package biz.craftline.server.feature.businessstore.infra.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,16 +9,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Table(name = "store_product")
+@Table(name = "store_offered_product")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreProductEntity {
+public class StoreOfferedProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

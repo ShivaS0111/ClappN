@@ -21,7 +21,7 @@ public class BusinessServiceDTO {
 
     private int status;
 
-    private BusinessType businessType;
+    private BusinessTypeDTO businessType;
 
     private float amount;
 

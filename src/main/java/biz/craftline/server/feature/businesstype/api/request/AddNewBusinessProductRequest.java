@@ -21,6 +21,8 @@ public class AddNewBusinessProductRequest {
 
     private int status;
 
+    private Long businessType;
+
     //@NotNull(message = "categories should not be null")
     private List<Long> categories;
 

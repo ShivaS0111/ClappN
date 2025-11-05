@@ -24,6 +24,8 @@ public class BusinessProductDTO {
 
     private int status;
 
+    private BusinessTypeDTO businessType;
+
     private List<Category> categories;
 
     private float amount;

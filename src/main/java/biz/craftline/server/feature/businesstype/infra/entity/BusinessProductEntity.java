@@ -16,7 +16,7 @@ import java.util.List;
 public class BusinessProductEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
@@ -27,6 +27,10 @@ public class BusinessProductEntity {
     private String description;
 
     private int status;
+
+    @ManyToOne
+    @JoinColumn(name = "business_type", referencedColumnName = "id")
+    private BusinessTypeEntity businessType;
 
     @ManyToMany
     @JoinTable(

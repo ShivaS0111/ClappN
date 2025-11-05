@@ -1,8 +1,10 @@
 package biz.craftline.server.feature.businessstore.application.service;
 
 
+import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedProduct;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
+import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedProductEntity;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
 import biz.craftline.server.feature.businessstore.infra.mapper.StoreOfferedServiceEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.ServicesOfferedByStoreRepository;
@@ -43,16 +45,29 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
     @Override
     public StoreOfferedService save(StoreOfferedService domain) {
         long userId = UserUtil.getCurrentUserId();
-        StoreOfferedServiceEntity entity= mapper.toEntity(domain);
-        //entity.setService(domain.getService());
+        StoreOfferedServiceEntity entity = mapper.toEntity(domain);
         entity.setCreatedBy(userId);
         StoreOfferedServiceEntity en = servicesOfferedByStoreRepository.save(entity);
         return mapper.toDomain(en);
     }
 
     @Override
+    public List<StoreOfferedService> save(List<StoreOfferedService> domains) {
+        long userId = UserUtil.getCurrentUserId();
+        List<StoreOfferedServiceEntity> entities = domains.stream().map(domain -> {
+                    StoreOfferedServiceEntity entity = mapper.toEntity(domain);
+                    entity.setCreatedBy(userId);
+                    return entity;
+                }
+
+        ).toList();
+        List<StoreOfferedServiceEntity> en = servicesOfferedByStoreRepository.saveAll(entities);
+        return en.stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
     public StoreOfferedService findById(Long id) {
-        Optional<StoreOfferedServiceEntity>  service = servicesOfferedByStoreRepository.findById(id);
+        Optional<StoreOfferedServiceEntity> service = servicesOfferedByStoreRepository.findById(id);
         service.orElseThrow(() -> new RuntimeException("Service not found with id: " + id));
         return mapper.toDomain(service.get());
     }

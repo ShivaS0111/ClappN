@@ -69,5 +69,5 @@ public class StoreEntity {
             joinColumns = @JoinColumn(name = "store_id"),
             inverseJoinColumns = @JoinColumn(name = "store_product_id"))
     @JsonManagedReference("store-product")
-    private Set<StoreProductEntity> products = new HashSet<>();
+    private Set<StoreOfferedProductEntity> products = new HashSet<>();
 }
