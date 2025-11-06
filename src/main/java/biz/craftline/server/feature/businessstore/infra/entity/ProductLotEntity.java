@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -18,7 +20,7 @@ import java.util.Date;
 public class ProductLotEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -34,7 +36,7 @@ public class ProductLotEntity {
     private double unitPrice;
 
     @Column(name = "currency_id")
-    private CurrencyEntity currency;
+    private Long currency;
 
     @Column(name = "country_id")
     private Long country;
@@ -42,7 +44,9 @@ public class ProductLotEntity {
     private boolean active = true;
 
     @CreationTimestamp
-    private Date purchasedAt;
+    private Timestamp purchasedAt;
+
+    private Date mfgDate;
 
     private Date expiryAt;
 

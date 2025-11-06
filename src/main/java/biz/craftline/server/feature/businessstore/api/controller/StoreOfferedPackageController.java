@@ -19,7 +19,7 @@ public class StoreOfferedPackageController {
         this.packageService = packageService;
     }
 
-    @GetMapping
+ /*   @GetMapping
     public List<StoreOfferedPackageDTO> getAllPackages() {
         List<StoreOfferedPackage> packages = packageService.getAllPackages();
         List<StoreOfferedPackageDTO> dtos = new ArrayList<>();
@@ -48,5 +48,5 @@ public class StoreOfferedPackageController {
     @DeleteMapping("/{id}")
     public void deletePackage(@PathVariable Long id) {
         packageService.deletePackage(id);
-    }
+    }*/
 }

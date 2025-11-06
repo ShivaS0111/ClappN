@@ -3,11 +3,9 @@ package biz.craftline.server.feature.businessstore.application.service;
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreItemPriceEntity;
-import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
 import biz.craftline.server.feature.businessstore.infra.mapper.StoreItemPriceEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.ServicesOfferedByStoreRepository;
 import biz.craftline.server.feature.businessstore.infra.repository.StoreItemPriceHandleRepository;
-import com.sun.jdi.request.InvalidRequestStateException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,6 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
     @Autowired
     private final ServicesOfferedByStoreRepository servicesOfferedByStoreRepository;
 
-
     @Autowired
     StoreItemPriceEntityMapper mapper;
 
@@ -42,26 +39,17 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
 
     @Override
     public List<StoreItemPrice> findAllByLotId(Long lotId) {
-        return repository.findAllByItemIdAndItemType(lotId, 2L)
-                .parallelStream()
-                .map(mapper::toDomain)
-                .toList();
+        return findAllByItemIdAndType(lotId, 2L);
     }
 
     @Override
     public Optional<StoreItemPrice> findByServiceId(Long serviceId) {
-        return findByItemId(serviceId, 1L);
+        return findByItemIdAndType(serviceId, 1L);
     }
 
     @Override
     public Optional<StoreItemPrice> findByLotId(Long productLotId) {
-        return findByItemId(productLotId, 2L);
-    }
-
-    public Optional<StoreItemPrice> findByItemId(Long id, Long type) {
-        StoreItemPriceEntity storeItemPrice = repository.findByItemIdAndItemType(id, type)
-                .orElseThrow(() -> new RuntimeException("Product Lot Price not configured yet"));
-        return Optional.of(mapper.toDomain(storeItemPrice));
+        return findByItemIdAndType(productLotId, 2L);
     }
 
    /* @Override
@@ -74,13 +62,6 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
     @Override
     public List<StoreItemPrice> findAllByServiceId(Long serviceId) {
         return findAllByItemIdAndType(serviceId, 1L);
-    }
-
-    public List<StoreItemPrice> findAllByItemIdAndType(Long serviceId, Long type) {
-        return repository.findAllByItemIdAndItemType(serviceId, type)
-                .parallelStream()
-                .map(mapper::toDomain)
-                .toList();
     }
 
 
@@ -96,29 +77,12 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
         return updatePrice(itemPrice, 2L);
     }
 
-    public Optional<StoreItemPrice> updatePrice(StoreItemPrice itemPrice, Long type) {
-        List<StoreItemPriceEntity> storeItemPriceOptional = repository.findByItemIdAndItemTypeOrderByIdDesc(itemPrice.getItemId(),type);
-
-        if(!storeItemPriceOptional.isEmpty()){
-            StoreItemPriceEntity storeItemPrice = storeItemPriceOptional.stream().findFirst().get();
-            // Set the validTo to current time to mark it as no longer valid
-            storeItemPrice.setValidTo(LocalDateTime.now());
-            repository.save(storeItemPrice);
-        }
-        StoreItemPriceEntity saverEntity = mapper.toEntity(itemPrice);
-        StoreItemPriceEntity entity = repository.save( saverEntity );
-        return Optional.of( mapper.toDomain(entity) );
-    }
-
     @Override
     @Cacheable(value = "latestPriceCache", key = "'product_' + #productLotId", unless = "#result == null")
     @Transactional(readOnly = true)
     public StoreItemPrice getLatestPriceForProduct(Long productLotId) {
-
         return repository.findActivePrices(2L, productLotId, PageRequest.of(0, 1))
-                .stream()
-                .findFirst()
-                .map(mapper::toDomain)
+                .stream().findFirst().map(mapper::toDomain)
                 .orElseThrow(() -> new EntityNotFoundException("No active price found for product lot " + productLotId));
     }
 
@@ -126,22 +90,14 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
     @Cacheable(value = "latestPriceCache", key = "'service_' + #serviceId", unless = "#result == null")
     @Transactional(readOnly = true)
     public StoreItemPrice getLatestPriceForService(Long serviceId) {
-        return repository.findActivePrices(1L, serviceId, PageRequest.of(0, 1))
-                .stream()
-                .findFirst()
-                .map(mapper::toDomain)
-                .orElseThrow(() -> new EntityNotFoundException("No active price found for service " + serviceId));
+        return repository.findActivePrices(1L, serviceId, PageRequest.of(0, 1)).stream().findFirst().map(mapper::toDomain).orElseThrow(() -> new EntityNotFoundException("No active price found for service " + serviceId));
     }
 
     @Override
     @Cacheable(value = "latestPriceCache", key = "'product_' + #productLotId + '_qty_' + #quantity", unless = "#result == null")
     @Transactional(readOnly = true)
     public StoreItemPrice getPriceForQuantity(Long productLotId, int quantity) {
-        return repository.findBestApplicablePrice(2L, productLotId, quantity, PageRequest.of(0, 1))
-                .stream()
-                .findFirst()
-                .map(mapper::toDomain)
-                .orElseGet(() -> getLatestPriceForProduct(productLotId));
+        return repository.findBestApplicablePrice(2L, productLotId, quantity, PageRequest.of(0, 1)).stream().findFirst().map(mapper::toDomain).orElseGet(() -> getLatestPriceForProduct(productLotId));
     }
 
     /**
@@ -149,7 +105,7 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
      */
     @Override
     public Optional<StoreItemPriceEntity> getLatestPriceOfProductLotProduct(Long productId) {
-        return repository.findLatestPriceByProductId( productId);
+        return repository.findLatestPriceByProductId(productId);
     }
 
     /**
@@ -161,4 +117,28 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
     }
 
 
+    private Optional<StoreItemPrice> findByItemIdAndType(Long id, Long type) {
+        StoreItemPriceEntity storeItemPrice = repository.findByItemIdAndItemType(id, type).orElseThrow(() ->
+                new RuntimeException((type == 1L ? "Service" : (type == 2L ? "Product Lot" : "")) +
+                        "(" + id + ":" + type + ")" + " Price not configured yet"));
+        return Optional.of(mapper.toDomain(storeItemPrice));
+    }
+
+    private List<StoreItemPrice> findAllByItemIdAndType(Long serviceId, Long type) {
+        return repository.findAllByItemIdAndItemType(serviceId, type).parallelStream().map(mapper::toDomain).toList();
+    }
+
+    private Optional<StoreItemPrice> updatePrice(StoreItemPrice itemPrice, Long type) {
+        List<StoreItemPriceEntity> storeItemPriceOptional = repository.findByItemIdAndItemTypeOrderByIdDesc(itemPrice.getItemId(), type);
+
+        if (!storeItemPriceOptional.isEmpty()) {
+            StoreItemPriceEntity storeItemPrice = storeItemPriceOptional.stream().findFirst().get();
+            // Set the validTo to current time to mark it as no longer valid
+            storeItemPrice.setValidTo(LocalDateTime.now());
+            repository.save(storeItemPrice);
+        }
+        StoreItemPriceEntity saverEntity = mapper.toEntity(itemPrice);
+        StoreItemPriceEntity entity = repository.save(saverEntity);
+        return Optional.of(mapper.toDomain(entity));
+    }
 }
