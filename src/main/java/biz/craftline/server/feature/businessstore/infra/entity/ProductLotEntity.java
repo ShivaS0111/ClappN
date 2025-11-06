@@ -43,12 +43,14 @@ public class ProductLotEntity {
 
     private boolean active = true;
 
-    @CreationTimestamp
-    private Timestamp purchasedAt;
+    private Date purchasedAt;
 
     private Date mfgDate;
 
     private Date expiryAt;
+
+    @CreationTimestamp
+    private Date createdAt;
 
     @UpdateTimestamp
     private Date updatedAt;

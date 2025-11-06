@@ -29,9 +29,6 @@ public interface StoreItemPriceService {
     StoreItemPrice getLatestPriceForProduct(Long productLotId);
 
 
-
-
-
     StoreItemPrice getLatestPriceForService(Long serviceId);
 
     StoreItemPrice getPriceForQuantity(Long productLotId, int quantity);
