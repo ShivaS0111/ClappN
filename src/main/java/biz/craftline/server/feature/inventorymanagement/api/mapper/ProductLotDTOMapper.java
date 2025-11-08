@@ -1,10 +1,10 @@
-package biz.craftline.server.feature.businessstore.api.mapper;
+package biz.craftline.server.feature.inventorymanagement.api.mapper;
 
-import biz.craftline.server.feature.businessstore.api.dto.ProductLotDTO;
-import biz.craftline.server.feature.businessstore.api.request.AddProductLotRequest;
-import biz.craftline.server.feature.businessstore.domain.model.ProductLot;
+import biz.craftline.server.feature.inventorymanagement.api.dto.ProductLotDTO;
+import biz.craftline.server.feature.inventorymanagement.api.request.AddProductLotRequest;
+import biz.craftline.server.feature.inventorymanagement.domain.model.ProductLot;
 import org.springframework.stereotype.Component;
-import java.time.LocalDateTime;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,20 +13,13 @@ import java.util.stream.Collectors;
 public class ProductLotDTOMapper {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
 
-    private String formatDateTime(LocalDateTime dateTime) {
-        return dateTime != null ? dateTime.format(DATE_FORMATTER) : null;
-    }
-
-    private LocalDateTime parseDateTime(String dateTimeStr) {
-        return dateTimeStr != null ? LocalDateTime.parse(dateTimeStr, DATE_FORMATTER) : null;
-    }
-
     public ProductLotDTO toDTO(ProductLot source) {
         if (source == null) return null;
 
         ProductLotDTO target = new ProductLotDTO();
         target.setId(source.getId());  // Added id mapping
         target.setProductId(source.getProductId());
+        target.setStoreId(source.getStoreId());
         target.setLotCode(source.getLotCode());
         target.setQuantity(source.getQuantity());
         target.setBlocked(source.getBlocked());
@@ -55,6 +48,7 @@ public class ProductLotDTOMapper {
         ProductLot target = new ProductLot();
         target.setId(source.getId());  // Added id mapping
         target.setProductId(source.getProductId());
+        target.setStoreId(source.getStoreId());
         target.setLotCode(source.getLotCode());
         target.setQuantity(source.getQuantity());
         target.setBlocked(source.getBlocked());
@@ -82,6 +76,7 @@ public class ProductLotDTOMapper {
 
         ProductLot target = new ProductLot();
         target.setProductId(source.getProductId());
+        target.setStoreId(source.getStoreId());
         target.setLotCode(source.getLotCode());
         target.setQuantity(source.getQuantity());
         target.setBlocked(source.getBlocked());
@@ -100,20 +95,14 @@ public class ProductLotDTOMapper {
     }
 
     private void validateProductLot(ProductLot lot) {
-        if (lot.getProductId() == null) {
-            throw new IllegalArgumentException("Product ID cannot be null");
-        }
-        if (lot.getQuantity() < 0) {
-            throw new IllegalArgumentException("Quantity cannot be negative");
-        }
-        if (lot.getBlocked() < 0) {
-            throw new IllegalArgumentException("Blocked quantity cannot be negative");
-        }
-        if (lot.getSold() < 0) {
-            throw new IllegalArgumentException("Sold quantity cannot be negative");
-        }
-        if (lot.getUnitPrice() < 0) {
-            throw new IllegalArgumentException("Unit price cannot be negative");
-        }
+        if (lot.getProductId() == null) throw new IllegalArgumentException("Product ID cannot be null");
+
+        if (lot.getQuantity() < 0) throw new IllegalArgumentException("Quantity cannot be negative");
+
+        if (lot.getBlocked() < 0) throw new IllegalArgumentException("Blocked quantity cannot be negative");
+
+        if (lot.getSold() < 0) throw new IllegalArgumentException("Sold quantity cannot be negative");
+
+        if (lot.getUnitPrice() < 0) throw new IllegalArgumentException("Unit price cannot be negative");
     }
 }

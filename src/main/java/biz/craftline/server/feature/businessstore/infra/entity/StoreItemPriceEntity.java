@@ -1,6 +1,7 @@
 package biz.craftline.server.feature.businessstore.infra.entity;
 
 import biz.craftline.server.feature.businessstore.application.enums.PriceType;
+import biz.craftline.server.feature.inventorymanagement.infra.entity.ProductLotEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

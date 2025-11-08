@@ -1,6 +1,6 @@
-package biz.craftline.server.feature.businessstore.infra.entity;
+package biz.craftline.server.feature.inventorymanagement.infra.entity;
 
-import biz.craftline.server.util.TransactionType;
+import biz.craftline.server.feature.inventorymanagement.application.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "product_lot_transaction")
@@ -18,7 +17,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductLotTransaction {
+public class ProductLotTransactionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

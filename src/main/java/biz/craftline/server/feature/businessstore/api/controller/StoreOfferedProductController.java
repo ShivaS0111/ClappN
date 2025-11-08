@@ -54,9 +54,11 @@ public class StoreOfferedProductController {
         List<StoreOfferedProduct> product = storeOfferedProductService.save(requests.stream()
                 .map(productMapper::toDomain)
                 .toList());
-        return APIResponse.success(product.stream().map(productMapper::toDTO).toList(),
+        return APIResponse.success(
+                product.stream().map(productMapper::toDTO).toList(),
                 "Products added to store successfully",
-                HttpStatus.CREATED);
+                HttpStatus.CREATED
+        );
     }
 
     @GetMapping("/product-price-list/{lotId}")

@@ -1,7 +1,6 @@
 package biz.craftline.server.feature.businessstore.infra.repository;
 
-import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
-import biz.craftline.server.feature.businessstore.infra.entity.ProductLotEntity;
+import biz.craftline.server.feature.inventorymanagement.infra.entity.ProductLotEntity;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreItemPriceEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

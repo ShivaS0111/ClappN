@@ -1,4 +1,4 @@
-package biz.craftline.server.feature.businessstore.infra.entity;
+package biz.craftline.server.feature.inventorymanagement.infra.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -23,9 +21,11 @@ public class ProductLotEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private StoreOfferedProductEntity product;
+    @Column(name = "product_id")
+    private Long productId;
+
+    @Column(name = "store_id")
+    private Long storeId;
 
     private String lotCode;
 
@@ -37,9 +37,6 @@ public class ProductLotEntity {
 
     @Column(name = "currency_id")
     private Long currency;
-
-    @Column(name = "country_id")
-    private Long country;
 
     private boolean active = true;
 

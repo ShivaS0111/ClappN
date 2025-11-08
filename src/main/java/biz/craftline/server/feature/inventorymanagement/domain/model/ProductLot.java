@@ -1,4 +1,4 @@
-package biz.craftline.server.feature.businessstore.domain.model;
+package biz.craftline.server.feature.inventorymanagement.domain.model;
 
 
 import lombok.AllArgsConstructor;
@@ -15,6 +15,7 @@ public class ProductLot {
     private Long id; // Added ID field
 
     private Long productId;
+    private Long storeId;
 
     private String lotCode;
 

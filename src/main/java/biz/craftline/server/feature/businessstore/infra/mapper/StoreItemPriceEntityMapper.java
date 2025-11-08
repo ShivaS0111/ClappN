@@ -1,10 +1,9 @@
 package biz.craftline.server.feature.businessstore.infra.mapper;
 
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
-import biz.craftline.server.feature.businessstore.infra.entity.ProductLotEntity;
+import biz.craftline.server.feature.inventorymanagement.infra.entity.ProductLotEntity;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreItemPriceEntity;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

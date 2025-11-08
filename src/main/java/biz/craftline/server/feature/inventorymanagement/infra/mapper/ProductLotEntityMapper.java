@@ -1,28 +1,24 @@
-package biz.craftline.server.feature.businessstore.infra.mapper;
+package biz.craftline.server.feature.inventorymanagement.infra.mapper;
 
-import biz.craftline.server.feature.businessstore.domain.model.ProductLot;
-import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedProduct;
-import biz.craftline.server.feature.businessstore.infra.entity.ProductLotEntity;
-import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedProductEntity;
-import biz.craftline.server.feature.businessstore.infra.repository.ProductsOfferedByStoreRepository;
+import biz.craftline.server.feature.inventorymanagement.domain.model.ProductLot;
+import biz.craftline.server.feature.inventorymanagement.infra.entity.ProductLotEntity;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 @AllArgsConstructor
 public class ProductLotEntityMapper {
 
-    private final ProductsOfferedByStoreRepository repository;
-
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static final SimpleDateFormat DATE_FORMATTER1 = new SimpleDateFormat("yyyy-MM-dd");
 
     private String formatDateTime(Date dateTime) {
         return dateTime != null ? DATE_FORMATTER.format(dateTime) : null;
@@ -32,7 +28,12 @@ public class ProductLotEntityMapper {
         try {
             return dateTimeStr != null ? DATE_FORMATTER.parse(dateTimeStr) : null;
         } catch (ParseException e) {
-            throw new RuntimeException("Invalid date format: " + dateTimeStr, e);
+            log.info("Invalid date format1: " + dateTimeStr, e);
+            try {
+                return  DATE_FORMATTER1.parse(dateTimeStr);
+            } catch (ParseException e1) {
+                throw new RuntimeException("Invalid date format2: " + dateTimeStr, e1);
+            }
         }
     }
 
@@ -41,20 +42,17 @@ public class ProductLotEntityMapper {
 
         if(source.getProductId()==null) throw  new RuntimeException("Product ID is required");
 
-        StoreOfferedProductEntity productEntity = repository.findById(source.getProductId())
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Product with ID " + source.getProductId() + " not found"
-                ));
         ProductLotEntity target = new ProductLotEntity();
-        target.setId(source.getId());  // Added id mapping
-        target.setProduct(productEntity);
+        target.setId(source.getId());
+        target.setProductId(source.getProductId());
+        target.setStoreId(source.getStoreId());
         target.setLotCode(source.getLotCode());
         target.setQuantity(source.getQuantity());
         target.setBlocked(source.getBlocked());
         target.setSold(source.getSold());
         target.setUnitPrice(source.getUnitPrice());
         target.setCurrency(source.getCurrency());
-        target.setCountry(source.getCountry());
+        //target.setCountry(source.getCountry());
         target.setActive(source.isActive());
         target.setPurchasedAt(parseDateTime(source.getPurchasedAt()));
         target.setMfgDate(parseDateTime(source.getMfgDate()));
@@ -75,15 +73,16 @@ public class ProductLotEntityMapper {
         if (source == null) return null;
 
         ProductLot target = ProductLot.builder().build();
-        target.setId(source.getId());  // Added id mapping
-        target.setProductId(source.getProduct().getId());
+        target.setId(source.getId());
+        target.setProductId(source.getProductId());
+        target.setStoreId(source.getStoreId());
         target.setLotCode(source.getLotCode());
         target.setQuantity(source.getQuantity());
         target.setBlocked(source.getBlocked());
         target.setSold(source.getSold());
         target.setUnitPrice(source.getUnitPrice());
         target.setCurrency(source.getCurrency());
-        target.setCountry(source.getCountry());
+        //target.setCountry(source.getCountry());
         target.setActive(source.isActive());
         target.setPurchasedAt(formatDateTime(source.getPurchasedAt()));
         target.setMfgDate(formatDateTime(source.getMfgDate()));
@@ -100,7 +99,7 @@ public class ProductLotEntityMapper {
     }
 
     private void validateEntity(ProductLotEntity entity) {
-        if (entity.getProduct() == null) {
+        if (entity.getProductId() == null) {
             throw new IllegalArgumentException("Product ID cannot be null");
         }
         if (entity.getQuantity() < 0) {

@@ -28,6 +28,10 @@ public class APIResponse<T> {
         return success(data, "Success", HttpStatus.OK);
     }
 
+    public static <T> ResponseEntity<APIResponse<T>> ok(T data) {
+        return success(data, "Success", HttpStatus.OK);
+    }
+
     public static <T> ResponseEntity<APIResponse<T>> success(T data, String message) {
         return success(data, message, HttpStatus.OK);
     }
