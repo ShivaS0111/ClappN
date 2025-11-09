@@ -15,6 +15,8 @@ public class OrderItemEntityMapper {
         entity.setPrice(model.getPrice());
         entity.setVirtualProductDetails(VirtualProductDetailsEntityMapper.toEntity(model.getVirtualProductDetails()));
         entity.setBookingDetails(BookingDetailsEntityMapper.toEntity(model.getBookingDetails()));
+        entity.setDeliveryInfo(DeliveryInfoEntityMapper.toEntity(model.getDeliveryInfo()));
+
         return entity;
     }
 
@@ -29,6 +31,7 @@ public class OrderItemEntityMapper {
         model.setPrice(entity.getPrice());
         model.setVirtualProductDetails(VirtualProductDetailsEntityMapper.toModel(entity.getVirtualProductDetails()));
         model.setBookingDetails(BookingDetailsEntityMapper.toModel(entity.getBookingDetails()));
+        model.setDeliveryInfo(DeliveryInfoEntityMapper.toModel(entity.getDeliveryInfo()));
         return model;
     }
 }

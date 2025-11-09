@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.ordermanagement.infra.entity;
 
+import biz.craftline.server.feature.ordermanagement.application.enums.OrderItemStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class OrderItemEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String type;
+    private String type;// PRODUCT / SERVICE / VIRTUAL
 
     @Column
     private Long productId;
@@ -25,6 +26,20 @@ public class OrderItemEntity {
 
     @Column(nullable = false)
     private double price;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderItemStatus status;
+    // e.g. PENDING, PACKED, SHIPPED, DELIVERED, RETURNED, CANCELLED
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "delivery_info_id")
+    private DeliveryInfoEntity deliveryInfo;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "return_info_id")
+    private ReturnInfoEntity returnInfo;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "virtual_product_details_id")

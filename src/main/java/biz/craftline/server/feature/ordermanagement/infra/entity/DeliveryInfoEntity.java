@@ -3,6 +3,8 @@ package biz.craftline.server.feature.ordermanagement.infra.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Table(name = "delivery_info")
@@ -15,9 +17,12 @@ public class DeliveryInfoEntity {
     private String address;
 
     @Column
-    private String deliveryDate;
+    private LocalDateTime deliveryDate;
 
-    // Getters and setters
-    // ...
+    private String trackingNumber;
+
+    private String courierService;
+
+    private LocalDateTime shippedDate;
 }
 

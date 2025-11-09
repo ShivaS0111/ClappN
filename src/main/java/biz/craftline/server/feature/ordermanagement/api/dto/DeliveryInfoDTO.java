@@ -3,6 +3,8 @@ package biz.craftline.server.feature.ordermanagement.api.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 /**
  * Data Transfer Object for DeliveryInfo.
  * Encapsulates delivery details for an order.
@@ -19,6 +21,10 @@ public class DeliveryInfoDTO {
     /** Tracking number for delivery */
     private String trackingNumber;
     /** Delivery date */
-    private String deliveryDate;
+    private LocalDateTime deliveryDate;
+
+    private LocalDateTime shippedDate;
+
+    private String courierService;
 
 }

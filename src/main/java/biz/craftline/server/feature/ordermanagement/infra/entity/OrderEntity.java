@@ -34,7 +34,5 @@ public class OrderEntity {
     @JoinColumn(name = "payment_info_id")
     private PaymentInfoEntity paymentInfo;
 
-    // Getters and setters
-    // ...
 }
 

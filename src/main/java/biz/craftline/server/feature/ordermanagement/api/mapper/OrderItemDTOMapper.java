@@ -2,6 +2,7 @@ package biz.craftline.server.feature.ordermanagement.api.mapper;
 
 import biz.craftline.server.feature.ordermanagement.api.dto.OrderItemDTO;
 import biz.craftline.server.feature.ordermanagement.domain.model.OrderItem;
+import biz.craftline.server.feature.ordermanagement.infra.mapper.DeliveryInfoEntityMapper;
 
 public class OrderItemDTOMapper {
     public static OrderItemDTO toDTO(OrderItem entity) {
@@ -13,6 +14,7 @@ public class OrderItemDTOMapper {
         dto.setServiceId(entity.getServiceId());
         dto.setQuantity(entity.getQuantity());
         dto.setPrice(entity.getPrice());
+        dto.setDeliveryInfo(DeliveryInfoDTOMapper.toDTO(entity.getDeliveryInfo()));
         // Add mapping for nested objects if needed
         return dto;
     }
@@ -26,6 +28,7 @@ public class OrderItemDTOMapper {
         entity.setServiceId(dto.getServiceId());
         entity.setQuantity(dto.getQuantity());
         entity.setPrice(dto.getPrice());
+        entity.setDeliveryInfo(DeliveryInfoDTOMapper.fromDTO(dto.getDeliveryInfo()));
         // Add mapping for nested objects if needed
         return entity;
     }

@@ -2,27 +2,29 @@ package biz.craftline.server.feature.ordermanagement.api.mapper;
 
 import biz.craftline.server.feature.ordermanagement.api.dto.DeliveryInfoDTO;
 import biz.craftline.server.feature.ordermanagement.domain.model.DeliveryInfo;
+import biz.craftline.server.feature.ordermanagement.infra.entity.DeliveryInfoEntity;
 
 public class DeliveryInfoDTOMapper {
-    public static DeliveryInfoDTO toDTO(DeliveryInfo entity) {
-        if (entity == null) return null;
-        DeliveryInfoDTO dto = new DeliveryInfoDTO();
-        dto.setDeliveryType(entity.getDeliveryType());
-        dto.setAddress(entity.getAddress());
-        dto.setDeliveryStatus(entity.getDeliveryStatus());
-        dto.setTrackingNumber(entity.getTrackingNumber());
-        dto.setDeliveryDate(entity.getDeliveryDate());
-        return dto;
+    public static DeliveryInfoDTO toDTO(DeliveryInfo source) {
+        if (source == null) return null;
+        DeliveryInfoDTO target = new DeliveryInfoDTO();
+        target.setAddress(source.getAddress());
+        target.setDeliveryDate(source.getDeliveryDate());
+        target.setTrackingNumber(source.getTrackingNumber());
+        target.setCourierService(source.getCourierService());
+        target.setShippedDate(source.getShippedDate());
+        return target;
     }
 
-    public static DeliveryInfo fromDTO(DeliveryInfoDTO dto) {
-        if (dto == null) return null;
-        DeliveryInfo entity = new DeliveryInfo();
-        entity.setDeliveryType(dto.getDeliveryType());
-        entity.setAddress(dto.getAddress());
-        entity.setDeliveryStatus(dto.getDeliveryStatus());
-        entity.setTrackingNumber(dto.getTrackingNumber());
-        entity.setDeliveryDate(dto.getDeliveryDate());
-        return entity;
+    public static DeliveryInfo fromDTO(DeliveryInfoDTO source) {
+        if (source == null) return null;
+        DeliveryInfo target = new DeliveryInfo();
+        target.setAddress(source.getAddress());
+        target.setDeliveryDate(source.getDeliveryDate());
+        target.setTrackingNumber(source.getTrackingNumber());
+        target.setCourierService(source.getCourierService());
+        target.setShippedDate(source.getShippedDate());
+        return target;
     }
+
 }
