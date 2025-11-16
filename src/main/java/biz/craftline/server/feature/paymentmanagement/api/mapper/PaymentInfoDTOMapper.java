@@ -1,7 +1,7 @@
-package biz.craftline.server.feature.ordermanagement.api.mapper;
+package biz.craftline.server.feature.paymentmanagement.api.mapper;
 
-import biz.craftline.server.feature.ordermanagement.api.dto.PaymentInfoDTO;
-import biz.craftline.server.feature.ordermanagement.domain.model.PaymentInfo;
+import biz.craftline.server.feature.paymentmanagement.api.dto.PaymentInfoDTO;
+import biz.craftline.server.feature.paymentmanagement.domain.model.PaymentInfo;
 
 public class PaymentInfoDTOMapper {
     public static PaymentInfoDTO toDTO(PaymentInfo entity) {

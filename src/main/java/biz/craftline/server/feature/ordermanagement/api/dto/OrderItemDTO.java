@@ -1,6 +1,5 @@
 package biz.craftline.server.feature.ordermanagement.api.dto;
 
-import biz.craftline.server.feature.ordermanagement.domain.model.DeliveryInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,11 +15,9 @@ public class OrderItemDTO {
     /** Item ID */
     private Long id;
     /** Type of item: PRODUCT, VIRTUAL_PRODUCT, SERVICE */
-    private String type;
-    /** Product ID (if applicable) */
-    private Long productId;
-    /** Service ID (if applicable) */
-    private Long serviceId;
+    private Long itemType;
+    /** Item ID (if applicable) */
+    private Long itemId;
     /** Quantity of the item */
     private int quantity;
     /** Price of the item */

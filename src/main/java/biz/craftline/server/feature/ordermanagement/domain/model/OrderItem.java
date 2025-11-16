@@ -3,8 +3,8 @@ package biz.craftline.server.feature.ordermanagement.domain.model;
 
 
 import biz.craftline.server.feature.ordermanagement.api.dto.ReturnInfo;
-import biz.craftline.server.feature.ordermanagement.infra.entity.ReturnInfoEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
  * Domain model for OrderItem.
  * Represents a single item in an order.
  */
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,11 +20,9 @@ public class OrderItem {
     /** Item ID */
     private Long id;
     /** Type of item: PRODUCT, VIRTUAL_PRODUCT, SERVICE */
-    private String type;
+    private Long itemType;
     /** Product ID (if applicable) */
-    private Long productId;
-    /** Service ID (if applicable) */
-    private Long serviceId;
+    private Long itemIId;
     /** Quantity of the item */
     private int quantity;
     /** Price of the item */

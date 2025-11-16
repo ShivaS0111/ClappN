@@ -1,9 +1,11 @@
 package biz.craftline.server.feature.ordermanagement.infra.entity;
 
+import biz.craftline.server.feature.paymentmanagement.infra.entity.PaymentInfoEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -14,11 +16,17 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "store_id")
+    private Long storeId;
+
     @Column(nullable = false)
     private Long customerId;
 
     @Column(nullable = false)
-    private Date orderDate;
+    private BigDecimal totalAmount;
+
+    @Column(nullable = false)
+    private LocalDateTime orderDate;
 
     @Column(nullable = false)
     private String status;

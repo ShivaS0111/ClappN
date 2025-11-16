@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Payment Processing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f5f5f5; }
+        #app { max-width: 600px; margin: 50px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); text-align: center; }
+        h2 { color: #333; margin-bottom: 20px; }
+        .spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .status { margin: 20px 0; font-size: 18px; color: #666; }
+        .order-id { color: #999; font-size: 14px; margin-top: 20px; }
+        .success { color: #388e3c; }
+        .error { color: #d32f2f; }
+        .info-box { background: #e3f2fd; padding: 15px; border-radius: 5px; margin: 20px 0; font-size: 14px; color: #1565c0; }
+        button { background: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        button:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+<div id="app">
+    <h2 id="title">Processing Payment...</h2>
+    <div class="spinner"></div>
+    <div class="status" id="message">Please wait while we verify your payment.</div>
+    <div class="order-id">Order ID: <strong id="orderId"></strong></div>
+    <div class="info-box" id="infoBox"></div>
+    <button id="checkBtn" style="display: none;" onclick="checkStatus()">Check Payment Status</button>
+</div>
+
+<script>
+    const orderId = new URLSearchParams(window.location.search).get('orderId');
+    const status = new URLSearchParams(window.location.search).get('status');
+    const sessionId = new URLSearchParams(window.location.search).get('sessionId');
+
+    document.getElementById('orderId').textContent = orderId;
+
+    // Poll for payment status from webhook
+    let pollCount = 0;
+    const maxPolls = 30; // 30 seconds with 1 second interval
+
+    function checkStatus() {
+        if (!sessionId) {
+            document.getElementById('message').textContent = 'No session ID available. Please contact support.';
+            return;
+        }
+
+        fetch('/api/payments/status/' + sessionId)
+            .then(resp => resp.json())
+            .then(data => {
+                console.log('Payment status:', data);
+
+                if (data.status === 'COMPLETED') {
+                    showSuccess('Payment successful!', 'Your payment has been processed.');
+                    setTimeout(() => {
+                        window.location.href = '/orders/' + orderId + '/confirmation';
+                    }, 2000);
+                } else if (data.status === 'FAILED') {
+                    showError('Payment failed', 'Your payment could not be processed. Please try again.');
+                } else if (data.status === 'PENDING' || data.status === 'PROCESSING') {
+                    document.getElementById('message').textContent = 'Payment is being verified...';
+                } else {
+                    showError('Unknown status', 'Status: ' + data.status);
+                }
+            })
+            .catch(err => {
+                console.error('Error checking status:', err);
+                showError('Error', 'Unable to check payment status: ' + err.message);
+            });
+    }
+
+    function showSuccess(title, msg) {
+        document.getElementById('title').textContent = title;
+        document.getElementById('title').classList.add('success');
+        document.getElementById('message').textContent = msg;
+        document.getElementById('message').classList.add('success');
+        document.querySelector('.spinner').style.display = 'none';
+        document.getElementById('infoBox').innerHTML = '✓ Your payment has been successfully processed.';
+        document.getElementById('infoBox').style.background = '#e8f5e9';
+        document.getElementById('infoBox').style.color = '#388e3c';
+    }
+
+    function showError(title, msg) {
+        document.getElementById('title').textContent = title;
+        document.getElementById('title').classList.add('error');
+        document.getElementById('message').textContent = msg;
+        document.getElementById('message').classList.add('error');
+        document.querySelector('.spinner').style.display = 'none';
+        document.getElementById('infoBox').innerHTML = '✗ There was an issue with your payment.';
+        document.getElementById('infoBox').style.background = '#ffebee';
+        document.getElementById('infoBox').style.color = '#d32f2f';
+        document.getElementById('checkBtn').style.display = 'inline-block';
+    }
+
+    // Initial status check based on redirect
+    if (status === 'cancelled') {
+        showError('Payment Cancelled', 'You cancelled the payment. Please try again.');
+        document.getElementById('checkBtn').style.display = 'inline-block';
+    } else if (status === 'success') {
+        // Poll for webhook update
+        const pollInterval = setInterval(() => {
+            pollCount++;
+            checkStatus();
+            if (pollCount >= maxPolls) {
+                clearInterval(pollInterval);
+                showError('Timeout', 'Payment verification took too long. Please check your account or contact support.');
+                document.getElementById('checkBtn').style.display = 'inline-block';
+            }
+        }, 1000);
+    }
+</script>
+</body>
+</html>

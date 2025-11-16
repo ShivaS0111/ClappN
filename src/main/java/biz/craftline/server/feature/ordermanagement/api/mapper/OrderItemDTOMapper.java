@@ -2,16 +2,14 @@ package biz.craftline.server.feature.ordermanagement.api.mapper;
 
 import biz.craftline.server.feature.ordermanagement.api.dto.OrderItemDTO;
 import biz.craftline.server.feature.ordermanagement.domain.model.OrderItem;
-import biz.craftline.server.feature.ordermanagement.infra.mapper.DeliveryInfoEntityMapper;
 
 public class OrderItemDTOMapper {
     public static OrderItemDTO toDTO(OrderItem entity) {
         if (entity == null) return null;
         OrderItemDTO dto = new OrderItemDTO();
         dto.setId(entity.getId());
-        dto.setType(entity.getType());
-        dto.setProductId(entity.getProductId());
-        dto.setServiceId(entity.getServiceId());
+        dto.setItemType(entity.getItemType());
+        dto.setItemId(entity.getItemIId());
         dto.setQuantity(entity.getQuantity());
         dto.setPrice(entity.getPrice());
         dto.setDeliveryInfo(DeliveryInfoDTOMapper.toDTO(entity.getDeliveryInfo()));
@@ -23,9 +21,8 @@ public class OrderItemDTOMapper {
         if (dto == null) return null;
         OrderItem entity = new OrderItem();
         entity.setId(dto.getId());
-        entity.setType(dto.getType());
-        entity.setProductId(dto.getProductId());
-        entity.setServiceId(dto.getServiceId());
+        entity.setItemType(dto.getItemType());
+        entity.setItemIId(dto.getItemId());
         entity.setQuantity(dto.getQuantity());
         entity.setPrice(dto.getPrice());
         entity.setDeliveryInfo(DeliveryInfoDTOMapper.fromDTO(dto.getDeliveryInfo()));

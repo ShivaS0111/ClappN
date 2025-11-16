@@ -1,29 +1,33 @@
-package biz.craftline.server.feature.ordermanagement.api.controller;
+package biz.craftline.server.feature.paymentmanagement.api.controller;
 
-import biz.craftline.server.feature.ordermanagement.api.dto.PaymentInfoDTO;
-import biz.craftline.server.feature.ordermanagement.api.mapper.PaymentInfoDTOMapper;
-import biz.craftline.server.feature.ordermanagement.domain.model.PaymentInfo;
+import biz.craftline.server.feature.paymentmanagement.api.dto.PaymentInfoDTO;
+import biz.craftline.server.feature.paymentmanagement.api.mapper.PaymentInfoDTOMapper;
+import biz.craftline.server.feature.paymentmanagement.api.request.InitiatePaymentRequest;
+import biz.craftline.server.feature.paymentmanagement.api.response.InitiatePaymentResponse;
+import biz.craftline.server.feature.paymentmanagement.domain.model.PaymentInfo;
 import biz.craftline.server.feature.ordermanagement.domain.service.PaymentInfoService;
+import biz.craftline.server.feature.paymentmanagement.domain.service.PaymentService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+/*
 
-@RestController
+@AllArgsConstructor
+@RestController("orderPaymentInfoController")
 @RequestMapping("/api/payment-info")
 public class PaymentInfoController {
+
     private final PaymentInfoService paymentInfoService;
 
-    public PaymentInfoController(PaymentInfoService paymentInfoService) {
-        this.paymentInfoService = paymentInfoService;
-    }
 
     @GetMapping
     public List<PaymentInfoDTO> getAllPaymentInfo() {
         List<PaymentInfo> infos = paymentInfoService.getAllPaymentInfo();
-        List<PaymentInfoDTO> dtos = new ArrayList<>();
+        List<PaymentInfoDTO> paymentDTOs = new ArrayList<>();
         for (PaymentInfo info : infos) {
-            dtos.add(PaymentInfoDTOMapper.toDTO(info));
+            paymentDTOs.add(PaymentInfoDTOMapper.toDTO(info));
         }
-        return dtos;
+        return paymentDTOs;
     }
 
     @GetMapping("/{id}")
@@ -50,5 +54,6 @@ public class PaymentInfoController {
     public void deletePaymentInfo(@PathVariable Long id) {
         paymentInfoService.deletePaymentInfo(id);
     }
-}
 
+}
+*/

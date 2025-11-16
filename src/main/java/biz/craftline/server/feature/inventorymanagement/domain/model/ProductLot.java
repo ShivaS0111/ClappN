@@ -36,4 +36,8 @@ public class ProductLot {
     private String mfgDate;
 
     private String expiryAt;
+
+    public int getAvailable() {
+        return quantity - blocked - sold;
+    }
 }

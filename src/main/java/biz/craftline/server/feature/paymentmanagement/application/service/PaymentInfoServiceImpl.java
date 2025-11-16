@@ -1,10 +1,10 @@
-package biz.craftline.server.feature.ordermanagement.application.service;
+package biz.craftline.server.feature.paymentmanagement.application.service;
 
-import biz.craftline.server.feature.ordermanagement.domain.model.PaymentInfo;
+import biz.craftline.server.feature.paymentmanagement.domain.model.PaymentInfo;
 import biz.craftline.server.feature.ordermanagement.domain.service.PaymentInfoService;
-import biz.craftline.server.feature.ordermanagement.infra.entity.PaymentInfoEntity;
-import biz.craftline.server.feature.ordermanagement.infra.mapper.PaymentInfoEntityMapper;
-import biz.craftline.server.feature.ordermanagement.infra.repository.PaymentInfoRepository;
+import biz.craftline.server.feature.paymentmanagement.infra.entity.PaymentInfoEntity;
+import biz.craftline.server.feature.paymentmanagement.infra.mapper.PaymentInfoEntityMapper;
+import biz.craftline.server.feature.paymentmanagement.infra.repository.PaymentInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

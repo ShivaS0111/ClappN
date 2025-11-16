@@ -1,7 +1,12 @@
 package biz.craftline.server.feature.ordermanagement.infra.mapper;
 
 import biz.craftline.server.feature.ordermanagement.domain.model.Order;
+import biz.craftline.server.feature.ordermanagement.domain.model.OrderItem;
 import biz.craftline.server.feature.ordermanagement.infra.entity.OrderEntity;
+import biz.craftline.server.feature.ordermanagement.infra.entity.OrderItemEntity;
+import biz.craftline.server.feature.paymentmanagement.infra.mapper.PaymentInfoEntityMapper;
+
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderEntityMapper {
@@ -29,6 +34,25 @@ public class OrderEntityMapper {
         model.setDeliveryInfo(DeliveryInfoEntityMapper.toModel(entity.getDeliveryInfo()));
         model.setPaymentInfo(PaymentInfoEntityMapper.toModel(entity.getPaymentInfo()));
         return model;
+    }
+
+    public static Order toDomain(OrderEntity e, List<OrderItemEntity> items) {
+        if (e == null) return null;
+        return Order.builder()
+                .id(e.getId())
+                .storeId(e.getStoreId())
+                .customerId(e.getCustomerId())
+                .status(e.getStatus())
+                .totalAmount(e.getTotalAmount().doubleValue())
+                .orderDate(e.getOrderDate())
+                .items(items.stream().map(it -> OrderItem.builder()
+                        .id(it.getId())
+                        .itemType(it.getItemType())
+                        .itemIId(it.getItemId())
+                        .quantity(it.getQuantity())
+                        .price(it.getPrice())
+                        .build()).collect(Collectors.toList()))
+                .build();
     }
 }
 

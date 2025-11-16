@@ -13,13 +13,10 @@ public class OrderItemEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String type;// PRODUCT / SERVICE / VIRTUAL
+    private Long itemType;// PRODUCT / SERVICE / VIRTUAL
 
-    @Column
-    private Long productId;
-
-    @Column
-    private Long serviceId;
+    @Column(name = "item_id", nullable = false)
+    private Long itemId;
 
     @Column(nullable = false)
     private int quantity;

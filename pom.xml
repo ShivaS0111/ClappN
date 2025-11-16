@@ -82,6 +82,12 @@
 			<version>1.5.5.Final</version>
 		</dependency>
 
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>24.16.0</version>
+        </dependency>
+
 
 		<!-- ✅ Validation API (for @Valid, @NotNull, etc.) -->
 		<dependency>

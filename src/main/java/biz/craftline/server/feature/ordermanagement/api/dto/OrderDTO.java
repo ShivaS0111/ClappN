@@ -1,9 +1,9 @@
 package biz.craftline.server.feature.ordermanagement.api.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import biz.craftline.server.feature.paymentmanagement.api.dto.PaymentInfoDTO;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -12,13 +12,16 @@ import java.util.List;
  */
 @Setter
 @Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDTO {
     /** Order ID */
     private Long id;
     /** Customer ID */
     private Long customerId;
     /** Date the order was placed */
-    private Date orderDate;
+    private LocalDateTime orderDate;
     /** Status of the order */
     private String status;
     /** List of order items */

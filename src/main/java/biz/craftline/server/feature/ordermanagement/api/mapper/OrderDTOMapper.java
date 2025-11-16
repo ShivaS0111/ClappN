@@ -2,6 +2,9 @@ package biz.craftline.server.feature.ordermanagement.api.mapper;
 
 import biz.craftline.server.feature.ordermanagement.domain.model.*;
 import biz.craftline.server.feature.ordermanagement.api.dto.*;
+import biz.craftline.server.feature.paymentmanagement.api.dto.PaymentInfoDTO;
+import biz.craftline.server.feature.paymentmanagement.domain.model.PaymentInfo;
+
 import java.util.stream.Collectors;
 
 /**
@@ -40,9 +43,8 @@ public class OrderDTOMapper {
     public static OrderItemDTO toItemDTO(OrderItem item) {
         OrderItemDTO dto = new OrderItemDTO();
         dto.setId(item.getId());
-        dto.setType(item.getType());
-        dto.setProductId(item.getProductId());
-        dto.setServiceId(item.getServiceId());
+        dto.setItemType(item.getItemType());
+        dto.setItemId(item.getItemIId());
         dto.setQuantity(item.getQuantity());
         dto.setPrice(item.getPrice());
         if (item.getVirtualProductDetails() != null) {
@@ -138,9 +140,8 @@ public class OrderDTOMapper {
     public static OrderItem fromItemDTO(OrderItemDTO dto) {
         OrderItem item = new OrderItem();
         item.setId(dto.getId());
-        item.setType(dto.getType());
-        item.setProductId(dto.getProductId());
-        item.setServiceId(dto.getServiceId());
+        item.setItemType(dto.getItemType());
+        item.setItemIId(dto.getItemId());
         item.setQuantity(dto.getQuantity());
         item.setPrice(dto.getPrice());
         if (dto.getVirtualProductDetails() != null) {

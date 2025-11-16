@@ -1,0 +1,177 @@
+{
+  "info": {
+    "name": "Payment Flow Testing",
+    "description": "Complete payment flow testing for Stripe and Razorpay",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Initiate Payment - Razorpay",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"orderId\": 100,\n  \"amount\": 5000,\n  \"currency\": \"INR\",\n  \"gateway\": \"RAZORPAY\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/payments/initiate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "payments", "initiate"]
+        },
+        "description": "Initiate payment with Razorpay gateway"
+      },
+      "response": []
+    },
+    {
+      "name": "2. Initiate Payment - Stripe",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"orderId\": 101,\n  \"amount\": 10000,\n  \"currency\": \"USD\",\n  \"gateway\": \"STRIPE\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/payments/initiate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "payments", "initiate"]
+        },
+        "description": "Initiate payment with Stripe gateway"
+      },
+      "response": []
+    },
+    {
+      "name": "3. Get Payment Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/payments/status/PAY_RP_1700000000000",
+          "host": ["{{base_url}}"],
+          "path": ["api", "payments", "status", "PAY_RP_1700000000000"]
+        },
+        "description": "Get status of a payment transaction. Replace payment ID with actual one from initiate response."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Stripe Webhook Test",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "stripe-signature",
+            "value": "t=1700000000,v1=test_signature"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"evt_1700000000000\",\n  \"object\": \"event\",\n  \"api_version\": \"2023-10-16\",\n  \"created\": 1700000000,\n  \"data\": {\n    \"object\": {\n      \"id\": \"cs_test_1700000000000\",\n      \"object\": \"checkout.session\",\n      \"payment_status\": \"paid\"\n    }\n  },\n  \"type\": \"checkout.session.completed\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/payments/webhook/stripe",
+          "host": ["{{base_url}}"],
+          "path": ["api", "payments", "webhook", "stripe"]
+        },
+        "description": "Simulate Stripe webhook event"
+      },
+      "response": []
+    },
+    {
+      "name": "5. Razorpay Webhook Test",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-razorpay-signature",
+            "value": "test_signature"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"event\": \"payment.authorized\",\n  \"payload\": {\n    \"payment\": {\n      \"entity\": {\n        \"id\": \"pay_1700000000000\",\n        \"entity\": \"payment\",\n        \"amount\": 5000,\n        \"currency\": \"INR\",\n        \"status\": \"authorized\"\n      }\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/payments/webhook/razorpay",
+          "host": ["{{base_url}}"],
+          "path": ["api", "payments", "webhook", "razorpay"]
+        },
+        "description": "Simulate Razorpay webhook event"
+      },
+      "response": []
+    },
+    {
+      "name": "6. Test Invalid Payment Request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"orderId\": -1,\n  \"amount\": 0,\n  \"currency\": \"\",\n  \"gateway\": \"\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/payments/initiate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "payments", "initiate"]
+        },
+        "description": "Test error handling with invalid parameters"
+      },
+      "response": []
+    },
+    {
+      "name": "7. Test Missing Required Fields",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"orderId\": 100\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/payments/initiate",
+          "host": ["{{base_url}}"],
+          "path": ["api", "payments", "initiate"]
+        },
+        "description": "Test error handling when required fields are missing"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:9090",
+      "type": "string"
+    }
+  ]
+}
+

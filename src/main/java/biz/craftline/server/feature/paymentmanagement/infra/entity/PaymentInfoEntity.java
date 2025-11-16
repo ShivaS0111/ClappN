@@ -1,4 +1,4 @@
-package biz.craftline.server.feature.ordermanagement.infra.entity;
+package biz.craftline.server.feature.paymentmanagement.infra.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

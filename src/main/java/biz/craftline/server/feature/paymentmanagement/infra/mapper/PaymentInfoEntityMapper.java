@@ -1,7 +1,7 @@
-package biz.craftline.server.feature.ordermanagement.infra.mapper;
+package biz.craftline.server.feature.paymentmanagement.infra.mapper;
 
-import biz.craftline.server.feature.ordermanagement.domain.model.PaymentInfo;
-import biz.craftline.server.feature.ordermanagement.infra.entity.PaymentInfoEntity;
+import biz.craftline.server.feature.paymentmanagement.domain.model.PaymentInfo;
+import biz.craftline.server.feature.paymentmanagement.infra.entity.PaymentInfoEntity;
 
 public class PaymentInfoEntityMapper {
     public static PaymentInfoEntity toEntity(PaymentInfo model) {

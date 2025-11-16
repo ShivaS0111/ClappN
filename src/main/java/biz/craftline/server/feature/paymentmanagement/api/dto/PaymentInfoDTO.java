@@ -1,21 +1,21 @@
-package biz.craftline.server.feature.ordermanagement.domain.model;
+package biz.craftline.server.feature.paymentmanagement.api.dto;
 
 /**
- * Domain model for PaymentInfo.
- * Represents payment details for an order.
+ * Data Transfer Object for PaymentInfo.
+ * Encapsulates payment details for an order.
  */
-public class PaymentInfo {
+public class PaymentInfoDTO {
     /** Payment method: CARD, CASH, ONLINE, WALLET */
     private String paymentMethod;
     /** Payment status: PENDING, PAID, FAILED, REFUNDED */
     private String paymentStatus;
     /** Transaction ID for payment */
     private String transactionId;
-    /** Identifier for the payment info record */
+    /** Payment ID */
     private Long id;
-    /** Amount for the payment */
+    /** Payment amount */
     private Double amount;
-    /** Status of the payment info record */
+    /** Payment status */
     private String status;
 
     public String getPaymentMethod() { return paymentMethod; }
@@ -30,4 +30,5 @@ public class PaymentInfo {
     public void setAmount(Double amount) { this.amount = amount; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
 }

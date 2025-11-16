@@ -78,6 +78,15 @@ public class ProductLotServiceImpl implements ProductLotService {
         return false;
     }
 
+
+    @Override
+    public void productLotBlock(Long lotId, int allocate, String orderAlloc, Long orderItemId) {
+        recordTransaction(lotId, TransactionType.BLOCK, allocate,
+                "ORDER_ALLOC("+orderAlloc+") for orderItemId: " + orderItemId,
+                orderItemId+"",
+                0L);
+    }
+
     @Override
     @Transactional
     public ProductLotTransaction recordTransaction(Long lotId, TransactionType type, int quantityChange,
@@ -144,4 +153,9 @@ public class ProductLotServiceImpl implements ProductLotService {
                 .toList();
     }
 
+
+    public List<ProductLot> findByStoreIdAndProductIdAndActiveTrue(Long storeId, Long productId){
+        return  lotRepository.findByStoreIdAndProductIdAndActiveTrue(storeId,productId)
+                .stream().map(productLotEntityMapper::toDomain).toList();
+    }
 }
