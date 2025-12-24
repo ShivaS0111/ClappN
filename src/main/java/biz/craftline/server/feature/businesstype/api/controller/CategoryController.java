@@ -1,6 +1,5 @@
 package biz.craftline.server.feature.businesstype.api.controller;
 
-import biz.craftline.server.feature.businesstype.api.dto.BusinessTypeDTO;
 import biz.craftline.server.feature.businesstype.api.dto.CategoryDTO;
 import biz.craftline.server.feature.businesstype.api.mapper.CategoryDTOMapper;
 import biz.craftline.server.feature.businesstype.api.request.*;
@@ -68,6 +67,15 @@ public class CategoryController {
 
     @GetMapping("/{id}/path")
     public ResponseEntity<APIResponse<List<CategoryDTO>>> getCategoryPath(@PathVariable Long id) {
+        return APIResponse.success(
+                service.getCategoryPath(id).stream()
+                        .map(categoryDTOMapper::toDTO)
+                        .toList()
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<APIResponse<List<CategoryDTO>>> delete(@PathVariable Long id) {
         return APIResponse.success(
                 service.getCategoryPath(id).stream()
                         .map(categoryDTOMapper::toDTO)

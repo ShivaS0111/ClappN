@@ -83,6 +83,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category update(Long categoryId, Category category) {
         CategoryEntity categoryEntity = repository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
         categoryEntity.setName(category.getName());
+        categoryEntity.setDescription(category.getDescription());
         categoryEntity.setStatus(category.getStatus());
         if (category.getParentId() != null) {
             CategoryEntity parent = repository.findById(category.getParentId())
@@ -93,5 +94,12 @@ public class CategoryServiceImpl implements CategoryService {
         }
         categoryEntity = repository.save(categoryEntity);
         return categoryEntityMapper.toDomain(categoryEntity);
+    }
+
+    @Override
+    public void delete(Long categoryId) {
+        CategoryEntity categoryEntity = repository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        //repository.delete(categoryEntity);
     }
 }

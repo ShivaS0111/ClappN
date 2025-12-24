@@ -57,6 +57,11 @@ public class StoreEntity {
     @Column(name = "address_id")
     private Long addressId;
 
+    private String address;
+    private String email;
+    private String phone;
+    private String manager;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "store_services",
             joinColumns = @JoinColumn(name = "store_id"),

@@ -9,6 +9,7 @@ import biz.craftline.server.feature.usermanagement.infra.repository.UserReposito
 import biz.craftline.server.feature.usermanagement.infra.repository.RoleRepository;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
@@ -45,13 +47,15 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = getUserByEmail(username)
+        AuthUser user = userRepository.findByEmail(username).map(UserMapper::toAuthUser)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+        log.info("Loaded user: {}", user.getEmail());
 
         return new UserDetails() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
-                return List.of();
+                return user.getPermissions().stream().map(p->
+                        (GrantedAuthority) () -> p).collect(Collectors.toList());
             }
 
             @Override
@@ -66,17 +70,17 @@ public class UserService implements UserDetailsService {
 
             @Override
             public boolean isAccountNonExpired() {
-                return false;
+                return true;
             }
 
             @Override
             public boolean isAccountNonLocked() {
-                return false;
+                return true;
             }
 
             @Override
             public boolean isCredentialsNonExpired() {
-                return false;
+                return true;
             }
 
             @Override
@@ -135,5 +139,26 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(username).map(UserMapper::toAuthUser)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
 
+    }
+
+    public Optional<User> findUser(Long userId, String email) {
+        return userRepository.findUser(userId, email)
+                .map(UserMapper::toDomain);
+    }
+
+    public Optional<User> findUserIdByIdOrEmail(Long userId, String email) {
+
+        boolean emailValid = email != null && !email.isBlank();
+
+        if (userId != null && emailValid) {
+            return userRepository.findByIdOrEmail(userId, email).map(UserMapper::toDomain);
+        }
+        if (userId != null) {
+            return userRepository.findById(userId).map(UserMapper::toDomain);
+        }
+        if (emailValid) {
+            return userRepository.findByEmail(email).map(UserMapper::toDomain);
+        }
+        return Optional.empty();
     }
 }

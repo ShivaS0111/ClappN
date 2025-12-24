@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businesstype.infra.entity;
 
+import biz.craftline.server.feature.businesstype.domain.model.Brand;
 import biz.craftline.server.feature.businesstype.domain.model.Category;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -31,6 +32,10 @@ public class BusinessProductEntity {
     @ManyToOne
     @JoinColumn(name = "business_type", referencedColumnName = "id")
     private BusinessTypeEntity businessType;
+
+    @ManyToOne
+    @JoinColumn(name = "brand", referencedColumnName = "id")
+    private BrandEntity brand;
 
     @ManyToMany
     @JoinTable(

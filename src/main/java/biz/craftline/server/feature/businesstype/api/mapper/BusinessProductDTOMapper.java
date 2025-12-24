@@ -1,13 +1,8 @@
 package biz.craftline.server.feature.businesstype.api.mapper;
 
 import biz.craftline.server.feature.businesstype.api.dto.BusinessProductDTO;
-import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
 import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessProductRequest;
-import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessServiceRequest;
-import biz.craftline.server.feature.businesstype.domain.model.BusinessProduct;
-import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
-import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
-import biz.craftline.server.feature.businesstype.domain.model.Category;
+import biz.craftline.server.feature.businesstype.domain.model.*;
 import biz.craftline.server.feature.businesstype.domain.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -35,7 +30,8 @@ public class BusinessProductDTOMapper {
                 businessTypeDTOMapper.toDTO(domain.getBusinessType()),
                 domain.getCategories(),
                 domain.getAmount(),
-                domain.getCurrency()
+                domain.getCurrency(),
+                domain.getBrand()
         );
     }
 
@@ -48,7 +44,8 @@ public class BusinessProductDTOMapper {
                 businessTypeDTOMapper.toDomain(dto.getBusinessType()),
                 dto.getCategories(),
                 dto.getAmount(),
-                dto.getCurrency()
+                dto.getCurrency(),
+                dto.getBrand()
         );
     }
 
@@ -62,6 +59,7 @@ public class BusinessProductDTOMapper {
                 .name(dto.getName())
                 .description(dto.getDesc())
                 .businessType(dto.getBusinessType() != null ? BusinessType.builder().id(dto.getBusinessType()).build() : null)
+                .brand(dto.getBrandId() != null ? Brand.builder().id(dto.getBrandId()).build() : null)
                 .categories(categoryList)
                 .amount(dto.getAmount())
                 .currency(dto.getCurrency())

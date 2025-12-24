@@ -65,7 +65,7 @@ public class BusinessTypeController {
             existing.setDescription(request.getDescription());
         }
         existing.setStatus(request.getStatus());
-        BusinessType updated = service.save(existing);
+        BusinessType updated = service.update(existing);
         return APIResponse.success(mapper.toDTO(updated));
     }
 

@@ -1,7 +1,5 @@
 package biz.craftline.server.feature.businesstype.api.dto;
 
-
-import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +17,7 @@ public class BusinessServiceDTO {
 
     private String desc;
 
-    private int status;
+    private Integer status;
 
     private BusinessTypeDTO businessType;
 

@@ -36,6 +36,12 @@ public class Store {
 
     private Long addressId;
 
+    private String address;
+
+    private String email;
+    private String phone;
+    private String manager;
+
     @Builder.Default
     private Set<StoreOfferedService> services = new HashSet<>();
 

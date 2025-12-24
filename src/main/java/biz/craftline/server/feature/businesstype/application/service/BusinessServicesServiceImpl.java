@@ -1,7 +1,6 @@
 package biz.craftline.server.feature.businesstype.application.service;
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
-import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import biz.craftline.server.feature.businesstype.domain.service.BusinessServicesService;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessTypeEntity;
@@ -66,7 +65,7 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
                 .stream()
                 .map(businessService -> mapper.toEntity(businessService)).toList();
         List<BusinessService> list = new ArrayList<>();
-        for ( BusinessServiceEntity entity: serviceEntities ){
+        for (BusinessServiceEntity entity : serviceEntities) {
             try {
                 BusinessServiceEntity savedEntity = repository.save(entity);
                 list.add(mapper.toDomain(savedEntity));
@@ -79,14 +78,12 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
     }
 
 
-
-
     @Override
-    public List<BusinessService> findByBusinessIdAndSearch(Long id, String keyword) {
-        //return repository.findByBusinessId(id).stream().map(mapper::toDomain).toList();
-        //return repository.searchByKeywordAndBusinessTypeId(keyword, id).stream().map(mapper::toDomain).toList();
-        return repository.searchByKeywordAndBusinessType(keyword, id).stream().map(mapper::toDomain).toList();
-
+    public List<BusinessService> searchByKeywordAndBusinessType(Long businessTypeId, String keyword) {
+        return repository.searchByKeywordAndBusinessType(keyword, businessTypeId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 
     @Override
@@ -98,6 +95,15 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
     @Override
     public List<BusinessService> findByBusinessTypeId(Long businessTypeId) {
         return repository.findByBusinessType_Id(businessTypeId).stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public BusinessService update(BusinessService updated) {
+        BusinessService service = findById(updated.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Business Type ID: " + updated.getId()));
+        ;
+        BusinessService updatedService = mapper.toUpdate(service, updated);
+        return save(updatedService);
     }
 }
 

@@ -12,7 +12,6 @@ import biz.craftline.server.feature.businesstype.domain.service.BusinessTypeServ
 import biz.craftline.server.util.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/business-service")
+@RequestMapping("api/business-service")
 public class BusinessServiceController {
 
     @Autowired
@@ -36,9 +35,25 @@ public class BusinessServiceController {
     private BusinessTypeService businessTypeService;
 
 
+    @GetMapping("/{productId}")
+    public ResponseEntity<APIResponse<BusinessServiceDTO>> getById(@PathVariable Long serviceId) {
+        BusinessService bs = service.findById(serviceId).orElseThrow( () -> new IllegalArgumentException("Invalid Business Service ID: " + serviceId));
+        if (bs == null) {
+            return APIResponse.success(null);
+        }
+        return APIResponse.success(mapper.toDTO(bs));
+    }
+
     @GetMapping("/list")
     public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> list() {
         List<BusinessService> list = service.findAll();
+        return APIResponse.success(convertToDTOList(list));
+    }
+
+    @GetMapping("/listByBusinessType/{businessTypeId}")
+    public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> listByBusinessType(
+            @PathVariable Long businessTypeId) {
+        List<BusinessService> list = service.findByBusinessTypeId(businessTypeId);
         return APIResponse.success(convertToDTOList(list));
     }
 
@@ -50,10 +65,10 @@ public class BusinessServiceController {
         return APIResponse.success(convertToDTOList(list));
     }
 
-    @PostMapping("/search-service-by-business")
+    @PostMapping("/search-by-business-type")
     public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> searchServiceByBusiness(
             @RequestBody SearchServiceByBusinessRequest request) {
-        List<BusinessService> list = service.findByBusinessIdAndSearch(request.business_id(), request.keyword());
+        List<BusinessService> list = service.searchByKeywordAndBusinessType(request.business_type_id(), request.keyword());
         return APIResponse.success(convertToDTOList(list));
     }
 
@@ -63,8 +78,15 @@ public class BusinessServiceController {
         return APIResponse.success(mapper.toDTO(bs));
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<APIResponse<BusinessServiceDTO>> update(@RequestBody AddNewBusinessServiceRequest dto) {
+        BusinessService bs = service.update(mapper.toDomain(dto));
+        return APIResponse.success(mapper.toDTO(bs));
+    }
+
     @PostMapping("/add-all2")
-    public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> addAll2(@RequestBody List<AddNewBusinessServiceRequest> request) {
+    public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> addAll2(
+            @RequestBody List<AddNewBusinessServiceRequest> request) {
 
         List<Long> businessTypeIds = request.stream().map( AddNewBusinessServiceRequest::getBusinessType).toList();
         Map<Long, BusinessType> businessTypeMap = businessTypeService.findAllByIds(businessTypeIds)

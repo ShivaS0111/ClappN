@@ -13,8 +13,8 @@ public class BusinessService {
     private Long id;
     private String serviceName;
     private String description;
-    private int status;
+    private Integer status;
     private BusinessType businessType;
-    private float amount;
+    private Float amount;
     private Long currency;
 }

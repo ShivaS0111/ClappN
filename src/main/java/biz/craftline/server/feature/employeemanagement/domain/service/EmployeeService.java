@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
+
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -25,13 +26,13 @@ public class EmployeeService {
         return employeeRepository.findById(id).map(EmployeeMapper::toDomain);
     }
 
-    public List<Employee> getEmployeesByStoreId(String storeId) {
+    public List<Employee> getEmployeesByStoreId(Long storeId) {
         return employeeRepository.findByStoreId(storeId).stream()
             .map(EmployeeMapper::toDomain)
             .collect(Collectors.toList());
     }
 
-    public List<Employee> getEmployeesByBusinessId(String businessId) {
+    public List<Employee> getEmployeesByBusinessId(Long businessId) {
         return employeeRepository.findByBusinessId(businessId).stream()
             .map(EmployeeMapper::toDomain)
             .collect(Collectors.toList());

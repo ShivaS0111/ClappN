@@ -18,4 +18,7 @@ public interface BusinessProductJpaRepository extends JpaRepository<BusinessProd
 
     List<BusinessProductEntity> save(List<BusinessProductEntity> list);
 
+    // Method 1: Using the business type's ID
+    List<BusinessProductEntity> findByBusinessType_Id(Long businessTypeId);
+
 }

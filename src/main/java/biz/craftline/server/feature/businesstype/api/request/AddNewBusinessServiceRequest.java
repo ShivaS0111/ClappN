@@ -17,7 +17,7 @@ public class AddNewBusinessServiceRequest {
 
     private String desc;
 
-    private int status;
+    private Integer status;
 
     @NotNull(message = "businessType should not be null")
     private long businessType;

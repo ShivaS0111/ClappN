@@ -1,11 +1,15 @@
 package biz.craftline.server.feature.businesstype.application.service;
 
+import biz.craftline.server.enums.Status;
+import biz.craftline.server.feature.businesstype.domain.model.Brand;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessProduct;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import biz.craftline.server.feature.businesstype.domain.service.BusinessProductsService;
+import biz.craftline.server.feature.businesstype.infra.entity.BrandEntity;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessProductEntity;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessTypeEntity;
 import biz.craftline.server.feature.businesstype.infra.mapper.BusinessProductEntityMapper;
+import biz.craftline.server.feature.businesstype.infra.repository.BrandJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessProductJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessTypeJpaRepository;
 import lombok.AllArgsConstructor;
@@ -29,6 +33,9 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
     @Autowired
     BusinessTypeJpaRepository businessTypeJpaRepository;
 
+    @Autowired
+    BrandJpaRepository brandJpaRepository;
+
 
     @Autowired
     BusinessProductEntityMapper mapper;
@@ -42,9 +49,10 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
     }
 
     @Override
-    public void deleteServiceById(Long id) {
+    public void deleteProductById(Long id) {
         BusinessProductEntity bs = repository.findById(id)
                 .orElseThrow(()->new RuntimeException("Business Product not found, id: %d".formatted(id)));
+        bs.setStatus(Status.DELETED.getCode());
         repository.save(bs);
     }
 
@@ -59,15 +67,29 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
         return mapper.toDomain(repository.save(entity));
     }
 
+
+    private BusinessTypeEntity getBusinessTypeEntity(BusinessType businessType) {
+        if( businessType!=null && businessType.getId()!=null){
+            return businessTypeJpaRepository
+                    .findById(businessType.getId())
+                    .orElseThrow(()-> new RuntimeException("BusinessType not valid"));
+        }
+        return  null;
+    }
+
+    private BrandEntity getBrandEntity(Brand brand) {
+        if( brand!=null && brand.getId()!=null){
+            return brandJpaRepository
+                    .findById(brand.getId())
+                    .orElseThrow(()-> new RuntimeException("Brand not valid"));
+        }
+        return  null;
+    }
+
     private BusinessProductEntity getBusinessEntity(BusinessProduct product) {
         BusinessProductEntity entity = mapper.toEntity(product);
-        if(product.getBusinessType()!=null && product.getBusinessType().getId()!=null){
-            BusinessTypeEntity businessTypeEntity = businessTypeJpaRepository
-                    .findById(product.getBusinessType().getId())
-                    .orElseThrow(()-> new RuntimeException("BusinessType not valid")
-            );
-            entity.setBusinessType( businessTypeEntity);
-        }
+        entity.setBusinessType( getBusinessTypeEntity(product.getBusinessType() ));
+        entity.setBrand( getBrandEntity(product.getBrand() ));
         return  entity;
     }
 
@@ -92,7 +114,7 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
 
 
     @Override
-    public List<BusinessProduct> findByBusinessIdAndSearch(Long id, String keyword) {
+    public List<BusinessProduct> findByBusinessTypeIdAndSearch(Long businessTypeId, String keyword) {
         //return repository.findByBusinessId(id).stream().map(mapper::toDomain).toList();
         //return repository.searchByKeywordAndBusinessTypeId(keyword, id).stream().map(mapper::toDomain).toList();
         return repository.searchByKeyword(keyword).stream().map(mapper::toDomain).toList();
@@ -103,6 +125,11 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
     public List<BusinessProduct> findBySearch(String keyword) {
         //return repository.searchByKeyword(keyword).stream().map(mapper::toDomain).toList();
         return repository.findAll().stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public List<BusinessProduct> findByBusinessTypeId(Long businessTypeId) {
+        return repository.findByBusinessType_Id(businessTypeId).stream().map(mapper::toDomain).toList();
     }
 }
 

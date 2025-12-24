@@ -4,6 +4,7 @@ import biz.craftline.server.feature.businesstype.domain.model.BusinessProduct;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessProductEntity;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessTypeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,6 +15,10 @@ public class BusinessProductEntityMapper {
 
     @Autowired
     BusinessTypeEntityMapper businessTypeEntityMapper;
+
+    @Lazy
+    @Autowired
+    BrandEntityMapper brandEntityMapper;
 
     public BusinessProductEntity toEntity(BusinessProduct domain) {
         BusinessProductEntity entity = new BusinessProductEntity();
@@ -36,7 +41,8 @@ public class BusinessProductEntityMapper {
                 entity.getBusinessType()!=null? businessTypeEntityMapper.toDomain(entity.getBusinessType()):null,
                 entity.getCategories().stream().map(mapper::toDomain).toList(),
                 entity.getAmount(),
-                entity.getCreatedBy()
+                entity.getCurrency(),
+                entity.getBrand()!=null? brandEntityMapper.toDomain(entity.getBrand()):null
         );
     }
 }

@@ -1,15 +1,7 @@
 package biz.craftline.server.feature.usermanagement.api.dto;
 
-import lombok.Data;
+import biz.craftline.server.feature.usermanagement.domain.model.TokenInfo;
 
-@Data
-public class RefreshResponse{
-    private String accessToken;
-    private String refreshToken;
-
-    public RefreshResponse(String accessToken, String refreshToken) {
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-    }
+public class RefreshResponse extends TokenInfo {
 
 }

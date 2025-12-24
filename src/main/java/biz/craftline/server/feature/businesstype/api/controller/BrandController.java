@@ -2,58 +2,54 @@
 package biz.craftline.server.feature.businesstype.api.controller;
 
 import biz.craftline.server.feature.businesstype.api.dto.BrandDTO;
+import biz.craftline.server.feature.businesstype.api.mapper.BrandDToMapper;
 import biz.craftline.server.feature.businesstype.domain.model.Brand;
 import biz.craftline.server.feature.businesstype.domain.service.BrandService;
+import biz.craftline.server.util.APIResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/brands")
 public class BrandController {
-    @Autowired
-    private BrandService brandService;
+
+    final BrandService brandService;
+
+    final BrandDToMapper brandDToMapper;
 
     @GetMapping
-    public List<BrandDTO> getAllBrands() {
-        return brandService.findAll()
+    public ResponseEntity<APIResponse<List<BrandDTO>>> getAllBrands() {
+        return APIResponse.ok( brandService.findAll()
                 .stream()
-                .map(brand -> {
-                    BrandDTO dto = new BrandDTO();
-                    dto.setId(brand.getId());
-                    dto.setName(brand.getName());
-                    dto.setDescription(brand.getDescription());
-                    return dto;
-                })
-                .collect(Collectors.toList());
+                .map(brandDToMapper::toDTO)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public BrandDTO getBrand(@PathVariable Long id) {
+    public ResponseEntity<APIResponse<BrandDTO>> getBrand(@PathVariable Long id) {
         Brand brand = brandService.findById(id);
         if (brand == null) return null;
-        BrandDTO dto = new BrandDTO();
-        dto.setId(brand.getId());
-        dto.setName(brand.getName());
-        dto.setDescription(brand.getDescription());
-        return dto;
+        return APIResponse.ok( brandDToMapper.toDTO(brand) );
     }
 
     @PostMapping
-    public BrandDTO addBrand(@RequestBody BrandDTO brandDTO) {
-        Brand brand = new Brand();
-        brand.setName(brandDTO.getName());
-        brand.setDescription(brandDTO.getDescription());
+    public ResponseEntity<APIResponse<BrandDTO>> addBrand(@RequestBody BrandDTO brandDTO) {
+        Brand brand = brandDToMapper.toDomain(brandDTO);
         Brand saved = brandService.save(brand);
-        brandDTO.setId(saved.getId());
-        return brandDTO;
+        return APIResponse.ok( brandDToMapper.toDTO(saved) );
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBrand(@PathVariable Long id) {
+    public ResponseEntity<APIResponse<String>> deleteBrand(@PathVariable Long id) {
         brandService.delete(id);
+        return APIResponse.success( "Success" );
     }
 }
 

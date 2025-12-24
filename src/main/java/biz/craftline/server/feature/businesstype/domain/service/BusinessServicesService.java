@@ -1,7 +1,6 @@
 package biz.craftline.server.feature.businesstype.domain.service;
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,10 +17,11 @@ public interface BusinessServicesService {
 
     List<BusinessService> save(List<BusinessService> businessService);
 
-    List<BusinessService> findByBusinessIdAndSearch(Long id, String keyword);
+    List<BusinessService> searchByKeywordAndBusinessType(Long businessTypeId, String keyword);
 
     List<BusinessService> findBySearch(String keyword);
 
     List<BusinessService> findByBusinessTypeId(Long businessTypeId);
 
+    BusinessService update(BusinessService domain);
 }

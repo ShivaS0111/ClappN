@@ -7,10 +7,21 @@ public class Employee {
     private Long id;
     private String employeeCode;
     private String name;
+
+    private String firstName;
+    private String lastName;
+    private String surName;
+
     private Long userId;
     private Long roleId;
-    private String storeId;
-    private String businessId;
+    private Long storeId;
+    private Long businessId;
+
+    private String email;
+    private String phone;
+
+    private String joinDate;
+    private String leaveDate;
     // Getters and setters
 }
 

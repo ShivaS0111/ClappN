@@ -61,9 +61,9 @@ public class StoreOfferedProductController {
         );
     }
 
-    @GetMapping("/product-price-list/{lotId}")
+    @GetMapping("/product-price-list/{productId}")
     public ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> priceList(
-            @PathVariable("lotId") Long lotId
+            @PathVariable("productId") Long lotId
     ) {
         List<StoreItemPrice> list = priceHandleService.findAllByLotId(lotId);
         List<StoreItemPriceDTO> dtoList = list.stream()

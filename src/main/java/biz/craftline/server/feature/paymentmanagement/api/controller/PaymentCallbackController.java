@@ -21,18 +21,20 @@ public class PaymentCallbackController {
     public String paymentCallback(
             @RequestParam Long orderId,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) String sessionId,
-            Model model) {
+            @RequestParam(required = false) String sessionId) {
 
         log.info("Payment callback: orderId={}, status={}, sessionId={}", orderId, status, sessionId);
 
         // Add data to model for template
-        model.addAttribute("orderId", orderId);
+        /*model.addAttribute("orderId", orderId);
         model.addAttribute("status", status);
-        model.addAttribute("sessionId", sessionId);
+        model.addAttribute("sessionId", sessionId);*/
 
         // Webhook will update transaction asynchronously
         // Frontend can poll /api/payments/status/{providerPaymentId} for real status
-        return "payment-callback";
+        return "redirect:/pay/payment-callback.html"
+                + "?orderId=" + orderId
+                + "&status=" + status
+                + "&sessionId=" + sessionId;
     }
 }

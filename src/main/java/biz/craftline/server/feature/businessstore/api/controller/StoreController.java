@@ -1,6 +1,8 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
 import biz.craftline.server.feature.businessstore.api.dto.StoreDTO;
+import biz.craftline.server.feature.businessstore.api.dto.StoreDetailsResponse;
+import biz.craftline.server.feature.businessstore.api.dto.StoreInfo;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreDTOMapper;
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreRequest;
 import biz.craftline.server.feature.businessstore.api.request.SearchRequest;
@@ -23,7 +25,7 @@ import java.util.List;
  * REST controller for managing stores.
  */
 @Slf4j
-@RequestMapping("/stores")
+@RequestMapping("/api/stores")
 @RestController
 public class StoreController {
 
@@ -56,13 +58,37 @@ public class StoreController {
     /**
      * List stores by business ID.
      */
-    @Operation(summary = "List stores by business ID", description = "Returns all stores for a given business.")
-    @ApiResponse(responseCode = "200", description = "List of stores returned successfully.")
+    @Operation(summary = "Store details by store ID", description = "Returns  store")
+    @ApiResponse(responseCode = "200", description = "store returned successfully.")
     @GetMapping("/{storeId}")
     public ResponseEntity<APIResponse<StoreDTO>> storeDetails(@PathVariable("storeId") long storeId) {
         logger.info("Store: {}", storeId);
         Store store = service.findStoreById(storeId);
         return APIResponse.success(mapper.toDTO(store), "Store retrieved successfully");
+    }
+
+
+    /**
+     * Store Details by id.
+     */
+    @Operation(summary = "Store Details by store id", description = "Store Details")
+    @ApiResponse(responseCode = "200", description = "Store Details returned successfully.")
+    @PostMapping("/store-info/{storeId}")
+    public ResponseEntity<APIResponse<StoreInfo>> storeDetailsById(@PathVariable("storeId") long storeId) {
+        logger.info("Store: {}", storeId);
+        Store store = service.findStoreById(storeId);
+
+        StoreInfo response = StoreInfo.builder()
+                .name(store.getStoreName())
+                .description(store.getDescription())
+                .address(store.getAddress())
+                .category("Retail")
+                .address(store.getAddress())
+                .storeManager("XXXXXXXX")
+                .establishedDate("XXXXXXXX")
+                .phone(store.getPhone())
+                .build();
+        return APIResponse.success(response, "Store retrieved successfully");
     }
 
     /**
@@ -95,7 +121,7 @@ public class StoreController {
      */
     @Operation(summary = "Add new store", description = "Creates a new store.")
     @ApiResponse(responseCode = "201", description = "Store created successfully.")
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<APIResponse<StoreDTO>> addStore(@RequestBody AddNewStoreRequest request) {
         Business business = null;
         if (request.getBusinessId() != null) {

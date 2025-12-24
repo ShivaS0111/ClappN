@@ -18,5 +18,7 @@ public interface BusinessTypeService {
     BusinessType save(BusinessType businessType);
 
     List<BusinessType>  findAllByIds(List<Long> businessTypeIds);
+
+    BusinessType update(BusinessType existing);
 }
 

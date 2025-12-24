@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
-
 @Component
 public class CategoryDTOMapper {
 
@@ -19,6 +18,7 @@ public class CategoryDTOMapper {
         return CategoryDTO.builder()
                 .id(category.getId())
                 .name(category.getName())
+                .description(category.getDescription())
                 .status(category.getStatus())
                 .parentId(category.getParentId())
                 .children(category.getChildren() != null
@@ -42,6 +42,7 @@ public class CategoryDTOMapper {
         Category category = new Category();
         category.setId(dto.getId());
         category.setName(dto.getName());
+        category.setDescription(dto.getDescription());
         category.setStatus(dto.getStatus());
         category.setParentId(dto.getParentId());
         category.setDescription(dto.getDescription());
@@ -61,6 +62,7 @@ public class CategoryDTOMapper {
 
         Category category = new Category();
         category.setName(dto.getName());
+        category.setDescription(dto.getDescription());
         category.setStatus(dto.getStatus());
         category.setDescription(dto.getDescription());
         category.setParentId(dto.getParentId());

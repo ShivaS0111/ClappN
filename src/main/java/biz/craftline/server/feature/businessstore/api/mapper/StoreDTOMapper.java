@@ -31,7 +31,10 @@ public class StoreDTOMapper {
                 .status(request.getStatus())
                 .business(Business.builder().id(request.getBusinessId()).build())
                 .businessType(request.getBusinessType())
-                .addressId(request.getAddress())
+                .address(request.getAddress())
+                .addressId(request.getAddressId())
+                .phone(request.getPhone())
+                .email(request.getEmail())
                 .build();
     }
 
@@ -55,6 +58,10 @@ public class StoreDTOMapper {
                 .businessType(dto.getBusinessType())
                 .business( dto.getBusiness() != null ? mapper.toDomain(dto.getBusiness()) : null)
                 .addressId(dto.getAddressId())
+                .address(dto.getAddress())
+                .phone(dto.getPhone())
+                .email(dto.getEmail())
+                .manager(dto.getManager())
                 .build();
     }
 
@@ -78,6 +85,10 @@ public class StoreDTOMapper {
                 .businessType(store.getBusinessType())
                 .business( store.getBusiness() != null ? mapper.toDTO(store.getBusiness()) : null)
                 .addressId(store.getAddressId())
+                .address(store.getAddress())
+                .phone(store.getPhone())
+                .email(store.getEmail())
+                .manager(store.getManager())
                 .build();
     }
 }

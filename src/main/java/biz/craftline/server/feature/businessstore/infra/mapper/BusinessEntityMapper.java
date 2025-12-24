@@ -39,7 +39,15 @@ public class BusinessEntityMapper {
                 .id(entity.getId())
                 .businessName(entity.getBusinessName())
                 .description(entity.getDescription())
+                .status(entity.getStatus())
+                .contact(entity.getContact())
+                .email(entity.getEmail())
+                .website(entity.getWebsite())
+                .address(entity.getAddress())
+                .latitude(entity.getLatitude())
+                .longitude(entity.getLongitude())
                 //.stores(new HashSet<>(stores))
+                .createdBy(entity.getCreatedBy())
                 .build();
     }
 
@@ -50,8 +58,17 @@ public class BusinessEntityMapper {
      */
     public BusinessEntity toEntity(Business business) {
         return BusinessEntity.builder()
+                .id(business.getId())
                 .businessName(business.getBusinessName())
                 .description(business.getDescription())
+                .status(business.getStatus())
+                .contact(business.getContact())
+                .email(business.getEmail())
+                .website(business.getWebsite())
+                .address(business.getAddress())
+                .latitude(business.getLatitude())
+                .longitude(business.getLongitude())
+                .createdBy(business.getCreatedBy())
                 .build();
     }
 }

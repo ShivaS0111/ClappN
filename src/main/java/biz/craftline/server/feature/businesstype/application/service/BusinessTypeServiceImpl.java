@@ -53,6 +53,13 @@ public class BusinessTypeServiceImpl implements BusinessTypeService {
     }
 
     @Override
+    public BusinessType update(BusinessType businessType) {
+        BusinessTypeEntity entity = repository.save(mapper.toEntity(businessType));
+        System.out.println("==>BusinessType before: " + businessType +" after update: " + entity);
+        return mapper.toDomain(entity);
+    }
+
+    @Override
     public List<BusinessType> findAllByIds(List<Long> businessTypeId) {
         return repository.findAllById(businessTypeId).stream().map(mapper::toDomain).toList();
     }

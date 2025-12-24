@@ -1,6 +1,5 @@
 package biz.craftline.server.feature.businesstype.api.mapper;
 
-import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
 import biz.craftline.server.feature.businesstype.api.dto.BusinessTypeDTO;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
 import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
@@ -9,10 +8,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Component
 public class BusinessTypeDTOMapper {

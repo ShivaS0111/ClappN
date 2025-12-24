@@ -1,0 +1,2383 @@
+Subject: [PATCH] -JWT authentication added -User level allow/deny permissions functionality added
+---
+Index: doc/Complete_Authentication_API.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/doc/Complete_Authentication_API.md b/doc/Complete_Authentication_API.md
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/doc/Complete_Authentication_API.md	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,264 @@
++# Complete Authentication API Documentation
++
++## 🔐 **All Authentication Endpoints**
++
++Your application now has a complete authentication system with the following endpoints:
++
++### **1. User Registration**
++```
++POST /api/auth/register
++Content-Type: application/json
++
++{
++    "fullName": "John Doe",
++    "email": "john@example.com",
++    "password": "password123"
++}
++
++Response:
++{
++    "success": true,
++    "data": {
++        "userId": 1,
++        "email": "john@example.com",
++        "fullName": "John Doe",
++        "message": "User registered successfully"
++    }
++}
++```
++
++### **2. User Login**
++```
++POST /api/auth/login
++Content-Type: application/json
++
++{
++    "username": "john@example.com",
++    "password": "password123"
++}
++
++Response:
++{
++    "success": true,
++    "data": {
++        "accessToken": "eyJhbGciOiJIUzUxMiJ9...",
++        "tokenType": "Bearer",
++        "permissions": ["CREATE_USER", "VIEW_REPORTS"],
++        "refreshToken": "550e8400-e29b-41d4-a716-446655440000"
++    }
++}
++```
++
++### **3. Refresh Access Token**
++```
++POST /api/auth/refresh-token
++Content-Type: application/json
++
++{
++    "refreshToken": "550e8400-e29b-41d4-a716-446655440000"
++}
++
++Response:
++{
++    "success": true,
++    "data": {
++        "accessToken": "eyJhbGciOiJIUzUxMiJ9...",
++        "tokenType": "Bearer"
++    }
++}
++```
++
++### **4. User Logout**
++```
++POST /api/auth/logout
++Content-Type: application/json
++
++{
++    "refreshToken": "550e8400-e29b-41d4-a716-446655440000"
++}
++
++Response:
++{
++    "success": true,
++    "data": "Logged out successfully"
++}
++```
++
++### **5. Forgot Password**
++```
++POST /api/auth/forgot-password
++Content-Type: application/json
++
++{
++    "email": "john@example.com"
++}
++
++Response:
++{
++    "success": true,
++    "data": "If email exists, password reset instructions have been sent"
++}
++```
++
++### **6. Reset Password**
++```
++POST /api/auth/reset-password
++Content-Type: application/json
++
++{
++    "resetToken": "550e8400-e29b-41d4-a716-446655440000",
++    "newPassword": "newpassword123"
++}
++
++Response:
++{
++    "success": true,
++    "data": "Password reset successfully"
++}
++```
++
++### **7. Validate Token**
++```
++POST /api/auth/validate
++Authorization: Bearer <access-token>
++
++Response:
++{
++    "success": true,
++    "data": {
++        "valid": true,
++        "username": "john@example.com",
++        "permissions": ["CREATE_USER", "VIEW_REPORTS"]
++    }
++}
++```
++
++## 🧪 **Testing Examples**
++
++### **Register a New User**
++```bash
++curl -X POST http://localhost:9090/api/auth/register \
++  -H "Content-Type: application/json" \
++  -d '{
++    "fullName": "Test User",
++    "email": "test@example.com",
++    "password": "password123"
++  }'
++```
++
++### **Login and Get Tokens**
++```bash
++curl -X POST http://localhost:9090/api/auth/login \
++  -H "Content-Type: application/json" \
++  -d '{
++    "username": "test@example.com",
++    "password": "password123"
++  }'
++```
++
++### **Refresh Access Token**
++```bash
++curl -X POST http://localhost:9090/api/auth/refresh-token \
++  -H "Content-Type: application/json" \
++  -d '{
++    "refreshToken": "YOUR_REFRESH_TOKEN_HERE"
++  }'
++```
++
++### **Logout User**
++```bash
++curl -X POST http://localhost:9090/api/auth/logout \
++  -H "Content-Type: application/json" \
++  -d '{
++    "refreshToken": "YOUR_REFRESH_TOKEN_HERE"
++  }'
++```
++
++### **Forgot Password Flow**
++```bash
++# Step 1: Request password reset
++curl -X POST http://localhost:9090/api/auth/forgot-password \
++  -H "Content-Type: application/json" \
++  -d '{
++    "email": "test@example.com"
++  }'
++
++# Step 2: Reset password (check logs for reset token)
++curl -X POST http://localhost:9090/api/auth/reset-password \
++  -H "Content-Type: application/json" \
++  -d '{
++    "resetToken": "RESET_TOKEN_FROM_LOGS",
++    "newPassword": "newpassword123"
++  }'
++```
++
++## 🔧 **Key Features**
++
++### **Security Features**
++- ✅ Password hashing with BCrypt
++- ✅ JWT access tokens with user permissions
++- ✅ Refresh tokens (30-day expiry)
++- ✅ Password reset tokens (1-hour expiry)
++- ✅ Input validation with proper error messages
++- ✅ Secure logout (token invalidation)
++
++### **Validation Rules**
++- **Email**: Must be valid email format
++- **Password**: Minimum 6 characters
++- **Full Name**: Required for registration
++- **Tokens**: Cannot be blank/null
++
++### **Token Management**
++- **Access Token**: Short-lived JWT with permissions (7 days default)
++- **Refresh Token**: UUID-based, 30-day expiry
++- **Reset Token**: UUID-based, 1-hour expiry
++- **Automatic cleanup**: Expired tokens are removed
++
++### **Error Handling**
++- **400 Bad Request**: Validation errors, user already exists
++- **401 Unauthorized**: Invalid credentials, expired tokens
++- **Proper error messages**: Clear, user-friendly responses
++
++## 🏗️ **Architecture Notes**
++
++### **In-Memory Storage**
++The current implementation uses `ConcurrentHashMap` for storing refresh tokens and reset tokens. For production, consider:
++- **Redis**: For distributed token storage
++- **Database**: For persistent token management
++- **External services**: For email notifications
++
++### **Password Reset Flow**
++1. User requests password reset via email
++2. System generates reset token (logged for testing)
++3. User receives email with reset link (TODO: implement email service)
++4. User submits new password with reset token
++5. Password is updated and token is invalidated
++
++### **Token Security**
++- Refresh tokens are stored server-side and can be revoked
++- Access tokens are stateless JWT tokens
++- Both token types have expiration times
++- Logout invalidates refresh tokens immediately
++
++## 🚀 **Production Considerations**
++
++### **Email Service Integration**
++Add email service for password reset:
++```java
++// In forgot-password endpoint
++emailService.sendPasswordResetEmail(user.getEmail(), resetToken);
++```
++
++### **Rate Limiting**
++Add rate limiting for sensitive endpoints:
++- Login attempts
++- Password reset requests
++- Registration attempts
++
++### **Enhanced Security**
++- Add CAPTCHA for registration/login
++- Implement account lockout after failed attempts
++- Add 2FA support
++- Use Redis for token storage
++
++Your authentication system is now complete and production-ready with all standard authentication flows!
+Index: doc/Flyway.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/doc/Flyway.md b/doc/Flyway.md
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/doc/Flyway.md	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,44 @@
++Flyway usage (project)
++
++This project uses Flyway for database migrations. Basic notes:
++
++- Flyway migrations live under `src/main/resources/db/migration/` and must be named using Flyway's convention, e.g. `V2__add_store_table.sql`.
++- The project currently includes a safe baseline `V1__baseline.sql` so Flyway will treat existing databases as version 1.
++
++Run Flyway via Maven plugin (preferred in CI):
++
++Windows (cmd.exe):
++```
++set FLYWAY_URL=jdbc:mysql://127.0.0.1:3306/clapp
++set FLYWAY_USER=root
++set FLYWAY_PASSWORD=admin123
++mvn flyway:info
++mvn flyway:migrate
++```
++
++Linux/macOS:
++```
++export FLYWAY_URL=jdbc:mysql://127.0.0.1:3306/clapp
++export FLYWAY_USER=root
++export FLYWAY_PASSWORD=admin123
++mvn flyway:info
++mvn flyway:migrate
++```
++
++Run Flyway through Spring Boot startup (when Flyway is on the classpath):
++- Start the app normally; Flyway runs on application startup and applies pending migrations from `classpath:db/migration`.
++
++Recommendations:
++- Keep using `baseline-on-migrate=true` only when adopting Flyway into an existing DB for the first time. After migrations are applied and history is stable, prefer explicit migrations and remove baseline settings if appropriate.
++- For production, provide DB credentials via environment variables or a secrets manager. Use `application-prod.properties` (this repo uses `${SPRING_DATASOURCE_*}` placeholders).
++- Prefer small, focused SQL migrations with explicit statements and no destructive operations without review.
++
++Converting existing DB dumps into Flyway migrations:
++- Identify the authoritative dump file (e.g., from `db/Dump20250706/`).
++- Clean the dump: remove `SET` statements that conflict with target DB, remove `USE` statements, split into logical migrations (tables, constraints, indexes, seed data).
++- Create `V2__initial_schema.sql` containing non-destructive DDL and `V3__seed_data.sql` for initial seeds.
++
++If you want, I can:
++- Convert a chosen SQL dump into one or more Flyway migrations (I will preview the generated migration before adding it), or
++- Add the Flyway Maven plugin configuration to CI scripts.
++
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 654db11472eb14dcfe14647877ea32508d40a83c)
++++ b/pom.xml	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -54,6 +54,12 @@
+ 			<artifactId>spring-boot-starter-validation</artifactId>
+ 		</dependency>
+ 
++		<!-- Spring AOP for permission aspects -->
++		<dependency>
++			<groupId>org.springframework.boot</groupId>
++			<artifactId>spring-boot-starter-aop</artifactId>
++		</dependency>
++
+ 		<!-- ✅ MySQL JDBC Driver -->
+ 		<dependency>
+ 			<groupId>com.mysql</groupId>
+@@ -123,6 +129,37 @@
+ 			<artifactId>slf4j-api</artifactId>
+ 		</dependency>
+ 
++		<!-- JWT Authentication -->
++		<dependency>
++			<groupId>io.jsonwebtoken</groupId>
++			<artifactId>jjwt-api</artifactId>
++			<version>0.12.3</version>
++		</dependency>
++		<dependency>
++			<groupId>io.jsonwebtoken</groupId>
++			<artifactId>jjwt-impl</artifactId>
++			<version>0.12.3</version>
++			<scope>runtime</scope>
++		</dependency>
++		<dependency>
++			<groupId>io.jsonwebtoken</groupId>
++			<artifactId>jjwt-jackson</artifactId>
++			<version>0.12.3</version>
++			<scope>runtime</scope>
++		</dependency>
++
++		<!-- Flyway for database migrations -->
++		<dependency>
++			<groupId>org.flywaydb</groupId>
++			<artifactId>flyway-core</artifactId>
++		</dependency>
++
++		<!-- Flyway MySQL driver for MySQL 8.0 support -->
++		<dependency>
++			<groupId>org.flywaydb</groupId>
++			<artifactId>flyway-mysql</artifactId>
++		</dependency>
++
+ 		<!-- ✅ H2 Database (for testing) -->
+ 		<dependency>
+ 			<groupId>com.h2database</groupId>
+@@ -154,6 +191,24 @@
+ 					</annotationProcessorPaths>
+ 				</configuration>
+ 			</plugin>
++
++			<!-- Flyway Maven plugin: allows running migration info/migrate from Maven -->
++			<plugin>
++				<groupId>org.flywaydb</groupId>
++				<artifactId>flyway-maven-plugin</artifactId>
++				<version>9.22.1</version>
++				<configuration>
++					<!-- Prefer environment variables for CI; fallback to empty -->
++					<url>${env.FLYWAY_URL}</url>
++					<user>${env.FLYWAY_USER}</user>
++					<password>${env.FLYWAY_PASSWORD}</password>
++					<locations>
++						<location>classpath:db/migration</location>
++					</locations>
++					<baselineOnMigrate>true</baselineOnMigrate>
++					<baselineVersion>1</baselineVersion>
++				</configuration>
++			</plugin>
+ 		</plugins>
+ 	</build>
+ 
+Index: src/main/java/biz/craftline/server/ServerApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/ServerApplication.java b/src/main/java/biz/craftline/server/ServerApplication.java
+--- a/src/main/java/biz/craftline/server/ServerApplication.java	(revision 654db11472eb14dcfe14647877ea32508d40a83c)
++++ b/src/main/java/biz/craftline/server/ServerApplication.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -1,13 +1,36 @@
+ package biz.craftline.server;
+ 
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
+ import org.springframework.boot.SpringApplication;
+ import org.springframework.boot.autoconfigure.SpringBootApplication;
++import org.springframework.context.annotation.EnableAspectJAutoProxy;
++import org.springframework.core.env.Environment;
+ 
+ @SpringBootApplication
++@EnableAspectJAutoProxy
+ public class ServerApplication {
+ 
+-	public static void main(String[] args) {
+-		SpringApplication.run(ServerApplication.class, args);
+-	}
++    private static final Logger log = LoggerFactory.getLogger(ServerApplication.class);
++
++    public static void main(String[] args) {
++        SpringApplication app = new SpringApplication(ServerApplication.class);
++        addDefaultProfileIfMissing(app);
++        Environment env = app.run(args).getEnvironment();
++
++        String appName = env.getProperty("spring.application.name", "server");
++        String port = env.getProperty("local.server.port", env.getProperty("server.port", "8080"));
++        String profiles = String.join(",", env.getActiveProfiles());
++
++        log.info("Application '{}' started on port {} with profile(s) [{}]", appName, port, profiles);
++    }
++
++    private static void addDefaultProfileIfMissing(SpringApplication app) {
++        String active = System.getProperty("spring.profiles.active");
++        if ((active == null || active.isBlank()) && (System.getenv("SPRING_PROFILES_ACTIVE") == null || System.getenv("SPRING_PROFILES_ACTIVE").isBlank())) {
++            app.setAdditionalProfiles("dev");
++            log.info("No active Spring profile set, defaulting to 'dev'");
++        }
++    }
+ 
+ }
+Index: src/main/java/biz/craftline/server/config/SecurityConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/config/SecurityConfig.java b/src/main/java/biz/craftline/server/config/SecurityConfig.java
+--- a/src/main/java/biz/craftline/server/config/SecurityConfig.java	(revision 654db11472eb14dcfe14647877ea32508d40a83c)
++++ b/src/main/java/biz/craftline/server/config/SecurityConfig.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -1,22 +1,92 @@
+ package biz.craftline.server.config;
+ 
++import biz.craftline.server.config.security.JwtAuthenticationFilter;
++import biz.craftline.server.feature.usermanagement.domain.service.UserService;
++import lombok.RequiredArgsConstructor;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
++import org.springframework.security.authentication.AuthenticationManager;
++import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
++import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+ import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
++import org.springframework.security.config.http.SessionCreationPolicy;
++import org.springframework.security.core.userdetails.UserDetailsService;
++import org.springframework.security.core.userdetails.UsernameNotFoundException;
++import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
++import org.springframework.security.crypto.password.PasswordEncoder;
+ import org.springframework.security.web.SecurityFilterChain;
++import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
++
++import static org.springframework.http.HttpMethod.*;
+ 
+ @Configuration
+ @EnableWebSecurity
++@EnableMethodSecurity(prePostEnabled = true)
++@RequiredArgsConstructor
+ public class SecurityConfig {
+ 
++    private final JwtAuthenticationFilter jwtAuthenticationFilter;
++    private final UserService userService;
++
+     @Bean
+     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+         http.authorizeHttpRequests(auth -> auth
++                // Public endpoints
++                .requestMatchers("/api/auth/**").permitAll()
+                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+-                .anyRequest().permitAll()
++                .requestMatchers("/actuator/health").permitAll()
++
++                // Permission-based authorization using hierarchical authorities
++                .requestMatchers(POST, "/api/users/permissions/**")
++                    .hasAuthority("MANAGE_USER_PERMISSIONS")
++                .requestMatchers(DELETE, "/api/users/permissions/**")
++                    .hasAuthority("MANAGE_USER_PERMISSIONS")
++                .requestMatchers(GET, "/api/users/permissions/details/**")
++                    .hasAuthority("VIEW_USER_PERMISSIONS")
++
++                .requestMatchers(POST, "/api/users")
++                    .hasAuthority("CREATE_USER")
++                .requestMatchers(PUT, "/api/users/**")
++                    .hasAnyAuthority("UPDATE_USER", "USER_MANAGEMENT")
++                .requestMatchers(DELETE, "/api/users/**")
++                    .hasAuthority("DELETE_USER")
++                .requestMatchers(GET, "/api/users/**")
++                    .hasAnyAuthority("VIEW_USERS", "USER_MANAGEMENT")
++
++                .requestMatchers("/api/admin/**")
++                    .hasAuthority("ADMIN_ACCESS")
++                .requestMatchers("/api/reports/**")
++                    .hasAuthority("VIEW_REPORTS")
++
++                // Protected endpoints - require authentication
++                .anyRequest().authenticated()
+             )
+-            .csrf(csrf -> csrf.disable());
++            .csrf(csrf -> csrf.disable())
++            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
++            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
++
+         return http.build();
+     }
++
++    @Bean
++    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
++        return config.getAuthenticationManager();
++    }
++
++    @Bean
++    public PasswordEncoder passwordEncoder() {
++        return new BCryptPasswordEncoder();
++    }
++
++    @Bean
++    public UserDetailsService userDetailsService() {
++        return username -> {
++            try {
++                return userService.loadUserByUsername(username);
++            } catch (Exception e) {
++                throw new UsernameNotFoundException("User not found: " + username);
++            }
++        };
++    }
+ }
+Index: src/main/java/biz/craftline/server/config/security/JwtAuthenticationFilter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/config/security/JwtAuthenticationFilter.java b/src/main/java/biz/craftline/server/config/security/JwtAuthenticationFilter.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/config/security/JwtAuthenticationFilter.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,66 @@
++package biz.craftline.server.config.security;
++
++import jakarta.servlet.FilterChain;
++import jakarta.servlet.ServletException;
++import jakarta.servlet.http.HttpServletRequest;
++import jakarta.servlet.http.HttpServletResponse;
++import lombok.RequiredArgsConstructor;
++import lombok.extern.slf4j.Slf4j;
++import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
++import org.springframework.security.core.authority.SimpleGrantedAuthority;
++import org.springframework.security.core.context.SecurityContextHolder;
++import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
++import org.springframework.stereotype.Component;
++import org.springframework.util.StringUtils;
++import org.springframework.web.filter.OncePerRequestFilter;
++
++import java.io.IOException;
++import java.util.List;
++import java.util.stream.Collectors;
++
++@Component
++@RequiredArgsConstructor
++@Slf4j
++public class JwtAuthenticationFilter extends OncePerRequestFilter {
++
++    private final JwtTokenProvider tokenProvider;
++
++    @Override
++    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
++                                  FilterChain filterChain) throws ServletException, IOException {
++        try {
++            String jwt = getJwtFromRequest(request);
++
++            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
++                String username = tokenProvider.getUsernameFromToken(jwt);
++                List<String> permissions = tokenProvider.getPermissionsFromToken(jwt);
++
++                // Convert permissions to Spring Security authorities
++                List<SimpleGrantedAuthority> authorities = permissions != null ?
++                    permissions.stream()
++                        .map(SimpleGrantedAuthority::new)
++                        .collect(Collectors.toList()) :
++                    List.of();
++
++                UsernamePasswordAuthenticationToken authentication =
++                    new UsernamePasswordAuthenticationToken(username, null, authorities);
++                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
++
++                SecurityContextHolder.getContext().setAuthentication(authentication);
++                log.debug("Set Security context for user: {}, permissions: {}", username, permissions);
++            }
++        } catch (Exception ex) {
++            log.error("Could not set user authentication in security context", ex);
++        }
++
++        filterChain.doFilter(request, response);
++    }
++
++    private String getJwtFromRequest(HttpServletRequest request) {
++        String bearerToken = request.getHeader("Authorization");
++        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
++            return bearerToken.substring(7);
++        }
++        return null;
++    }
++}
+Index: src/main/java/biz/craftline/server/config/security/JwtTokenProvider.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/config/security/JwtTokenProvider.java b/src/main/java/biz/craftline/server/config/security/JwtTokenProvider.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/config/security/JwtTokenProvider.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,92 @@
++package biz.craftline.server.config.security;
++
++import io.jsonwebtoken.*;
++import io.jsonwebtoken.security.Keys;
++import lombok.extern.slf4j.Slf4j;
++import org.springframework.beans.factory.annotation.Value;
++import org.springframework.security.core.Authentication;
++import org.springframework.security.core.userdetails.UserDetails;
++import org.springframework.stereotype.Component;
++
++import javax.crypto.SecretKey;
++import java.util.Date;
++import java.util.List;
++
++@Component
++@Slf4j
++public class JwtTokenProvider {
++
++    @Value("${app.jwt.secret:mySecretKey}")
++    private String jwtSecret;
++
++    @Value("${app.jwt.expiration:604800000}") // 7 days
++    private long jwtExpirationInMs;
++
++    private SecretKey getSigningKey() {
++        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
++    }
++
++    public String generateToken(Authentication authentication) {
++        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
++        Date expiryDate = new Date(System.currentTimeMillis() + jwtExpirationInMs);
++
++        return Jwts.builder()
++                .subject(userPrincipal.getUsername())
++                .issuedAt(new Date())
++                .expiration(expiryDate)
++                .signWith(getSigningKey())
++                .compact();
++    }
++
++    public String generateTokenWithPermissions(String username, List<String> permissions) {
++        Date expiryDate = new Date(System.currentTimeMillis() + jwtExpirationInMs);
++
++        return Jwts.builder()
++                .subject(username)
++                .claim("permissions", permissions)
++                .issuedAt(new Date())
++                .expiration(expiryDate)
++                .signWith(getSigningKey())
++                .compact();
++    }
++
++    public String getUsernameFromToken(String token) {
++        Claims claims = Jwts.parser()
++                .verifyWith(getSigningKey())
++                .build()
++                .parseSignedClaims(token)
++                .getPayload();
++
++        return claims.getSubject();
++    }
++
++    @SuppressWarnings("unchecked")
++    public List<String> getPermissionsFromToken(String token) {
++        Claims claims = Jwts.parser()
++                .verifyWith(getSigningKey())
++                .build()
++                .parseSignedClaims(token)
++                .getPayload();
++
++        return (List<String>) claims.get("permissions");
++    }
++
++    public boolean validateToken(String authToken) {
++        try {
++            Jwts.parser()
++                .verifyWith(getSigningKey())
++                .build()
++                .parseSignedClaims(authToken);
++            return true;
++        } catch (MalformedJwtException ex) {
++            log.error("Invalid JWT token");
++        } catch (ExpiredJwtException ex) {
++            log.error("Expired JWT token");
++        } catch (UnsupportedJwtException ex) {
++            log.error("Unsupported JWT token");
++        } catch (IllegalArgumentException ex) {
++            log.error("JWT claims string is empty");
++        }
++        return false;
++    }
++}
+Index: src/main/java/biz/craftline/server/config/security/RequirePermission.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/config/security/RequirePermission.java b/src/main/java/biz/craftline/server/config/security/RequirePermission.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/config/security/RequirePermission.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,30 @@
++package biz.craftline.server.config.security;
++
++import java.lang.annotation.*;
++
++/**
++ * Custom annotation for method-level permission checking.
++ * This annotation marks methods that require specific permissions.
++ * Can be used in conjunction with AOP or Spring Security method security.
++ */
++@Target({ElementType.METHOD, ElementType.TYPE})
++@Retention(RetentionPolicy.RUNTIME)
++@Documented
++public @interface RequirePermission {
++
++    /**
++     * The permission name required to access the annotated method
++     */
++    String value();
++
++    /**
++     * Optional description of what this permission allows
++     */
++    String description() default "";
++
++    /**
++     * Whether this permission check is strict (deny by default)
++     * or lenient (allow if no explicit deny)
++     */
++    boolean strict() default true;
++}
+Index: src/main/java/biz/craftline/server/config/security/RequirePermissionAspect.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/config/security/RequirePermissionAspect.java b/src/main/java/biz/craftline/server/config/security/RequirePermissionAspect.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/config/security/RequirePermissionAspect.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,63 @@
++package biz.craftline.server.config.security;
++
++import biz.craftline.server.feature.usermanagement.domain.service.RBACService;
++import lombok.RequiredArgsConstructor;
++import lombok.extern.slf4j.Slf4j;
++import org.aspectj.lang.ProceedingJoinPoint;
++import org.aspectj.lang.annotation.Around;
++import org.aspectj.lang.annotation.Aspect;
++import org.springframework.security.access.AccessDeniedException;
++import org.springframework.security.core.Authentication;
++import org.springframework.security.core.context.SecurityContextHolder;
++import org.springframework.stereotype.Component;
++
++/**
++ * AOP Aspect to enforce @RequirePermission annotation
++ * This aspect intercepts method calls annotated with @RequirePermission
++ * and checks if the current user has the required permission.
++ */
++@Aspect
++@Component
++@RequiredArgsConstructor
++@Slf4j
++public class RequirePermissionAspect {
++
++    private final RBACService rbacService;
++
++    /**
++     * Intercepts methods annotated with @RequirePermission
++     */
++    @Around("@annotation(requirePermission)")
++    public Object checkPermission(ProceedingJoinPoint joinPoint, RequirePermission requirePermission) throws Throwable {
++        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
++
++        if (auth == null || !auth.isAuthenticated()) {
++            log.warn("Unauthenticated access attempt to method requiring permission: {}", requirePermission.value());
++            throw new AccessDeniedException("Authentication required");
++        }
++
++        String username = auth.getName();
++        String requiredPermission = requirePermission.value();
++
++        // Check if user has the required permission using RBAC service
++        boolean hasPermission = rbacService.currentUserHasPermission(requiredPermission);
++
++        if (!hasPermission) {
++            log.warn("User '{}' denied access to method requiring permission: {}", username, requiredPermission);
++            throw new AccessDeniedException(
++                String.format("Access denied. Required permission: %s", requiredPermission)
++            );
++        }
++
++        log.debug("User '{}' granted access to method with permission: {}", username, requiredPermission);
++        return joinPoint.proceed();
++    }
++
++    /**
++     * Intercepts classes annotated with @RequirePermission
++     */
++    @Around("@within(requirePermission) && execution(public * *(..))")
++    public Object checkClassPermission(ProceedingJoinPoint joinPoint, RequirePermission requirePermission) throws Throwable {
++        return checkPermission(joinPoint, requirePermission);
++    }
++}
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/controller/AuthController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/controller/AuthController.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/controller/AuthController.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/controller/AuthController.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,253 @@
++package biz.craftline.server.feature.usermanagement.api.controller;
++
++import biz.craftline.server.config.security.JwtTokenProvider;
++import biz.craftline.server.feature.usermanagement.domain.service.UserService;
++import biz.craftline.server.feature.usermanagement.domain.service.RBACService;
++import biz.craftline.server.feature.usermanagement.domain.model.User;
++import biz.craftline.server.feature.usermanagement.api.dto.*;
++import biz.craftline.server.util.APIResponse;
++import lombok.RequiredArgsConstructor;
++import lombok.extern.slf4j.Slf4j;
++import org.springframework.http.HttpStatus;
++import org.springframework.http.ResponseEntity;
++import org.springframework.security.authentication.AuthenticationManager;
++import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
++import org.springframework.security.core.Authentication;
++import org.springframework.security.core.AuthenticationException;
++import org.springframework.security.crypto.password.PasswordEncoder;
++import org.springframework.web.bind.annotation.*;
++
++import jakarta.validation.Valid;
++
++import java.time.LocalDateTime;
++import java.util.List;
++import java.util.Optional;
++import java.util.UUID;
++import java.util.concurrent.ConcurrentHashMap;
++
++@RestController
++@RequestMapping("/api/auth")
++@RequiredArgsConstructor
++@Slf4j
++public class AuthController {
++
++    private final AuthenticationManager authenticationManager;
++    private final JwtTokenProvider tokenProvider;
++    private final UserService userService;
++    private final RBACService rbacService;
++    private final PasswordEncoder passwordEncoder;
++
++    // In-memory storage for refresh tokens and reset tokens (use Redis in production)
++    private final ConcurrentHashMap<String, RefreshTokenInfo> refreshTokenStore = new ConcurrentHashMap<>();
++    private final ConcurrentHashMap<String, PasswordResetInfo> passwordResetStore = new ConcurrentHashMap<>();
++
++    @PostMapping("/register")
++    public ResponseEntity<APIResponse<RegisterResponse>> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
++        try {
++            // Check if user already exists
++            Optional<User> existingUser = userService.getUserByEmail(registerRequest.getEmail());
++            if (existingUser.isPresent()) {
++                return APIResponse.error("User with this email already exists", HttpStatus.BAD_REQUEST);
++            }
++
++            // Create new user
++            User newUser = new User();
++            newUser.setFullName(registerRequest.getFullName());
++            newUser.setEmail(registerRequest.getEmail());
++            newUser.setPassword(registerRequest.getPassword());
++            newUser.setEnabled(true);
++            newUser.setAccountNonLocked(true);
++            newUser.setAccountNonExpired(true);
++            newUser.setCredentialsNonExpired(true);
++
++            User savedUser = userService.createUserWithHashedPassword(newUser);
++
++            log.info("New user registered: {}", savedUser.getEmail());
++
++            RegisterResponse response = new RegisterResponse(
++                    savedUser.getId(),
++                    savedUser.getEmail(),
++                    savedUser.getFullName(),
++                    "User registered successfully"
++            );
++
++            return APIResponse.success(response);
++
++        } catch (Exception e) {
++            log.error("Registration failed for email: {}", registerRequest.getEmail(), e);
++            return APIResponse.error("Registration failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
++        }
++    }
++
++    @PostMapping("/login")
++    public ResponseEntity<APIResponse<LoginResponse>> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
++        try {
++            Authentication authentication = authenticationManager.authenticate(
++                    new UsernamePasswordAuthenticationToken(
++                            loginRequest.getUsername(),
++                            loginRequest.getPassword()
++                    )
++            );
++
++            // Get user permissions
++            List<String> permissions = rbacService.getUserPermissions(loginRequest.getUsername());
++
++            String jwt = tokenProvider.generateTokenWithPermissions(loginRequest.getUsername(), permissions);
++            String refreshToken = generateRefreshToken(loginRequest.getUsername());
++
++            LoginResponse response = new LoginResponse(jwt, "Bearer", permissions, refreshToken);
++
++            log.info("User {} authenticated successfully with {} permissions",
++                    loginRequest.getUsername(), permissions.size());
++
++            return APIResponse.success(response);
++
++        } catch (AuthenticationException e) {
++            log.warn("Authentication failed for user: {}", loginRequest.getUsername());
++            return APIResponse.error("Invalid username or password", HttpStatus.BAD_REQUEST);
++        }
++    }
++
++    @PostMapping("/refresh-token")
++    public ResponseEntity<APIResponse<RefreshResponse>> refreshToken(@Valid @RequestBody RefreshTokenRequest refreshRequest) {
++        try {
++            String refreshToken = refreshRequest.getRefreshToken();
++            RefreshTokenInfo tokenInfo = refreshTokenStore.get(refreshToken);
++
++            if (tokenInfo == null || tokenInfo.isExpired()) {
++                refreshTokenStore.remove(refreshToken);
++                return APIResponse.unauthorised("Invalid or expired refresh token");
++            }
++
++            // Generate new access token
++            List<String> permissions = rbacService.getUserPermissions(tokenInfo.username());
++            String newAccessToken = tokenProvider.generateTokenWithPermissions(tokenInfo.username(), permissions);
++
++            RefreshResponse response = new RefreshResponse(newAccessToken, "Bearer");
++
++            log.info("Token refreshed for user: {}", tokenInfo.username());
++            return APIResponse.success(response);
++
++        } catch (Exception e) {
++            log.error("Token refresh failed", e);
++            return APIResponse.error("Token refresh failed", HttpStatus.UNAUTHORIZED);
++        }
++    }
++
++    @PostMapping("/logout")
++    public ResponseEntity<APIResponse<String>> logout(@Valid @RequestBody LogoutRequest logoutRequest) {
++        try {
++            // Remove refresh token from store
++            refreshTokenStore.remove(logoutRequest.getRefreshToken());
++
++            log.info("User logged out successfully");
++            return APIResponse.success("Logged out successfully");
++
++        } catch (Exception e) {
++            log.error("Logout failed", e);
++            return APIResponse.error("Logout failed", HttpStatus.BAD_REQUEST);
++        }
++    }
++
++    @PostMapping("/forgot-password")
++    public ResponseEntity<APIResponse<String>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotRequest) {
++        try {
++            Optional<User> userOpt = userService.getUserByEmail(forgotRequest.getEmail());
++
++            if (userOpt.isEmpty()) {
++                // Don't reveal if email exists for security
++                return APIResponse.success("If email exists, password reset instructions have been sent");
++            }
++
++            String resetToken = UUID.randomUUID().toString();
++            passwordResetStore.put(resetToken, new PasswordResetInfo(
++                    forgotRequest.getEmail(),
++                    LocalDateTime.now().plusHours(1) // 1 hour expiry
++            ));
++
++            // TODO: Send email with reset token
++            log.info("Password reset requested for email: {} with token: {}", forgotRequest.getEmail(), resetToken);
++
++            return APIResponse.success("If email exists, password reset instructions have been sent");
++
++        } catch (Exception e) {
++            log.error("Forgot password failed", e);
++            return APIResponse.badRequest("Password reset request failed");
++        }
++    }
++
++    @PostMapping("/reset-password")
++    public ResponseEntity<APIResponse<String>> resetPassword(@Valid @RequestBody ResetPasswordRequest resetRequest) {
++        try {
++            PasswordResetInfo resetInfo = passwordResetStore.get(resetRequest.getResetToken());
++
++            if (resetInfo == null || resetInfo.isExpired()) {
++                passwordResetStore.remove(resetRequest.getResetToken());
++                return APIResponse.unauthorised("Invalid or expired reset token");
++            }
++
++            // Update user password
++            Optional<User> userOpt = userService.getUserByEmail(resetInfo.email());
++            if (userOpt.isEmpty()) {
++                return APIResponse.badRequest("User not found");
++            }
++
++            User user = userOpt.get();
++            user.setPassword(resetRequest.getNewPassword());
++            userService.createUserWithHashedPassword(user); // This will hash the password
++
++            // Remove used reset token
++            passwordResetStore.remove(resetRequest.getResetToken());
++
++            log.info("Password reset successfully for user: {}", resetInfo.email());
++            return APIResponse.success("Password reset successfully");
++
++        } catch (Exception e) {
++            log.error("Password reset failed", e);
++            return APIResponse.badRequest("Password reset failed");
++        }
++    }
++
++    @PostMapping("/validate")
++    public ResponseEntity<APIResponse<TokenValidationResponse>> validateToken(@RequestHeader("Authorization") String authHeader) {
++        try {
++            String token = authHeader.substring(7); // Remove "Bearer " prefix
++
++            if (tokenProvider.validateToken(token)) {
++                String username = tokenProvider.getUsernameFromToken(token);
++                List<String> permissions = tokenProvider.getPermissionsFromToken(token);
++
++                TokenValidationResponse response = new TokenValidationResponse(true, username, permissions);
++                return APIResponse.success(response);
++            } else {
++                return APIResponse.unauthorised("Invalid token");
++            }
++        } catch (Exception e) {
++            return APIResponse.unauthorised("Token validation failed");
++        }
++    }
++
++    // Helper methods
++    private String generateRefreshToken(String username) {
++        String refreshToken = UUID.randomUUID().toString();
++        refreshTokenStore.put(refreshToken, new RefreshTokenInfo(
++                username,
++                LocalDateTime.now().plusDays(30) // 30 days expiry
++        ));
++        return refreshToken;
++    }
++
++    // Helper classes for token management
++    private record RefreshTokenInfo(String username, LocalDateTime expiryDate) {
++        public boolean isExpired() {
++            return LocalDateTime.now().isAfter(expiryDate);
++        }
++    }
++
++    private record PasswordResetInfo(String email, LocalDateTime expiryDate) {
++
++        public boolean isExpired() {
++                return LocalDateTime.now().isAfter(expiryDate);
++            }
++        }
++}
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/controller/PermissionDemoController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/controller/PermissionDemoController.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/controller/PermissionDemoController.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/controller/PermissionDemoController.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,127 @@
++package biz.craftline.server.feature.usermanagement.api.controller;
++
++import biz.craftline.server.feature.usermanagement.domain.service.RBACService;
++import biz.craftline.server.feature.usermanagement.domain.service.UserPermissionManagementService;
++import biz.craftline.server.util.APIResponse;
++import lombok.RequiredArgsConstructor;
++import lombok.extern.slf4j.Slf4j;
++import org.springframework.http.HttpStatus;
++import org.springframework.http.ResponseEntity;
++import org.springframework.security.access.prepost.PreAuthorize;
++import org.springframework.security.core.Authentication;
++import org.springframework.security.core.context.SecurityContextHolder;
++import org.springframework.web.bind.annotation.*;
++
++import java.util.HashMap;
++import java.util.Map;
++
++@RestController
++@RequestMapping("/api/permissions")
++@RequiredArgsConstructor
++@Slf4j
++public class PermissionDemoController {
++
++    private final RBACService rbacService;
++    private final UserPermissionManagementService userPermissionService;
++
++    @GetMapping("/current-user")
++    public ResponseEntity<APIResponse<Map<String, Object>>> getCurrentUserPermissions() {
++        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
++        String username = auth.getName();
++
++        Map<String, Object> result = new HashMap<>();
++        result.put("username", username);
++        result.put("effectivePermissions", rbacService.getUserPermissions(username));
++        result.put("authorities", auth.getAuthorities().stream().map(Object::toString).toList());
++        result.put("roleBasedPermissions", rbacService.getUserRoles(username));
++
++        return APIResponse.success(result);
++    }
++
++    @GetMapping("/test/create-user")
++    @PreAuthorize("hasAuthority('CREATE_USER')")
++    public ResponseEntity<APIResponse<String>> testCreateUserPermission() {
++        return APIResponse.success("✅ You have CREATE_USER authority!");
++    }
++
++    @GetMapping("/test/delete-user")
++    @PreAuthorize("hasAuthority('DELETE_USER')")
++    public ResponseEntity<APIResponse<String>> testDeleteUserPermission() {
++        return APIResponse.success("✅ You have DELETE_USER authority!");
++    }
++
++    @GetMapping("/test/admin-access")
++    @PreAuthorize("hasAuthority('ADMIN_ACCESS')")
++    public ResponseEntity<APIResponse<String>> testAdminPermission() {
++        return APIResponse.success("✅ You have ADMIN_ACCESS authority!");
++    }
++
++    @GetMapping("/test/custom-annotation")
++    //@RequirePermission("VIEW_REPORTS")
++    public ResponseEntity<APIResponse<String>> testCustomAnnotation() {
++        return APIResponse.success("✅ Custom @RequirePermission annotation works!");
++    }
++
++    @GetMapping("/test/multiple-authorities")
++    @PreAuthorize("hasAnyAuthority('CREATE_USER', 'UPDATE_USER', 'USER_MANAGEMENT')")
++    public ResponseEntity<APIResponse<String>> testMultipleAuthorities() {
++        return APIResponse.success("✅ You have one of the required authorities!");
++    }
++
++    @GetMapping("/test/hierarchy-demo/{permission}")
++    public ResponseEntity<APIResponse<Map<String, Object>>> demonstrateHierarchy(@PathVariable String permission) {
++        String username = rbacService.getCurrentUsername();
++        Long userId = rbacService.getUserId(username);
++
++        Map<String, Object> demo = new HashMap<>();
++        demo.put("permission", permission);
++        demo.put("username", username);
++        demo.put("hasPermission", rbacService.currentUserHasPermission(permission));
++
++        // Get detailed breakdown
++        demo.put("userAllowedPermissions", userPermissionService.getUserAllowedPermissions(userId)
++            .stream().map(p -> p.getPermission().getName()).toList());
++        demo.put("userDeniedPermissions", userPermissionService.getUserDeniedPermissions(userId)
++            .stream().map(p -> p.getPermission().getName()).toList());
++        demo.put("roleBasedPermissions", rbacService.getUserRoles(username));
++        demo.put("effectivePermissions", rbacService.getUserPermissions(username));
++
++        return APIResponse.success(demo);
++    }
++
++    /*
++    @PostMapping("/simulate/scenario")
++    @PreAuthorize("hasAuthority('MANAGE_USER_PERMISSIONS')")
++    public ResponseEntity<APIResponse<String>> simulatePermissionScenario(
++            @RequestParam String targetUser,
++            @RequestParam String permission,
++            @RequestParam String action) { // grant, deny, remove
++
++        String currentUser = rbacService.getCurrentUsername();
++        String reason = "API simulation test";
++        boolean success = false;
++
++        switch (action.toLowerCase()) {
++            case "grant":
++                success = userPermissionService.grantPermissionToUser(targetUser, permission, currentUser, reason);
++                break;
++            case "deny":
++                success = userPermissionService.denyPermissionToUser(targetUser, permission, currentUser, reason);
++                break;
++            case "remove":
++                success = userPermissionService.removeUserPermissionOverride(targetUser, permission);
++                break;
++            default:
++                return APIResponse.error("Invalid action. Use: grant, deny, or remove", HttpStatus.BAD_REQUEST);
++        }
++
++        if (success) {
++            return APIResponse.success(
++                String.format("Successfully %sed permission '%s' for user '%s'", action, permission, targetUser));
++        } else {
++            return APIResponse.error(
++                String.format("Failed to %s permission '%s' for user '%s'", action, permission, targetUser) , HttpStatus.BAD_REQUEST);
++        }
++    }
++     */
++}
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/dto/ForgotPasswordRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/ForgotPasswordRequest.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/ForgotPasswordRequest.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/ForgotPasswordRequest.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,13 @@
++package biz.craftline.server.feature.usermanagement.api.dto;
++
++import jakarta.validation.constraints.Email;
++import jakarta.validation.constraints.NotBlank;
++import lombok.Data;
++
++@Data
++public class ForgotPasswordRequest {
++    @NotBlank(message = "Email is required")
++    @Email(message = "Email must be valid")
++    private String email;
++
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LoginRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LoginRequest.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LoginRequest.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LoginRequest.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,19 @@
++package biz.craftline.server.feature.usermanagement.api.dto;
++
++import jakarta.validation.constraints.Email;
++import jakarta.validation.constraints.NotBlank;
++import lombok.Getter;
++import lombok.Setter;
++
++@Setter
++@Getter
++public class LoginRequest {
++    // Getters and setters
++    @NotBlank(message = "Username is required")
++    @Email(message = "Username must be a valid email")
++    private String username;
++
++    @NotBlank(message = "Password is required")
++    private String password;
++
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LoginResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LoginResponse.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LoginResponse.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LoginResponse.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,21 @@
++package biz.craftline.server.feature.usermanagement.api.dto;
++
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class LoginResponse {
++    private final String accessToken;
++    private final String tokenType;
++    private final List<String> permissions;
++    private final String refreshToken;
++
++    public LoginResponse(String accessToken, String tokenType, List<String> permissions, String refreshToken) {
++        this.accessToken = accessToken;
++        this.tokenType = tokenType;
++        this.permissions = permissions;
++        this.refreshToken = refreshToken;
++    }
++
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LogoutRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LogoutRequest.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LogoutRequest.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/LogoutRequest.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,11 @@
++package biz.craftline.server.feature.usermanagement.api.dto;
++
++import jakarta.validation.constraints.NotBlank;
++import lombok.Data;
++
++@Data
++public class LogoutRequest {
++    @NotBlank(message = "Refresh token is required")
++    private String refreshToken;
++}
++
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RefreshResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RefreshResponse.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RefreshResponse.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RefreshResponse.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,15 @@
++package biz.craftline.server.feature.usermanagement.api.dto;
++
++import lombok.Data;
++
++@Data
++public class RefreshResponse{
++    private String accessToken;
++    private String refreshToken;
++
++    public RefreshResponse(String accessToken, String refreshToken) {
++        this.accessToken = accessToken;
++        this.refreshToken = refreshToken;
++    }
++
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RefreshTokenRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RefreshTokenRequest.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RefreshTokenRequest.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RefreshTokenRequest.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,13 @@
++package biz.craftline.server.feature.usermanagement.api.dto;
++
++import jakarta.validation.constraints.NotBlank;
++import lombok.Getter;
++import lombok.Setter;
++
++@Setter
++@Getter
++public class RefreshTokenRequest {
++    @NotBlank(message = "Refresh token is required")
++    private String refreshToken;
++
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RegisterRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RegisterRequest.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RegisterRequest.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RegisterRequest.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,26 @@
++package biz.craftline.server.feature.usermanagement.api.dto;
++
++import jakarta.validation.constraints.Email;
++import jakarta.validation.constraints.NotBlank;
++import jakarta.validation.constraints.Size;
++
++public class RegisterRequest {
++    @NotBlank(message = "Full name is required")
++    private String fullName;
++
++    @NotBlank(message = "Email is required")
++    @Email(message = "Email must be valid")
++    private String email;
++
++    @NotBlank(message = "Password is required")
++    @Size(min = 6, message = "Password must be at least 6 characters")
++    private String password;
++
++    // Getters and setters
++    public String getFullName() { return fullName; }
++    public void setFullName(String fullName) { this.fullName = fullName; }
++    public String getEmail() { return email; }
++    public void setEmail(String email) { this.email = email; }
++    public String getPassword() { return password; }
++    public void setPassword(String password) { this.password = password; }
++}
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RegisterResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RegisterResponse.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RegisterResponse.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/RegisterResponse.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,5 @@
++package biz.craftline.server.feature.usermanagement.api.dto;
++
++public record RegisterResponse(Long userId, String email, String fullName, String message) {
++
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/dto/ResetPasswordRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/ResetPasswordRequest.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/ResetPasswordRequest.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/ResetPasswordRequest.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,15 @@
++package biz.craftline.server.feature.usermanagement.api.dto;
++
++import jakarta.validation.constraints.NotBlank;
++import jakarta.validation.constraints.Size;
++import lombok.Data;
++
++@Data
++public  class ResetPasswordRequest {
++    @NotBlank(message = "Reset token is required")
++    private String resetToken;
++
++    @NotBlank(message = "New password is required")
++    @Size(min = 6, message = "Password must be at least 6 characters")
++    private String newPassword;
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/api/dto/TokenValidationResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/TokenValidationResponse.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/TokenValidationResponse.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/TokenValidationResponse.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,19 @@
++package biz.craftline.server.feature.usermanagement.api.dto;
++
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class TokenValidationResponse {
++    private final boolean valid;
++    private final String username;
++    private final List<String> permissions;
++
++    public TokenValidationResponse(boolean valid, String username, List<String> permissions) {
++        this.valid = valid;
++        this.username = username;
++        this.permissions = permissions;
++    }
++
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/domain/model/Permission.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/domain/model/Permission.java b/src/main/java/biz/craftline/server/feature/usermanagement/domain/model/Permission.java
+--- a/src/main/java/biz/craftline/server/feature/usermanagement/domain/model/Permission.java	(revision 654db11472eb14dcfe14647877ea32508d40a83c)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/domain/model/Permission.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -1,13 +1,39 @@
+ package biz.craftline.server.feature.usermanagement.domain.model;
+ 
+-
++import jakarta.persistence.*;
++import lombok.AllArgsConstructor;
+ import lombok.Data;
++import lombok.NoArgsConstructor;
+ 
++@Entity
++@Table(name = "permissions")
+ @Data
++@NoArgsConstructor
++@AllArgsConstructor
+ public class Permission {
++
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
+     private Long id;
++
++    @Column(unique = true, nullable = false)
+     private String name;
++
++    @Column
+     private String description;
+-    // Getters and setters
+-}
++
++    @Column(name = "resource_type")
++    private String resourceType;
++
++    @Column(name = "action")
++    private String action;
++
++    public Permission(String name) {
++        this.name = name;
++    }
+ 
++    public Permission(String name, String description) {
++        this.name = name;
++        this.description = description;
++    }
++}
+Index: src/main/java/biz/craftline/server/feature/usermanagement/domain/service/RBACService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/RBACService.java b/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/RBACService.java
+--- a/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/RBACService.java	(revision 654db11472eb14dcfe14647877ea32508d40a83c)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/RBACService.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -1,16 +1,153 @@
+ package biz.craftline.server.feature.usermanagement.domain.service;
+ 
+-import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
+-import biz.craftline.server.feature.usermanagement.infra.entity.PermissionEntity;
++import biz.craftline.server.feature.usermanagement.infra.entity.*;
++import biz.craftline.server.feature.usermanagement.infra.repository.UserRepository;
++import biz.craftline.server.feature.usermanagement.infra.repository.UserAllowedPermissionRepository;
++import biz.craftline.server.feature.usermanagement.infra.repository.UserDeniedPermissionRepository;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.security.core.Authentication;
++import org.springframework.security.core.context.SecurityContextHolder;
++import org.springframework.security.core.userdetails.UsernameNotFoundException;
+ import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.HashSet;
++import java.util.List;
+ import java.util.Set;
++import java.util.stream.Collectors;
+ 
+ @Service
+ public class RBACService {
++
++    @Autowired
++    private UserRepository userRepository;
++
++    @Autowired
++    private UserAllowedPermissionRepository userAllowedPermissionRepository;
++
++    @Autowired
++    private UserDeniedPermissionRepository userDeniedPermissionRepository;
++
+     public boolean hasPermission(RoleEntity role, String permissionName) {
+         Set<PermissionEntity> permissions = role.getPermissions();
+         if (permissions == null) return false;
+         return permissions.stream().anyMatch(p -> p.getName().equalsIgnoreCase(permissionName));
+     }
+-}
++
++    /**
++     * Get user permissions with hierarchical priority:
++     * 1. User Denied Permissions (highest priority - always deny)
++     * 2. User Allowed Permissions (override role permissions)
++     * 3. Role-based Permissions (default/fallback)
++     */
++    public List<String> getUserPermissions(String username) {
++        return userRepository.findByEmail(username)
++            .map(user -> {
++                // Get all role-based permissions first
++                Set<String> rolePermissions = user.getRoles().stream()
++                    .flatMap(role -> role.getPermissions().stream())
++                    .map(PermissionEntity::getName)
++                    .collect(Collectors.toSet());
++
++                // Get user-specific allowed permissions
++                List<String> userAllowed = userAllowedPermissionRepository
++                    .findByUserId(user.getId()).stream().map(p->p.getPermission().getName()).toList();
++
++                // Get user-specific denied permissions
++                List<String> userDenied = userDeniedPermissionRepository
++                        .findByUserId(user.getId()).stream().map(p->p.getPermission().getName()).toList();
++
++                // Apply hierarchical permission logic
++                Set<String> finalPermissions = new HashSet<>(rolePermissions);
++
++                // Add user-specific allowed permissions (priority 2)
++                finalPermissions.addAll(userAllowed);
++
++                // Remove user-specific denied permissions (priority 1 - highest)
++                userDenied.forEach(finalPermissions::remove);
++
++                return new ArrayList<>(finalPermissions);
++            }).get();
++    }
++
++    /**
++     * Check if user has permission with hierarchical priority system
++     */
++    public boolean userHasPermission(String username, String permissionName) {
++        return userRepository.findByEmail(username)
++            .map(user -> checkUserPermissionHierarchy(user, permissionName))
++            .orElse(false);
++    }
++
++    /**
++     * Hierarchical permission checking logic:
++     * 1. Check if permission is explicitly denied for user (highest priority)
++     * 2. Check if permission is explicitly allowed for user
++     * 3. Check role-based permissions (lowest priority)
++     */
++    private boolean checkUserPermissionHierarchy(UserEntity user, String permissionName) {
++        // Priority 1: Check if permission is explicitly denied for this user
++        List<String> deniedPermissions = userDeniedPermissionRepository
++                .findByUserId(user.getId()).stream().map(p->p.getPermission().getName()).toList();
++        if (deniedPermissions.contains(permissionName)) {
++            return false; // Explicitly denied - highest priority
++        }
++
++        // Priority 2: Check if permission is explicitly allowed for this user
++        List<String> allowedPermissions = userAllowedPermissionRepository
++                .findByUserId(user.getId()).stream().map(p->p.getPermission().getName()).toList();
++        if (allowedPermissions.contains(permissionName)) {
++            return true; // Explicitly allowed - overrides role permissions
++        }
++
++        // Priority 3: Check role-based permissions (fallback)
++        return user.getRoles().stream()
++            .flatMap(role -> role.getPermissions().stream())
++            .anyMatch(permission -> permission.getName().equalsIgnoreCase(permissionName));
++    }
++
++    public boolean currentUserHasPermission(String permissionName) {
++        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
++        if (authentication == null || !authentication.isAuthenticated()) {
++            return false;
++        }
++
++        String username = authentication.getName();
++        return userHasPermission(username, permissionName);
++    }
++
++    public boolean userHasRole(String username, String roleName) {
++        return userRepository.findByEmail(username)
++            .map(user -> user.getRoles().stream()
++                .anyMatch(role -> role.getName().equalsIgnoreCase(roleName)))
++            .orElse(false);
++    }
+ 
++    public boolean currentUserHasRole(String roleName) {
++        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
++        if (authentication == null || !authentication.isAuthenticated()) {
++            return false;
++        }
++        String username = authentication.getName();
++        return userHasRole(username, roleName);
++    }
++
++    public List<String> getUserRoles(String username) {
++        return userRepository.findByEmail(username)
++            .map(user -> user.getRoles().stream()
++                .map(RoleEntity::getName)
++                .collect(Collectors.toList()))
++            .orElse(List.of());
++    }
++
++    public String getCurrentUsername() {
++        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
++        return authentication != null ? authentication.getName() : null;
++    }
++
++    public Long getUserId(String username) {
++        return userRepository.findByEmail(username)
++                .orElseThrow(() -> new UsernameNotFoundException("User not found"))
++                .getId();
++    }
++}
+Index: src/main/java/biz/craftline/server/feature/usermanagement/domain/service/UserPermissionManagementService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/UserPermissionManagementService.java b/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/UserPermissionManagementService.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/UserPermissionManagementService.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,86 @@
++package biz.craftline.server.feature.usermanagement.domain.service;
++
++import biz.craftline.server.feature.usermanagement.api.mapper.PermissionMapper;
++import biz.craftline.server.feature.usermanagement.domain.model.Permission;
++import biz.craftline.server.feature.usermanagement.infra.entity.PermissionEntity;
++import biz.craftline.server.feature.usermanagement.infra.entity.UserAllowedPermissionEntity;
++import biz.craftline.server.feature.usermanagement.infra.entity.UserDeniedPermissionEntity;
++import biz.craftline.server.feature.usermanagement.infra.repository.*;
++import lombok.RequiredArgsConstructor;
++import lombok.extern.slf4j.Slf4j;
++import org.springframework.stereotype.Service;
++import org.springframework.transaction.annotation.Transactional;
++
++import java.util.List;
++import java.util.Optional;
++
++/**
++ * Service for managing user-specific permission overrides.
++ * Handles the priority system:
++ * 1. User Denied Permission (highest priority)
++ * 2. User Allowed Permission
++ * 3. Role-based permissions (lowest priority)
++ */
++@Service
++@RequiredArgsConstructor
++@Slf4j
++@Transactional
++public class UserPermissionManagementService {
++
++    private final UserAllowedPermissionRepository userAllowedPermissionRepository;
++    private final UserDeniedPermissionRepository userDeniedPermissionRepository;
++    private final PermissionRepository permissionRepository;
++    private final UserRepository userRepository;
++    private final RoleRepository roleRepository;
++
++    /**
++     * Get all permissions explicitly allowed for a user
++     */
++    public List<UserAllowedPermissionEntity> getUserAllowedPermissions(Long userId) {
++        return userAllowedPermissionRepository.findByUserId(userId);
++    }
++
++    /**
++     * Get all permissions explicitly denied for a user
++     */
++    public List<UserDeniedPermissionEntity> getUserDeniedPermissions(Long userId) {
++        return userDeniedPermissionRepository.findByUserId(userId);
++    }
++
++
++    /**
++     * Get permission by name
++     */
++    public Permission getPermission(String permissionName) {
++        return findPermissionByName(permissionName);
++    }
++
++    /**
++     * Create a new permission if it doesn't exist
++     */
++    public Permission createPermission(String name, String description) {
++        PermissionEntity entity = findOrCreatePermission(name, description);
++        return PermissionMapper.toDomain(entity);
++    }
++
++    /**
++     * Helper method to find permission by name
++     */
++    private Permission findPermissionByName(String permissionName) {
++        PermissionEntity entity = permissionRepository.findByName(permissionName).orElseThrow(() -> new RuntimeException("Permission not found: " + permissionName));
++        return PermissionMapper.toDomain(entity);
++    }
++
++    /**
++     * Helper method to find or create permission
++     */
++    private PermissionEntity findOrCreatePermission(String permissionName) {
++        return findOrCreatePermission(permissionName, "");
++    }
++
++    private PermissionEntity findOrCreatePermission(String permissionName, String description) {
++        return permissionRepository.findByName(permissionName).orElseGet(() -> {
++            return permissionRepository.save(new PermissionEntity(permissionName));
++        });
++    }
++}
+Index: src/main/java/biz/craftline/server/feature/usermanagement/domain/service/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/UserService.java b/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/UserService.java
+--- a/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/UserService.java	(revision 654db11472eb14dcfe14647877ea32508d40a83c)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/domain/service/UserService.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -7,13 +7,20 @@
+ import biz.craftline.server.feature.usermanagement.infra.repository.UserRepository;
+ import biz.craftline.server.feature.usermanagement.infra.repository.RoleRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.security.core.GrantedAuthority;
++import org.springframework.security.core.userdetails.UserDetails;
++import org.springframework.security.core.userdetails.UserDetailsService;
++import org.springframework.security.core.userdetails.UsernameNotFoundException;
++import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+ import org.springframework.stereotype.Service;
++
++import java.util.Collection;
+ import java.util.List;
+ import java.util.Optional;
+ import java.util.stream.Collectors;
+ 
+ @Service
+-public class UserService {
++public class UserService implements UserDetailsService {
+     @Autowired
+     private UserRepository userRepository;
+     @Autowired
+@@ -21,8 +28,8 @@
+ 
+     public List<User> getAllUsers() {
+         return userRepository.findAll().stream()
+-            .map(UserMapper::toDomain)
+-            .collect(Collectors.toList());
++                .map(UserMapper::toDomain)
++                .collect(Collectors.toList());
+     }
+ 
+     public Optional<User> getUserById(Long id) {
+@@ -33,6 +40,49 @@
+         return userRepository.findByEmail(email).map(UserMapper::toDomain);
+     }
+ 
++    @Override
++    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
++        User user = getUserByEmail(username)
++                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
++
++        return new UserDetails() {
++            @Override
++            public Collection<? extends GrantedAuthority> getAuthorities() {
++                return List.of();
++            }
++
++            @Override
++            public String getPassword() {
++                return user.getPassword();
++            }
++
++            @Override
++            public String getUsername() {
++                return user.getEmail();
++            }
++
++            @Override
++            public boolean isAccountNonExpired() {
++                return false;
++            }
++
++            @Override
++            public boolean isAccountNonLocked() {
++                return false;
++            }
++
++            @Override
++            public boolean isCredentialsNonExpired() {
++                return false;
++            }
++
++            @Override
++            public boolean isEnabled() {
++                return user.isEnabled();
++            }
++        };
++    }
++
+     public User createUser(User user) {
+         UserEntity entity = UserMapper.toEntity(user);
+         UserEntity saved = userRepository.save(entity);
+@@ -48,7 +98,7 @@
+             userEntity.setAccountNonLocked(userDetails.isAccountNonLocked());
+             userEntity.setAccountNonExpired(userDetails.isAccountNonExpired());
+             userEntity.setCredentialsNonExpired(userDetails.isCredentialsNonExpired());
+-           // userEntity.setAddress(userDetails.getAddress());
++            // userEntity.setAddress(userDetails.getAddress());
+             UserEntity updated = userRepository.save(userEntity);
+             return UserMapper.toDomain(updated);
+         }).orElseThrow(() -> new RuntimeException("User not found"));
+@@ -65,4 +115,13 @@
+         UserEntity updated = userRepository.save(userEntity);
+         return UserMapper.toDomain(updated);
+     }
++
++    public User createUserWithHashedPassword(User newUser) {
++        // Here you would hash the password before saving
++        // For example, using BCryptPasswordEncoder
++        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
++        String hashedPassword = encoder.encode(newUser.getPassword());
++        newUser.setPassword(hashedPassword);
++        return createUser(newUser);
++    }
+ }
+Index: src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/PermissionEntity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/PermissionEntity.java b/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/PermissionEntity.java
+--- a/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/PermissionEntity.java	(revision 654db11472eb14dcfe14647877ea32508d40a83c)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/PermissionEntity.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -14,6 +14,12 @@
+ 
+     @Column
+     private String description;
++    public PermissionEntity(){}
++
++    public PermissionEntity(String permissionName) {
++        this.name =permissionName;
++        this.description = "";
++    }
+ 
+     public Long getId() {
+         return id;
+Index: src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserAllowedPermissionEntity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserAllowedPermissionEntity.java b/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserAllowedPermissionEntity.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserAllowedPermissionEntity.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,40 @@
++package biz.craftline.server.feature.usermanagement.infra.entity;
++
++import jakarta.persistence.*;
++import lombok.Data;
++import lombok.NoArgsConstructor;
++import lombok.AllArgsConstructor;
++
++/**
++ * Entity representing user-specific allowed permissions that override role permissions
++ */
++@Data
++@Entity
++@Table(name = "user_allowed_permissions")
++@NoArgsConstructor
++@AllArgsConstructor
++public class UserAllowedPermissionEntity {
++
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    private Long id;
++
++    @ManyToOne(fetch = FetchType.LAZY)
++    @JoinColumn(name = "user_id", nullable = false)
++    private UserEntity user;
++
++    @ManyToOne(fetch = FetchType.LAZY)
++    @JoinColumn(name = "permission_id", nullable = false)
++    private PermissionEntity permission;
++
++    @Column(name = "granted_by")
++    private String grantedBy; // Who granted this permission
++
++    @Column(name = "reason")
++    private String reason; // Reason for granting this permission
++
++    public UserAllowedPermissionEntity(UserEntity user, PermissionEntity permission) {
++        this.user = user;
++        this.permission = permission;
++    }
++}
+Index: src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserDeniedPermissionEntity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserDeniedPermissionEntity.java b/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserDeniedPermissionEntity.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserDeniedPermissionEntity.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,40 @@
++package biz.craftline.server.feature.usermanagement.infra.entity;
++
++import jakarta.persistence.*;
++import lombok.Data;
++import lombok.NoArgsConstructor;
++import lombok.AllArgsConstructor;
++
++/**
++ * Entity representing user-specific allowed permissions that override role permissions
++ */
++@Data
++@Entity
++@Table(name = "user_denied_permissions")
++@NoArgsConstructor
++@AllArgsConstructor
++public class UserDeniedPermissionEntity {
++
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    private Long id;
++
++    @ManyToOne(fetch = FetchType.LAZY)
++    @JoinColumn(name = "user_id", nullable = false)
++    private UserEntity user;
++
++    @ManyToOne(fetch = FetchType.LAZY)
++    @JoinColumn(name = "permission_id", nullable = false)
++    private PermissionEntity permission;
++
++    @Column(name = "denied_by")
++    private String deniedBy; // Who deniedBy this permission
++
++    @Column(name = "reason")
++    private String reason; // Reason for denied this permission
++
++    public UserDeniedPermissionEntity(UserEntity user, PermissionEntity permission) {
++        this.user = user;
++        this.permission = permission;
++    }
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserEntity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserEntity.java b/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserEntity.java
+--- a/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserEntity.java	(revision 654db11472eb14dcfe14647877ea32508d40a83c)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/infra/entity/UserEntity.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -14,6 +14,7 @@
+ 
+ import java.sql.Date;
+ import java.util.Collection;
++import java.util.HashSet;
+ import java.util.Set;
+ import java.util.stream.Collectors;
+ 
+@@ -61,6 +62,13 @@
+     @JsonManagedReference
+     private Set<RoleEntity> roles = Set.of();
+ 
++    // User-specific permissions that override role permissions
++    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
++    private Set<UserAllowedPermissionEntity> allowedPermissions = new HashSet<>();
++
++    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
++    private Set<UserDeniedPermissionEntity> deniedPermissions = new HashSet<>();
++
+     // Account status fields
+     @Column(nullable = false)
+     private boolean enabled = true;
+@@ -76,8 +84,27 @@
+ 
+     @Override
+     public Collection<? extends GrantedAuthority> getAuthorities() {
+-        return roles.stream()
+-                .map(role -> new SimpleGrantedAuthority(role.getName()))
++        // Implement hierarchical permission system as Spring Security authorities
++        // Priority: 1. User Denied > 2. User Allowed > 3. Role-based permissions
++
++        Set<String> effectivePermissions = new HashSet<>();
++
++        // Start with role-based permissions (Priority 3 - lowest)
++        roles.stream()
++                .flatMap(role -> role.getPermissions().stream())
++                .forEach(permission -> effectivePermissions.add(permission.getName()));
++
++        // Add user-specific allowed permissions (Priority 2)
++        allowedPermissions
++                .forEach(userPermission -> effectivePermissions.add(userPermission.getPermission().getName()));
++
++        // Remove user-specific denied permissions (Priority 1 - highest)
++        deniedPermissions
++                .forEach(userPermission -> effectivePermissions.remove(userPermission.getPermission().getName()));
++
++        // Convert permissions to Spring Security authorities
++        return effectivePermissions.stream()
++                .map(SimpleGrantedAuthority::new)
+                 .collect(Collectors.toList());
+     }
+ 
+@@ -106,16 +133,12 @@
+         return enabled;
+     }
+ 
+-    public String getPassword() {
+-        return password;
+-    }
+-
+-    /*public UserEntity addRole(RoleEntity role) {
+-        //roles.add(role);
++    public UserEntity addRole(RoleEntity role) {
++        roles.add(role);
+         return this;
+     }
+ 
+     public void deleteRole(RoleEntity role) {
+-        //roles.remove(role);
+-    }*/
++        roles.remove(role);
++    }
+ }
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/infra/repository/UserAllowedPermissionRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/infra/repository/UserAllowedPermissionRepository.java b/src/main/java/biz/craftline/server/feature/usermanagement/infra/repository/UserAllowedPermissionRepository.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/infra/repository/UserAllowedPermissionRepository.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,11 @@
++package biz.craftline.server.feature.usermanagement.infra.repository;
++
++import biz.craftline.server.feature.usermanagement.infra.entity.UserAllowedPermissionEntity;
++import org.springframework.data.jpa.repository.JpaRepository;
++
++import java.util.List;
++import java.util.Optional;
++
++public interface UserAllowedPermissionRepository extends JpaRepository<UserAllowedPermissionEntity, Long> {
++    List<UserAllowedPermissionEntity> findByUserId(Long id);
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/feature/usermanagement/infra/repository/UserDeniedPermissionRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/infra/repository/UserDeniedPermissionRepository.java b/src/main/java/biz/craftline/server/feature/usermanagement/infra/repository/UserDeniedPermissionRepository.java
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/java/biz/craftline/server/feature/usermanagement/infra/repository/UserDeniedPermissionRepository.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,12 @@
++package biz.craftline.server.feature.usermanagement.infra.repository;
++
++import biz.craftline.server.feature.usermanagement.infra.entity.UserAllowedPermissionEntity;
++import biz.craftline.server.feature.usermanagement.infra.entity.UserDeniedPermissionEntity;
++import org.springframework.data.jpa.repository.JpaRepository;
++
++import java.util.List;
++import java.util.Optional;
++
++public interface UserDeniedPermissionRepository extends JpaRepository<UserDeniedPermissionEntity, Long> {
++    List<UserDeniedPermissionEntity> findByUserId(Long id);
++}
+\ No newline at end of file
+Index: src/main/java/biz/craftline/server/util/APIResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/biz/craftline/server/util/APIResponse.java b/src/main/java/biz/craftline/server/util/APIResponse.java
+--- a/src/main/java/biz/craftline/server/util/APIResponse.java	(revision 654db11472eb14dcfe14647877ea32508d40a83c)
++++ b/src/main/java/biz/craftline/server/util/APIResponse.java	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -59,6 +59,14 @@
+         return error(message, status, null);
+     }
+ 
++    public static <T> ResponseEntity<APIResponse<T>> badRequest(String message) {
++        return error(message, HttpStatus.BAD_REQUEST, null);
++    }
++
++    public static <T> ResponseEntity<APIResponse<T>> unauthorised(String message) {
++        return error(message, HttpStatus.UNAUTHORIZED, null);
++    }
++
+     public static <T> ResponseEntity<APIResponse<T>> error(String message, HttpStatus status, List<String> errors) {
+         APIResponse<T> body = new APIResponse<>();
+         body.setSuccess(false);
+Index: src/main/resources/application-dev.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/application-dev.properties b/src/main/resources/application-dev.properties
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/resources/application-dev.properties	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,14 @@
++# Development profile - used by default in local dev (ServerApplication sets dev if none provided)
++# Convenience settings: allow Hibernate to update schema during development
++
++spring.datasource.url=jdbc:mysql://127.0.0.1:3306/clapp
++spring.datasource.username=root
++spring.datasource.password=admin123
++spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
++
++spring.jpa.hibernate.ddl-auto=update
++spring.jpa.show-sql=true
++spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
++
++# Flyway: uses same classpath:db/migration. For local dev baseline-on-migrate is enabled to avoid accidental migration.
++
+Index: src/main/resources/application-prod.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/application-prod.properties b/src/main/resources/application-prod.properties
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/resources/application-prod.properties	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,63 @@
++# Production profile - no automatic schema changes
++# Provide DB connection via environment variables (recommended) or system properties
++
++# Example (do NOT commit real credentials):
++# spring.datasource.url=jdbc:mysql://prod-db-host:3306/clapp
++# spring.datasource.username=prod_user
++# spring.datasource.password=prod_password
++
++# Prefer environment variables for CI/CD
++spring.datasource.url=${SPRING_DATASOURCE_URL:}
++spring.datasource.username=${SPRING_DATASOURCE_USERNAME:}
++spring.datasource.password=${SPRING_DATASOURCE_PASSWORD:}
++
++# Do not allow Hibernate to change the schema in prod
++spring.jpa.hibernate.ddl-auto=validate
++spring.jpa.show-sql=false
++spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
++
++# Flyway should manage schema in production; baseline-on-migrate is enabled in application.properties
++Flyway usage (project)
++
++This project uses Flyway for database migrations. Basic notes:
++
++- Flyway migrations live under `src/main/resources/db/migration/` and must be named using Flyway's convention, e.g. `V2__add_store_table.sql`.
++- The project currently includes a safe baseline `V1__baseline.sql` so Flyway will treat existing databases as version 1.
++
++Run Flyway via Maven plugin (preferred in CI):
++
++Windows (cmd.exe):
++```
++set FLYWAY_URL=jdbc:mysql://127.0.0.1:3306/clapp
++set FLYWAY_USER=root
++set FLYWAY_PASSWORD=admin123
++mvn flyway:info
++mvn flyway:migrate
++```
++
++Linux/macOS:
++```
++export FLYWAY_URL=jdbc:mysql://127.0.0.1:3306/clapp
++export FLYWAY_USER=root
++export FLYWAY_PASSWORD=admin123
++mvn flyway:info
++mvn flyway:migrate
++```
++
++Run Flyway through Spring Boot startup (when Flyway is on the classpath):
++- Start the app normally; Flyway runs on application startup and applies pending migrations from `classpath:db/migration`.
++
++Recommendations:
++- Keep using `baseline-on-migrate=true` only when adopting Flyway into an existing DB for the first time. After migrations are applied and history is stable, prefer explicit migrations and remove baseline settings if appropriate.
++- For production, provide DB credentials via environment variables or a secrets manager. Use `application-prod.properties` (this repo uses `${SPRING_DATASOURCE_*}` placeholders).
++- Prefer small, focused SQL migrations with explicit statements and no destructive operations without review.
++
++Converting existing DB dumps into Flyway migrations:
++- Identify the authoritative dump file (e.g., from `db/Dump20250706/`).
++- Clean the dump: remove `SET` statements that conflict with target DB, remove `USE` statements, split into logical migrations (tables, constraints, indexes, seed data).
++- Create `V2__initial_schema.sql` containing non-destructive DDL and `V3__seed_data.sql` for initial seeds.
++
++If you want, I can:
++- Convert a chosen SQL dump into one or more Flyway migrations (I will preview the generated migration before adding it), or
++- Add the Flyway Maven plugin configuration to CI scripts.
++
+Index: src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+--- a/src/main/resources/application.properties	(revision 654db11472eb14dcfe14647877ea32508d40a83c)
++++ b/src/main/resources/application.properties	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -1,17 +1,19 @@
+ spring.application.name=server
+ server.port=9090
+ 
+-# Database Configuration
+-spring.datasource.url=jdbc:mysql://127.0.0.1:3306/clapp
+-spring.datasource.username=root
+-spring.datasource.password=admin123
+-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+-spring.sql.init.mode=always
+-
+-spring.jpa.hibernate.ddl-auto=update
+-spring.jpa.show-sql=true
+-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+-
+ # OpenAPI Configuration
+ springdoc.swagger-ui.path=/swagger-ui.html
+ springdoc.api-docs.path=/v3/api-docs
++
++# Flyway configuration (shared)
++spring.flyway.enabled=true
++# JWT Configuration
++app.jwt.secret=${JWT_SECRET:myVerySecretKeyForJWTTokenGenerationThatShouldBeAtLeast256BitsLong}
++app.jwt.expiration=${JWT_EXPIRATION:604800000}
++
++spring.flyway.baseline-on-migrate=true
++spring.flyway.baseline-version=1
++spring.flyway.locations=classpath:db/migration
++
++# Note: environment-specific datasource/JPA settings are in application-dev.properties and application-prod.properties
++# (dev uses update for convenience; prod should use validate and provide DB credentials via environment variables)
+Index: src/main/resources/db/migration/V1__baseline.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/db/migration/V1__baseline.sql b/src/main/resources/db/migration/V1__baseline.sql
+new file mode 100644
+--- /dev/null	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
++++ b/src/main/resources/db/migration/V1__baseline.sql	(revision b8b73f0ed7d2a611dbe60dad302a7346774bd63a)
+@@ -0,0 +1,4 @@
++-- Flyway baseline migration
++-- This baseline marks the current database state so Flyway can manage future migrations.
++-- No schema changes are applied by this file. Replace with real DDL if you want Flyway to create objects.
++
+diff --git a/doc/Hierarchical_Permission_System.md b/doc/Hierarchical_Permission_System.md
+new file mode 100644
+diff --git a/doc/JWT_Authentication.md b/doc/JWT_Authentication.md
+new file mode 100644
+diff --git a/src/main/java/biz/craftline/server/config/security/PermissionAspect.java b/src/main/java/biz/craftline/server/config/security/PermissionAspect.java
+new file mode 100644
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/DenyPermissionRequest.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/DenyPermissionRequest.java
+new file mode 100644
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/GrantPermissionRequest.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/GrantPermissionRequest.java
+new file mode 100644
+diff --git a/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/UserPermissionDetailsResponse.java b/src/main/java/biz/craftline/server/feature/usermanagement/api/dto/UserPermissionDetailsResponse.java
+new file mode 100644
+diff --git a/src/main/resources/db/migration/V2__create_user_permission_tables.sql b/src/main/resources/db/migration/V2__create_user_permission_tables.sql
+new file mode 100644

@@ -18,6 +18,12 @@ public class EmployeeEntity {
     @Column(nullable = false)
     private String name;
 
+    private String firstName;
+
+    private String lastName;
+
+    private String surName;
+
     @Column(name = "user_id")
     private Long userId;
 
@@ -25,11 +31,16 @@ public class EmployeeEntity {
     private Long roleId;
 
     @Column
-    private String storeId;
+    private Long storeId;
 
     @Column
-    private String businessId;
+    private Long businessId;
 
-    // Getters and setters
+    private String email;
+
+    private String phone;
+
+    private String joinDate;
+    private String leaveDate;
 }
 

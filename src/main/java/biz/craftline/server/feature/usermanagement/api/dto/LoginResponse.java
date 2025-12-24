@@ -1,21 +1,17 @@
 package biz.craftline.server.feature.usermanagement.api.dto;
 
+import biz.craftline.server.feature.usermanagement.domain.model.AuthUser;
+import biz.craftline.server.feature.usermanagement.domain.model.TokenInfo;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class LoginResponse {
-    private final String accessToken;
-    private final String tokenType;
-    private final List<String> permissions;
-    private final String refreshToken;
-
-    public LoginResponse(String accessToken, String tokenType, List<String> permissions, String refreshToken) {
-        this.accessToken = accessToken;
-        this.tokenType = tokenType;
-        this.permissions = permissions;
-        this.refreshToken = refreshToken;
-    }
-
+    private AuthUser user;
+    private TokenInfo tokenInfo;
 }

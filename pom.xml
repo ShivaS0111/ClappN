@@ -54,6 +54,12 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
+		<!-- Spring AOP for permission aspects -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
 		<!-- ✅ MySQL JDBC Driver -->
 		<dependency>
 			<groupId>com.mysql</groupId>

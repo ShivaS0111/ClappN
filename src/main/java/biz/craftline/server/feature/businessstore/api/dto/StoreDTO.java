@@ -34,6 +34,11 @@ public class StoreDTO {
 
     private Long addressId;
 
+    private String address;
+    private String email;
+    private String phone;
+    private String manager;
+
     @Builder.Default
     private Set<StoreOfferedServiceDTO> services = new HashSet<>();
 

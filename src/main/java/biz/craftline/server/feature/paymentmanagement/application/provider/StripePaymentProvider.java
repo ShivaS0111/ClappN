@@ -35,11 +35,13 @@ public class StripePaymentProvider implements PaymentProvider {
         try {
             log.debug("Creating Stripe checkout session: orderId={}, amount={}", request.getOrderId(), request.getAmount());
 
-            String callbackUrl = request.getCallbackUrl() != null ? request.getCallbackUrl() : "https://yourapp.com/payment/callback";
+            String callbackUrl = request.getCallbackUrl() != null ? request.getCallbackUrl() : "https://thenewzapp.com/payment/callback";
+             callbackUrl ="https://thenewzapp.com/payment/callback";
 
             SessionCreateParams params = SessionCreateParams.builder()
                     .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                     .setMode(SessionCreateParams.Mode.PAYMENT)
+                    //.setReturnUrl("https://thenewzapp.com/payment/callback")
                     .setSuccessUrl(callbackUrl + "?orderId=" + request.getOrderId() + "&status=success&sessionId={CHECKOUT_SESSION_ID}")
                     .setCancelUrl(callbackUrl + "?orderId=" + request.getOrderId() + "&status=cancelled")
                     .addLineItem(
@@ -48,7 +50,7 @@ public class StripePaymentProvider implements PaymentProvider {
                                     .setPriceData(
                                             SessionCreateParams.LineItem.PriceData.builder()
                                                     .setCurrency(request.getCurrency().toLowerCase())
-                                                    .setUnitAmount(request.getAmount())
+                                                    .setUnitAmount(request.getAmount()*100)
                                                     .setProductData(
                                                             SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                                     .setName("Order #" + request.getOrderId())

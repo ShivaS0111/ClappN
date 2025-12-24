@@ -20,7 +20,7 @@ public class BusinessServiceDTOMapper {
                 domain.getId(),
                 domain.getServiceName(),
                 domain.getDescription(),
-                domain.getStatus(),
+                domain.getStatus()!=null ? domain.getStatus() : 0,
                 businessTypeDTOMapper.toDTO(domain.getBusinessType()),
                 domain.getAmount(),
                 domain.getCurrency()
@@ -32,7 +32,7 @@ public class BusinessServiceDTOMapper {
                 dto.getId(),
                 dto.getName(),
                 dto.getDesc(),
-                dto.getStatus(),
+                dto.getStatus()!=null ? dto.getStatus() : 0,
                 businessTypeDTOMapper.toDomain(dto.getBusinessType()),
                 dto.getAmount(),
                 dto.getCurrency()
@@ -47,6 +47,7 @@ public class BusinessServiceDTOMapper {
                 .amount(dto.getAmount())
                 .businessType( BusinessType.builder().id(dto.getBusinessType()).build())
                 .currency(dto.getCurrency())
+                .status(dto.getStatus()!=null ? dto.getStatus() : 0)
                 .build();
     }
 }

@@ -17,8 +17,15 @@ public class Business {
     private String businessName;
 
     private String description;
+    private String contact;
+    private String email;
+    private String website;
+    private String address;
+    private Double latitude;
+    private Double longitude;
+    private Long createdBy;
 
-    private int status;
+    private Integer status;
 
     private Set<Store> stores = new HashSet<>();
 

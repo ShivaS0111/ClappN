@@ -18,7 +18,7 @@ public class BusinessServiceEntityMapper {
         entity.setId(domain.getId());
         entity.setServiceName(domain.getServiceName());
         entity.setDescription(domain.getDescription());
-        entity.setStatus(domain.getStatus());
+        entity.setStatus(domain.getStatus()!=null ? domain.getStatus() : 0);
         entity.setAmount(domain.getAmount());
         entity.setBusinessType(mapper.toEntity(domain.getBusinessType()));
         entity.setCurrency(domain.getCurrency());
@@ -35,5 +35,15 @@ public class BusinessServiceEntityMapper {
                 entity.getAmount(),
                 entity.getCreatedBy()
         );
+    }
+
+    public BusinessService toUpdate(BusinessService old, BusinessService updated) {
+        if (updated.getServiceName() != null) old.setServiceName(updated.getServiceName());
+        if (updated.getDescription() != null) old.setDescription(updated.getDescription());
+        if (updated.getStatus() != null) old.setStatus(updated.getStatus());
+        if (updated.getBusinessType() != null) old.setBusinessType(updated.getBusinessType());
+        if (updated.getAmount() != null) old.setAmount(updated.getAmount());
+        if (updated.getCurrency() != null) old.setCurrency(updated.getCurrency());
+        return old;
     }
 }

@@ -1,7 +1,7 @@
 package biz.craftline.server.feature.businesstype.api.dto;
 
 
-import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
+import biz.craftline.server.feature.businesstype.domain.model.Brand;
 import biz.craftline.server.feature.businesstype.domain.model.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,5 +31,7 @@ public class BusinessProductDTO {
     private float amount;
 
     private Long currency;
+
+    private Brand brand;
 
 }

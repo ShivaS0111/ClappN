@@ -1,6 +1,5 @@
 package biz.craftline.server.feature.businesstype.domain.model;
 
-import biz.craftline.server.feature.businesstype.api.dto.BusinessTypeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +20,5 @@ public class BusinessProduct {
     private List<Category> categories;
     private float amount;
     private Long currency;
+    private Brand brand;
 }

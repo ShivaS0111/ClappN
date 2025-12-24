@@ -21,10 +21,16 @@ public class BusinessDTO {
     private String businessName;
 
     private String description;
+    private String contact;
+    private String email;
+    private String website;
+    private String address;
+    private Double latitude;
+    private Double longitude;
 
     private int status;
 
-    private long createdBy;
+    private Long createdBy;
 
     private Set<StoreDTO> stores = new HashSet<>();
 

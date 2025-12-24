@@ -29,6 +29,10 @@ public class AddNewStoreRequest {
     @NotNull(message = "Business ID is required")
     private Long businessId;
 
-    private long address;
+    private long addressId;
+
+    private String address;
+    private String email;
+    private String phone;
 
 }

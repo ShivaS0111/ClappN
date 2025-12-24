@@ -10,7 +10,7 @@ public interface BusinessProductsService {
 
     List<BusinessProduct> findAll();
 
-    void deleteServiceById(Long id);
+    void deleteProductById(Long id);
 
     Optional<BusinessProduct> findById(Long businessTypeId);
 
@@ -18,8 +18,9 @@ public interface BusinessProductsService {
 
     List<BusinessProduct> save(List<BusinessProduct> product);
 
-    List<BusinessProduct> findByBusinessIdAndSearch(Long id, String keyword);
+    List<BusinessProduct> findByBusinessTypeIdAndSearch(Long businessTypeId, String keyword);
 
     List<BusinessProduct> findBySearch(String keyword);
 
+    List<BusinessProduct> findByBusinessTypeId(Long businessTypeId);
 }

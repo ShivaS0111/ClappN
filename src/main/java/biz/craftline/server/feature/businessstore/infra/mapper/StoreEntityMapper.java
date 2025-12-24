@@ -24,6 +24,10 @@ public class StoreEntityMapper {
                 .businessType(entity.getBusinessType())
                 .business(business)
                 .addressId(entity.getAddressId())
+                .address(entity.getAddress())
+                .phone(entity.getPhone())
+                .email(entity.getEmail())
+                .manager(entity.getManager())
                 .build();
     }
 
@@ -36,6 +40,10 @@ public class StoreEntityMapper {
                 .businessType(store.getBusinessType())
                 .business( store.getBusiness() != null ? mapper.toEntity(store.getBusiness()) : null)
                 .addressId(store.getAddressId())
+                .address(store.getAddress())
+                .phone(store.getPhone())
+                .email(store.getEmail())
+                .manager(store.getManager())
                 .build();
     }
 }

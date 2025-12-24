@@ -23,6 +23,8 @@ public class CategoryEntityMapper {
             Category parent = new Category();
             parent.setId(entity.getParent().getId());
             parent.setName(entity.getParent().getName());
+            parent.setDescription(entity.getParent().getDescription());
+            parent.setStatus(entity.getParent().getStatus());
         }
 
         // Children mapped shallow (avoid recursion back to parent)
@@ -33,6 +35,7 @@ public class CategoryEntityMapper {
                         Category c = new Category();
                         c.setId(child.getId());
                         c.setName(child.getName());
+                        c.setDescription(child.getDescription());
                         c.setStatus(child.getStatus());
                         return c;
                     })
@@ -68,6 +71,7 @@ public class CategoryEntityMapper {
                         CategoryEntity e = new CategoryEntity();
                         e.setId(child.getId());
                         e.setName(child.getName());
+                        e.setDescription(child.getDescription());
                         e.setStatus(child.getStatus());
                         return e;
                     })

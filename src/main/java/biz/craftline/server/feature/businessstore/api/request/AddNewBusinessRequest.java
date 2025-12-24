@@ -20,4 +20,12 @@ public class AddNewBusinessRequest {
     @Size(max = 255, message = "Description must be at most 255 characters")
     private String description;
 
+    private int status;
+    private String contact;
+    private String email;
+    private String website;
+    private String address;
+    private Double latitude;
+    private Double longitude;
+
 }

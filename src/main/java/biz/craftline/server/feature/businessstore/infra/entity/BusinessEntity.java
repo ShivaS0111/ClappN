@@ -34,7 +34,14 @@ public class BusinessEntity {
 
     private int status;
 
-    private long createdBy;
+    private String contact;
+    private String email;
+    private String website;
+    private String address;
+    private Double latitude;
+    private Double longitude;
+
+    private Long createdBy;
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
