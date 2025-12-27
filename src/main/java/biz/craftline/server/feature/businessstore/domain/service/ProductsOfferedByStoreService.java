@@ -13,6 +13,11 @@ public interface ProductsOfferedByStoreService {
 
     void deleteStoreProductById(Long id);
 
+    List<StoreOfferedProduct> findAll();
+
+    List<StoreOfferedProduct>  searchProductByKeyword(String searchTerm);
+    List<StoreOfferedProduct>  searchProductByStoreIdAndKeyword(Long storeId, String searchTerm);
+
     Optional<List<StoreOfferedProduct>> findProductsByStoreId(Long id);
 
     StoreOfferedProduct save(StoreOfferedProduct domain);

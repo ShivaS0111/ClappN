@@ -18,7 +18,7 @@ public class BusinessProduct {
     private int status;
     private BusinessType businessType;
     private List<Category> categories;
-    private float amount;
+    private Float amount;
     private Long currency;
     private Brand brand;
 }

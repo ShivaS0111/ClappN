@@ -87,9 +87,19 @@ public class BusinessProductController {
         return APIResponse.success(convertToDTOList(list));
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<APIResponse<BusinessProductDTO>> add(@RequestBody AddNewBusinessProductRequest dto) {
         BusinessProduct bs = service.save(mapper.toDomain(dto));
+        return APIResponse.success(mapper.toDTO(bs));
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<APIResponse<BusinessProductDTO>> update(
+            @PathVariable("productId") Long productId,
+            @RequestBody AddNewBusinessProductRequest dto) {
+        BusinessProduct businessProduct = mapper.toDomain(dto);
+        businessProduct.setId(productId);
+        BusinessProduct bs = service.update(businessProduct);
         return APIResponse.success(mapper.toDTO(bs));
     }
 

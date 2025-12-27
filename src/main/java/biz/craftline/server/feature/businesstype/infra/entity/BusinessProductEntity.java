@@ -37,9 +37,9 @@ public class BusinessProductEntity {
     @JoinColumn(name = "brand", referencedColumnName = "id")
     private BrandEntity brand;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "business_product_category",
+            name = "business_product_categories",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )

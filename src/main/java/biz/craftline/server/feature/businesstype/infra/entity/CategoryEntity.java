@@ -31,5 +31,8 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CategoryEntity> children;
 
-    private int status=1; // 1: active, 0: inactive
+    private Integer status=1; // 1: active, 0: inactive
 }
+
+
+

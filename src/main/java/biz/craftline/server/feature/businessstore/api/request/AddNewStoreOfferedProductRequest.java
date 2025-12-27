@@ -17,6 +17,7 @@ public class AddNewStoreOfferedProductRequest {
     private Long businessProductId;
 
     private Long createdBy;
+    private Double price;
 
     private LocalDateTime createdAt;
 

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -20,10 +22,13 @@ public class AddNewBusinessServiceRequest {
     private Integer status;
 
     @NotNull(message = "businessType should not be null")
-    private long businessType;
+    private long businessTypeId;
+
+    private List<Long> categoryIds;
 
     private float amount;
 
     private Long currency;
+    private Long duration;//in minutes
 
 }

@@ -21,7 +21,7 @@ public class AddNewBusinessProductRequest {
 
     private int status;
 
-    private Long businessType;
+    private Long businessTypeId;
     private Long brandId;
 
     //@NotNull(message = "categories should not be null")

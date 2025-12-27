@@ -30,6 +30,10 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
     @Autowired
     BusinessServicesJpaRepository businessServicesJpaRepository;
 
+    @Override
+    public Optional<List<StoreOfferedService>> findAll() {
+        return Optional.of(servicesOfferedByStoreRepository.findAll().stream().map(mapper::toDomain).toList());
+    }
 
     @Override
     public void deleteStoreServiceById(Long id) {
@@ -38,8 +42,20 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
 
     @Override
     public Optional<List<StoreOfferedService>> findServicesByStoreId(Long id) {
-        Optional<List<StoreOfferedServiceEntity>> entities = servicesOfferedByStoreRepository.findServicesByStoreId(id);
-        return Optional.of(entities.get().stream().map(mapper::toDomain).toList());
+        List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository.findServicesByStoreId(id).orElse(List.of());
+        return Optional.of(entities.stream().map(mapper::toDomain).toList());
+    }
+
+    @Override
+    public List<StoreOfferedService> searchServiceByKeyword(String searchTerm) {
+        List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository.searchByKeyword(searchTerm);
+        return entities.stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public List<StoreOfferedService> searchServiceByStoreIdAndKeyword(Long storeId, String searchTerm) {
+        List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository.searchByStoreIdAndKeyword(storeId.toString(), searchTerm);
+        return entities.stream().map(mapper::toDomain).toList();
     }
 
     @Override

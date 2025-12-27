@@ -2,7 +2,6 @@ package biz.craftline.server.feature.businessstore.domain.service;
 
 
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
-import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +12,7 @@ public interface ServicesOfferedByStoreService {
 
     void deleteStoreServiceById(Long id);
 
+    Optional<List<StoreOfferedService>> findAll();
     Optional<List<StoreOfferedService>> findServicesByStoreId(Long id);
 
     StoreOfferedService save(StoreOfferedService entity);
@@ -20,4 +20,8 @@ public interface ServicesOfferedByStoreService {
     List<StoreOfferedService> save(List<StoreOfferedService> entity);
 
     StoreOfferedService findById(Long id);
+
+    List<StoreOfferedService>  searchServiceByKeyword(String searchTerm);
+
+    List<StoreOfferedService>  searchServiceByStoreIdAndKeyword(Long storeId, String searchTerm);
 }

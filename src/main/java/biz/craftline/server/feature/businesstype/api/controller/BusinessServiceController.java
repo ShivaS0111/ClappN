@@ -72,15 +72,17 @@ public class BusinessServiceController {
         return APIResponse.success(convertToDTOList(list));
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<APIResponse<BusinessServiceDTO>> add(@RequestBody AddNewBusinessServiceRequest dto) {
         BusinessService bs = service.save(mapper.toDomain(dto));
         return APIResponse.success(mapper.toDTO(bs));
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<APIResponse<BusinessServiceDTO>> update(@RequestBody AddNewBusinessServiceRequest dto) {
-        BusinessService bs = service.update(mapper.toDomain(dto));
+    @PutMapping("/{id}")
+    public ResponseEntity<APIResponse<BusinessServiceDTO>> update(@PathVariable("id") Long id, @RequestBody AddNewBusinessServiceRequest dto) {
+        BusinessService businessService = mapper.toDomain(dto);
+        businessService.setId(id);
+        BusinessService bs = service.update(businessService);
         return APIResponse.success(mapper.toDTO(bs));
     }
 
@@ -88,7 +90,7 @@ public class BusinessServiceController {
     public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> addAll2(
             @RequestBody List<AddNewBusinessServiceRequest> request) {
 
-        List<Long> businessTypeIds = request.stream().map( AddNewBusinessServiceRequest::getBusinessType).toList();
+        List<Long> businessTypeIds = request.stream().map( AddNewBusinessServiceRequest::getBusinessTypeId).toList();
         Map<Long, BusinessType> businessTypeMap = businessTypeService.findAllByIds(businessTypeIds)
                 .stream()
                 .collect(Collectors.toMap(BusinessType::getId, Function.identity()));
@@ -97,7 +99,7 @@ public class BusinessServiceController {
         for (AddNewBusinessServiceRequest dto: request){
             try {
                 BusinessService bs = mapper.toDomain(dto);
-                bs.setBusinessType(businessTypeMap.get( dto.getBusinessType()));
+                bs.setBusinessType(businessTypeMap.get( dto.getBusinessTypeId()));
                 list.add(mapper.toDTO(service.save(bs)));
             }catch (Exception e){ e.printStackTrace();}
         }
@@ -109,7 +111,7 @@ public class BusinessServiceController {
             @RequestBody List<AddNewBusinessServiceRequest> requests) {
 
         Map<Long, BusinessType> businessTypeMap = businessTypeService
-                .findAllByIds(requests.stream().map(AddNewBusinessServiceRequest::getBusinessType).toList())
+                .findAllByIds(requests.stream().map(AddNewBusinessServiceRequest::getBusinessTypeId).toList())
                 .stream()
                 .collect(Collectors.toMap(BusinessType::getId, Function.identity()));
 
@@ -117,7 +119,7 @@ public class BusinessServiceController {
                 .map(request -> {
                     try {
                         BusinessService domain = mapper.toDomain(request);
-                        domain.setBusinessType(businessTypeMap.get(request.getBusinessType()));
+                        domain.setBusinessType(businessTypeMap.get(request.getBusinessTypeId()));
                         return domain;
                     } catch (Exception e) {
                         e.printStackTrace(); // You may want to log this properly instead

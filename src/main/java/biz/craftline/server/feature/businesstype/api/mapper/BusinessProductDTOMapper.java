@@ -3,7 +3,6 @@ package biz.craftline.server.feature.businesstype.api.mapper;
 import biz.craftline.server.feature.businesstype.api.dto.BusinessProductDTO;
 import biz.craftline.server.feature.businesstype.api.request.AddNewBusinessProductRequest;
 import biz.craftline.server.feature.businesstype.domain.model.*;
-import biz.craftline.server.feature.businesstype.domain.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -13,9 +12,6 @@ import java.util.List;
 
 @Component
 public class BusinessProductDTOMapper {
-
-    @Autowired
-    CategoryService categoryService;
 
     @Lazy
     @Autowired
@@ -50,19 +46,16 @@ public class BusinessProductDTOMapper {
     }
 
     public BusinessProduct toDomain(AddNewBusinessProductRequest dto) {
-
-        List<Category> categoryList = dto.getCategories() != null ?
-                categoryService.findAllByIds(dto.getCategories())
-                : new ArrayList<>();
         return BusinessProduct.builder()
                 //.id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDesc())
-                .businessType(dto.getBusinessType() != null ? BusinessType.builder().id(dto.getBusinessType()).build() : null)
+                .businessType(dto.getBusinessTypeId() != null ? BusinessType.builder().id(dto.getBusinessTypeId()).build() : null)
                 .brand(dto.getBrandId() != null ? Brand.builder().id(dto.getBrandId()).build() : null)
-                .categories(categoryList)
+                .categories(dto.getCategories().stream().map( catId -> Category.builder().id(catId).build()).toList())
                 .amount(dto.getAmount())
                 .currency(dto.getCurrency())
+                .status(dto.getStatus())
                 .build();
     }
 }

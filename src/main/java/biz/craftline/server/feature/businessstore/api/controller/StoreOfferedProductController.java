@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@RequestMapping("/store-product")
+@RequestMapping("/api/store-product")
 @RestController
 public class StoreOfferedProductController {
 
@@ -29,8 +29,37 @@ public class StoreOfferedProductController {
     private final ProductsOfferedByStoreService storeOfferedProductService;
     private final StoreItemPriceService priceHandleService;
 
-    @GetMapping("/list/{storeId}")
-    public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> list(@PathVariable("storeId") Long storeId) {
+
+    @GetMapping
+    public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> list() {
+        List<StoreOfferedProductDTO> dtoList = storeOfferedProductService.findAll().stream()
+                .map( productMapper::toDTO).toList();
+        return APIResponse.success(dtoList, "Store products retrieved successfully");
+    }
+
+    @GetMapping("/search/{searchTerm}")
+    public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> search(
+            @PathVariable("searchTerm") String searchTerm) {
+        List<StoreOfferedProduct> list = storeOfferedProductService.searchProductByKeyword(searchTerm);
+        List<StoreOfferedProductDTO> dtoList = list.stream()
+                .map(productMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtoList, "Store products retrieved successfully");
+    }
+
+    @GetMapping("/search/{searchTerm}/{storeId}")
+    public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> searchProductByStoreIdAndKeyword(
+            @PathVariable("searchTerm") String searchTerm, @PathVariable("storeId") Long storeId) {
+        List<StoreOfferedProduct> list = storeOfferedProductService.searchProductByStoreIdAndKeyword(storeId, searchTerm);
+        List<StoreOfferedProductDTO> dtoList = list.stream()
+                .map(productMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtoList, "Store products retrieved successfully");
+    }
+
+    @GetMapping("/{storeId}")
+    public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> storeOfferedProducts(
+            @PathVariable("storeId") Long storeId) {
         Optional<List<StoreOfferedProduct>> list = storeOfferedProductService.findProductsByStoreId(storeId);
         List<StoreOfferedProductDTO> dtoList = list.orElseThrow().stream()
                 .map(productMapper::toDTO)

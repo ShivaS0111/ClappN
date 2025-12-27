@@ -23,4 +23,6 @@ public interface BusinessProductsService {
     List<BusinessProduct> findBySearch(String keyword);
 
     List<BusinessProduct> findByBusinessTypeId(Long businessTypeId);
+
+    BusinessProduct update(BusinessProduct businessProduct);
 }

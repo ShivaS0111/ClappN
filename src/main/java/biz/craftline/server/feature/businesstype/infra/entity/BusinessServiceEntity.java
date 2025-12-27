@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Setter
@@ -32,9 +34,18 @@ public class BusinessServiceEntity {
     @JoinColumn(name = "business_type", nullable = false)
     private BusinessTypeEntity businessType;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "business_service_categories",
+            joinColumns = @JoinColumn(name = "service_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<CategoryEntity> categories = new ArrayList<>();
+
     private float amount;
 
     private Long currency;
+    private Long duration;//in minutes
 
     private Long createdBy;
 

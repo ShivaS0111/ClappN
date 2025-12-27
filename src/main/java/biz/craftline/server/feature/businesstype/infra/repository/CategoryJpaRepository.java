@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface CategoryJpaRepository extends JpaRepository<CategoryEntity, Long> {
@@ -16,4 +17,6 @@ public interface CategoryJpaRepository extends JpaRepository<CategoryEntity, Lon
 
     @Query("SELECT c FROM CategoryEntity  c WHERE (LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')) )")
     List<CategoryEntity> searchByKeyword(@Param("keyword") String keyword);
+
+    List<CategoryEntity> findAllByIdIn(Set<Long> ids);
 }

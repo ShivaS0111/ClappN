@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,5 +26,8 @@ public class BusinessServiceDTO {
     private float amount;
 
     private Long currency;
+
+    private List<CategoryDTO> categories;
+    private Long duration;//in minutes
 
 }

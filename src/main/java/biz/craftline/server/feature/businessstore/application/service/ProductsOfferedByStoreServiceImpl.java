@@ -27,6 +27,11 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
     BusinessProductJpaRepository businessProductJpaRepository;
 
     @Override
+    public List<StoreOfferedProduct> findAll() {
+        return productsOfferedByStoreRepository.findAll().stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
     public void deleteStoreProductById(Long id) {
         productsOfferedByStoreRepository.deleteStoreProductById(id);
     }
@@ -36,6 +41,18 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
         List<StoreOfferedProductEntity> entities = productsOfferedByStoreRepository.findProductsByStoreId(id)
                 .orElseThrow(() -> new RuntimeException("Products not found with id: " + id));
         return Optional.of(entities.stream().map(mapper::toDomain).toList());
+    }
+
+    @Override
+    public List<StoreOfferedProduct> searchProductByKeyword(String searchTerm) {
+        List<StoreOfferedProductEntity> entities = productsOfferedByStoreRepository.searchByKeyword(searchTerm);
+        return entities.stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public List<StoreOfferedProduct> searchProductByStoreIdAndKeyword(Long storeId, String searchTerm) {
+        List<StoreOfferedProductEntity> entities = productsOfferedByStoreRepository.searchByStoreIdAndKeyword(storeId.toString(), searchTerm);
+        return entities.stream().map(mapper::toDomain).toList();
     }
 
     @Override

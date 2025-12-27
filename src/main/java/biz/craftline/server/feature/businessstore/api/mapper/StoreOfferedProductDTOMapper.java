@@ -32,8 +32,6 @@ public class StoreOfferedProductDTOMapper {
         dto.setStoreId(req.getStoreId());
         dto.setBusinessProductId(req.getBusinessProductId());
         dto.setCreatedBy(req.getCreatedBy());
-        dto.setCreatedAt(req.getCreatedAt());
-        dto.setUpdatedAt(req.getUpdatedAt());
         return dto;
     }
 }
