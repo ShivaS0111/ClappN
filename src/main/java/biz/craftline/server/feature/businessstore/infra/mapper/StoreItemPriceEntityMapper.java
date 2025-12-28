@@ -25,8 +25,6 @@ public class StoreItemPriceEntityMapper {
         if(  entity.getCurrency()!=null)
             builder.currency(entity.getCurrency());
 
-        if(  entity.getService()!=null)
-            builder.itemId(entity.getService().getId());
         return builder.build();
     }
 
@@ -38,14 +36,6 @@ public class StoreItemPriceEntityMapper {
                 .price(store.getPrice())
                 .createdBy(0L) // Default value, should be set by service layer
                 .validFrom(LocalDateTime.now());
-
-        if( store.getItemType()!=null && store.getItemId()!=null){
-            if(store.getItemType() == 1 ){
-                builder.productLot(ProductLotEntity.builder().id(store.getItemId()).build());
-            }else if(store.getItemType() == 2 ){
-                builder.service(StoreOfferedServiceEntity.builder().id(store.getItemId()).build());
-            }
-        }
 
         builder.itemType(store.getItemType());
         builder.itemId(store.getItemId());

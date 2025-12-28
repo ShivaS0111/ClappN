@@ -14,7 +14,7 @@ public class ProductLotDTO {
     private double unitPrice;
     private Long currency;
     private Long country;
-    private boolean active = true;
+    private int active;
     private String purchasedAt;
     private String mfgDate;
     private String expiryAt;

@@ -1,5 +1,7 @@
 package biz.craftline.server.feature.businessstore.infra.repository;
 
+import biz.craftline.server.feature.businessstore.api.dto.ItemKey;
+import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.inventorymanagement.infra.entity.ProductLotEntity;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreItemPriceEntity;
 import org.springframework.data.domain.Pageable;
@@ -76,7 +78,7 @@ public interface StoreItemPriceHandleRepository extends JpaRepository<StoreItemP
 
     // === CURRENT VALID PRICE (time-valid only) ===
     @Query(value = """
-            SELECT * FROM store_item_price p 
+            SELECT * FROM store_item_price p
             WHERE p.item_type = :itemType 
             AND p.item_id = :itemId 
             AND p.status = 1
@@ -90,54 +92,20 @@ public interface StoreItemPriceHandleRepository extends JpaRepository<StoreItemP
             @Param("now") LocalDateTime now
     );
 
-    // 1️⃣ Get latest active lot for a given product
-    @Query(value = """
-        SELECT * FROM product_lot l
-        WHERE l.product_id = :productId
-          AND l.active = true
-        ORDER BY l.purchased_at DESC
-        """, nativeQuery = true)
-    List<ProductLotEntity> findActiveLotsByProduct(@Param("productId") Long productId, Pageable pageable);
-
-    // 2️⃣ Get latest price for that lot
-    @Query(value = """
-        SELECT * FROM store_item_price p
-        WHERE p.product_lot_id = :productLotId
-        ORDER BY p.created_at DESC
-        """, nativeQuery = true)
-    Optional<StoreItemPriceEntity> findLatestPriceByProductLot(@Param("productLotId") Long productLotId);
-
-    // 3️⃣ Get currently active price (based on validity)
-    @Query(value = """
-        SELECT * FROM store_item_price p
-        WHERE p.product_lot_id = :productLotId
+    @Query("""
+        SELECT p
+        FROM store_item_price p
+        WHERE p.itemId IN :itemIds
+          AND p.itemType = :itemType
           AND p.status = 1
-          AND (p.valid_from IS NULL OR p.valid_from <= CURRENT_TIMESTAMP)
-          AND (p.valid_to IS NULL OR p.valid_to >= CURRENT_TIMESTAMP)
-        ORDER BY p.valid_from DESC NULLS LAST, p.created_at DESC
-        """, nativeQuery = true)
-    Optional<StoreItemPriceEntity> findCurrentPriceByProductLot(@Param("productLotId") Long productLotId);
+          AND (p.validFrom IS NULL OR p.validFrom <= CURRENT_TIMESTAMP)
+          AND (p.validTo IS NULL OR p.validTo >= CURRENT_TIMESTAMP)
+        ORDER BY p.validFrom DESC NULLS LAST, p.createdAt DESC
+    """)
+    List<StoreItemPriceEntity> findLatestPricesForItems(
+            @Param("itemIds") List<Long> itemIds,
+            @Param("itemType") Long itemType
+    );
 
-    @Query(value = """
-        SELECT p.* FROM store_item_price p
-        JOIN product_lot pl ON p.product_lot_id = pl.id
-        JOIN product prod ON pl.product_id = prod.id
-        WHERE prod.id = :productId
-        ORDER BY p.created_at DESC
-        """, nativeQuery = true)
-    Optional<StoreItemPriceEntity> findLatestPriceByProductId(@Param("productId") Long productId);
 
-    @Query(value = """
-        SELECT p.* FROM store_item_price p
-        JOIN product_lot pl ON p.product_lot_id = pl.id
-        JOIN product prod ON pl.product_id = prod.id
-        WHERE prod.id = :productId
-          AND p.status = 1
-          AND (p.valid_from IS NULL OR p.valid_from <= :now)
-          AND (p.valid_to IS NULL OR p.valid_to >= :now)
-        ORDER BY p.created_at DESC
-        """, nativeQuery = true)
-    Optional<StoreItemPriceEntity> findCurrentPriceByProductId(
-            @Param("productId") Long productId,
-            @Param("now") LocalDateTime now);
 }

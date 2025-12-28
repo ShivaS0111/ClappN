@@ -27,7 +27,7 @@ public class ProductLotDTOMapper {
         target.setUnitPrice(source.getUnitPrice());
         target.setCurrency(source.getCurrency());
         target.setCountry(source.getCountry());
-        target.setActive(source.isActive());
+        target.setActive(source.getActive());
         target.setPurchasedAt(source.getPurchasedAt());
         target.setMfgDate(source.getMfgDate());
         target.setExpiryAt(source.getExpiryAt());
@@ -56,7 +56,7 @@ public class ProductLotDTOMapper {
         target.setUnitPrice(source.getUnitPrice());
         target.setCurrency(source.getCurrency());
         target.setCountry(source.getCountry());
-        target.setActive(source.isActive());
+        target.setActive(source.getActive());
         target.setPurchasedAt(source.getPurchasedAt());
         target.setMfgDate(source.getMfgDate());
         target.setExpiryAt(source.getExpiryAt());
@@ -84,7 +84,7 @@ public class ProductLotDTOMapper {
         target.setUnitPrice(source.getUnitPrice());
         target.setCurrency(source.getCurrency());
         target.setCountry(source.getCountry());
-        target.setActive(source.isActive());
+        target.setActive(source.getActive());
         target.setPurchasedAt(source.getPurchasedAt());
         target.setMfgDate(source.getMfgDate());
         target.setExpiryAt(source.getExpiryAt());

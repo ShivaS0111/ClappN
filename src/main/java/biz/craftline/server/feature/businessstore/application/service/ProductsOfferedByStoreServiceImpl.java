@@ -1,18 +1,21 @@
 package biz.craftline.server.feature.businessstore.application.service;
 
+import biz.craftline.server.enums.Item;
+import biz.craftline.server.feature.businessstore.api.dto.ItemKey;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedProduct;
 import biz.craftline.server.feature.businessstore.domain.service.ProductsOfferedByStoreService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedProductEntity;
 import biz.craftline.server.feature.businessstore.infra.mapper.StoreProductEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.ProductsOfferedByStoreRepository;
+import biz.craftline.server.feature.businessstore.infra.repository.StoreItemPriceHandleRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessProductJpaRepository;
 import biz.craftline.server.util.UserUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -26,9 +29,13 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
     @Autowired
     BusinessProductJpaRepository businessProductJpaRepository;
 
+    @Autowired
+    StoreItemPriceService storeItemPriceService;
+
     @Override
     public List<StoreOfferedProduct> findAll() {
-        return productsOfferedByStoreRepository.findAll().stream().map(mapper::toDomain).toList();
+        List<StoreOfferedProduct> list = productsOfferedByStoreRepository.findAll().stream().map(mapper::toDomain).toList();
+        return findProductsLatestPrices(list);
     }
 
     @Override
@@ -74,8 +81,7 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
             //entity.setService(domain.getService());
             entity.setCreatedBy(userId);
             return  entity;
-                }
-
+        }
         ).toList();
         List<StoreOfferedProductEntity> en = productsOfferedByStoreRepository.saveAll(entities);
         return en.stream().map(mapper::toDomain).toList();
@@ -85,6 +91,41 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
     public StoreOfferedProduct findById(Long id) {
         Optional<StoreOfferedProductEntity>  service = productsOfferedByStoreRepository.findById(id);
         service.orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+
         return mapper.toDomain(service.get());
     }
+
+    public List<StoreOfferedProduct> findProductsLatestPrices(
+            List<StoreOfferedProduct> products
+    ) {
+        if (products == null || products.isEmpty()) {
+            return products;
+        }
+
+        // Build keys and index products at once
+        Map<Long, StoreOfferedProduct> productMap = new HashMap<>(products.size());
+
+        for (StoreOfferedProduct p : products) {
+            productMap.put(
+                     p.getId(),
+                    p
+            );
+        }
+
+        List<Long> keys = productMap.keySet().stream().toList();
+
+        // Fetch latest prices
+        storeItemPriceService
+                .findLatestPricesForProductsInStores( keys, Item.ProductLot )
+                .forEach(price -> {
+                    StoreOfferedProduct product = productMap.get(price.getItemId());
+                    if (product != null) {
+                        product.setPrice(price);
+                    }
+                });
+
+        return products;
+    }
+
+
 }

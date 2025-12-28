@@ -16,11 +16,13 @@ public interface ProductsOfferedByStoreService {
     List<StoreOfferedProduct> findAll();
 
     List<StoreOfferedProduct>  searchProductByKeyword(String searchTerm);
+
     List<StoreOfferedProduct>  searchProductByStoreIdAndKeyword(Long storeId, String searchTerm);
 
     Optional<List<StoreOfferedProduct>> findProductsByStoreId(Long id);
 
     StoreOfferedProduct save(StoreOfferedProduct domain);
+
     List<StoreOfferedProduct> save(List<StoreOfferedProduct> domains);
 
     StoreOfferedProduct findById(Long id);

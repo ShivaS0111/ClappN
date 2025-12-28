@@ -38,7 +38,7 @@ public class ProductLotEntity {
     @Column(name = "currency_id")
     private Long currency;
 
-    private boolean active = true;
+    private int active;
 
     private Date purchasedAt;
 

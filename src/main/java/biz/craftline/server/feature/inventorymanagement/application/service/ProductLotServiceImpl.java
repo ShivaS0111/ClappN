@@ -30,6 +30,7 @@ public class ProductLotServiceImpl implements ProductLotService {
     private final ProductLotTransactionEntityMapper productLotTransactionEntityMapper;
     private final ProductLotEntityMapper productLotEntityMapper;
 
+    @Transactional(Transactional.TxType.REQUIRED)
     @Override
     public ProductLot createLot(ProductLot lot) {
 

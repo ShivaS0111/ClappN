@@ -53,7 +53,7 @@ public class ProductLotEntityMapper {
         target.setUnitPrice(source.getUnitPrice());
         target.setCurrency(source.getCurrency());
         //target.setCountry(source.getCountry());
-        target.setActive(source.isActive());
+        target.setActive(source.getActive());
         target.setPurchasedAt(parseDateTime(source.getPurchasedAt()));
         target.setMfgDate(parseDateTime(source.getMfgDate()));
         target.setExpiryAt(parseDateTime(source.getExpiryAt()));
@@ -83,7 +83,7 @@ public class ProductLotEntityMapper {
         target.setUnitPrice(source.getUnitPrice());
         target.setCurrency(source.getCurrency());
         //target.setCountry(source.getCountry());
-        target.setActive(source.isActive());
+        target.setActive(source.getActive());
         target.setPurchasedAt(formatDateTime(source.getPurchasedAt()));
         target.setMfgDate(formatDateTime(source.getMfgDate()));
         target.setExpiryAt(formatDateTime(source.getExpiryAt()));

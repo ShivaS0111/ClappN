@@ -24,18 +24,10 @@ public class StoreItemPriceEntity {
     private Long id;
 
     @Column(name = "item_type")
-    private Long itemType;
+    private Long itemType;  // e.g., product, productLot, service, packeage etc.
 
     @Column(name = "item_id")
-    private Long itemId;
-
-    @ManyToOne
-    @JoinColumn(name = "product_lot_id")
-    private ProductLotEntity productLot;
-
-    @ManyToOne
-    @JoinColumn(name = "service_id")
-    private StoreOfferedServiceEntity service;
+    private Long itemId; // specific item id, it is one of the itemType reference id
 
     @Column(nullable = false)
     private Double price;

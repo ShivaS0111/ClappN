@@ -29,7 +29,7 @@ public class ProductLot {
 
     private Long country;
 
-    private boolean active = true;
+    private int active ;
 
     private String purchasedAt;
 

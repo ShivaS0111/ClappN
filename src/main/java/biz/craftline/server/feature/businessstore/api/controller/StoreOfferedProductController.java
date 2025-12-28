@@ -29,11 +29,16 @@ public class StoreOfferedProductController {
     private final ProductsOfferedByStoreService storeOfferedProductService;
     private final StoreItemPriceService priceHandleService;
 
+    private final StoreItemPriceService storeItemPriceService;
+
 
     @GetMapping
     public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> list() {
         List<StoreOfferedProductDTO> dtoList = storeOfferedProductService.findAll().stream()
                 .map( productMapper::toDTO).toList();
+        List<Long> productIds = dtoList.stream().map(StoreOfferedProductDTO::getId).toList();
+
+
         return APIResponse.success(dtoList, "Store products retrieved successfully");
     }
 

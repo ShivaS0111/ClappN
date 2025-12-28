@@ -32,9 +32,10 @@ public class StoreInventoryServiceImpl implements StoreInventoryService {
         inv.setTotalQuantity(inv.getTotalQuantity() + quantity);
         inv.setAvailable(inv.getAvailable() + quantity);
 
+        StoreInventoryEntity storeInventoryEntity = storeInventoryRepository.save(inv);
 
         inventoryTransactionRepository.save(StoreInventoryTransactionEntity.builder()
-                .inventory(inv)
+                .inventory(storeInventoryEntity)
                 .action(InventoryAction.IN)
                 .quantityChange(quantity)
                 .referenceType(referenceType)
@@ -98,6 +99,7 @@ public class StoreInventoryServiceImpl implements StoreInventoryService {
     private StoreInventoryEntity createInventory(Long storeId, Long productId) {
         return StoreInventoryEntity.builder()
                 .storeId(storeId)
+                .productId(productId)
                 .build();
     }
 }

@@ -1,5 +1,7 @@
 package biz.craftline.server.feature.businessstore.application.service;
 
+import biz.craftline.server.enums.Item;
+import biz.craftline.server.feature.businessstore.api.dto.ItemKey;
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreItemPriceEntity;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,13 +55,6 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
         return findByItemIdAndType(productLotId, 2L);
     }
 
-   /* @Override
-    public Optional<StoreItemPrice> findByProductId(Long productId) {
-        StoreItemPriceEntity storeItemPrice = repository.findByProductId(productId)
-                .orElseThrow(() -> new RuntimeException("Product Lot Price not configured yet"));
-        return Optional.of(mapper.toDomain(storeItemPrice));
-    }*/
-
     @Override
     public List<StoreItemPrice> findAllByServiceId(Long serviceId) {
         return findAllByItemIdAndType(serviceId, 1L);
@@ -86,40 +82,6 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
                 .orElseThrow(() -> new EntityNotFoundException("No active price found for product lot " + productLotId));
     }
 
-    @Override
-    @Cacheable(value = "latestPriceCache", key = "'service_' + #serviceId", unless = "#result == null")
-    @Transactional(readOnly = true)
-    public StoreItemPrice getLatestPriceForService(Long serviceId) {
-        return repository.findActivePrices(1L, serviceId, PageRequest.of(0, 1))
-                .stream().findFirst()
-                .map(mapper::toDomain)
-                .orElseThrow(() -> new EntityNotFoundException("No active price found for service " + serviceId));
-    }
-
-    @Override
-    @Cacheable(value = "latestPriceCache", key = "'product_' + #productLotId + '_qty_' + #quantity", unless = "#result == null")
-    @Transactional(readOnly = true)
-    public StoreItemPrice getPriceForQuantity(Long productLotId, int quantity) {
-        return repository.findBestApplicablePrice(2L, productLotId, quantity, PageRequest.of(0, 1))
-                .stream().findFirst().map(mapper::toDomain).orElseGet(() -> getLatestPriceForProduct(productLotId));
-    }
-
-    /**
-     * Returns the latest saved price for a product (by creation time).
-     */
-    @Override
-    public Optional<StoreItemPriceEntity> getLatestPriceOfProductLotProduct(Long productId) {
-        return repository.findLatestPriceByProductId(productId);
-    }
-
-    /**
-     * Returns the currently valid price (based on validity window).
-     */
-    @Override
-    public Optional<StoreItemPriceEntity> getCurrentPriceOfProductLotProduct(Long productId) {
-        return repository.findCurrentPriceByProductId(productId, LocalDateTime.now());
-    }
-
     private Optional<StoreItemPrice> findByItemIdAndType(Long id, Long type) {
         StoreItemPriceEntity storeItemPrice = repository.findByItemIdAndItemType(id, type).orElseThrow(() ->
                 new RuntimeException((type == 1L ? "Service" : (type == 2L ? "Product Lot" : "")) +
@@ -143,5 +105,10 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
         StoreItemPriceEntity saverEntity = mapper.toEntity(itemPrice);
         StoreItemPriceEntity entity = repository.save(saverEntity);
         return Optional.of(mapper.toDomain(entity));
+    }
+
+    @Override
+    public List<StoreItemPrice> findLatestPricesForProductsInStores(List<Long> ids, Item item) {
+        return repository.findLatestPricesForItems(ids, item.getType()).stream().map( mapper::toDomain).toList();
     }
 }
