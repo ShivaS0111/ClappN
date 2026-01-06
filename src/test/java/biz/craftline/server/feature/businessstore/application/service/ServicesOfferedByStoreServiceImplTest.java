@@ -48,7 +48,7 @@ class ServicesOfferedByStoreServiceImplTest {
         StoreOfferedServiceEntity entity2 = new StoreOfferedServiceEntity();
         StoreOfferedService service1 = StoreOfferedService.builder().id(1L).storeId(storeId).aliasName("A").build();
         StoreOfferedService service2 = StoreOfferedService.builder().id(2L).storeId(storeId).aliasName("B").build();
-        when(servicesOfferedByStoreRepository.findServicesByStoreId(storeId)).thenReturn(Optional.of(Arrays.asList(entity1, entity2)));
+        when(servicesOfferedByStoreRepository.findByStoreId(storeId)).thenReturn(Optional.of(Arrays.asList(entity1, entity2)));
         when(mapper.toDomain(entity1)).thenReturn(service1);
         when(mapper.toDomain(entity2)).thenReturn(service2);
         Optional<List<StoreOfferedService>> result = service.findServicesByStoreId(storeId);
