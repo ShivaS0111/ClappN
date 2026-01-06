@@ -22,6 +22,7 @@ public class StoreOfferedServiceDTOMapper {
         service.setAliasName(dto.getAliasName());
         service.setDescription(dto.getDescription());
         service.setStatus(dto.getStatus());
+        service.setBusinessId(dto.getBusinessId());
         service.setBusinessServiceId(dto.getBusinessServiceId());
         service.setCreatedBy(dto.getCreatedBy());
         service.setCreatedAt(dto.getCreatedAt());
@@ -37,6 +38,7 @@ public class StoreOfferedServiceDTOMapper {
         dto.setDescription(service.getDescription());
         dto.setStatus(service.getStatus());
         dto.setStoreId(service.getStoreId());
+        dto.setBusinessId(service.getBusinessId());
         dto.setBusinessServiceId(service.getBusinessServiceId());
         dto.setCreatedBy(service.getCreatedBy());
         dto.setCreatedAt(service.getCreatedAt());
@@ -50,6 +52,7 @@ public class StoreOfferedServiceDTOMapper {
         service.setDescription(req.getDescription());
         service.setStatus(req.getStatus());
         service.setStoreId(req.getStoreId());
+        service.setBusinessId(req.getBusinessId());
         service.setBusinessServiceId(req.getBusinessServiceId());
         return service;
     }

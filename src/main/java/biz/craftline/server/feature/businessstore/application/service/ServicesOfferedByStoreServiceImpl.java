@@ -40,9 +40,16 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
         servicesOfferedByStoreRepository.deleteStoreServiceById(id);
     }
 
+
     @Override
-    public Optional<List<StoreOfferedService>> findServicesByStoreId(Long id) {
-        List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository.findServicesByStoreId(id).orElse(List.of());
+    public Optional<List<StoreOfferedService>> findServicesByBusinessId(Long businessId) {
+        List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository.findByBusinessId(businessId).orElse(List.of());
+        return Optional.of(entities.stream().map(mapper::toDomain).toList());
+    }
+
+    @Override
+    public Optional<List<StoreOfferedService>> findServicesByStoreId(Long storeId) {
+        List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository.findByStoreId(storeId).orElse(List.of());
         return Optional.of(entities.stream().map(mapper::toDomain).toList());
     }
 

@@ -42,6 +42,13 @@ public class StoreOfferedProductController {
         return APIResponse.success(dtoList, "Store products retrieved successfully");
     }
 
+    @GetMapping("/{productId}")
+    public ResponseEntity<APIResponse<StoreOfferedProductDTO>> storeOfferedProductsByProductId(
+            @PathVariable("productId") Long productId) {
+        StoreOfferedProduct product = storeOfferedProductService.findById(productId);
+        return APIResponse.success(productMapper.toDTO(product), "Product retrieved successfully");
+    }
+
     @GetMapping("/search/{searchTerm}")
     public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> search(
             @PathVariable("searchTerm") String searchTerm) {
@@ -62,7 +69,17 @@ public class StoreOfferedProductController {
         return APIResponse.success(dtoList, "Store products retrieved successfully");
     }
 
-    @GetMapping("/{storeId}")
+    @GetMapping("/business/{businessId}")
+    public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> storeOfferedProductsByBusinessId(
+            @PathVariable("businessId") Long businessId) {
+        Optional<List<StoreOfferedProduct>> list = storeOfferedProductService.findProductsByBusinessId(businessId);
+        List<StoreOfferedProductDTO> dtoList = list.orElseThrow().stream()
+                .map(productMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtoList, "Store products retrieved successfully");
+    }
+
+    @GetMapping("/store/{storeId}")
     public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> storeOfferedProducts(
             @PathVariable("storeId") Long storeId) {
         Optional<List<StoreOfferedProduct>> list = storeOfferedProductService.findProductsByStoreId(storeId);

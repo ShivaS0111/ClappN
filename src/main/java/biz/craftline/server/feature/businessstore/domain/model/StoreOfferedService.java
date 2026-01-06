@@ -21,6 +21,7 @@ public class StoreOfferedService {
 
     private String description;
     private Long storeId;
+    private Long businessId;
 
     private int status;
 

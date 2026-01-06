@@ -56,8 +56,8 @@ public class ProductLotServiceImpl implements ProductLotService {
     }
 
     @Override
-    public List<ProductLot> getAllActiveLots() {
-        return lotRepository.findByActiveTrue()
+    public List<ProductLot> getAllActiveLots(Long storeProductId) {
+        return lotRepository.findByProductIdAndActiveTrue(storeProductId)
                 .stream()
                 .map(productLotEntityMapper::toDomain)
                 .toList();

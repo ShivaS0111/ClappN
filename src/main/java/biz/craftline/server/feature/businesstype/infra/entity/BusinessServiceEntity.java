@@ -34,6 +34,7 @@ public class BusinessServiceEntity {
     @JoinColumn(name = "business_type", nullable = false)
     private BusinessTypeEntity businessType;
 
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "business_service_categories",

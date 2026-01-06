@@ -32,6 +32,8 @@ public class StoreOfferedServiceEntity {
 
     private Long storeId;
 
+    private Long businessId;
+
     private int status;
 
     @Column(name = "business_service_id")

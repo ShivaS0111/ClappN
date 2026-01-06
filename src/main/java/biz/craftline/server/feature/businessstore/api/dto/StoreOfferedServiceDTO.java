@@ -20,6 +20,7 @@ public class StoreOfferedServiceDTO {
     private String description;
 
     private Long storeId;
+    private Long businessId;
 
     private int status;
 

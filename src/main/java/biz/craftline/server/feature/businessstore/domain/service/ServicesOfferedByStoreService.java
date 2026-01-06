@@ -13,7 +13,8 @@ public interface ServicesOfferedByStoreService {
     void deleteStoreServiceById(Long id);
 
     Optional<List<StoreOfferedService>> findAll();
-    Optional<List<StoreOfferedService>> findServicesByStoreId(Long id);
+    Optional<List<StoreOfferedService>> findServicesByBusinessId(Long businessId);
+    Optional<List<StoreOfferedService>> findServicesByStoreId(Long storeId);
 
     StoreOfferedService save(StoreOfferedService entity);
 

@@ -13,7 +13,7 @@ public interface ProductLotService {
 
     ProductLot getLotById(Long id);
 
-    List<ProductLot> getAllActiveLots();
+    List<ProductLot> getAllActiveLots(Long storeProductId);
 
     ProductLot updateLot(ProductLot lot);
 

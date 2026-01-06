@@ -13,7 +13,8 @@ public interface ServicesOfferedByStoreRepository extends JpaRepository<StoreOff
 
     void deleteStoreServiceById(Long id);
 
-    Optional<List<StoreOfferedServiceEntity>> findServicesByStoreId(Long id);
+    Optional<List<StoreOfferedServiceEntity>> findByBusinessId(Long businessId);
+    Optional<List<StoreOfferedServiceEntity>> findByStoreId(Long id);
 
     @Query("SELECT bs FROM StoreOfferedServiceEntity bs WHERE  (LOWER(bs.aliasName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(bs.description) LIKE LOWER(CONCAT('%', :keyword, '%')))")

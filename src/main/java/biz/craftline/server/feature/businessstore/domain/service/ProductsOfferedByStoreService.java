@@ -26,5 +26,7 @@ public interface ProductsOfferedByStoreService {
     List<StoreOfferedProduct> save(List<StoreOfferedProduct> domains);
 
     StoreOfferedProduct findById(Long id);
+
+    Optional<List<StoreOfferedProduct>> findProductsByBusinessId(Long businessId);
 }
 

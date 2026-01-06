@@ -20,5 +20,6 @@ public class AddNewStoreOfferedServiceRequest {
     private long businessServiceId;
 
     private long storeId;
+    private Long businessId;
 
 }

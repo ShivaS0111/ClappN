@@ -26,6 +26,7 @@ public class StoreOfferedProductEntity {
     private String aliasName;
 
     private String description;
+    private Long businessId;
     private Long storeId;
 
     private int status;

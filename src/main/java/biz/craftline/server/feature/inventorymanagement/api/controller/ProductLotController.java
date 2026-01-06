@@ -39,9 +39,10 @@ public class ProductLotController {
         return APIResponse.ok(productLotDTOMapper.toDTO(productLot));
     }
 
-    @GetMapping
-    public ResponseEntity<APIResponse<List<ProductLotDTO>>> getAllActiveLots() {
-        List<ProductLotDTO> lots = lotService.getAllActiveLots().stream().map(productLotDTOMapper::toDTO).toList();
+    @GetMapping("/all/{storeProductId}")
+    public ResponseEntity<APIResponse<List<ProductLotDTO>>> getAllActiveLots(
+            @PathVariable("storeProductId") Long storeProductId) {
+        List<ProductLotDTO> lots = lotService.getAllActiveLots(storeProductId).stream().map(productLotDTOMapper::toDTO).toList();
         return APIResponse.ok(lots);
     }
 

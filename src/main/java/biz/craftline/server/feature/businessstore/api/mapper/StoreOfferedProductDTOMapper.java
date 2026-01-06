@@ -23,6 +23,7 @@ public class StoreOfferedProductDTOMapper {
         dto.setId(product.getId());
         dto.setAliasName(product.getAliasName());
         dto.setDescription(product.getDescription());
+        dto.setBusinessId(product.getBusinessId());
         dto.setStoreId(product.getStoreId());
         dto.setStatus(product.getStatus());
         dto.setBusinessProductId(product.getBusinessProductId());
@@ -41,6 +42,7 @@ public class StoreOfferedProductDTOMapper {
         dto.setDescription(req.getDescription());
         dto.setStatus(req.getStatus());
         dto.setStoreId(req.getStoreId());
+        dto.setBusinessId(req.getBusinessId());
         dto.setBusinessProductId(req.getBusinessProductId());
         dto.setCreatedBy(req.getCreatedBy());
         return dto;

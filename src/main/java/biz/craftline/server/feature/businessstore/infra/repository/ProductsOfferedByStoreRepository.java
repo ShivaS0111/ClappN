@@ -1,9 +1,6 @@
 package biz.craftline.server.feature.businessstore.infra.repository;
 
-import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedProduct;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedProductEntity;
-import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
-import biz.craftline.server.feature.businesstype.infra.entity.BusinessProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +13,8 @@ public interface ProductsOfferedByStoreRepository extends JpaRepository<StoreOff
     void deleteStoreProductById(Long id);
 
     Optional<List<StoreOfferedProductEntity>> findProductsByStoreId(Long id);
+
+    Optional<List<StoreOfferedProductEntity>> findByBusinessId(Long id);
 
     @Query("SELECT bs FROM StoreOfferedProductEntity bs WHERE  (LOWER(bs.aliasName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(bs.description) LIKE LOWER(CONCAT('%', :keyword, '%')))")
@@ -34,4 +33,12 @@ public interface ProductsOfferedByStoreRepository extends JpaRepository<StoreOff
             @Param("storeId") String storeId,
             @Param("keyword") String keyword
     );
+
+    @Query("""
+                SELECT p
+                FROM StoreOfferedProductEntity p
+                WHERE p.storeId IN :storeIds
+                  AND p.status = 1
+            """)
+    List<StoreOfferedProductEntity>  findProductsByStoreIdInList(@Param("storeIds") List<Long> storeIds);
 }

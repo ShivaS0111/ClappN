@@ -2,9 +2,11 @@ package biz.craftline.server.feature.businessstore.application.service;
 
 import biz.craftline.server.enums.Item;
 import biz.craftline.server.feature.businessstore.api.dto.ItemKey;
+import biz.craftline.server.feature.businessstore.domain.model.Store;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedProduct;
 import biz.craftline.server.feature.businessstore.domain.service.ProductsOfferedByStoreService;
 import biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreService;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedProductEntity;
 import biz.craftline.server.feature.businessstore.infra.mapper.StoreProductEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.ProductsOfferedByStoreRepository;
@@ -32,6 +34,9 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
     @Autowired
     StoreItemPriceService storeItemPriceService;
 
+    @Autowired
+    StoreService storeService;
+
     @Override
     public List<StoreOfferedProduct> findAll() {
         List<StoreOfferedProduct> list = productsOfferedByStoreRepository.findAll().stream().map(mapper::toDomain).toList();
@@ -46,7 +51,7 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
     @Override
     public Optional<List<StoreOfferedProduct>> findProductsByStoreId(Long id) {
         List<StoreOfferedProductEntity> entities = productsOfferedByStoreRepository.findProductsByStoreId(id)
-                .orElseThrow(() -> new RuntimeException("Products not found with id: " + id));
+                .orElse( List.of());
         return Optional.of(entities.stream().map(mapper::toDomain).toList());
     }
 
@@ -93,6 +98,13 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
         service.orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
 
         return mapper.toDomain(service.get());
+    }
+
+    @Override
+    public Optional<List<StoreOfferedProduct>> findProductsByBusinessId(Long businessId) {
+        return Optional.of( productsOfferedByStoreRepository.findByBusinessId(businessId)
+                .orElse(List.of())
+                .stream().map(mapper::toDomain ).toList() );
     }
 
     public List<StoreOfferedProduct> findProductsLatestPrices(

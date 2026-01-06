@@ -19,6 +19,7 @@ public class StoreOfferedServiceEntityMapper {
         service.setDescription(entity.getDescription());
         service.setStatus(entity.getStatus());
         service.setStoreId(entity.getStoreId());
+        service.setBusinessId(entity.getBusinessId());
         service.setBusinessServiceId(entity.getBusinessServiceId());
         service.setCreatedBy(entity.getCreatedBy());
         return service;
@@ -31,6 +32,7 @@ public class StoreOfferedServiceEntityMapper {
         entity.setDescription(store.getDescription());
         entity.setStoreId(store.getStoreId());
         entity.setStatus(store.getStatus());
+        entity.setBusinessId(store.getBusinessId());
         entity.setBusinessServiceId(store.getBusinessServiceId());
         entity.setCreatedBy(store.getCreatedBy());
         return entity;

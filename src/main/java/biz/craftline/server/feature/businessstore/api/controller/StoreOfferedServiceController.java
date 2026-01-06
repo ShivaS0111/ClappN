@@ -32,8 +32,7 @@ public class StoreOfferedServiceController {
     private final StoreItemPriceService priceHandleService;
 
     @GetMapping
-    public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> list(
-            @PathVariable("storeId") Long storeId) {
+    public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> list() {
         Optional<List<StoreOfferedService>> list = storeOfferedService.findAll();
         List<StoreOfferedServiceDTO> dtoList = list.orElseThrow().stream()
                 .map(serviceMapper::toDTO)
@@ -41,7 +40,24 @@ public class StoreOfferedServiceController {
         return APIResponse.success(dtoList, "Store services retrieved successfully");
     }
 
-    @GetMapping("/{storeId}")
+    @GetMapping("/{serviceId}")
+    public ResponseEntity<APIResponse<StoreOfferedServiceDTO>> storeOfferedServiceById(
+            @PathVariable("serviceId") Long serviceId) {
+        StoreOfferedService service = storeOfferedService.findById(serviceId);
+        return APIResponse.success(serviceMapper.toDTO(service), "Store services retrieved successfully");
+    }
+
+    @GetMapping("/business/{businessId}")
+    public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> storeOfferedServicesByBusinessId(
+            @PathVariable("businessId") Long businessId) {
+        Optional<List<StoreOfferedService>> list = storeOfferedService.findServicesByBusinessId(businessId);
+        List<StoreOfferedServiceDTO> dtoList = list.orElseThrow().stream()
+                .map(serviceMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtoList, "Store services retrieved successfully");
+    }
+
+    @GetMapping("/store/{storeId}")
     public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> storeOfferedServices(
             @PathVariable("storeId") Long storeId) {
         Optional<List<StoreOfferedService>> list = storeOfferedService.findServicesByStoreId(storeId);
