@@ -71,6 +71,7 @@ public class AuthController {
             newUser.setEmail(registerRequest.getEmail());
             newUser.setPassword(registerRequest.getPassword());
             newUser.setEnabled(true);
+            newUser.setVerified(1);
             newUser.setAccountNonLocked(true);
             newUser.setAccountNonExpired(true);
             newUser.setCredentialsNonExpired(true);

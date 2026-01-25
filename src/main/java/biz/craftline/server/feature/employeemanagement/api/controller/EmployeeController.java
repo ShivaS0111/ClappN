@@ -69,6 +69,7 @@ public class EmployeeController {
             newUser.setEmail(request.getEmail());
             newUser.setPassword("clapp@123"); // In real scenarios, generate a secure password and send it to the user
             newUser.setEnabled(true);
+            newUser.setVerified(1);
             newUser.setAccountNonLocked(true);
             newUser.setAccountNonExpired(true);
             newUser.setCredentialsNonExpired(true);

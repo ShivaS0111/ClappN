@@ -9,6 +9,7 @@ public class User {
     private String email;
     private String password;
     private boolean enabled;
+    private Integer verified;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;

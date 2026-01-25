@@ -77,6 +77,8 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private boolean enabled = true;
 
+    private int verified = 0;
+
     @Column(nullable = false)
     private boolean accountNonLocked = true;
 

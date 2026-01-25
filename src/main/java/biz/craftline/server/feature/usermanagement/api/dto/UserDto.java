@@ -10,6 +10,7 @@ public class UserDto {
     private String fullName;
     private String email;
     private boolean enabled;
+    private Integer verified;
     private Boolean isAccountNonExpired;
     private Boolean isAccountNonLocked;
     private Boolean isCredentialsNonExpired;

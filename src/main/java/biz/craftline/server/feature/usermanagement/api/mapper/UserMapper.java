@@ -21,6 +21,7 @@ public class UserMapper {
         dto.setFullName(user.getFullName());
         dto.setEmail(user.getEmail());
         dto.setEnabled(user.isEnabled());
+        dto.setVerified(user.getVerified());
         return dto;
     }
 
@@ -31,6 +32,7 @@ public class UserMapper {
         user.setEmail(entity.getEmail());
         user.setPassword(entity.getPassword());
         user.setEnabled(entity.isEnabled());
+        user.setVerified(entity.getVerified());
         return user;
     }
 
@@ -41,6 +43,10 @@ public class UserMapper {
         user.setEmail(entity.getEmail());
         user.setPassword(entity.getPassword());
         user.setEnabled(entity.isEnabled());
+        user.setVerified(entity.getVerified());
+        user.setAccountNonExpired(entity.isAccountNonExpired());
+        user.setAccountNonLocked(entity.isAccountNonLocked());
+        user.setCredentialsNonExpired(entity.isCredentialsNonExpired());
 
         List<Role> roles = entity.getRoles().stream().map(RoleMapper::toDomain).toList();
         user.setRoles(roles.stream().map(Role::getName).toList());
@@ -62,6 +68,7 @@ public class UserMapper {
         entity.setEmail(user.getEmail());
         entity.setPassword(user.getPassword());
         entity.setEnabled(user.isEnabled());
+        entity.setVerified(user.getVerified());
         return entity;
     }
 
@@ -71,6 +78,7 @@ public class UserMapper {
         user.setEmail(req.getEmail());
         user.setPassword(req.getPassword());
         user.setEnabled(true);
+        user.setVerified(0);
         return user;
     }
 
@@ -78,6 +86,7 @@ public class UserMapper {
         user.setFullName(req.getFullName());
         user.setEmail(req.getEmail());
         user.setEnabled(req.isEnabled());
+        user.setVerified(0);
     }
 }
 
