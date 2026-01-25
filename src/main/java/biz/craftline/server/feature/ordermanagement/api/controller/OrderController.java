@@ -4,6 +4,8 @@ import biz.craftline.server.feature.ordermanagement.api.dto.OrderDTO;
 import biz.craftline.server.feature.ordermanagement.api.mapper.OrderDTOMapper;
 import biz.craftline.server.feature.ordermanagement.domain.model.Order;
 import biz.craftline.server.feature.ordermanagement.domain.service.OrderService;
+import biz.craftline.server.util.APIResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -29,13 +31,13 @@ public class OrderController {
      * @return list of OrderDTO
      */
     @GetMapping
-    public List<OrderDTO> getAllOrders() {
+    public ResponseEntity<APIResponse<List<OrderDTO>>> getAllOrders() {
         List<Order> orders = orderService.getAllOrders();
         List<OrderDTO> dtos = new ArrayList<>();
         for (Order order : orders) {
             dtos.add(OrderDTOMapper.toDTO(order));
         }
-        return dtos;
+        return APIResponse.ok(dtos);
     }
 
     /**
@@ -44,9 +46,9 @@ public class OrderController {
      * @return OrderDTO or null if not found
      */
     @GetMapping("/{id}")
-    public OrderDTO getOrder(@PathVariable Long id) {
+    public ResponseEntity<APIResponse<OrderDTO>> getOrder(@PathVariable Long id) {
         Order order = orderService.getOrder(id);
-        return order != null ? OrderDTOMapper.toDTO(order) : null;
+        return APIResponse.ok(order != null ? OrderDTOMapper.toDTO(order) : null);
     }
 
     /**
@@ -55,7 +57,7 @@ public class OrderController {
      * @return placed OrderDTO
      */
     @PostMapping("/new")
-    public OrderDTO placeOrder(@RequestBody OrderDTO dto) {
+    public ResponseEntity<APIResponse<OrderDTO>> placeOrder(@RequestBody OrderDTO dto) {
         // In a real app, convert DTO to domain model with mappers and lookups
         Order order = new Order();
         order.setCustomerId(dto.getCustomerId());
@@ -63,7 +65,7 @@ public class OrderController {
         order.setDeliveryInfo(null); // Populate from DTO
         order.setPaymentInfo(null); // Populate from DTO
         Order saved = orderService.placeOrder(order);
-        return OrderDTOMapper.toDTO(saved);
+        return APIResponse.ok(OrderDTOMapper.toDTO(saved));
     }
 
     /**
@@ -73,7 +75,7 @@ public class OrderController {
      * @return updated OrderDTO or null if not found
      */
     @PutMapping("/update/{id}")
-    public OrderDTO updateOrder(@PathVariable Long id, @RequestBody OrderDTO dto) {
+    public ResponseEntity<APIResponse<OrderDTO>> updateOrder(@PathVariable Long id, @RequestBody OrderDTO dto) {
         // In a real app, convert DTO to domain model
         Order updatedOrder = new Order();
         updatedOrder.setCustomerId(dto.getCustomerId());
@@ -81,7 +83,7 @@ public class OrderController {
         updatedOrder.setDeliveryInfo(null); // Populate from DTO
         updatedOrder.setPaymentInfo(null); // Populate from DTO
         Order saved = orderService.updateOrder(id, updatedOrder);
-        return saved != null ? OrderDTOMapper.toDTO(saved) : null;
+        return APIResponse.ok(saved != null ? OrderDTOMapper.toDTO(saved) : null);
     }
 
     /**

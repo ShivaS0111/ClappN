@@ -4,6 +4,8 @@ import biz.craftline.server.feature.ordermanagement.api.dto.BookingDetailsDTO;
 import biz.craftline.server.feature.ordermanagement.api.mapper.BookingDetailsDTOMapper;
 import biz.craftline.server.feature.ordermanagement.domain.model.BookingDetails;
 import biz.craftline.server.feature.ordermanagement.domain.service.BookingDetailsService;
+import biz.craftline.server.util.APIResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -17,33 +19,33 @@ public class BookingDetailsController {
     }
 
     @GetMapping
-    public List<BookingDetailsDTO> getAllBookingDetails() {
+    public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getAllBookingDetails() {
         List<BookingDetails> details = bookingDetailsService.getAllBookingDetails();
         List<BookingDetailsDTO> dtos = new ArrayList<>();
         for (BookingDetails detail : details) {
             dtos.add(BookingDetailsDTOMapper.toDTO(detail));
         }
-        return dtos;
+        return APIResponse.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public BookingDetailsDTO getBookingDetails(@PathVariable Long id) {
+    public ResponseEntity<APIResponse<BookingDetailsDTO>> getBookingDetails(@PathVariable Long id) {
         BookingDetails detail = bookingDetailsService.getBookingDetails(id);
-        return detail != null ? BookingDetailsDTOMapper.toDTO(detail) : null;
+        return APIResponse.ok(detail != null ? BookingDetailsDTOMapper.toDTO(detail) : null);
     }
 
     @PostMapping
-    public BookingDetailsDTO addBookingDetails(@RequestBody BookingDetailsDTO dto) {
+    public ResponseEntity<APIResponse<BookingDetailsDTO>> addBookingDetails(@RequestBody BookingDetailsDTO dto) {
         BookingDetails detail = BookingDetailsDTOMapper.fromDTO(dto);
         BookingDetails saved = bookingDetailsService.addBookingDetails(detail);
-        return BookingDetailsDTOMapper.toDTO(saved);
+        return APIResponse.ok( BookingDetailsDTOMapper.toDTO(saved) );
     }
 
     @PutMapping("/{id}")
-    public BookingDetailsDTO updateBookingDetails(@PathVariable Long id, @RequestBody BookingDetailsDTO dto) {
+    public ResponseEntity<APIResponse<BookingDetailsDTO>> updateBookingDetails(@PathVariable Long id, @RequestBody BookingDetailsDTO dto) {
         BookingDetails detail = BookingDetailsDTOMapper.fromDTO(dto);
         BookingDetails updated = bookingDetailsService.updateBookingDetails(id, detail);
-        return updated != null ? BookingDetailsDTOMapper.toDTO(updated) : null;
+        return APIResponse.ok(updated != null ? BookingDetailsDTOMapper.toDTO(updated) : null);
     }
 
     @DeleteMapping("/{id}")

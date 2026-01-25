@@ -4,6 +4,8 @@ import biz.craftline.server.feature.ordermanagement.api.dto.DeliveryInfoDTO;
 import biz.craftline.server.feature.ordermanagement.api.mapper.DeliveryInfoDTOMapper;
 import biz.craftline.server.feature.ordermanagement.domain.model.DeliveryInfo;
 import biz.craftline.server.feature.ordermanagement.domain.service.DeliveryInfoService;
+import biz.craftline.server.util.APIResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -17,33 +19,33 @@ public class DeliveryInfoController {
     }
 
     @GetMapping
-    public List<DeliveryInfoDTO> getAllDeliveryInfo() {
+    public ResponseEntity<APIResponse<List<DeliveryInfoDTO>>> getAllDeliveryInfo() {
         List<DeliveryInfo> infos = deliveryInfoService.getAllDeliveryInfo();
         List<DeliveryInfoDTO> dtos = new ArrayList<>();
         for (DeliveryInfo info : infos) {
             dtos.add(DeliveryInfoDTOMapper.toDTO(info));
         }
-        return dtos;
+        return APIResponse.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public DeliveryInfoDTO getDeliveryInfo(@PathVariable Long id) {
+    public ResponseEntity<APIResponse<DeliveryInfoDTO>> getDeliveryInfo(@PathVariable Long id) {
         DeliveryInfo info = deliveryInfoService.getDeliveryInfo(id);
-        return info != null ? DeliveryInfoDTOMapper.toDTO(info) : null;
+        return APIResponse.ok(info != null ? DeliveryInfoDTOMapper.toDTO(info) : null);
     }
 
     @PostMapping
-    public DeliveryInfoDTO addDeliveryInfo(@RequestBody DeliveryInfoDTO dto) {
+    public ResponseEntity<APIResponse<DeliveryInfoDTO>> addDeliveryInfo(@RequestBody DeliveryInfoDTO dto) {
         DeliveryInfo info = DeliveryInfoDTOMapper.fromDTO(dto);
         DeliveryInfo saved = deliveryInfoService.addDeliveryInfo(info);
-        return DeliveryInfoDTOMapper.toDTO(saved);
+        return APIResponse.ok(DeliveryInfoDTOMapper.toDTO(saved));
     }
 
     @PutMapping("/{id}")
-    public DeliveryInfoDTO updateDeliveryInfo(@PathVariable Long id, @RequestBody DeliveryInfoDTO dto) {
+    public ResponseEntity<APIResponse<DeliveryInfoDTO>> updateDeliveryInfo(@PathVariable Long id, @RequestBody DeliveryInfoDTO dto) {
         DeliveryInfo info = DeliveryInfoDTOMapper.fromDTO(dto);
         DeliveryInfo updated = deliveryInfoService.updateDeliveryInfo(id, info);
-        return updated != null ? DeliveryInfoDTOMapper.toDTO(updated) : null;
+        return APIResponse.ok(updated != null ? DeliveryInfoDTOMapper.toDTO(updated) : null);
     }
 
     @DeleteMapping("/{id}")

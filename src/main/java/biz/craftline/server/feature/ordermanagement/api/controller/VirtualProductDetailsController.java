@@ -4,6 +4,8 @@ import biz.craftline.server.feature.ordermanagement.api.dto.VirtualProductDetail
 import biz.craftline.server.feature.ordermanagement.api.mapper.VirtualProductDetailsDTOMapper;
 import biz.craftline.server.feature.ordermanagement.domain.model.VirtualProductDetails;
 import biz.craftline.server.feature.ordermanagement.domain.service.VirtualProductDetailsService;
+import biz.craftline.server.util.APIResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -17,33 +19,33 @@ public class VirtualProductDetailsController {
     }
 
     @GetMapping
-    public List<VirtualProductDetailsDTO> getAllVirtualProductDetails() {
+    public ResponseEntity<APIResponse<List<VirtualProductDetailsDTO>>> getAllVirtualProductDetails() {
         List<VirtualProductDetails> details = virtualProductDetailsService.getAllVirtualProductDetails();
         List<VirtualProductDetailsDTO> dtos = new ArrayList<>();
         for (VirtualProductDetails detail : details) {
             dtos.add(VirtualProductDetailsDTOMapper.toDTO(detail));
         }
-        return dtos;
+        return APIResponse.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public VirtualProductDetailsDTO getVirtualProductDetails(@PathVariable Long id) {
+    public ResponseEntity<APIResponse<VirtualProductDetailsDTO>> getVirtualProductDetails(@PathVariable Long id) {
         VirtualProductDetails detail = virtualProductDetailsService.getVirtualProductDetails(id);
-        return detail != null ? VirtualProductDetailsDTOMapper.toDTO(detail) : null;
+        return APIResponse.ok(detail != null ? VirtualProductDetailsDTOMapper.toDTO(detail) : null);
     }
 
     @PostMapping
-    public VirtualProductDetailsDTO addVirtualProductDetails(@RequestBody VirtualProductDetailsDTO dto) {
+    public ResponseEntity<APIResponse<VirtualProductDetailsDTO>> addVirtualProductDetails(@RequestBody VirtualProductDetailsDTO dto) {
         VirtualProductDetails detail = VirtualProductDetailsDTOMapper.fromDTO(dto);
         VirtualProductDetails saved = virtualProductDetailsService.addVirtualProductDetails(detail);
-        return VirtualProductDetailsDTOMapper.toDTO(saved);
+        return APIResponse.ok(VirtualProductDetailsDTOMapper.toDTO(saved));
     }
 
     @PutMapping("/{id}")
-    public VirtualProductDetailsDTO updateVirtualProductDetails(@PathVariable Long id, @RequestBody VirtualProductDetailsDTO dto) {
+    public ResponseEntity<APIResponse<VirtualProductDetailsDTO>> updateVirtualProductDetails(@PathVariable Long id, @RequestBody VirtualProductDetailsDTO dto) {
         VirtualProductDetails detail = VirtualProductDetailsDTOMapper.fromDTO(dto);
         VirtualProductDetails updated = virtualProductDetailsService.updateVirtualProductDetails(id, detail);
-        return updated != null ? VirtualProductDetailsDTOMapper.toDTO(updated) : null;
+        return APIResponse.ok(updated != null ? VirtualProductDetailsDTOMapper.toDTO(updated) : null);
     }
 
     @DeleteMapping("/{id}")

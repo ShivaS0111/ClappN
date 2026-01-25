@@ -4,6 +4,8 @@ import biz.craftline.server.feature.ordermanagement.api.dto.OrderItemDTO;
 import biz.craftline.server.feature.ordermanagement.api.mapper.OrderItemDTOMapper;
 import biz.craftline.server.feature.ordermanagement.domain.model.OrderItem;
 import biz.craftline.server.feature.ordermanagement.domain.service.OrderItemService;
+import biz.craftline.server.util.APIResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -17,33 +19,33 @@ public class OrderItemController {
     }
 
     @GetMapping
-    public List<OrderItemDTO> getAllOrderItems() {
+    public ResponseEntity<APIResponse<List<OrderItemDTO>>> getAllOrderItems() {
         List<OrderItem> items = orderItemService.getAllOrderItems();
         List<OrderItemDTO> dtos = new ArrayList<>();
         for (OrderItem item : items) {
             dtos.add(OrderItemDTOMapper.toDTO(item));
         }
-        return dtos;
+        return APIResponse.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public OrderItemDTO getOrderItem(@PathVariable Long id) {
+    public ResponseEntity<APIResponse<OrderItemDTO>> getOrderItem(@PathVariable Long id) {
         OrderItem item = orderItemService.getOrderItem(id);
-        return item != null ? OrderItemDTOMapper.toDTO(item) : null;
+        return APIResponse.ok(item != null ? OrderItemDTOMapper.toDTO(item) : null);
     }
 
     @PostMapping
-    public OrderItemDTO addOrderItem(@RequestBody OrderItemDTO dto) {
+    public ResponseEntity<APIResponse<OrderItemDTO>> addOrderItem(@RequestBody OrderItemDTO dto) {
         OrderItem item = OrderItemDTOMapper.fromDTO(dto);
         OrderItem saved = orderItemService.addOrderItem(item);
-        return OrderItemDTOMapper.toDTO(saved);
+        return APIResponse.ok(OrderItemDTOMapper.toDTO(saved));
     }
 
     @PutMapping("/{id}")
-    public OrderItemDTO updateOrderItem(@PathVariable Long id, @RequestBody OrderItemDTO dto) {
+    public ResponseEntity<APIResponse<OrderItemDTO>> updateOrderItem(@PathVariable Long id, @RequestBody OrderItemDTO dto) {
         OrderItem item = OrderItemDTOMapper.fromDTO(dto);
         OrderItem updated = orderItemService.updateOrderItem(id, item);
-        return updated != null ? OrderItemDTOMapper.toDTO(updated) : null;
+        return APIResponse.ok(updated != null ? OrderItemDTOMapper.toDTO(updated) : null);
     }
 
     @DeleteMapping("/{id}")
