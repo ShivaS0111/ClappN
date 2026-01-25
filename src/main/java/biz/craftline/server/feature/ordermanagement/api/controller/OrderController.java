@@ -48,7 +48,12 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<APIResponse<OrderDTO>> getOrder(@PathVariable Long id) {
         Order order = orderService.getOrder(id);
-        return APIResponse.ok(order != null ? OrderDTOMapper.toDTO(order) : null);
+        if(order!=null){
+            return APIResponse.success(OrderDTOMapper.toDTO(order), "Order successfully retrieved ");
+        }
+        else{
+            return APIResponse.success(null, "Order not found");
+        }
     }
 
     /**

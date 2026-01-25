@@ -2,6 +2,7 @@ package biz.craftline.server.feature.inventorymanagement.infra.mapper;
 
 import biz.craftline.server.feature.inventorymanagement.domain.model.ProductLot;
 import biz.craftline.server.feature.inventorymanagement.infra.entity.ProductLotEntity;
+import biz.craftline.server.util.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,25 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProductLotEntityMapper {
 
-    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    private static final SimpleDateFormat DATE_FORMATTER1 = new SimpleDateFormat("yyyy-MM-dd");
-
-    private String formatDateTime(Date dateTime) {
-        return dateTime != null ? DATE_FORMATTER.format(dateTime) : null;
-    }
-
-    private Date parseDateTime(String dateTimeStr) {
-        try {
-            return dateTimeStr != null ? DATE_FORMATTER.parse(dateTimeStr) : null;
-        } catch (ParseException e) {
-            log.info("Invalid date format1: " + dateTimeStr, e);
-            try {
-                return  DATE_FORMATTER1.parse(dateTimeStr);
-            } catch (ParseException e1) {
-                throw new RuntimeException("Invalid date format2: " + dateTimeStr, e1);
-            }
-        }
-    }
+    private final DateUtil dateUtil;
 
     public ProductLotEntity toEntity(ProductLot source) {
         if (source == null) return null;
@@ -54,9 +37,9 @@ public class ProductLotEntityMapper {
         target.setCurrency(source.getCurrency());
         //target.setCountry(source.getCountry());
         target.setActive(source.getActive());
-        target.setPurchasedAt(parseDateTime(source.getPurchasedAt()));
-        target.setMfgDate(parseDateTime(source.getMfgDate()));
-        target.setExpiryAt(parseDateTime(source.getExpiryAt()));
+        target.setPurchasedAt(dateUtil.parseDate(source.getPurchasedAt()));
+        target.setMfgDate(dateUtil.parseDate(source.getMfgDate()));
+        target.setExpiryAt(dateUtil.parseDate(source.getExpiryAt()));
 
         validateEntity(target);
         return target;
@@ -84,9 +67,9 @@ public class ProductLotEntityMapper {
         target.setCurrency(source.getCurrency());
         //target.setCountry(source.getCountry());
         target.setActive(source.getActive());
-        target.setPurchasedAt(formatDateTime(source.getPurchasedAt()));
-        target.setMfgDate(formatDateTime(source.getMfgDate()));
-        target.setExpiryAt(formatDateTime(source.getExpiryAt()));
+        target.setPurchasedAt(dateUtil.formatDateTime(source.getPurchasedAt()));
+        target.setMfgDate(dateUtil.formatDateTime(source.getMfgDate()));
+        target.setExpiryAt(dateUtil.formatDateTime(source.getExpiryAt()));
 
         return target;
     }

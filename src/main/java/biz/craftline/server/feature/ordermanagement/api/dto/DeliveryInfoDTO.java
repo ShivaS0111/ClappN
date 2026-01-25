@@ -21,9 +21,9 @@ public class DeliveryInfoDTO {
     /** Tracking number for delivery */
     private String trackingNumber;
     /** Delivery date */
-    private LocalDateTime deliveryDate;
+    private String deliveryDate;
 
-    private LocalDateTime shippedDate;
+    private String shippedDate;
 
     private String courierService;
 

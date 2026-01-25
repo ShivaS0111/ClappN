@@ -5,25 +5,25 @@ import biz.craftline.server.feature.ordermanagement.api.mapper.DeliveryInfoDTOMa
 import biz.craftline.server.feature.ordermanagement.domain.model.DeliveryInfo;
 import biz.craftline.server.feature.ordermanagement.domain.service.DeliveryInfoService;
 import biz.craftline.server.util.APIResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/delivery-info")
 public class DeliveryInfoController {
     private final DeliveryInfoService deliveryInfoService;
+    private final DeliveryInfoDTOMapper deliveryInfoDTOMapper;
 
-    public DeliveryInfoController(DeliveryInfoService deliveryInfoService) {
-        this.deliveryInfoService = deliveryInfoService;
-    }
 
     @GetMapping
     public ResponseEntity<APIResponse<List<DeliveryInfoDTO>>> getAllDeliveryInfo() {
         List<DeliveryInfo> infos = deliveryInfoService.getAllDeliveryInfo();
         List<DeliveryInfoDTO> dtos = new ArrayList<>();
         for (DeliveryInfo info : infos) {
-            dtos.add(DeliveryInfoDTOMapper.toDTO(info));
+            dtos.add(deliveryInfoDTOMapper.toDTO(info));
         }
         return APIResponse.ok(dtos);
     }
@@ -31,21 +31,21 @@ public class DeliveryInfoController {
     @GetMapping("/{id}")
     public ResponseEntity<APIResponse<DeliveryInfoDTO>> getDeliveryInfo(@PathVariable Long id) {
         DeliveryInfo info = deliveryInfoService.getDeliveryInfo(id);
-        return APIResponse.ok(info != null ? DeliveryInfoDTOMapper.toDTO(info) : null);
+        return APIResponse.ok(info != null ? deliveryInfoDTOMapper.toDTO(info) : null);
     }
 
     @PostMapping
     public ResponseEntity<APIResponse<DeliveryInfoDTO>> addDeliveryInfo(@RequestBody DeliveryInfoDTO dto) {
-        DeliveryInfo info = DeliveryInfoDTOMapper.fromDTO(dto);
+        DeliveryInfo info = deliveryInfoDTOMapper.fromDTO(dto);
         DeliveryInfo saved = deliveryInfoService.addDeliveryInfo(info);
-        return APIResponse.ok(DeliveryInfoDTOMapper.toDTO(saved));
+        return APIResponse.ok(deliveryInfoDTOMapper.toDTO(saved));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<APIResponse<DeliveryInfoDTO>> updateDeliveryInfo(@PathVariable Long id, @RequestBody DeliveryInfoDTO dto) {
-        DeliveryInfo info = DeliveryInfoDTOMapper.fromDTO(dto);
+        DeliveryInfo info = deliveryInfoDTOMapper.fromDTO(dto);
         DeliveryInfo updated = deliveryInfoService.updateDeliveryInfo(id, info);
-        return APIResponse.ok(updated != null ? DeliveryInfoDTOMapper.toDTO(updated) : null);
+        return APIResponse.ok(updated != null ? deliveryInfoDTOMapper.toDTO(updated) : null);
     }
 
     @DeleteMapping("/{id}")
