@@ -35,6 +35,7 @@ public class StoreDTOMapper {
                 .addressId(request.getAddressId())
                 .phone(request.getPhone())
                 .email(request.getEmail())
+                .hours(request.getHours())
                 .build();
     }
 
@@ -62,6 +63,7 @@ public class StoreDTOMapper {
                 .phone(dto.getPhone())
                 .email(dto.getEmail())
                 .manager(dto.getManager())
+                .hours(dto.getHours())
                 .build();
     }
 
@@ -89,6 +91,7 @@ public class StoreDTOMapper {
                 .phone(store.getPhone())
                 .email(store.getEmail())
                 .manager(store.getManager())
+                .hours(store.getHours())
                 .build();
     }
 }

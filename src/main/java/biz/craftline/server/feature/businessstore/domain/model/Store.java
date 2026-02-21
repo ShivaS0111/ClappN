@@ -41,6 +41,7 @@ public class Store {
     private String email;
     private String phone;
     private String manager;
+    private String hours;
 
     @Builder.Default
     private Set<StoreOfferedService> services = new HashSet<>();

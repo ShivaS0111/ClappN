@@ -61,6 +61,7 @@ public class StoreEntity {
     private String email;
     private String phone;
     private String manager;
+    private String hours;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "store_services",
