@@ -43,6 +43,12 @@ public class BusinessEntity {
 
     private Long createdBy;
 
+    @Column(name = "banner_url", length = 500)
+    private String bannerUrl;
+
+    @Column(name = "gallery_urls", columnDefinition = "JSON")
+    private String galleryUrls;
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Timestamp createdAt;

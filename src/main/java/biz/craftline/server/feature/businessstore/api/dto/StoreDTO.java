@@ -40,6 +40,10 @@ public class StoreDTO {
     private String manager;
     private String hours;
 
+    private String bannerUrl;
+
+    private String galleryUrls;
+
     @Builder.Default
     private Set<StoreOfferedServiceDTO> services = new HashSet<>();
 

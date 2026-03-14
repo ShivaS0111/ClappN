@@ -21,4 +21,6 @@ public class BusinessProduct {
     private Float amount;
     private Long currency;
     private Brand brand;
+    private String thumbnailUrl;
+    private String galleryUrls;
 }

@@ -30,4 +30,8 @@ public class BusinessServiceDTO {
     private List<CategoryDTO> categories;
     private Long duration;//in minutes
 
+    private String thumbnailUrl;
+
+    private String galleryUrls;
+
 }

@@ -23,4 +23,8 @@ public class AddNewStoreOfferedProductRequest {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private String thumbnailUrl;
+
+    private String galleryUrls;
 }

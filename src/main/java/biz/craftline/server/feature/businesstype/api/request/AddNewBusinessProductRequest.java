@@ -31,4 +31,8 @@ public class AddNewBusinessProductRequest {
 
     private Long currency;
 
+    private String thumbnailUrl;
+
+    private String galleryUrls;
+
 }

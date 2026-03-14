@@ -51,6 +51,12 @@ public class BusinessProductEntity {
 
     private Long createdBy;
 
+    @Column(name = "thumbnail_url", length = 500)
+    private String thumbnailUrl;
+
+    @Column(name = "gallery_urls", columnDefinition = "JSON")
+    private String galleryUrls;
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;

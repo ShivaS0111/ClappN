@@ -33,5 +33,9 @@ public class StoreOfferedService {
 
     private LocalDateTime updatedAt;
 
+    private String thumbnailUrl;
+
+    private String galleryUrls;
+
     private StoreItemPrice price;
 }

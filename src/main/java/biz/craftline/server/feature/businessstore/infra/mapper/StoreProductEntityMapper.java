@@ -25,6 +25,8 @@ public class StoreProductEntityMapper {
                 .createdBy(entity.getCreatedBy())
                 .createdAt(entity.getCreatedAt() != null ? entity.getCreatedAt().toLocalDateTime() : null)
                 .updatedAt(entity.getUpdatedAt() != null ? entity.getUpdatedAt().toLocalDateTime() : null)
+                .thumbnailUrl(entity.getThumbnailUrl())
+                .galleryUrls(entity.getGalleryUrls())
                 .build();
     }
 
@@ -44,6 +46,8 @@ public class StoreProductEntityMapper {
                 .createdBy(domain.getCreatedBy())
                 .createdAt(domain.getCreatedAt() != null ? Timestamp.valueOf(domain.getCreatedAt()) : null)
                 .updatedAt(domain.getUpdatedAt() != null ? Timestamp.valueOf(domain.getUpdatedAt()) : null)
+                .thumbnailUrl(domain.getThumbnailUrl())
+                .galleryUrls(domain.getGalleryUrls())
                 .build();
     }
 }

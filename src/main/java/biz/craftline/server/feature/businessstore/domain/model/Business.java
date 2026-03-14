@@ -27,6 +27,10 @@ public class Business {
 
     private Integer status;
 
+    private String bannerUrl;
+
+    private String galleryUrls;
+
     private Set<Store> stores = new HashSet<>();
 
 }

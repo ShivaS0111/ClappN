@@ -27,6 +27,8 @@ public class StoreOfferedServiceDTOMapper {
         service.setCreatedBy(dto.getCreatedBy());
         service.setCreatedAt(dto.getCreatedAt());
         service.setUpdatedAt(dto.getUpdatedAt());
+        service.setThumbnailUrl(dto.getThumbnailUrl());
+        service.setGalleryUrls(dto.getGalleryUrls());
         return service;
     }
 
@@ -43,6 +45,8 @@ public class StoreOfferedServiceDTOMapper {
         dto.setCreatedBy(service.getCreatedBy());
         dto.setCreatedAt(service.getCreatedAt());
         dto.setUpdatedAt(service.getUpdatedAt());
+        dto.setThumbnailUrl(service.getThumbnailUrl());
+        dto.setGalleryUrls(service.getGalleryUrls());
         return dto;
     }
 
@@ -54,6 +58,8 @@ public class StoreOfferedServiceDTOMapper {
         service.setStoreId(req.getStoreId());
         service.setBusinessId(req.getBusinessId());
         service.setBusinessServiceId(req.getBusinessServiceId());
+        service.setThumbnailUrl(req.getThumbnailUrl());
+        service.setGalleryUrls(req.getGalleryUrls());
         return service;
     }
 }

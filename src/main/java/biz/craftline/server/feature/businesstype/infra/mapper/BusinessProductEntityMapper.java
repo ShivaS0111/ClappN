@@ -29,6 +29,8 @@ public class BusinessProductEntityMapper {
         entity.setAmount(domain.getAmount());
         entity.setCategories(domain.getCategories().stream().map(mapper::toEntity).toList());
         entity.setCurrency(domain.getCurrency());
+        entity.setThumbnailUrl(domain.getThumbnailUrl());
+        entity.setGalleryUrls(domain.getGalleryUrls());
         return entity;
     }
 
@@ -42,7 +44,9 @@ public class BusinessProductEntityMapper {
                 entity.getCategories().stream().map(mapper::toDomain).toList(),
                 entity.getAmount(),
                 entity.getCurrency(),
-                entity.getBrand()!=null? brandEntityMapper.toDomain(entity.getBrand()):null
+                entity.getBrand()!=null? brandEntityMapper.toDomain(entity.getBrand()):null,
+                entity.getThumbnailUrl(),
+                entity.getGalleryUrls()
         );
     }
 }

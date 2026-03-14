@@ -43,6 +43,10 @@ public class Store {
     private String manager;
     private String hours;
 
+    private String bannerUrl;
+
+    private String galleryUrls;
+
     @Builder.Default
     private Set<StoreOfferedService> services = new HashSet<>();
 

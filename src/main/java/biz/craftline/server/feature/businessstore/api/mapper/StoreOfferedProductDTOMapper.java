@@ -30,6 +30,8 @@ public class StoreOfferedProductDTOMapper {
         dto.setCreatedBy(product.getCreatedBy());
         dto.setCreatedAt(product.getCreatedAt());
         dto.setUpdatedAt(product.getUpdatedAt());
+        dto.setThumbnailUrl(product.getThumbnailUrl());
+        dto.setGalleryUrls(product.getGalleryUrls());
         if(dto.getPrice()!=null){
             dto.setPrice(storeItemPriceDTOMapper.toDTO(product.getPrice()));
         }
@@ -45,6 +47,8 @@ public class StoreOfferedProductDTOMapper {
         dto.setBusinessId(req.getBusinessId());
         dto.setBusinessProductId(req.getBusinessProductId());
         dto.setCreatedBy(req.getCreatedBy());
+        dto.setThumbnailUrl(req.getThumbnailUrl());
+        dto.setGalleryUrls(req.getGalleryUrls());
         return dto;
     }
 }

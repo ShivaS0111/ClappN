@@ -34,4 +34,8 @@ public class BusinessProductDTO {
 
     private Brand brand;
 
+    private String thumbnailUrl;
+
+    private String galleryUrls;
+
 }

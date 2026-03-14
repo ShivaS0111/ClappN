@@ -22,6 +22,7 @@ public class ServerApplication {
         addDefaultProfileIfMissing(app);
         Environment env = app.run(args).getEnvironment();
 
+
         String appName = env.getProperty("spring.application.name", "server");
         String port = env.getProperty("local.server.port", env.getProperty("server.port", "8080"));
         String profiles = String.join(",", env.getActiveProfiles());

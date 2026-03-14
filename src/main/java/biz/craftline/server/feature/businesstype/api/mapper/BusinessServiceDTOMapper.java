@@ -43,7 +43,9 @@ public class BusinessServiceDTOMapper {
                             c1.setChildren(null);
                             return c1;
                         }).toList() : List.of(),
-                domain.getDuration()
+                domain.getDuration(),
+                domain.getThumbnailUrl(),
+                domain.getGalleryUrls()
         );
     }
 
@@ -62,7 +64,9 @@ public class BusinessServiceDTOMapper {
                             c1.setChildren(null);
                             return c1;
                         }).toList() : List.of(),
-                dto.getDuration()
+                dto.getDuration(),
+                dto.getThumbnailUrl(),
+                dto.getGalleryUrls()
         );
     }
 
@@ -82,6 +86,8 @@ public class BusinessServiceDTOMapper {
                 .status(dto.getStatus() != null ? dto.getStatus() : 0)
                 .categories(categoryList)
                 .duration(dto.getDuration())
+                .thumbnailUrl(dto.getThumbnailUrl())
+                .galleryUrls(dto.getGalleryUrls())
                 .build();
     }
 }

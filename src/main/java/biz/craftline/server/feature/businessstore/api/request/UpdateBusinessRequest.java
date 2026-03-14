@@ -27,5 +27,8 @@ public class UpdateBusinessRequest{
     private Double latitude;
     private Double longitude;
 
+    private String bannerUrl;
+
+    private String galleryUrls;
 
 }

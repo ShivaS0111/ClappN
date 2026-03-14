@@ -63,6 +63,12 @@ public class StoreEntity {
     private String manager;
     private String hours;
 
+    @Column(name = "banner_url", length = 500)
+    private String bannerUrl;
+
+    @Column(name = "gallery_urls", columnDefinition = "JSON")
+    private String galleryUrls;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "store_services",
             joinColumns = @JoinColumn(name = "store_id"),

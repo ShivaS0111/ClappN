@@ -32,5 +32,9 @@ public class StoreOfferedServiceDTO {
 
     private LocalDateTime updatedAt;
 
+    private String thumbnailUrl;
+
+    private String galleryUrls;
+
     private StoreItemPriceDTO price;
 }

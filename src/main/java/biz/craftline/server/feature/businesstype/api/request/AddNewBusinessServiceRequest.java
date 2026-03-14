@@ -31,4 +31,8 @@ public class AddNewBusinessServiceRequest {
     private Long currency;
     private Long duration;//in minutes
 
+    private String thumbnailUrl;
+
+    private String galleryUrls;
+
 }

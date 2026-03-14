@@ -22,4 +22,8 @@ public class AddNewStoreOfferedServiceRequest {
     private long storeId;
     private Long businessId;
 
+    private String thumbnailUrl;
+
+    private String galleryUrls;
+
 }

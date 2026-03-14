@@ -21,4 +21,6 @@ public class BusinessService {
     private Long currency;
     private List<Category> categories;
     private Long duration;//in minutes
+    private String thumbnailUrl;
+    private String galleryUrls;
 }

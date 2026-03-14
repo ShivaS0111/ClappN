@@ -36,6 +36,8 @@ public class BusinessDTOMapper {
                 .address(request.getAddress())
                 .latitude(request.getLatitude())
                 .longitude(request.getLongitude())
+                .bannerUrl(request.getBannerUrl())
+                .galleryUrls(request.getGalleryUrls())
                 .build();
     }
 
@@ -53,6 +55,8 @@ public class BusinessDTOMapper {
                 .address(request.getAddress())
                 .latitude(request.getLatitude())
                 .longitude(request.getLongitude())
+                .bannerUrl(request.getBannerUrl())
+                .galleryUrls(request.getGalleryUrls())
                 .build();
     }
 
@@ -67,6 +71,8 @@ public class BusinessDTOMapper {
         if(businessUpdator.getAddress()!=null ) old.setAddress(businessUpdator.getAddress());
         if(businessUpdator.getLatitude()!=null ) old.setLatitude(businessUpdator.getLatitude());
         if(businessUpdator.getLongitude()!=null ) old.setLongitude(businessUpdator.getLongitude());
+        if(businessUpdator.getBannerUrl()!=null ) old.setBannerUrl(businessUpdator.getBannerUrl());
+        if(businessUpdator.getGalleryUrls()!=null ) old.setGalleryUrls(businessUpdator.getGalleryUrls());
         if(businessUpdator.getCreatedBy()!=null ) old.setCreatedBy(businessUpdator.getCreatedBy());
         return old;
     }
@@ -82,6 +88,8 @@ public class BusinessDTOMapper {
                 .address(dto.getAddress())
                 .latitude(dto.getLatitude())
                 .longitude(dto.getLongitude())
+                .bannerUrl(dto.getBannerUrl())
+                .galleryUrls(dto.getGalleryUrls())
                 .createdBy(dto.getCreatedBy())
                 .status(dto.getStatus())
                 .build();
@@ -107,6 +115,8 @@ public class BusinessDTOMapper {
                 .address(business.getAddress())
                 .latitude(business.getLatitude())
                 .longitude(business.getLongitude())
+                .bannerUrl(business.getBannerUrl())
+                .galleryUrls(business.getGalleryUrls())
                 .createdBy(business.getCreatedBy())
                 .status(business.getStatus())
                 .stores(storeDTOS)

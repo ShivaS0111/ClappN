@@ -32,6 +32,10 @@ public class BusinessDTO {
 
     private Long createdBy;
 
+    private String bannerUrl;
+
+    private String galleryUrls;
+
     private Set<StoreDTO> stores = new HashSet<>();
 
 }

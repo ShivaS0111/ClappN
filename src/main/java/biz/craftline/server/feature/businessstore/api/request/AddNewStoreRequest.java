@@ -36,4 +36,8 @@ public class AddNewStoreRequest {
     private String phone;
     private String hours;
 
+    private String bannerUrl;
+
+    private String galleryUrls;
+
 }

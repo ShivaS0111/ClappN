@@ -33,6 +33,8 @@ public class BusinessServiceEntityMapper {
                 : null;
         entity.setCategories(categoryEntityList);
         entity.setDuration(domain.getDuration());
+        entity.setThumbnailUrl(domain.getThumbnailUrl());
+        entity.setGalleryUrls(domain.getGalleryUrls());
         return entity;
     }
 
@@ -47,7 +49,9 @@ public class BusinessServiceEntityMapper {
                 entity.getCreatedBy(),
                 entity.getCategories() != null ? entity.getCategories()
                         .stream().map(c -> categoryEntityMapper.toDomain(c)).toList() : null,
-                entity.getDuration()
+                entity.getDuration(),
+                entity.getThumbnailUrl(),
+                entity.getGalleryUrls()
         );
     }
 
@@ -60,6 +64,8 @@ public class BusinessServiceEntityMapper {
         if (updated.getCurrency() != null) old.setCurrency(updated.getCurrency());
         if (updated.getCategories() != null) old.setCategories(updated.getCategories());
         if (updated.getDuration() != null) old.setDuration(updated.getDuration());
+        if (updated.getThumbnailUrl() != null) old.setThumbnailUrl(updated.getThumbnailUrl());
+        if (updated.getGalleryUrls() != null) old.setGalleryUrls(updated.getGalleryUrls());
         return old;
     }
 }

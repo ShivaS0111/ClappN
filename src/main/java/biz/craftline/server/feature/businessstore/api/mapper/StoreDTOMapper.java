@@ -36,6 +36,8 @@ public class StoreDTOMapper {
                 .phone(request.getPhone())
                 .email(request.getEmail())
                 .hours(request.getHours())
+                .bannerUrl(request.getBannerUrl())
+                .galleryUrls(request.getGalleryUrls())
                 .build();
     }
 
@@ -64,6 +66,8 @@ public class StoreDTOMapper {
                 .email(dto.getEmail())
                 .manager(dto.getManager())
                 .hours(dto.getHours())
+                .bannerUrl(dto.getBannerUrl())
+                .galleryUrls(dto.getGalleryUrls())
                 .build();
     }
 
@@ -92,6 +96,8 @@ public class StoreDTOMapper {
                 .email(store.getEmail())
                 .manager(store.getManager())
                 .hours(store.getHours())
+                .bannerUrl(store.getBannerUrl())
+                .galleryUrls(store.getGalleryUrls())
                 .build();
     }
 }

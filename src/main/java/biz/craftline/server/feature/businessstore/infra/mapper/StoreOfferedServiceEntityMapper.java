@@ -22,6 +22,8 @@ public class StoreOfferedServiceEntityMapper {
         service.setBusinessId(entity.getBusinessId());
         service.setBusinessServiceId(entity.getBusinessServiceId());
         service.setCreatedBy(entity.getCreatedBy());
+        service.setThumbnailUrl(entity.getThumbnailUrl());
+        service.setGalleryUrls(entity.getGalleryUrls());
         return service;
     }
 
@@ -35,6 +37,8 @@ public class StoreOfferedServiceEntityMapper {
         entity.setBusinessId(store.getBusinessId());
         entity.setBusinessServiceId(store.getBusinessServiceId());
         entity.setCreatedBy(store.getCreatedBy());
+        entity.setThumbnailUrl(store.getThumbnailUrl());
+        entity.setGalleryUrls(store.getGalleryUrls());
         return entity;
     }
 }

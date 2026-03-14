@@ -28,4 +28,8 @@ public class AddNewBusinessRequest {
     private Double latitude;
     private Double longitude;
 
+    private String bannerUrl;
+
+    private String galleryUrls;
+
 }

@@ -46,6 +46,8 @@ public class BusinessEntityMapper {
                 .address(entity.getAddress())
                 .latitude(entity.getLatitude())
                 .longitude(entity.getLongitude())
+                .bannerUrl(entity.getBannerUrl())
+                .galleryUrls(entity.getGalleryUrls())
                 //.stores(new HashSet<>(stores))
                 .createdBy(entity.getCreatedBy())
                 .build();
@@ -68,6 +70,8 @@ public class BusinessEntityMapper {
                 .address(business.getAddress())
                 .latitude(business.getLatitude())
                 .longitude(business.getLongitude())
+                .bannerUrl(business.getBannerUrl())
+                .galleryUrls(business.getGalleryUrls())
                 .createdBy(business.getCreatedBy())
                 .build();
     }

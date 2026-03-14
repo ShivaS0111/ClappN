@@ -27,7 +27,9 @@ public class BusinessProductDTOMapper {
                 domain.getCategories(),
                 domain.getAmount(),
                 domain.getCurrency(),
-                domain.getBrand()
+                domain.getBrand(),
+                domain.getThumbnailUrl(),
+                domain.getGalleryUrls()
         );
     }
 
@@ -41,7 +43,9 @@ public class BusinessProductDTOMapper {
                 dto.getCategories(),
                 dto.getAmount(),
                 dto.getCurrency(),
-                dto.getBrand()
+                dto.getBrand(),
+                dto.getThumbnailUrl(),
+                dto.getGalleryUrls()
         );
     }
 
@@ -56,6 +60,8 @@ public class BusinessProductDTOMapper {
                 .amount(dto.getAmount())
                 .currency(dto.getCurrency())
                 .status(dto.getStatus())
+                .thumbnailUrl(dto.getThumbnailUrl())
+                .galleryUrls(dto.getGalleryUrls())
                 .build();
     }
 }

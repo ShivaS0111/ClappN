@@ -29,6 +29,8 @@ public class StoreEntityMapper {
                 .email(entity.getEmail())
                 .manager(entity.getManager())
                 .hours(entity.getHours())
+                .bannerUrl(entity.getBannerUrl())
+                .galleryUrls(entity.getGalleryUrls())
                 .build();
     }
 
@@ -46,6 +48,8 @@ public class StoreEntityMapper {
                 .email(store.getEmail())
                 .manager(store.getManager())
                 .hours(store.getHours())
+                .bannerUrl(store.getBannerUrl())
+                .galleryUrls(store.getGalleryUrls())
                 .build();
     }
 }
