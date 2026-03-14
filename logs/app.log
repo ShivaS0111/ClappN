@@ -45,3 +45,216 @@
 2026-03-14T14:00:48.250+05:30  WARN 15212 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m14s150ms658µs300ns).
 2026-03-14T14:16:06.532+05:30  WARN 15212 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=48s66ms482µs100ns).
 2026-03-14T14:25:51.653+05:30  WARN 15212 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m14s976ms819µs201ns).
+2026-03-14T15:24:36.308+05:30  INFO 17136 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 21.0.10 with PID 17136 (D:\project\ClappN\target\classes started by Shiva in D:\project\ClappN)
+2026-03-14T15:24:36.308+05:30 DEBUG 17136 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
+2026-03-14T15:24:36.308+05:30  INFO 17136 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
+2026-03-14T15:24:36.363+05:30  INFO 17136 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-14T15:24:36.363+05:30  INFO 17136 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-14T15:24:38.090+05:30  INFO 17136 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-14T15:24:38.310+05:30  INFO 17136 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 197 ms. Found 39 JPA repository interfaces.
+2026-03-14T15:24:39.317+05:30  INFO 17136 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2026-03-14T15:24:39.333+05:30  INFO 17136 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-14T15:24:39.333+05:30  INFO 17136 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2026-03-14T15:24:39.427+05:30  INFO 17136 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-14T15:24:39.427+05:30  INFO 17136 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3064 ms
+2026-03-14T15:24:39.510+05:30 DEBUG 17136 --- [restartedMain] b.c.s.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2026-03-14T15:24:39.700+05:30  INFO 17136 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
+2026-03-14T15:24:39.700+05:30  INFO 17136 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-03-14T15:24:39.700+05:30  INFO 17136 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : 
+2026-03-14T15:24:39.716+05:30  INFO 17136 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-14T15:24:40.196+05:30  INFO 17136 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2722ae51
+2026-03-14T15:24:40.196+05:30  INFO 17136 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-14T15:24:40.227+05:30  INFO 17136 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
+2026-03-14T15:24:40.312+05:30  WARN 17136 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Validate failed: Migrations have failed validation
+Migration checksum mismatch for migration version 3
+-> Applied to database : -21918776
+-> Resolved locally    : 1999606596
+Either revert the changes to the migration, or run repair to update the schema history.
+Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE
+2026-03-14T15:24:40.312+05:30  INFO 17136 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-03-14T15:24:40.343+05:30  INFO 17136 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-03-14T15:24:40.343+05:30  INFO 17136 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-03-14T15:24:40.343+05:30  INFO 17136 --- [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-03-14T15:24:40.375+05:30 ERROR 17136 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Validate failed: Migrations have failed validation
+Migration checksum mismatch for migration version 3
+-> Applied to database : -21918776
+-> Resolved locally    : 1999606596
+Either revert the changes to the migration, or run repair to update the schema history.
+Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1770) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:312) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1158) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:932) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:608) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1309) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1298) ~[spring-boot-3.1.4.jar:3.1.4]
+	at biz.craftline.server.ServerApplication.main(ServerApplication.java:17) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.1.4.jar:3.1.4]
+Caused by: org.flywaydb.core.api.exception.FlywayValidateException: Validate failed: Migrations have failed validation
+Migration checksum mismatch for migration version 3
+-> Applied to database : -21918776
+-> Resolved locally    : 1999606596
+Either revert the changes to the migration, or run repair to update the schema history.
+Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE
+	at org.flywaydb.core.Flyway.lambda$migrate$0(Flyway.java:146) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.FlywayExecutor.execute(FlywayExecutor.java:196) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.Flyway.migrate(Flyway.java:140) ~[flyway-core-9.16.3.jar:na]
+	at org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer.afterPropertiesSet(FlywayMigrationInitializer.java:66) ~[spring-boot-autoconfigure-3.1.4.jar:3.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1817) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 21 common frames omitted
+
+2026-03-14T15:33:07.276+05:30  INFO 14700 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 21.0.10 with PID 14700 (D:\project\ClappN\target\classes started by Shiva in D:\project\ClappN)
+2026-03-14T15:33:07.276+05:30 DEBUG 14700 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
+2026-03-14T15:33:07.276+05:30  INFO 14700 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
+2026-03-14T15:33:07.316+05:30  INFO 14700 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-14T15:33:07.332+05:30  INFO 14700 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-14T15:33:10.299+05:30  INFO 14700 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-14T15:33:10.552+05:30  INFO 14700 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 225 ms. Found 39 JPA repository interfaces.
+2026-03-14T15:33:11.605+05:30  INFO 14700 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2026-03-14T15:33:11.605+05:30  INFO 14700 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-14T15:33:11.626+05:30  INFO 14700 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2026-03-14T15:33:11.684+05:30  INFO 14700 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-14T15:33:11.684+05:30  INFO 14700 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4352 ms
+2026-03-14T15:33:11.763+05:30 DEBUG 14700 --- [restartedMain] b.c.s.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2026-03-14T15:33:11.908+05:30  INFO 14700 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
+2026-03-14T15:33:11.908+05:30  INFO 14700 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-03-14T15:33:11.908+05:30  INFO 14700 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : 
+2026-03-14T15:33:11.909+05:30  INFO 14700 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-14T15:33:12.248+05:30  INFO 14700 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@44516c81
+2026-03-14T15:33:12.248+05:30  INFO 14700 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-14T15:33:12.279+05:30  INFO 14700 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
+2026-03-14T15:33:12.342+05:30  WARN 14700 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Validate failed: Migrations have failed validation
+Detected applied migration not resolved locally: 1.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Detected applied migration not resolved locally: 2.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Migration checksum mismatch for migration version 3
+-> Applied to database : -21918776
+-> Resolved locally    : 1999606596
+Either revert the changes to the migration, or run repair to update the schema history.
+Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE
+2026-03-14T15:33:12.342+05:30  INFO 14700 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-03-14T15:33:12.342+05:30  INFO 14700 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-03-14T15:33:12.358+05:30  INFO 14700 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-03-14T15:33:12.358+05:30  INFO 14700 --- [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-03-14T15:33:12.373+05:30 ERROR 14700 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Validate failed: Migrations have failed validation
+Detected applied migration not resolved locally: 1.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Detected applied migration not resolved locally: 2.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Migration checksum mismatch for migration version 3
+-> Applied to database : -21918776
+-> Resolved locally    : 1999606596
+Either revert the changes to the migration, or run repair to update the schema history.
+Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1770) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:312) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1158) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:932) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:608) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1309) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1298) ~[spring-boot-3.1.4.jar:3.1.4]
+	at biz.craftline.server.ServerApplication.main(ServerApplication.java:17) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.1.4.jar:3.1.4]
+Caused by: org.flywaydb.core.api.exception.FlywayValidateException: Validate failed: Migrations have failed validation
+Detected applied migration not resolved locally: 1.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Detected applied migration not resolved locally: 2.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Migration checksum mismatch for migration version 3
+-> Applied to database : -21918776
+-> Resolved locally    : 1999606596
+Either revert the changes to the migration, or run repair to update the schema history.
+Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE
+	at org.flywaydb.core.Flyway.lambda$migrate$0(Flyway.java:146) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.FlywayExecutor.execute(FlywayExecutor.java:196) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.Flyway.migrate(Flyway.java:140) ~[flyway-core-9.16.3.jar:na]
+	at org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer.afterPropertiesSet(FlywayMigrationInitializer.java:66) ~[spring-boot-autoconfigure-3.1.4.jar:3.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1817) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 21 common frames omitted
+
+2026-03-14T15:36:16.352+05:30  INFO 14188 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 21.0.10 with PID 14188 (D:\project\ClappN\target\classes started by Shiva in D:\project\ClappN)
+2026-03-14T15:36:16.352+05:30 DEBUG 14188 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
+2026-03-14T15:36:16.352+05:30  INFO 14188 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
+2026-03-14T15:36:16.396+05:30  INFO 14188 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-14T15:36:16.396+05:30  INFO 14188 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-14T15:36:17.345+05:30  INFO 14188 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-14T15:36:17.518+05:30  INFO 14188 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 169 ms. Found 39 JPA repository interfaces.
+2026-03-14T15:36:18.428+05:30  INFO 14188 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2026-03-14T15:36:18.428+05:30  INFO 14188 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-14T15:36:18.428+05:30  INFO 14188 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2026-03-14T15:36:18.506+05:30  INFO 14188 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-14T15:36:18.506+05:30  INFO 14188 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2110 ms
+2026-03-14T15:36:18.584+05:30 DEBUG 14188 --- [restartedMain] b.c.s.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2026-03-14T15:36:18.726+05:30  INFO 14188 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
+2026-03-14T15:36:18.726+05:30  INFO 14188 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-03-14T15:36:18.726+05:30  INFO 14188 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : 
+2026-03-14T15:36:18.726+05:30  INFO 14188 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-14T15:36:19.071+05:30  INFO 14188 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@ede7bff
+2026-03-14T15:36:19.086+05:30  INFO 14188 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-14T15:36:19.118+05:30  INFO 14188 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
+2026-03-14T15:36:19.149+05:30  INFO 14188 --- [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.018s)
+2026-03-14T15:36:19.164+05:30  INFO 14188 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `clapp`: 3
+2026-03-14T15:36:19.164+05:30 ERROR 14188 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` has version 3, but no migration could be resolved in the configured locations !
+2026-03-14T15:36:19.164+05:30  INFO 14188 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` is up to date. No migration necessary.
+2026-03-14T15:36:19.313+05:30  INFO 14188 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-14T15:36:19.371+05:30  INFO 14188 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2026-03-14T15:36:19.371+05:30  INFO 14188 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2026-03-14T15:36:19.520+05:30  INFO 14188 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2026-03-14T15:36:19.645+05:30  INFO 14188 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-14T15:36:19.692+05:30  WARN 14188 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-03-14T15:36:20.039+05:30  INFO 14188 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2026-03-14T15:36:21.166+05:30  INFO 14188 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2026-03-14T15:36:21.746+05:30  INFO 14188 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-14T15:36:22.013+05:30  INFO 14188 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-14T15:36:23.833+05:30  INFO 14188 --- [restartedMain] b.c.s.f.p.a.p.StripePaymentProvider      : Stripe initialized with publishable key: pk_test_YOUR_STRIPE_PUB
+2026-03-14T15:36:24.116+05:30  WARN 14188 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-14T15:36:24.414+05:30  INFO 14188 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@697a87e0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@112a0c37, org.springframework.security.web.context.SecurityContextHolderFilter@6a9dfe8a, org.springframework.security.web.header.HeaderWriterFilter@1dabc169, org.springframework.web.filter.CorsFilter@15ff2e30, org.springframework.security.web.authentication.logout.LogoutFilter@26202e7a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@61f122b8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@f2ec5cf, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@647bcc90, org.springframework.security.web.access.ExceptionTranslationFilter@28ebdfc3, org.springframework.security.web.access.intercept.AuthorizationFilter@7fb1ac95]
+2026-03-14T15:36:24.821+05:30  INFO 14188 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-03-14T15:36:24.869+05:30  INFO 14188 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
+2026-03-14T15:36:24.884+05:30  INFO 14188 --- [restartedMain] biz.craftline.server.ServerApplication   : Started ServerApplication in 8.928 seconds (process running for 9.494)
+2026-03-14T15:46:47.208+05:30  WARN 14188 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=6m57s961ms540µs100ns).
+2026-03-14T15:56:03.556+05:30  INFO 14188 --- [http-nio-9090-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-14T15:56:03.556+05:30  INFO 14188 --- [http-nio-9090-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-14T15:56:03.570+05:30  INFO 14188 --- [http-nio-9090-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 14 ms
+2026-03-14T16:38:22.571+05:30  WARN 14188 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=24m4s966ms941µs800ns).
+2026-03-14T17:12:39.609+05:30  INFO 14188 --- [http-nio-9090-exec-8] b.c.s.f.u.domain.service.UserService     : Loaded user: admin@clapp.com
+2026-03-14T17:12:40.104+05:30  INFO 14188 --- [http-nio-9090-exec-8] b.c.s.f.u.api.controller.AuthController  : User admin@clapp.com authenticated successfully with 170 permissions
+2026-03-14T17:13:45.959+05:30  INFO 14188 --- [http-nio-9090-exec-3] b.c.s.f.b.a.controller.StoreController   : businessId: 1
+2026-03-14T17:13:56.752+05:30  INFO 14188 --- [http-nio-9090-exec-5] b.c.s.f.b.a.controller.StoreController   : businessId: 1
