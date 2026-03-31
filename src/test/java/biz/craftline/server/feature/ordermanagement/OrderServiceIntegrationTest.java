@@ -24,7 +24,7 @@ public class OrderServiceIntegrationTest {
     void testCreateAndReadOrder() {
         Order order = new Order();
         order.setCustomerId(123L);
-        order.setOrderDate(new Date());
+        //order.setOrderDate(new Date());
         order.setStatus("Order Created");
         Order saved = orderService.placeOrder(order);
         assertNotNull(saved.getId());
@@ -36,11 +36,11 @@ public class OrderServiceIntegrationTest {
     void testUpdateOrder() {
         Order order = new Order();
         order.setCustomerId(456L);
-        order.setOrderDate(new Date());
+        //order.setOrderDate(new Date());
         order.setStatus("Order Created");
         Order saved = orderService.placeOrder(order);
         saved.setCustomerId(789L);
-        saved.setOrderDate(new Date());
+        //saved.setOrderDate(new Date());
         Order updated = orderService.updateOrder(saved.getId(), saved);
         assertEquals(789L, updated.getCustomerId());
     }
@@ -49,7 +49,7 @@ public class OrderServiceIntegrationTest {
     void testDeleteOrder() {
         Order order = new Order();
         order.setCustomerId(111L);
-        order.setOrderDate(new Date());
+        //order.setOrderDate(new Date());
         order.setStatus("Order Created");
         Order saved = orderService.placeOrder(order);
         orderService.deleteOrder(saved.getId());
@@ -60,12 +60,12 @@ public class OrderServiceIntegrationTest {
     void testGetAllOrders() {
         Order order1 = new Order();
         order1.setCustomerId(1L);
-        order1.setOrderDate(new Date());
+        //order1.setOrderDate(new Date());
         order1.setStatus("Order Created");
         orderService.placeOrder(order1);
         Order order2 = new Order();
         order2.setCustomerId(2L);
-        order2.setOrderDate(new Date());
+        //order2.setOrderDate(new Date());
         order2.setStatus("Order Created");
         orderService.placeOrder(order2);
         List<Order> orders = orderService.getAllOrders();
