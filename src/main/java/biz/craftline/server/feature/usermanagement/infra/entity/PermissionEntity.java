@@ -1,7 +1,9 @@
 package biz.craftline.server.feature.usermanagement.infra.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "permission")
 public class PermissionEntity {
@@ -14,6 +16,15 @@ public class PermissionEntity {
 
     @Column
     private String description;
+    @Column
+    private String category;
+
+    @Column
+    private String type;
+
+    @Column
+    private String level;
+
     public PermissionEntity(){}
 
     public PermissionEntity(String permissionName) {
@@ -21,27 +32,4 @@ public class PermissionEntity {
         this.description = "";
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

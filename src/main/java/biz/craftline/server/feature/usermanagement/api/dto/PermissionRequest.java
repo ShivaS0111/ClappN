@@ -6,6 +6,9 @@ import lombok.Data;
 public class PermissionRequest {
     private String name;
     private String description;
+    private String category;
+    private String type;
+    private String level;
     // Getters and setters
 }
 

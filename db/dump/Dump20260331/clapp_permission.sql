@@ -28,6 +28,9 @@ CREATE TABLE `permission` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `level` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_2ojme20jpga3r4r79tdso17gi` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
