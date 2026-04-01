@@ -136,4 +136,53 @@ public class StoreController {
                 HttpStatus.CREATED);
     }
 
+    /**
+     * Update an existing store.
+     */
+    @Operation(summary = "Update store", description = "Updates an existing store.")
+    @ApiResponse(responseCode = "200", description = "Store updated successfully.")
+    @PutMapping("/{id}")
+    public ResponseEntity<APIResponse<StoreDTO>> updateStore(
+            @PathVariable("id") Long id,
+            @RequestBody AddNewStoreRequest request) {
+        // Check if store exists
+        Store existingStore = service.findStoreById(id);
+        if (existingStore == null) {
+            return APIResponse.error("Store not found", HttpStatus.NOT_FOUND);
+        }
+
+        // Get business if provided
+        Business business = null;
+        if (request.getBusinessId() != null) {
+            business = businessService.findById(request.getBusinessId()).orElse(null);
+        }
+
+        // Update store fields
+        Store storeToUpdate = mapper.toDomain(request);
+        storeToUpdate.setId(id);
+        storeToUpdate.setBusiness(business);
+        
+        Store updatedStore = service.save(storeToUpdate);
+        return APIResponse.success(
+                mapper.toDTO(updatedStore),
+                "Store updated successfully");
+    }
+
+    /**
+     * Delete a store by ID.
+     */
+    @Operation(summary = "Delete store", description = "Deletes a store by ID.")
+    @ApiResponse(responseCode = "200", description = "Store deleted successfully.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<APIResponse<String>> deleteStore(@PathVariable("id") Long id) {
+        // Check if store exists
+        Store existingStore = service.findStoreById(id);
+        if (existingStore == null) {
+            return APIResponse.error("Store not found", HttpStatus.NOT_FOUND);
+        }
+
+        service.deleteBusinessTypeById(id);
+        return APIResponse.success("Store deleted successfully");
+    }
+
 }
