@@ -12,6 +12,8 @@ import biz.craftline.server.feature.businessstore.infra.mapper.StoreProductEntit
 import biz.craftline.server.feature.businessstore.infra.repository.ProductsOfferedByStoreRepository;
 import biz.craftline.server.feature.businessstore.infra.repository.StoreItemPriceHandleRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessProductJpaRepository;
+import biz.craftline.server.feature.usermanagement.domain.model.User;
+import biz.craftline.server.feature.usermanagement.domain.service.UserService;
 import biz.craftline.server.util.UserUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
 
     @Autowired
     StoreService storeService;
+
+    @Autowired
+    UserService userService;
 
     @Override
     public List<StoreOfferedProduct> findAll() {
@@ -69,7 +74,7 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
 
     @Override
     public StoreOfferedProduct save(StoreOfferedProduct domain) {
-        long userId = UserUtil.getCurrentUserId();
+        long userId = getCurrentUserId();
         StoreOfferedProductEntity entity= mapper.toEntity(domain);
         //entity.setService(domain.getService());
         entity.setCreatedBy(userId);
@@ -79,7 +84,7 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
 
     @Override
     public List<StoreOfferedProduct> save(List<StoreOfferedProduct> domains) {
-        long userId = UserUtil.getCurrentUserId();
+        long userId = getCurrentUserId();
         List<StoreOfferedProductEntity> entities =domains.stream().map( domain-> {
 
             StoreOfferedProductEntity entity= mapper.toEntity(domain);
@@ -137,6 +142,13 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
                 });
 
         return products;
+    }
+
+    private Long getCurrentUserId() {
+        String currentUsername = UserUtil.requireCurrentUsername();
+        return userService.getUserByEmail(currentUsername)
+                .map(User::getId)
+                .orElseThrow(() -> new RuntimeException("Authenticated user not found in database"));
     }
 
 

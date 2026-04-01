@@ -18,8 +18,12 @@ import java.util.List;
 public class OrderDTO {
     /** Order ID */
     private Long id;
+    /** Store ID */
+    private Long storeId;
     /** Customer ID */
     private Long customerId;
+    /** Total amount */
+    private Double totalAmount;
     /** Date the order was placed */
     private LocalDateTime orderDate;
     /** Status of the order */

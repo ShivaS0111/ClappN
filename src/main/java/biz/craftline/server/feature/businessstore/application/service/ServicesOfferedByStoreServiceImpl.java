@@ -9,6 +9,8 @@ import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServi
 import biz.craftline.server.feature.businessstore.infra.mapper.StoreOfferedServiceEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.ServicesOfferedByStoreRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessServicesJpaRepository;
+import biz.craftline.server.feature.usermanagement.domain.model.User;
+import biz.craftline.server.feature.usermanagement.domain.service.UserService;
 import biz.craftline.server.util.UserUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
 
     @Autowired
     BusinessServicesJpaRepository businessServicesJpaRepository;
+
+    @Autowired
+    UserService userService;
 
     @Override
     public Optional<List<StoreOfferedService>> findAll() {
@@ -67,7 +72,7 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
 
     @Override
     public StoreOfferedService save(StoreOfferedService domain) {
-        long userId = UserUtil.getCurrentUserId();
+        long userId = getCurrentUserId();
         StoreOfferedServiceEntity entity = mapper.toEntity(domain);
         entity.setCreatedBy(userId);
         StoreOfferedServiceEntity en = servicesOfferedByStoreRepository.save(entity);
@@ -76,7 +81,7 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
 
     @Override
     public List<StoreOfferedService> save(List<StoreOfferedService> domains) {
-        long userId = UserUtil.getCurrentUserId();
+        long userId = getCurrentUserId();
         List<StoreOfferedServiceEntity> entities = domains.stream().map(domain -> {
                     StoreOfferedServiceEntity entity = mapper.toEntity(domain);
                     entity.setCreatedBy(userId);
@@ -93,6 +98,13 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
         Optional<StoreOfferedServiceEntity> service = servicesOfferedByStoreRepository.findById(id);
         service.orElseThrow(() -> new RuntimeException("Service not found with id: " + id));
         return mapper.toDomain(service.get());
+    }
+
+    private Long getCurrentUserId() {
+        String currentUsername = UserUtil.requireCurrentUsername();
+        return userService.getUserByEmail(currentUsername)
+                .map(User::getId)
+                .orElseThrow(() -> new RuntimeException("Authenticated user not found in database"));
     }
 
 }

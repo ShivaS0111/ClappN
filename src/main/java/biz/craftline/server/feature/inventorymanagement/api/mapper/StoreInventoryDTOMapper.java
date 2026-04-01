@@ -10,8 +10,8 @@ public class StoreInventoryDTOMapper {
     public StoreInventoryDTO toDomain(StoreInventory source){
         return StoreInventoryDTO.builder()
                 .id(source.getId())
-                .storeId(source.getId())
-                .productId(source.getId())
+                .storeId(source.getStoreId())
+                .productId(source.getProductId())
                 .totalQuantity(source.getTotalQuantity())
                 .available(source.getAvailable())
                 .blocked(source.getBlocked())
@@ -23,8 +23,8 @@ public class StoreInventoryDTOMapper {
     public StoreInventory toDomain(StoreInventoryDTO source){
         return StoreInventory.builder()
                 .id(source.getId())
-                .storeId(source.getId())
-                .productId(source.getId())
+                .storeId(source.getStoreId())
+                .productId(source.getProductId())
                 .totalQuantity(source.getTotalQuantity())
                 .available(source.getAvailable())
                 .blocked(source.getBlocked())

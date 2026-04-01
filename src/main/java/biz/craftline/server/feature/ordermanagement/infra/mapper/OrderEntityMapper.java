@@ -14,7 +14,9 @@ public class OrderEntityMapper {
         if (model == null) return null;
         OrderEntity entity = new OrderEntity();
         entity.setId(model.getId());
+        entity.setStoreId(model.getStoreId());
         entity.setCustomerId(model.getCustomerId());
+        entity.setTotalAmount(model.getTotalAmount() != null ? java.math.BigDecimal.valueOf(model.getTotalAmount()) : null);
         entity.setOrderDate(model.getOrderDate());
         entity.setStatus(model.getStatus());
         entity.setItems(model.getItems() != null ? model.getItems().stream().map(OrderItemEntityMapper::toEntity).collect(Collectors.toList()) : null);
@@ -27,7 +29,9 @@ public class OrderEntityMapper {
         if (entity == null) return null;
         Order model = new Order();
         model.setId(entity.getId());
+        model.setStoreId(entity.getStoreId());
         model.setCustomerId(entity.getCustomerId());
+        model.setTotalAmount(entity.getTotalAmount() != null ? entity.getTotalAmount().doubleValue() : null);
         model.setOrderDate(entity.getOrderDate());
         model.setStatus(entity.getStatus());
         model.setItems(entity.getItems() != null ? entity.getItems().stream().map(OrderItemEntityMapper::toModel).collect(Collectors.toList()) : null);

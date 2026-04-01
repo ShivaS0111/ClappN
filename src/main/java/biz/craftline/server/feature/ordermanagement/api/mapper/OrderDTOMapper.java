@@ -20,7 +20,9 @@ public class OrderDTOMapper {
     public static OrderDTO toDTO(Order order) {
         OrderDTO dto = new OrderDTO();
         dto.setId(order.getId());
+        dto.setStoreId(order.getStoreId());
         dto.setCustomerId(order.getCustomerId());
+        dto.setTotalAmount(order.getTotalAmount());
         dto.setOrderDate(order.getOrderDate());
         dto.setStatus(order.getStatus());
         if (order.getItems() != null) {
@@ -122,7 +124,9 @@ public class OrderDTOMapper {
     public static Order fromDTO(OrderDTO dto) {
         Order order = new Order();
         order.setId(dto.getId());
+        order.setStoreId(dto.getStoreId());
         order.setCustomerId(dto.getCustomerId());
+        order.setTotalAmount(dto.getTotalAmount());
         order.setOrderDate(dto.getOrderDate());
         order.setStatus(dto.getStatus());
         if (dto.getItems() != null) {

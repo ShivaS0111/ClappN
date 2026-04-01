@@ -14,13 +14,14 @@ public class StoreItemPriceDTOMapper {
     CurrencyMapper currencyMapper;
 
     public StoreItemPrice toDomain(UpdateStoreItemPriceRequest request) {
+        Long itemId = request.getProductLotId() != null ? request.getProductLotId() : request.getServiceId();
         return StoreItemPrice.builder()
                 .id(request.getId())
-                .itemType(request.getProductLotId())
-                .itemId(request.getServiceId())
+                .itemId(itemId)
                 .price(request.getPrice())
                 .currency(request.getCurrencyId())
                 .countryId(request.getCountryId())
+                .status(request.getStatus())
                 .build();
     }
 
@@ -31,6 +32,7 @@ public class StoreItemPriceDTOMapper {
                 .price(request.getPrice())
                 .currency(request.getCurrencyId())
                 .countryId(request.getCountryId())
+                .status(request.getStatus())
                 .build();
     }
 
@@ -42,6 +44,7 @@ public class StoreItemPriceDTOMapper {
                 .price(dto.getPrice())
                 .currency(dto.getCurrency())
                 .countryId(dto.getCountryId())
+                .status(dto.getStatus())
                 .build();
     }
 
@@ -51,6 +54,9 @@ public class StoreItemPriceDTOMapper {
                 .itemType(store.getItemType())
                 .itemId(store.getItemId())
                 .price(store.getPrice())
-                .currency(store.getCurrency()).build();
+                .currency(store.getCurrency())
+                .countryId(store.getCountryId())
+                .status(store.getStatus())
+                .build();
     }
 }

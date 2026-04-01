@@ -1,9 +1,9 @@
 package biz.craftline.server.feature.businessstore.api.dto;
 
 
+import biz.craftline.server.feature.customermanagement.domain.model.Customer;
 import biz.craftline.server.feature.employeemanagement.domain.model.Employee;
 import biz.craftline.server.feature.ordermanagement.domain.model.Order;
-import biz.craftline.server.feature.usermanagement.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class StoreDetailsResponse {
     private List<Employee> employeeList;
     private List<StoreOfferedServiceDTO> services;
     private List<StoreOfferedProductDTO> products;
-    private List<User> customers;
+    private List<Customer> customers;
     private List<Order> orders;
 }
 

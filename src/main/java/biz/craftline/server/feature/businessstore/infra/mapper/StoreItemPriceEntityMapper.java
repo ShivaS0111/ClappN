@@ -17,7 +17,8 @@ public class StoreItemPriceEntityMapper {
         }
         StoreItemPrice.StoreItemPriceBuilder builder = StoreItemPrice.builder()
                 .id(entity.getId())
-                .price(entity.getPrice());
+                .price(entity.getPrice())
+                .status(entity.getStatus());
 
         builder.itemType(entity.getItemType());
         builder.itemId(entity.getItemId());
@@ -35,7 +36,8 @@ public class StoreItemPriceEntityMapper {
         StoreItemPriceEntity.StoreItemPriceEntityBuilder builder = StoreItemPriceEntity.builder()
                 .price(store.getPrice())
                 .createdBy(0L) // Default value, should be set by service layer
-                .validFrom(LocalDateTime.now());
+                .validFrom(LocalDateTime.now())
+                .status(store.getStatus() > 0 ? store.getStatus() : 1);
 
         builder.itemType(store.getItemType());
         builder.itemId(store.getItemId());

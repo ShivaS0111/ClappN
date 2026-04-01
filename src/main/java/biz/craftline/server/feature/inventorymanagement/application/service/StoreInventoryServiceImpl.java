@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,13 @@ public class StoreInventoryServiceImpl implements StoreInventoryService {
 
     private final StoreInventoryEntityMapper storeInventoryEntityMapper;
 
+    @Override
+    public List<StoreInventory> findByStoreId(Long storeId) {
+        return storeInventoryRepository.findByStoreId(storeId)
+                .stream()
+                .map(storeInventoryEntityMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public StoreInventory addStock(Long storeId, Long productId, int quantity, String referenceType, String referenceId, String reason) {

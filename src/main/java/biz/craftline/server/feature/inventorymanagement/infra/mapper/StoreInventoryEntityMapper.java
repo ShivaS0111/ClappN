@@ -10,8 +10,8 @@ public class StoreInventoryEntityMapper {
     public StoreInventory toDomain(StoreInventoryEntity source){
         return StoreInventory.builder()
                 .id(source.getId())
-                .storeId(source.getId())
-                .productId(source.getId())
+                .storeId(source.getStoreId())
+                .productId(source.getProductId())
                 .totalQuantity(source.getTotalQuantity())
                 .available(source.getAvailable())
                 .blocked(source.getBlocked())
@@ -23,8 +23,8 @@ public class StoreInventoryEntityMapper {
     public  StoreInventoryEntity toDomain(StoreInventory source){
         return StoreInventoryEntity.builder()
                 .id(source.getId())
-                .storeId(source.getId())
-                .productId(source.getId())
+                .storeId(source.getStoreId())
+                .productId(source.getProductId())
                 .totalQuantity(source.getTotalQuantity())
                 .available(source.getAvailable())
                 .blocked(source.getBlocked())

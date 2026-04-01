@@ -17,7 +17,7 @@ public interface StoreService {
 
     List<Store> findStoresByBusiness(long business);
 
-    void deleteBusinessTypeById(Long id);
+    void deleteStoreById(Long id);
 
     Optional<Store> findById(Long id);
 

@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/store-inventory")
 @RequiredArgsConstructor
@@ -18,6 +21,17 @@ public class StoreInventoryController {
     private final StoreInventoryService storeInventoryService;
     private final StoreInventoryDTOMapper storeInventoryDTOMapper;
 
+    /**
+     * Get all inventory items for a specific store.
+     */
+    @GetMapping("/{storeId}")
+    public ResponseEntity<APIResponse<List<StoreInventoryDTO>>> getInventoryByStore(@PathVariable Long storeId) {
+        List<StoreInventory> inventoryList = storeInventoryService.findByStoreId(storeId);
+        List<StoreInventoryDTO> dtoList = inventoryList.stream()
+                .map(storeInventoryDTOMapper::toDomain)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtoList, "Store inventory retrieved successfully");
+    }
 
     @PostMapping("/{storeId}/{productId}/add")
     public ResponseEntity<APIResponse<StoreInventoryDTO>> addStock(@PathVariable Long storeId, @PathVariable Long productId,

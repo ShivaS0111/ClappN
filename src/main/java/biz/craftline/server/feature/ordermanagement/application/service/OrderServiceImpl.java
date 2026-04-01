@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrders() {
         return repository.findAll().stream()
+                .map(OrderEntityMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Order> getOrdersByStoreId(Long storeId) {
+        return repository.findByStoreId(storeId).stream()
+                .map(OrderEntityMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Order> getOrdersByCustomerId(Long customerId) {
+        return repository.findByCustomerId(customerId).stream()
                 .map(OrderEntityMapper::toModel)
                 .collect(Collectors.toList());
     }
@@ -52,6 +67,12 @@ public class OrderServiceImpl implements OrderService {
         // persist order entity
         var entity = OrderEntityMapper.toEntity(request);
         entity.setStatus(OrderStatus.CREATED.toString());
+        if (entity.getOrderDate() == null) {
+            entity.setOrderDate(LocalDateTime.now());
+        }
+        if (entity.getTotalAmount() == null) {
+            entity.setTotalAmount(BigDecimal.ZERO);
+        }
         var saved = repository.save(entity);
 
         BigDecimal total = BigDecimal.ZERO;

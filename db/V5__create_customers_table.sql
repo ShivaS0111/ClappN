@@ -1,0 +1,30 @@
+-- Create customers table for customer management
+CREATE TABLE IF NOT EXISTS customers (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    store_id BIGINT,
+    business_id BIGINT,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100),
+    email VARCHAR(255) UNIQUE,
+    phone VARCHAR(50),
+    address VARCHAR(500),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    zip_code VARCHAR(20),
+    country VARCHAR(100),
+    birthday DATE,
+    status INT DEFAULT 1 COMMENT '0=inactive, 1=active, 2=VIP',
+    loyalty_points INT DEFAULT 0,
+    preferred_payment VARCHAR(50),
+    total_orders INT DEFAULT 0,
+    total_spent DECIMAL(12,2) DEFAULT 0.00,
+    join_date TIMESTAMP,
+    last_order_date TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_store_id (store_id),
+    INDEX idx_business_id (business_id),
+    INDEX idx_email (email),
+    INDEX idx_status (status)
+);
+

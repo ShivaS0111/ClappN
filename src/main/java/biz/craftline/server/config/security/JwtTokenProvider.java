@@ -20,7 +20,7 @@ import java.util.UUID;
 @Slf4j
 public class JwtTokenProvider {
 
-    @Value("${app.jwt.secret:mySecretKey}")
+    @Value("${app.jwt.secret}")
     private String jwtSecret;
 
     @Value("${app.jwt.expiration:604800000}") // 7 days

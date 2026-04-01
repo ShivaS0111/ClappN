@@ -59,7 +59,7 @@ public class StoreItemPriceEntity {
     @PrePersist
     @PreUpdate
     public void validate() {
-        if ((itemType == null || itemId != null)) {
+        if (itemType == null || itemId == null) {
             throw new IllegalStateException("itemType & itemId must set");
         }
     }
