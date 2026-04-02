@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.application.service;
 
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.enums.Item;
 import biz.craftline.server.feature.businessstore.api.dto.ItemKey;
 import biz.craftline.server.feature.businessstore.domain.model.Store;
@@ -42,9 +43,20 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
     @Autowired
     UserService userService;
 
+    @Autowired
+    SecurityContextService securityContextService;
+
     @Override
     public List<StoreOfferedProduct> findAll() {
-        List<StoreOfferedProduct> list = productsOfferedByStoreRepository.findAll().stream().map(mapper::toDomain).toList();
+        List<StoreOfferedProduct> list = productsOfferedByStoreRepository.findAll().stream()
+                .map(mapper::toDomain).toList();
+        // Filter by accessible storeIds
+        List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
+        if (accessibleStoreIds != null) {
+            list = list.stream()
+                    .filter(p -> p.getStoreId() != null && accessibleStoreIds.contains(p.getStoreId()))
+                    .toList();
+        }
         return findProductsLatestPrices(list);
     }
 
@@ -55,6 +67,7 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
 
     @Override
     public Optional<List<StoreOfferedProduct>> findProductsByStoreId(Long id) {
+        securityContextService.validateStoreAccess(id);
         List<StoreOfferedProductEntity> entities = productsOfferedByStoreRepository.findProductsByStoreId(id)
                 .orElse( List.of());
         return Optional.of(entities.stream().map(mapper::toDomain).toList());
@@ -62,18 +75,30 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
 
     @Override
     public List<StoreOfferedProduct> searchProductByKeyword(String searchTerm) {
-        List<StoreOfferedProductEntity> entities = productsOfferedByStoreRepository.searchByKeyword(searchTerm);
-        return entities.stream().map(mapper::toDomain).toList();
+        List<StoreOfferedProduct> results = productsOfferedByStoreRepository.searchByKeyword(searchTerm)
+                .stream().map(mapper::toDomain).toList();
+        List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
+        if (accessibleStoreIds != null) {
+            results = results.stream()
+                    .filter(p -> p.getStoreId() != null && accessibleStoreIds.contains(p.getStoreId()))
+                    .toList();
+        }
+        return results;
     }
 
     @Override
     public List<StoreOfferedProduct> searchProductByStoreIdAndKeyword(Long storeId, String searchTerm) {
-        List<StoreOfferedProductEntity> entities = productsOfferedByStoreRepository.searchByStoreIdAndKeyword(storeId.toString(), searchTerm);
+        securityContextService.validateStoreAccess(storeId);
+        List<StoreOfferedProductEntity> entities = productsOfferedByStoreRepository
+                .searchByStoreIdAndKeyword(storeId.toString(), searchTerm);
         return entities.stream().map(mapper::toDomain).toList();
     }
 
     @Override
     public StoreOfferedProduct save(StoreOfferedProduct domain) {
+        if (domain.getStoreId() != null) {
+            securityContextService.validateStoreAccess(domain.getStoreId());
+        }
         long userId = getCurrentUserId();
         StoreOfferedProductEntity entity= mapper.toEntity(domain);
         //entity.setService(domain.getService());
@@ -107,6 +132,7 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
 
     @Override
     public Optional<List<StoreOfferedProduct>> findProductsByBusinessId(Long businessId) {
+        securityContextService.validateBusinessAccess(businessId);
         return Optional.of( productsOfferedByStoreRepository.findByBusinessId(businessId)
                 .orElse(List.of())
                 .stream().map(mapper::toDomain ).toList() );

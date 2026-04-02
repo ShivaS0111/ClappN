@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface InvoiceRepository extends JpaRepository<InvoiceEntity, Long> {
     Optional<InvoiceEntity> findByOrderId(Long orderId);
     List<InvoiceEntity> findByStoreId(Long storeId);
+    List<InvoiceEntity> findByStoreIdIn(List<Long> storeIds);
 }

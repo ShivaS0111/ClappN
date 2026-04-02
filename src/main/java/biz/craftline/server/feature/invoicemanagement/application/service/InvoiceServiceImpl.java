@@ -1,6 +1,7 @@
 package biz.craftline.server.feature.invoicemanagement.application.service;
 
 
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.invoicemanagement.application.enums.InvoiceStatus;
 import biz.craftline.server.feature.invoicemanagement.domain.model.Invoice;
 import biz.craftline.server.feature.invoicemanagement.domain.service.InvoiceDomainService;
@@ -19,10 +20,12 @@ public class InvoiceServiceImpl implements InvoiceDomainService {
     private final biz.craftline.server.feature.invoicemanagement.infra.repository.InvoiceRepository invoiceRepository;
     private final biz.craftline.server.feature.invoicemanagement.infra.repository.InvoiceItemRepository invoiceItemRepository;
     private final biz.craftline.server.feature.invoicemanagement.infra.mapper.InvoiceEntityMapper mapper;
+    private final SecurityContextService securityContextService;
 
     @Override
     @Transactional
     public Invoice generate(Long orderId, Long storeId) {
+        securityContextService.validateStoreAccess(storeId);
         // In standalone mode we do not call order service; caller supplies details or another process
         InvoiceEntity entity = InvoiceEntity.builder()
                 .orderId(orderId)

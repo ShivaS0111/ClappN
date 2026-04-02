@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.ordermanagement.application.service;
 
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.ordermanagement.application.enums.OrderItemStatus;
 import biz.craftline.server.feature.ordermanagement.application.enums.OrderStatus;
 import biz.craftline.server.feature.ordermanagement.domain.model.Order;
@@ -24,16 +25,28 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository repository;
     private final OrderItemRepository orderItemRepository;
     private final OrderAllocationServiceImpl allocationService;
+    private final SecurityContextService securityContextService;
 
     @Override
     public List<Order> getAllOrders() {
-        return repository.findAll().stream()
+        List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
+        if (accessibleStoreIds == null) {
+            // SYSTEM_ADMIN — unrestricted
+            return repository.findAll().stream()
+                    .map(OrderEntityMapper::toModel)
+                    .collect(Collectors.toList());
+        }
+        if (accessibleStoreIds.isEmpty()) {
+            return List.of();
+        }
+        return repository.findByStoreIdIn(accessibleStoreIds).stream()
                 .map(OrderEntityMapper::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Order> getOrdersByStoreId(Long storeId) {
+        securityContextService.validateStoreAccess(storeId);
         return repository.findByStoreId(storeId).stream()
                 .map(OrderEntityMapper::toModel)
                 .collect(Collectors.toList());
@@ -41,16 +54,28 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrdersByCustomerId(Long customerId) {
-        return repository.findByCustomerId(customerId).stream()
+        List<Order> orders = repository.findByCustomerId(customerId).stream()
                 .map(OrderEntityMapper::toModel)
+                .collect(Collectors.toList());
+        // Filter by accessible stores
+        List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
+        if (accessibleStoreIds == null) {
+            return orders; // SYSTEM_ADMIN
+        }
+        return orders.stream()
+                .filter(o -> o.getStoreId() != null && accessibleStoreIds.contains(o.getStoreId()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Order getOrder(Long id) {
-        return repository.findById(id)
+        Order order = repository.findById(id)
                 .map(OrderEntityMapper::toModel)
                 .orElse(null);
+        if (order != null) {
+            securityContextService.validateStoreAccess(order.getStoreId());
+        }
+        return order;
     }
 
     public Order placeOrder1(Order order) {
@@ -61,6 +86,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     public Order placeOrder(Order request) {
+        // Validate store access
+        securityContextService.validateStoreAccess(request.getStoreId());
         // basic validation
         if (request.getItems() == null || request.getItems().isEmpty()) {
             throw new IllegalArgumentException("Order must have items");
@@ -112,7 +139,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order updateOrder(Long id, Order order) {
-        if (!repository.existsById(id)) return null;
+        OrderEntity existing = repository.findById(id).orElse(null);
+        if (existing == null) return null;
+        securityContextService.validateStoreAccess(existing.getStoreId());
         OrderEntity entity = OrderEntityMapper.toEntity(order);
         entity.setId(id);
         OrderEntity saved = repository.save(entity);
@@ -127,6 +156,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void cancelOrder(Long id) {
         repository.findById(id).ifPresent(entity -> {
+            securityContextService.validateStoreAccess(entity.getStoreId());
             entity.setStatus("CANCELLED");
             repository.save(entity);
             initiateRefund(entity.getTotalAmount());
@@ -139,6 +169,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void completeOrder(Long id) {
         repository.findById(id).ifPresent(entity -> {
+            securityContextService.validateStoreAccess(entity.getStoreId());
             entity.setStatus("COMPLETED");
             repository.save(entity);
         });

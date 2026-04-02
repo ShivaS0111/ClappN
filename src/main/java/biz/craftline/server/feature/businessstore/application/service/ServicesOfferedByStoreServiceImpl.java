@@ -1,6 +1,7 @@
 package biz.craftline.server.feature.businessstore.application.service;
 
 
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedProduct;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
@@ -35,9 +36,20 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
     @Autowired
     UserService userService;
 
+    @Autowired
+    SecurityContextService securityContextService;
+
     @Override
     public Optional<List<StoreOfferedService>> findAll() {
-        return Optional.of(servicesOfferedByStoreRepository.findAll().stream().map(mapper::toDomain).toList());
+        List<StoreOfferedService> list = servicesOfferedByStoreRepository.findAll()
+                .stream().map(mapper::toDomain).toList();
+        List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
+        if (accessibleStoreIds != null) {
+            list = list.stream()
+                    .filter(s -> s.getStoreId() != null && accessibleStoreIds.contains(s.getStoreId()))
+                    .toList();
+        }
+        return Optional.of(list);
     }
 
     @Override
@@ -48,30 +60,44 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
 
     @Override
     public Optional<List<StoreOfferedService>> findServicesByBusinessId(Long businessId) {
-        List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository.findByBusinessId(businessId).orElse(List.of());
+        securityContextService.validateBusinessAccess(businessId);
+        List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository
+                .findByBusinessId(businessId).orElse(List.of());
         return Optional.of(entities.stream().map(mapper::toDomain).toList());
     }
 
     @Override
     public Optional<List<StoreOfferedService>> findServicesByStoreId(Long storeId) {
+        securityContextService.validateStoreAccess(storeId);
         List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository.findByStoreId(storeId).orElse(List.of());
         return Optional.of(entities.stream().map(mapper::toDomain).toList());
     }
 
     @Override
     public List<StoreOfferedService> searchServiceByKeyword(String searchTerm) {
-        List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository.searchByKeyword(searchTerm);
-        return entities.stream().map(mapper::toDomain).toList();
+        List<StoreOfferedService> results = servicesOfferedByStoreRepository.searchByKeyword(searchTerm)
+                .stream().map(mapper::toDomain).toList();
+        List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
+        if (accessibleStoreIds != null) {
+            results = results.stream()
+                    .filter(s -> s.getStoreId() != null && accessibleStoreIds.contains(s.getStoreId()))
+                    .toList();
+        }
+        return results;
     }
 
     @Override
     public List<StoreOfferedService> searchServiceByStoreIdAndKeyword(Long storeId, String searchTerm) {
+        securityContextService.validateStoreAccess(storeId);
         List<StoreOfferedServiceEntity> entities = servicesOfferedByStoreRepository.searchByStoreIdAndKeyword(storeId.toString(), searchTerm);
         return entities.stream().map(mapper::toDomain).toList();
     }
 
     @Override
     public StoreOfferedService save(StoreOfferedService domain) {
+        if (domain.getStoreId() != null) {
+            securityContextService.validateStoreAccess(domain.getStoreId());
+        }
         long userId = getCurrentUserId();
         StoreOfferedServiceEntity entity = mapper.toEntity(domain);
         entity.setCreatedBy(userId);
@@ -83,6 +109,9 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
     public List<StoreOfferedService> save(List<StoreOfferedService> domains) {
         long userId = getCurrentUserId();
         List<StoreOfferedServiceEntity> entities = domains.stream().map(domain -> {
+                    if (domain.getStoreId() != null) {
+                        securityContextService.validateStoreAccess(domain.getStoreId());
+                    }
                     StoreOfferedServiceEntity entity = mapper.toEntity(domain);
                     entity.setCreatedBy(userId);
                     return entity;

@@ -22,5 +22,6 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> 
     List<CustomerEntity> findByStatus(int status);
     
     List<CustomerEntity> findByStoreIdAndStatus(Long storeId, int status);
-}
 
+    List<CustomerEntity> findByStoreIdIn(List<Long> storeIds);
+}

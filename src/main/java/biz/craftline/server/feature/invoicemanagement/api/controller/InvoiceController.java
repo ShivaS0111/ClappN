@@ -1,6 +1,7 @@
 package biz.craftline.server.feature.invoicemanagement.api.controller;
 
 import biz.craftline.server.config.security.RequirePermission;
+import biz.craftline.server.config.security.SecurityContextService;
 
 import biz.craftline.server.feature.invoicemanagement.api.dto.InvoiceRequestDTO;
 import biz.craftline.server.feature.invoicemanagement.domain.model.Invoice;
@@ -27,6 +28,7 @@ public class InvoiceController {
     private final InvoiceRepository invoiceRepository;
     private final InvoiceItemRepository invoiceItemRepository;
     private final InvoiceEntityMapper invoiceEntityMapper;
+    private final SecurityContextService securityContextService;
 
     @PostMapping("/generate")
     @Operation(summary = "Generate invoice for an order")
@@ -49,7 +51,16 @@ public class InvoiceController {
     @Operation(summary = "Get all invoices")
     @RequirePermission("invoice.read")
     public ResponseEntity<APIResponse<List<Invoice>>> getAllInvoices() {
-        List<Invoice> invoices = invoiceRepository.findAll().stream()
+        List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
+        List<InvoiceEntity> entities;
+        if (accessibleStoreIds == null) {
+            entities = invoiceRepository.findAll();
+        } else if (accessibleStoreIds.isEmpty()) {
+            return APIResponse.success(List.of(), "Invoices retrieved successfully");
+        } else {
+            entities = invoiceRepository.findByStoreIdIn(accessibleStoreIds);
+        }
+        List<Invoice> invoices = entities.stream()
                 .map(e -> invoiceEntityMapper.toDomain(e, invoiceItemRepository.findByInvoiceId(e.getId())))
                 .collect(Collectors.toList());
         return APIResponse.success(invoices, "Invoices retrieved successfully");
@@ -70,6 +81,7 @@ public class InvoiceController {
     @Operation(summary = "Get invoices by store ID")
     @RequirePermission("invoice.read")
     public ResponseEntity<APIResponse<List<Invoice>>> getByStore(@PathVariable Long storeId) {
+        securityContextService.validateStoreAccess(storeId);
         List<Invoice> invoices = invoiceRepository.findByStoreId(storeId).stream()
                 .map(e -> invoiceEntityMapper.toDomain(e, invoiceItemRepository.findByInvoiceId(e.getId())))
                 .collect(Collectors.toList());

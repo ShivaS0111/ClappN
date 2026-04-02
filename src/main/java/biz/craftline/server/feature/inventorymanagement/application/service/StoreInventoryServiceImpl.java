@@ -1,5 +1,7 @@
 package biz.craftline.server.feature.inventorymanagement.application.service;
 
+
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.inventorymanagement.domain.model.StoreInventory;
 import biz.craftline.server.feature.inventorymanagement.domain.service.StoreInventoryService;
 import biz.craftline.server.feature.inventorymanagement.infra.entity.StoreInventoryTransactionEntity;
@@ -22,11 +24,12 @@ public class StoreInventoryServiceImpl implements StoreInventoryService {
 
     private final StoreInventoryRepository storeInventoryRepository;
     private final InventoryTransactionRepository inventoryTransactionRepository;
-
     private final StoreInventoryEntityMapper storeInventoryEntityMapper;
+    private final SecurityContextService securityContextService;
 
     @Override
     public List<StoreInventory> findByStoreId(Long storeId) {
+        securityContextService.validateStoreAccess(storeId);
         return storeInventoryRepository.findByStoreId(storeId)
                 .stream()
                 .map(storeInventoryEntityMapper::toDomain)
@@ -34,7 +37,9 @@ public class StoreInventoryServiceImpl implements StoreInventoryService {
     }
 
     @Transactional
-    public StoreInventory addStock(Long storeId, Long productId, int quantity, String referenceType, String referenceId, String reason) {
+    public StoreInventory addStock(Long storeId, Long productId, int quantity, String referenceType,
+                                   String referenceId, String reason) {
+        securityContextService.validateStoreAccess(storeId);
         StoreInventoryEntity inv = storeInventoryRepository.findByStoreIdAndProductId(storeId, productId)
                 .orElseGet(() -> createInventory(storeId, productId));
 
@@ -59,7 +64,9 @@ public class StoreInventoryServiceImpl implements StoreInventoryService {
 
 
     @Transactional
-    public StoreInventory adjustForSale(Long storeId, Long productId, int quantity, String referenceType, String referenceId, String reason) {
+    public StoreInventory adjustForSale(Long storeId, Long productId, int quantity, String referenceType,
+                                        String referenceId, String reason) {
+        securityContextService.validateStoreAccess(storeId);
         StoreInventoryEntity inv = storeInventoryRepository.findByStoreIdAndProductId(storeId, productId)
                 .orElseThrow(() -> new RuntimeException("Store inventory not found"));
 
@@ -87,6 +94,7 @@ public class StoreInventoryServiceImpl implements StoreInventoryService {
 
     @Transactional
     public StoreInventory adjustBlocked(Long storeId, Long productId, int blockedDelta, String reason) {
+        securityContextService.validateStoreAccess(storeId);
         StoreInventoryEntity inv = storeInventoryRepository.findByStoreIdAndProductId(storeId, productId)
                 .orElseGet(() -> createInventory(storeId, productId));
 

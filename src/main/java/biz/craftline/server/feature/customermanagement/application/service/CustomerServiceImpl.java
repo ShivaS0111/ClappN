@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.customermanagement.application.service;
 
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.customermanagement.domain.model.Customer;
 import biz.craftline.server.feature.customermanagement.domain.service.CustomerService;
 import biz.craftline.server.feature.customermanagement.infra.entity.CustomerEntity;
@@ -23,21 +24,41 @@ public class CustomerServiceImpl implements CustomerService {
     
     private final CustomerRepository repository;
     private final CustomerEntityMapper mapper;
+    private final SecurityContextService securityContextService;
     
     @Override
     public List<Customer> findAll() {
-        return repository.findAll().stream()
+        List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
+        if (accessibleStoreIds == null) {
+            // SYSTEM_ADMIN — unrestricted
+            return repository.findAll().stream()
+                    .map(mapper::toDomain)
+                    .collect(Collectors.toList());
+        }
+        if (accessibleStoreIds.isEmpty()) {
+            return List.of();
+        }
+        return repository.findByStoreIdIn(accessibleStoreIds).stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }
     
     @Override
     public Optional<Customer> findById(Long id) {
-        return repository.findById(id).map(mapper::toDomain);
+        Optional<Customer> customer = repository.findById(id).map(mapper::toDomain);
+        customer.ifPresent(c -> {
+            if (c.getStoreId() != null) {
+                securityContextService.validateStoreAccess(c.getStoreId());
+            } else if (c.getBusinessId() != null) {
+                securityContextService.validateBusinessAccess(c.getBusinessId());
+            }
+        });
+        return customer;
     }
     
     @Override
     public List<Customer> findByStoreId(Long storeId) {
+        securityContextService.validateStoreAccess(storeId);
         return repository.findByStoreId(storeId).stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
@@ -45,6 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
     
     @Override
     public List<Customer> findByBusinessId(Long businessId) {
+        securityContextService.validateBusinessAccess(businessId);
         return repository.findByBusinessId(businessId).stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
@@ -58,6 +80,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public Customer save(Customer customer) {
+        // Validate scope for the target store/business
+        if (customer.getStoreId() != null) {
+            securityContextService.validateStoreAccess(customer.getStoreId());
+        }
+        if (customer.getBusinessId() != null) {
+            securityContextService.validateBusinessAccess(customer.getBusinessId());
+        }
         CustomerEntity entity = mapper.toEntity(customer);
         if (entity.getJoinDate() == null) {
             entity.setJoinDate(LocalDateTime.now());
@@ -69,6 +98,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public void deleteById(Long id) {
+        repository.findById(id).ifPresent(entity -> {
+            if (entity.getStoreId() != null) {
+                securityContextService.validateStoreAccess(entity.getStoreId());
+            } else if (entity.getBusinessId() != null) {
+                securityContextService.validateBusinessAccess(entity.getBusinessId());
+            }
+        });
         repository.deleteById(id);
     }
     
@@ -76,6 +112,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public Customer updateLoyaltyPoints(Long customerId, int points) {
         return repository.findById(customerId).map(entity -> {
+            if (entity.getStoreId() != null) {
+                securityContextService.validateStoreAccess(entity.getStoreId());
+            }
             entity.setLoyaltyPoints(entity.getLoyaltyPoints() + points);
             return mapper.toDomain(repository.save(entity));
         }).orElseThrow(() -> new RuntimeException("Customer not found"));
