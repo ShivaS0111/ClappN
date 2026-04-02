@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.application.service;
 
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
 import biz.craftline.server.feature.businessstore.infra.mapper.StoreOfferedServiceEntityMapper;
@@ -26,6 +27,8 @@ class ServicesOfferedByStoreServiceImplTest {
     private StoreOfferedServiceEntityMapper mapper;
     @Mock
     private BusinessServicesJpaRepository businessServicesJpaRepository;
+    @Mock
+    private SecurityContextService securityContextService;
     @InjectMocks
     private ServicesOfferedByStoreServiceImpl service;
 

@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.application.service;
 
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.businessstore.domain.model.Store;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreEntity;
 import biz.craftline.server.feature.businessstore.infra.mapper.StoreEntityMapper;
@@ -26,6 +27,8 @@ class StoreServiceImplTest {
     private StoreEntityMapper storeEntityMapper;
     @Mock
     private BusinessEntityJpaRepository businessRepository;
+    @Mock
+    private SecurityContextService securityContextService;
     @InjectMocks
     private StoreServiceImpl service;
 
@@ -74,12 +77,6 @@ class StoreServiceImplTest {
         assertEquals(store, result.get(0));
     }
 
-    @Test
-    void deleteBusinessTypeById_CallsRepository() {
-        Long id = 1L;
-        service.deleteBusinessTypeById(id);
-        verify(storeRepository).deleteBusinessTypeById(id);
-    }
 
     @Test
     void findById_ReturnsStore() {

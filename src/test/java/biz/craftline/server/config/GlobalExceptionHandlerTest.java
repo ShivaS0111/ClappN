@@ -27,13 +27,14 @@ class GlobalExceptionHandlerTest {
         BadCredentialsException exception = new BadCredentialsException("Invalid credentials");
 
         // When
-        ProblemDetail result = exceptionHandler.handleGeneralException(exception);
+        ResponseEntity<APIResponse<String>> response = exceptionHandler.handleGeneralException(exception);
 
         // Then
-        assertNotNull(result);
-        assertEquals(401, result.getStatus());
-        assertEquals("Invalid credentials", result.getDetail());
-        assertEquals("The username or password is incorrect", result.getProperties().get("description"));
+        assertNotNull(response);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Invalid credentials", response.getBody().getMessage());
+        assertEquals("The username or password is incorrect", response.getBody().getData());
     }
 
     @Test
@@ -42,12 +43,13 @@ class GlobalExceptionHandlerTest {
         RuntimeException exception = new RuntimeException("Unexpected error");
 
         // When
-        ProblemDetail result = exceptionHandler.handleGeneralException(exception);
+        ResponseEntity<APIResponse<String>> response = exceptionHandler.handleGeneralException(exception);
 
         // Then
-        assertNotNull(result);
-        assertEquals(500, result.getStatus());
-        assertEquals("Internal server error", result.getDetail());
+        assertNotNull(response);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Internal server error", response.getBody().getMessage());
     }
 
     @Test

@@ -88,13 +88,11 @@ class StoreOfferedServiceControllerTest {
                 //.description("Hair styling")
                 .build()
         );
-
-        when(servicesOfferedByStoreService.findServicesByStoreId(storeId))
-                .thenReturn(Optional.of(services));
+        when(servicesOfferedByStoreService.findAll()).thenReturn(Optional.of(services));
 
         // Act
         ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> response =
-            storeOfferedServiceController.list(storeId);
+            storeOfferedServiceController.list();
 
         // Assert
         assertNotNull(response);
