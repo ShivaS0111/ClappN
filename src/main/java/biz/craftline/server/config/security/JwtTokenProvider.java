@@ -51,18 +51,26 @@ public class JwtTokenProvider {
     }
 
     public TokenInfo generateTokenWithPermissions(String username, List<String> permissions) {
+        return generateTokenWithClaims(username, permissions, List.of(), List.of(), List.of());
+    }
+
+    public TokenInfo generateTokenWithClaims(String username, List<String> permissions,
+                                              List<String> roles, List<Long> storeIds, List<Long> businessIds) {
         Date expiryDate = new Date(System.currentTimeMillis() + jwtExpirationInMs);
 
-        String jwt =  Jwts.builder()
+        String jwt = Jwts.builder()
                 .subject(username)
                 .claim("permissions", permissions)
+                .claim("roles", roles)
+                .claim("storeIds", storeIds)
+                .claim("businessIds", businessIds)
                 .issuedAt(new Date())
                 .expiration(expiryDate)
                 .signWith(getSigningKey())
                 .compact();
 
         String refreshToken = generateRefreshToken(username);
-        return  TokenInfo.builder()
+        return TokenInfo.builder()
                 .token(jwt)
                 .tokenExpiry(expiryDate.toInstant().getEpochSecond())
                 .refreshToken(refreshToken)
@@ -88,6 +96,42 @@ public class JwtTokenProvider {
                 .getPayload();
 
         return (List<String>) claims.get("permissions");
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<String> getRolesFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        List<String> roles = (List<String>) claims.get("roles");
+        return roles != null ? roles : List.of();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Long> getStoreIdsFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        List<?> raw = (List<?>) claims.get("storeIds");
+        return raw != null ? raw.stream().map(v -> ((Number) v).longValue()).toList() : List.of();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Long> getBusinessIdsFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        List<?> raw = (List<?>) claims.get("businessIds");
+        return raw != null ? raw.stream().map(v -> ((Number) v).longValue()).toList() : List.of();
     }
 
     public boolean validateToken(String authToken) {

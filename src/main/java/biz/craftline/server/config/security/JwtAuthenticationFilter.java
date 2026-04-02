@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -35,6 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 String username = tokenProvider.getUsernameFromToken(jwt);
                 List<String> permissions = tokenProvider.getPermissionsFromToken(jwt);
+                List<String> roles = tokenProvider.getRolesFromToken(jwt);
+                List<Long> storeIds = tokenProvider.getStoreIdsFromToken(jwt);
+                List<Long> businessIds = tokenProvider.getBusinessIdsFromToken(jwt);
 
                 // Convert permissions to Spring Security authorities
                 List<SimpleGrantedAuthority> authorities = permissions != null ?
@@ -43,12 +45,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         .collect(Collectors.toList()) :
                     List.of();
 
-                UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+                ScopedAuthenticationToken authentication =
+                    new ScopedAuthenticationToken(username, null, authorities, roles, storeIds, businessIds);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.debug("Set Security context for user: {}, permissions: {}", username, permissions);
+                log.debug("Set Security context for user: {}, permissions: {}, roles: {}, storeIds: {}, businessIds: {}",
+                        username, permissions, roles, storeIds, businessIds);
             }
         } catch (Exception ex) {
             log.error("Could not set user authentication in security context", ex);

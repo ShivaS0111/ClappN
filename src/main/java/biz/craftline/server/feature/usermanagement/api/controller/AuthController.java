@@ -111,14 +111,21 @@ public class AuthController {
                     .distinct()
                     .collect(Collectors.toList());
 
-            TokenInfo tokenInfo = tokenProvider.generateTokenWithPermissions(loginRequest.getUsername(), permissions);
-
-            log.info("User {} authenticated successfully with {} permissions",
-                    loginRequest.getUsername(), permissions.size());
-
-
+            // Get full AuthUser with scope data (storeIds, businessIds) from Employee table
             AuthUser user = userService.getAuthUserByEmail(loginRequest.getUsername());
-            LoginResponse response = new LoginResponse( user, tokenInfo);
+
+            TokenInfo tokenInfo = tokenProvider.generateTokenWithClaims(
+                    loginRequest.getUsername(),
+                    permissions,
+                    user.getRoles(),
+                    user.getStoreIds(),
+                    user.getBusinessIds()
+            );
+
+            log.info("User {} authenticated successfully with {} permissions, roles: {}, storeIds: {}, businessIds: {}",
+                    loginRequest.getUsername(), permissions.size(), user.getRoles(), user.getStoreIds(), user.getBusinessIds());
+
+            LoginResponse response = new LoginResponse(user, tokenInfo);
             return APIResponse.success(response);
 
         } catch (AuthenticationException e) {

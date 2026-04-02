@@ -12,5 +12,7 @@ public class AuthUser extends User {
     List<String> permissions;
     List<String> allowedPermissions;
     List<String> deniedPermissions;
+    List<Long> storeIds;
+    List<Long> businessIds;
 }
 

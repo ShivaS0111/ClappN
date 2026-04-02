@@ -1,5 +1,7 @@
 package biz.craftline.server.feature.usermanagement.domain.service;
 
+import biz.craftline.server.feature.employeemanagement.infra.entity.EmployeeEntity;
+import biz.craftline.server.feature.employeemanagement.infra.repository.EmployeeRepository;
 import biz.craftline.server.feature.usermanagement.domain.model.AuthUser;
 import biz.craftline.server.feature.usermanagement.domain.model.User;
 import biz.craftline.server.feature.usermanagement.api.mapper.UserMapper;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,8 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     public List<User> getAllUsers() {
         return userRepository.findAll().stream()
@@ -136,9 +141,25 @@ public class UserService implements UserDetailsService {
             @NotBlank(message = "Username is required")
             @Email(message = "Username must be a valid email")
             String username) {
-        return userRepository.findByEmail(username).map(UserMapper::toAuthUser)
+        AuthUser authUser = userRepository.findByEmail(username).map(UserMapper::toAuthUser)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
 
+        // Populate storeIds and businessIds from Employee table
+        List<EmployeeEntity> employeeRecords = employeeRepository.findByUserId(authUser.getId());
+        List<Long> storeIds = employeeRecords.stream()
+                .map(EmployeeEntity::getStoreId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+        List<Long> businessIds = employeeRecords.stream()
+                .map(EmployeeEntity::getBusinessId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+        authUser.setStoreIds(storeIds);
+        authUser.setBusinessIds(businessIds);
+
+        return authUser;
     }
 
     public Optional<User> findUser(Long userId, String email) {
