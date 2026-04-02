@@ -25,6 +25,14 @@ public class OrderDTOMapper {
         dto.setTotalAmount(order.getTotalAmount());
         dto.setOrderDate(order.getOrderDate());
         dto.setStatus(order.getStatus());
+        // Pricing breakdown
+        dto.setSubtotal(order.getSubtotal());
+        dto.setTotalGst(order.getTotalGst());
+        dto.setTotalDiscount(order.getTotalDiscount());
+        dto.setBillDiscount(order.getBillDiscount());
+        dto.setBillDiscountType(order.getBillDiscountType());
+        dto.setCouponCode(order.getCouponCode());
+        dto.setNotes(order.getNotes());
         if (order.getItems() != null) {
             dto.setItems(order.getItems().stream().map(OrderDTOMapper::toItemDTO).collect(Collectors.toList()));
         }
@@ -49,6 +57,14 @@ public class OrderDTOMapper {
         dto.setItemId(item.getItemIId());
         dto.setQuantity(item.getQuantity());
         dto.setPrice(item.getPrice());
+        // Item details & pricing
+        dto.setItemName(item.getItemName());
+        dto.setGstPercentage(item.getGstPercentage());
+        dto.setGstAmount(item.getGstAmount());
+        dto.setSgstPercentage(item.getSgstPercentage());
+        dto.setCgstPercentage(item.getCgstPercentage());
+        dto.setDiscountAmount(item.getDiscountAmount());
+        dto.setDiscountType(item.getDiscountType());
         if (item.getVirtualProductDetails() != null) {
             dto.setVirtualProductDetails(toVirtualProductDetailsDTO(item.getVirtualProductDetails()));
         }
@@ -129,6 +145,14 @@ public class OrderDTOMapper {
         order.setTotalAmount(dto.getTotalAmount());
         order.setOrderDate(dto.getOrderDate());
         order.setStatus(dto.getStatus());
+        // Pricing breakdown
+        order.setSubtotal(dto.getSubtotal());
+        order.setTotalGst(dto.getTotalGst());
+        order.setTotalDiscount(dto.getTotalDiscount());
+        order.setBillDiscount(dto.getBillDiscount());
+        order.setBillDiscountType(dto.getBillDiscountType());
+        order.setCouponCode(dto.getCouponCode());
+        order.setNotes(dto.getNotes());
         if (dto.getItems() != null) {
             order.setItems(dto.getItems().stream().map(OrderDTOMapper::fromItemDTO).collect(Collectors.toList()));
         }
@@ -148,6 +172,14 @@ public class OrderDTOMapper {
         item.setItemIId(dto.getItemId());
         item.setQuantity(dto.getQuantity());
         item.setPrice(dto.getPrice());
+        // Item details & pricing
+        item.setItemName(dto.getItemName());
+        item.setGstPercentage(dto.getGstPercentage());
+        item.setGstAmount(dto.getGstAmount());
+        item.setSgstPercentage(dto.getSgstPercentage());
+        item.setCgstPercentage(dto.getCgstPercentage());
+        item.setDiscountAmount(dto.getDiscountAmount());
+        item.setDiscountType(dto.getDiscountType());
         if (dto.getVirtualProductDetails() != null) {
             item.setVirtualProductDetails(fromVirtualProductDetailsDTO(dto.getVirtualProductDetails()));
         }

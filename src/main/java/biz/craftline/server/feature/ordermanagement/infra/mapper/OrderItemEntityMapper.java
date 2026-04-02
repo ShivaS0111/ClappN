@@ -12,6 +12,14 @@ public class OrderItemEntityMapper {
         entity.setItemId(model.getItemIId());
         entity.setQuantity(model.getQuantity());
         entity.setPrice(model.getPrice());
+        // Item details & pricing
+        entity.setItemName(model.getItemName());
+        entity.setGstPercentage(model.getGstPercentage());
+        entity.setGstAmount(model.getGstAmount());
+        entity.setSgstPercentage(model.getSgstPercentage());
+        entity.setCgstPercentage(model.getCgstPercentage());
+        entity.setDiscountAmount(model.getDiscountAmount());
+        entity.setDiscountType(model.getDiscountType());
         entity.setVirtualProductDetails(VirtualProductDetailsEntityMapper.toEntity(model.getVirtualProductDetails()));
         entity.setBookingDetails(BookingDetailsEntityMapper.toEntity(model.getBookingDetails()));
         entity.setDeliveryInfo(DeliveryInfoEntityMapper.toEntity(model.getDeliveryInfo()));
@@ -27,6 +35,14 @@ public class OrderItemEntityMapper {
         model.setItemIId(entity.getItemId());
         model.setQuantity(entity.getQuantity());
         model.setPrice(entity.getPrice());
+        // Item details & pricing
+        model.setItemName(entity.getItemName());
+        model.setGstPercentage(entity.getGstPercentage());
+        model.setGstAmount(entity.getGstAmount());
+        model.setSgstPercentage(entity.getSgstPercentage());
+        model.setCgstPercentage(entity.getCgstPercentage());
+        model.setDiscountAmount(entity.getDiscountAmount());
+        model.setDiscountType(entity.getDiscountType());
         model.setVirtualProductDetails(VirtualProductDetailsEntityMapper.toModel(entity.getVirtualProductDetails()));
         model.setBookingDetails(BookingDetailsEntityMapper.toModel(entity.getBookingDetails()));
         model.setDeliveryInfo(DeliveryInfoEntityMapper.toModel(entity.getDeliveryInfo()));

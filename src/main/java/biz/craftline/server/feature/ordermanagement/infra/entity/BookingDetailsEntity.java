@@ -13,6 +13,18 @@ public class BookingDetailsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "store_id")
+    private Long storeId;
+
+    @Column(name = "customer_id")
+    private Long customerId;
+
+    @Column(name = "service_id")
+    private Long serviceId;
+
+    @Column(name = "order_item_id")
+    private Long orderItemId;
+
     @Column
     private Date appointmentDate;
 
@@ -29,9 +41,12 @@ public class BookingDetailsEntity {
     private Long staffId;
 
     @Column
-    private String bookingStatus;
+    private String bookingStatus; // PENDING, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED, NO_SHOW
 
-    // Getters and setters
-    // ...
+    @Column
+    private String notes;
+
+    @Column
+    private Integer durationMinutes;
 }
 

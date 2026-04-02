@@ -19,7 +19,7 @@ public class OrderEntity {
     @Column(name = "store_id")
     private Long storeId;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long customerId;
 
     @Column(nullable = false)
@@ -30,6 +30,22 @@ public class OrderEntity {
 
     @Column(nullable = false)
     private String status;
+
+    // Pricing breakdown
+    @Column
+    private BigDecimal subtotal;
+    @Column(name = "total_gst")
+    private BigDecimal totalGst;
+    @Column(name = "total_discount")
+    private BigDecimal totalDiscount;
+    @Column(name = "bill_discount")
+    private BigDecimal billDiscount;
+    @Column(name = "bill_discount_type")
+    private String billDiscountType;
+    @Column(name = "coupon_code")
+    private String couponCode;
+    @Column(columnDefinition = "TEXT")
+    private String notes;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItemEntity> items;

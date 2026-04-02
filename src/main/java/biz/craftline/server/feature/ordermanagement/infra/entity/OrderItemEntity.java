@@ -24,6 +24,22 @@ public class OrderItemEntity {
     @Column(nullable = false)
     private double price;
 
+    // Item details & pricing
+    @Column(name = "item_name")
+    private String itemName;
+    @Column(name = "gst_percentage")
+    private Double gstPercentage;
+    @Column(name = "gst_amount")
+    private Double gstAmount;
+    @Column(name = "sgst_percentage")
+    private Double sgstPercentage;
+    @Column(name = "cgst_percentage")
+    private Double cgstPercentage;
+    @Column(name = "discount_amount")
+    private Double discountAmount;
+    @Column(name = "discount_type")
+    private String discountType;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderItemStatus status;

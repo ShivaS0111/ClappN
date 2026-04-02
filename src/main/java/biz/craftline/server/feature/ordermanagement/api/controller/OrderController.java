@@ -120,4 +120,21 @@ public class OrderController {
         orderService.completeOrder(id);
         return APIResponse.success(null, "Order completed successfully");
     }
+
+    /**
+     * Updates the status of an order.
+     * @param id order ID
+     * @param status new status
+     */
+    @PostMapping("/{id}/status")
+    public ResponseEntity<APIResponse<OrderDTO>> updateOrderStatus(
+            @PathVariable Long id, @RequestParam String status) {
+        Order order = orderService.getOrder(id);
+        if (order == null) {
+            return APIResponse.success(null, "Order not found");
+        }
+        order.setStatus(status);
+        Order saved = orderService.updateOrder(id, order);
+        return APIResponse.success(OrderDTOMapper.toDTO(saved), "Order status updated to " + status);
+    }
 }

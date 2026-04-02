@@ -5,9 +5,14 @@ import biz.craftline.server.feature.ordermanagement.api.mapper.BookingDetailsDTO
 import biz.craftline.server.feature.ordermanagement.domain.model.BookingDetails;
 import biz.craftline.server.feature.ordermanagement.domain.service.BookingDetailsService;
 import biz.craftline.server.util.APIResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/booking-details")
@@ -19,38 +24,115 @@ public class BookingDetailsController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all bookings")
     public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getAllBookingDetails() {
         List<BookingDetails> details = bookingDetailsService.getAllBookingDetails();
-        List<BookingDetailsDTO> dtos = new ArrayList<>();
-        for (BookingDetails detail : details) {
-            dtos.add(BookingDetailsDTOMapper.toDTO(detail));
-        }
-        return APIResponse.ok(dtos);
+        List<BookingDetailsDTO> dtos = details.stream()
+                .map(BookingDetailsDTOMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtos, "Bookings retrieved successfully");
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get booking by ID")
     public ResponseEntity<APIResponse<BookingDetailsDTO>> getBookingDetails(@PathVariable Long id) {
         BookingDetails detail = bookingDetailsService.getBookingDetails(id);
-        return APIResponse.ok(detail != null ? BookingDetailsDTOMapper.toDTO(detail) : null);
+        if (detail == null) {
+            return APIResponse.error("Booking not found", HttpStatus.NOT_FOUND);
+        }
+        return APIResponse.success(BookingDetailsDTOMapper.toDTO(detail), "Booking retrieved successfully");
+    }
+
+    @GetMapping("/store/{storeId}")
+    @Operation(summary = "Get all bookings for a store")
+    public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getBookingsByStore(@PathVariable Long storeId) {
+        List<BookingDetails> details = bookingDetailsService.getBookingsByStoreId(storeId);
+        List<BookingDetailsDTO> dtos = details.stream()
+                .map(BookingDetailsDTOMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtos, "Store bookings retrieved successfully");
+    }
+
+    @GetMapping("/customer/{customerId}")
+    @Operation(summary = "Get all bookings for a customer")
+    public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getBookingsByCustomer(@PathVariable Long customerId) {
+        List<BookingDetails> details = bookingDetailsService.getBookingsByCustomerId(customerId);
+        List<BookingDetailsDTO> dtos = details.stream()
+                .map(BookingDetailsDTOMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtos, "Customer bookings retrieved successfully");
+    }
+
+    @GetMapping("/store/{storeId}/status/{status}")
+    @Operation(summary = "Get bookings by store and status")
+    public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getBookingsByStoreAndStatus(
+            @PathVariable Long storeId, @PathVariable String status) {
+        List<BookingDetails> details = bookingDetailsService.getBookingsByStoreAndStatus(storeId, status);
+        List<BookingDetailsDTO> dtos = details.stream()
+                .map(BookingDetailsDTOMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtos, "Bookings retrieved successfully");
+    }
+
+    @GetMapping("/store/{storeId}/date-range")
+    @Operation(summary = "Get bookings by store and date range")
+    public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getBookingsByStoreAndDateRange(
+            @PathVariable Long storeId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+        List<BookingDetails> details = bookingDetailsService.getBookingsByStoreAndDateRange(storeId, startDate, endDate);
+        List<BookingDetailsDTO> dtos = details.stream()
+                .map(BookingDetailsDTOMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtos, "Bookings retrieved successfully");
+    }
+
+    @GetMapping("/staff/{staffId}")
+    @Operation(summary = "Get bookings by staff member")
+    public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getBookingsByStaff(@PathVariable Long staffId) {
+        List<BookingDetails> details = bookingDetailsService.getBookingsByStaffId(staffId);
+        List<BookingDetailsDTO> dtos = details.stream()
+                .map(BookingDetailsDTOMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtos, "Staff bookings retrieved successfully");
     }
 
     @PostMapping
+    @Operation(summary = "Create a new booking")
     public ResponseEntity<APIResponse<BookingDetailsDTO>> addBookingDetails(@RequestBody BookingDetailsDTO dto) {
         BookingDetails detail = BookingDetailsDTOMapper.fromDTO(dto);
         BookingDetails saved = bookingDetailsService.addBookingDetails(detail);
-        return APIResponse.ok( BookingDetailsDTOMapper.toDTO(saved) );
+        return APIResponse.success(BookingDetailsDTOMapper.toDTO(saved), "Booking created successfully", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<APIResponse<BookingDetailsDTO>> updateBookingDetails(@PathVariable Long id, @RequestBody BookingDetailsDTO dto) {
+    @Operation(summary = "Update a booking")
+    public ResponseEntity<APIResponse<BookingDetailsDTO>> updateBookingDetails(
+            @PathVariable Long id, @RequestBody BookingDetailsDTO dto) {
         BookingDetails detail = BookingDetailsDTOMapper.fromDTO(dto);
         BookingDetails updated = bookingDetailsService.updateBookingDetails(id, detail);
-        return APIResponse.ok(updated != null ? BookingDetailsDTOMapper.toDTO(updated) : null);
+        if (updated == null) {
+            return APIResponse.error("Booking not found", HttpStatus.NOT_FOUND);
+        }
+        return APIResponse.success(BookingDetailsDTOMapper.toDTO(updated), "Booking updated successfully");
+    }
+
+    @PostMapping("/{id}/status")
+    @Operation(summary = "Update booking status")
+    public ResponseEntity<APIResponse<BookingDetailsDTO>> updateBookingStatus(
+            @PathVariable Long id, @RequestParam String status) {
+        BookingDetails updated = bookingDetailsService.updateBookingStatus(id, status);
+        if (updated == null) {
+            return APIResponse.error("Booking not found", HttpStatus.NOT_FOUND);
+        }
+        return APIResponse.success(BookingDetailsDTOMapper.toDTO(updated), "Booking status updated to " + status);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBookingDetails(@PathVariable Long id) {
+    @Operation(summary = "Delete a booking")
+    public ResponseEntity<APIResponse<String>> deleteBookingDetails(@PathVariable Long id) {
         bookingDetailsService.deleteBookingDetails(id);
+        return APIResponse.success("Booking deleted successfully");
     }
 }
 

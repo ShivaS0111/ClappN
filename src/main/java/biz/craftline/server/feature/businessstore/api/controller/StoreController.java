@@ -296,18 +296,32 @@ public class StoreController {
             return APIResponse.error("Store not found", HttpStatus.NOT_FOUND);
         }
 
-        // TODO: Fetch actual metrics from various services (orders, inventory, employees)
-        // For now, return placeholder metrics
+        // Fetch real metrics from various services
+        List<Employee> employees = employeeService.getEmployeesByStoreId(storeId);
+        List<Customer> customers = customerService.findByStoreId(storeId);
+        List<Order> orders = orderService.getOrdersByStoreId(storeId);
+        
+        int activeCustomers = (int) customers.stream().filter(c -> c.getStatus() == 1).count();
+        int pendingOrders = (int) orders.stream()
+                .filter(o -> "CREATED".equals(o.getStatus()) || "BLOCKED".equals(o.getStatus()))
+                .count();
+        double totalRevenue = orders.stream()
+                .filter(o -> "COMPLETED".equals(o.getStatus()))
+                .mapToDouble(o -> o.getTotalAmount() != null ? o.getTotalAmount() : 0.0)
+                .sum();
+        int totalProducts = productsOfferedByStoreService.findProductsByStoreId(storeId)
+                .orElse(List.of()).size();
+
         StoreMetricsDTO metrics = StoreMetricsDTO.builder()
-                .todayRevenue(0.0)
-                .todayOrders(0)
-                .activeCustomers(0)
-                .totalProducts(0)
-                .lowStockItems(0)
-                .pendingOrders(0)
-                .monthlyRevenue(0.0)
+                .todayRevenue(0.0) // TODO: Filter by today's date
+                .todayOrders(orders.size())
+                .activeCustomers(activeCustomers)
+                .totalProducts(totalProducts)
+                .lowStockItems(0) // TODO: Join with inventory data
+                .pendingOrders(pendingOrders)
+                .monthlyRevenue(totalRevenue)
                 .monthlyGrowth(0.0)
-                .totalEmployees(0)
+                .totalEmployees(employees.size())
                 .build();
 
         return APIResponse.success(metrics, "Store metrics retrieved successfully");

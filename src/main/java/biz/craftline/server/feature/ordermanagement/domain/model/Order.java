@@ -30,10 +30,19 @@ public class Order {
     private LocalDateTime orderDate;
     /** Status of the order */
     private String status;
+
+    // Pricing breakdown
+    private Double subtotal;
+    private Double totalGst;
+    private Double totalDiscount;
+    private Double billDiscount;
+    private String billDiscountType;
+    private String couponCode;
+    private String notes;
+
     /** List of order items */
     private List<OrderItem> items;
     /** Delivery information */
     private DeliveryInfo deliveryInfo;
     /** Payment information */
     private PaymentInfo paymentInfo;}
-

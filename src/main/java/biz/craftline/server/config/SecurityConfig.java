@@ -40,34 +40,39 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/actuator/health").permitAll()
-
-                        // Permission-based authorization for user management
-                        .requestMatchers(POST, "/api/users/permissions/**")
-                        .hasAuthority("MANAGE_USER_PERMISSIONS")
-                        .requestMatchers(DELETE, "/api/users/permissions/**")
-                        .hasAuthority("MANAGE_USER_PERMISSIONS")
-                        .requestMatchers(GET, "/api/users/permissions/details/**")
-                        .hasAuthority("VIEW_USER_PERMISSIONS")
-
-                        .requestMatchers(POST, "/api/users")
-                        .hasAuthority("CREATE_USER")
-                        .requestMatchers(PUT, "/api/users/**")
-                        .hasAnyAuthority("UPDATE_USER", "USER_MANAGEMENT")
-                        .requestMatchers(DELETE, "/api/users/**")
-                        .hasAuthority("DELETE_USER")
-                        .requestMatchers(GET, "/api/users/**")
-                        .hasAnyAuthority("VIEW_USERS", "USER_MANAGEMENT")
-
-                        .requestMatchers("/api/admin/**")
-                        .hasAuthority("ADMIN_ACCESS")
-                        .requestMatchers("/api/reports/**")
-                        .hasAuthority("VIEW_REPORTS")
-
-                        // All other API endpoints require authentication
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/api/auth/**").permitAll()
+//                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+//                        .requestMatchers("/actuator/health").permitAll()
+//
+//                        // Permission-based authorization for user management
+//                        .requestMatchers(POST, "/api/users/permissions/**")
+//                        .hasAuthority("MANAGE_USER_PERMISSIONS")
+//                        .requestMatchers(DELETE, "/api/users/permissions/**")
+//                        .hasAuthority("MANAGE_USER_PERMISSIONS")
+//                        .requestMatchers(GET, "/api/users/permissions/details/**")
+//                        .hasAuthority("VIEW_USER_PERMISSIONS")
+//
+//                        .requestMatchers(POST, "/api/users")
+//                        .hasAuthority("CREATE_USER")
+//                        .requestMatchers(PUT, "/api/users/**")
+//                        .hasAnyAuthority("UPDATE_USER", "USER_MANAGEMENT")
+//                        .requestMatchers(DELETE, "/api/users/**")
+//                        .hasAuthority("DELETE_USER")
+//                        .requestMatchers(GET, "/api/users/**")
+//                        .hasAnyAuthority("VIEW_USERS", "USER_MANAGEMENT")
+//
+//                        .requestMatchers("/api/admin/**")
+//                        .hasAuthority("ADMIN_ACCESS")
+//                        .requestMatchers("/api/reports/**")
+//                        .hasAuthority("VIEW_REPORTS")
+//
+//                        // All other API endpoints require authentication
+//                        .anyRequest().authenticated()
+                                .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
+                                ).permitAll()
+                                .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

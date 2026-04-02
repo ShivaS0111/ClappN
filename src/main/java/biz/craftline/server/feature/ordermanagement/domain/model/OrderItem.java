@@ -1,4 +1,3 @@
-
 package biz.craftline.server.feature.ordermanagement.domain.model;
 
 
@@ -27,6 +26,16 @@ public class OrderItem {
     private int quantity;
     /** Price of the item */
     private double price;
+
+    // Item details & pricing
+    private String itemName;
+    private Double gstPercentage;
+    private Double gstAmount;
+    private Double sgstPercentage;
+    private Double cgstPercentage;
+    private Double discountAmount;
+    private String discountType;
+
     /** Virtual product details (if applicable) */
     private VirtualProductDetails virtualProductDetails;
     /** Booking details (if applicable) */

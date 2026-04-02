@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.ordermanagement.application.service;
 
+import biz.craftline.server.feature.ordermanagement.application.enums.OrderItemStatus;
 import biz.craftline.server.feature.ordermanagement.application.enums.OrderStatus;
 import biz.craftline.server.feature.ordermanagement.domain.model.Order;
 import biz.craftline.server.feature.ordermanagement.domain.service.OrderService;
@@ -64,8 +65,9 @@ public class OrderServiceImpl implements OrderService {
         if (request.getItems() == null || request.getItems().isEmpty()) {
             throw new IllegalArgumentException("Order must have items");
         }
-        // persist order entity
+        // persist order entity (without items first to avoid cascade issues)
         var entity = OrderEntityMapper.toEntity(request);
+        entity.setItems(null); // detach items — we save them manually below
         entity.setStatus(OrderStatus.CREATED.toString());
         if (entity.getOrderDate() == null) {
             entity.setOrderDate(LocalDateTime.now());
@@ -79,6 +81,10 @@ public class OrderServiceImpl implements OrderService {
         for (var it : request.getItems()) {
             var itemEnt = OrderItemEntityMapper.toEntity(it);
             itemEnt.setOrder(saved);
+            // Default item status to PENDING for new orders (POS walk-in, etc.)
+            if (itemEnt.getStatus() == null) {
+                itemEnt.setStatus(OrderItemStatus.PENDING);
+            }
             var savedItem = orderItemRepository.save(itemEnt);
             total = total.add(BigDecimal.valueOf(it.getPrice() * it.getQuantity()));
 

@@ -8,6 +8,7 @@ import biz.craftline.server.feature.ordermanagement.infra.repository.BookingDeta
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,9 @@ public class BookingDetailsServiceImpl implements BookingDetailsService {
 
     @Override
     public BookingDetails addBookingDetails(BookingDetails bookingDetails) {
+        if (bookingDetails.getBookingStatus() == null) {
+            bookingDetails.setBookingStatus("PENDING");
+        }
         BookingDetailsEntity entity = BookingDetailsEntityMapper.toEntity(bookingDetails);
         BookingDetailsEntity saved = repository.save(entity);
         return BookingDetailsEntityMapper.toModel(saved);
@@ -53,6 +57,50 @@ public class BookingDetailsServiceImpl implements BookingDetailsService {
     @Override
     public void deleteBookingDetails(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public List<BookingDetails> getBookingsByStoreId(Long storeId) {
+        return repository.findByStoreId(storeId).stream()
+                .map(BookingDetailsEntityMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookingDetails> getBookingsByCustomerId(Long customerId) {
+        return repository.findByCustomerId(customerId).stream()
+                .map(BookingDetailsEntityMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookingDetails> getBookingsByStoreAndStatus(Long storeId, String status) {
+        return repository.findByStoreIdAndBookingStatus(storeId, status).stream()
+                .map(BookingDetailsEntityMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookingDetails> getBookingsByStoreAndDateRange(Long storeId, Date startDate, Date endDate) {
+        return repository.findByStoreIdAndAppointmentDateBetween(storeId, startDate, endDate).stream()
+                .map(BookingDetailsEntityMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookingDetails> getBookingsByStaffId(Long staffId) {
+        return repository.findByStaffId(staffId).stream()
+                .map(BookingDetailsEntityMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public BookingDetails updateBookingStatus(Long id, String status) {
+        return repository.findById(id).map(entity -> {
+            entity.setBookingStatus(status);
+            BookingDetailsEntity saved = repository.save(entity);
+            return BookingDetailsEntityMapper.toModel(saved);
+        }).orElse(null);
     }
 }
 
