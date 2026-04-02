@@ -4,6 +4,11 @@ import biz.craftline.server.feature.ordermanagement.domain.model.*;
 import biz.craftline.server.feature.ordermanagement.api.dto.*;
 import biz.craftline.server.feature.paymentmanagement.api.dto.PaymentInfoDTO;
 import biz.craftline.server.feature.paymentmanagement.domain.model.PaymentInfo;
+import biz.craftline.server.feature.businessstore.domain.service.StoreService;
+import biz.craftline.server.feature.businessstore.domain.model.Store;
+import biz.craftline.server.feature.customermanagement.domain.service.CustomerService;
+import biz.craftline.server.feature.customermanagement.domain.model.Customer;
+import biz.craftline.server.feature.customermanagement.api.mapper.CustomerDTOMapper;
 
 import java.util.stream.Collectors;
 
@@ -41,6 +46,32 @@ public class OrderDTOMapper {
         }
         if (order.getPaymentInfo() != null) {
             dto.setPaymentInfo(toPaymentInfoDTO(order.getPaymentInfo()));
+        }
+        return dto;
+    }
+
+    /**
+     * Converts an Order domain model to OrderDTO, including store and customer details.
+     * @param order the Order domain model
+     * @param storeService the StoreService for fetching store details
+     * @param customerService the CustomerService for fetching customer details
+     * @param customerDTOMapper the CustomerDTOMapper for mapping customer DTOs
+     * @return the corresponding OrderDTO with store and customer details
+     */
+    public static OrderDTO toDTO(Order order, StoreService storeService, CustomerService customerService, CustomerDTOMapper customerDTOMapper) {
+        OrderDTO dto = toDTO(order); // base mapping
+        // Set store name
+        if (order.getStoreId() != null) {
+            Store store = storeService.findStoreById(order.getStoreId());
+            if (store != null) {
+                dto.setStoreName(store.getStoreName());
+            }
+        }
+        // Set customer details
+        if (order.getCustomerId() != null) {
+            customerService.findById(order.getCustomerId()).ifPresent(customer -> {
+                dto.setCustomer(customerDTOMapper.toDTO(customer));
+            });
         }
         return dto;
     }

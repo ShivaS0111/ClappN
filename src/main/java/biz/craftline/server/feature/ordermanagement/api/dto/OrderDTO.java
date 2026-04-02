@@ -44,6 +44,10 @@ public class OrderDTO {
     private DeliveryInfoDTO deliveryInfo;
     /** Payment information */
     private PaymentInfoDTO paymentInfo;
+    /** Store name */
+    private String storeName;
+    /** Customer details */
+    private biz.craftline.server.feature.customermanagement.api.dto.CustomerDTO customer;
 
 }
 

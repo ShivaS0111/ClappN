@@ -11,6 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.*;
+import biz.craftline.server.feature.businessstore.domain.service.StoreService;
+import biz.craftline.server.feature.businessstore.api.mapper.StoreDTOMapper;
+import biz.craftline.server.feature.customermanagement.domain.service.CustomerService;
+import biz.craftline.server.feature.customermanagement.api.mapper.CustomerDTOMapper;
 
 /**
  * REST controller for managing orders in the order management feature.
@@ -19,13 +23,21 @@ import java.util.*;
 @RequestMapping("/api/orders")
 public class OrderController {
     private final OrderService orderService;
+    private final StoreService storeService;
+    private final StoreDTOMapper storeDTOMapper;
+    private final CustomerService customerService;
+    private final CustomerDTOMapper customerDTOMapper;
 
     /**
      * Constructor for dependency injection.
      * @param orderService the order service bean
      */
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, StoreService storeService, StoreDTOMapper storeDTOMapper, CustomerService customerService, CustomerDTOMapper customerDTOMapper) {
         this.orderService = orderService;
+        this.storeService = storeService;
+        this.storeDTOMapper = storeDTOMapper;
+        this.customerService = customerService;
+        this.customerDTOMapper = customerDTOMapper;
     }
 
     /**
@@ -76,7 +88,7 @@ public class OrderController {
     public ResponseEntity<APIResponse<OrderDTO>> getOrder(@PathVariable Long id) {
         Order order = orderService.getOrder(id);
         if (order != null) {
-            return APIResponse.success(OrderDTOMapper.toDTO(order), "Order successfully retrieved");
+            return APIResponse.success(OrderDTOMapper.toDTO(order, storeService, customerService, customerDTOMapper), "Order successfully retrieved");
         }
         return APIResponse.success(null, "Order not found");
     }
