@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,11 +22,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static org.springframework.http.HttpMethod.*;
-
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -39,40 +39,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints
-//                        .requestMatchers("/api/auth/**").permitAll()
-//                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-//                        .requestMatchers("/actuator/health").permitAll()
-//
-//                        // Permission-based authorization for user management
-//                        .requestMatchers(POST, "/api/users/permissions/**")
-//                        .hasAuthority("MANAGE_USER_PERMISSIONS")
-//                        .requestMatchers(DELETE, "/api/users/permissions/**")
-//                        .hasAuthority("MANAGE_USER_PERMISSIONS")
-//                        .requestMatchers(GET, "/api/users/permissions/details/**")
-//                        .hasAuthority("VIEW_USER_PERMISSIONS")
-//
-//                        .requestMatchers(POST, "/api/users")
-//                        .hasAuthority("CREATE_USER")
-//                        .requestMatchers(PUT, "/api/users/**")
-//                        .hasAnyAuthority("UPDATE_USER", "USER_MANAGEMENT")
-//                        .requestMatchers(DELETE, "/api/users/**")
-//                        .hasAuthority("DELETE_USER")
-//                        .requestMatchers(GET, "/api/users/**")
-//                        .hasAnyAuthority("VIEW_USERS", "USER_MANAGEMENT")
-//
-//                        .requestMatchers("/api/admin/**")
-//                        .hasAuthority("ADMIN_ACCESS")
-//                        .requestMatchers("/api/reports/**")
-//                        .hasAuthority("VIEW_REPORTS")
-//
-//                        // All other API endpoints require authentication
-//                        .anyRequest().authenticated()
-                                .requestMatchers(
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**"
-                                ).permitAll()
-                                .anyRequest().permitAll()
+                        // Public endpoints - no authentication required
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/payments/webhook/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
+
+                        // All other API endpoints require authentication
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,9 +24,15 @@ public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(value = {AccessDeniedException.class})
-    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-        log.warn("Access denied: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
+    public ResponseEntity<APIResponse<String>> handleAccessDeniedException(AccessDeniedException ex) {
+        log.warn("Access denied: {}", ex.getMessage());
+        return APIResponse.error("Access denied: " + ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = {AuthenticationException.class})
+    public ResponseEntity<APIResponse<String>> handleAuthenticationException(AuthenticationException ex) {
+        log.warn("Authentication failed: {}", ex.getMessage());
+        return APIResponse.error("Unauthorized: " + ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
