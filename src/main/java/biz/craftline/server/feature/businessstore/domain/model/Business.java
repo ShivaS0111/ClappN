@@ -2,6 +2,7 @@ package biz.craftline.server.feature.businessstore.domain.model;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +31,9 @@ public class Business {
     private String bannerUrl;
 
     private String galleryUrls;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     private Set<Store> stores = new HashSet<>();
 

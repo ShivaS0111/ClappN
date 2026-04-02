@@ -68,6 +68,8 @@ public class StoreDTOMapper {
                 .hours(dto.getHours())
                 .bannerUrl(dto.getBannerUrl())
                 .galleryUrls(dto.getGalleryUrls())
+                .createdAt(dto.getCreatedAt())
+                .updatedAt(dto.getUpdatedAt())
                 .build();
     }
 
@@ -98,6 +100,8 @@ public class StoreDTOMapper {
                 .hours(store.getHours())
                 .bannerUrl(store.getBannerUrl())
                 .galleryUrls(store.getGalleryUrls())
+                .createdAt(store.getCreatedAt())
+                .updatedAt(store.getUpdatedAt())
                 .build();
     }
 }

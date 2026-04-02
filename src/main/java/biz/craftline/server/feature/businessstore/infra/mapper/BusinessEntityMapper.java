@@ -50,6 +50,8 @@ public class BusinessEntityMapper {
                 .galleryUrls(entity.getGalleryUrls())
                 //.stores(new HashSet<>(stores))
                 .createdBy(entity.getCreatedBy())
+                .createdAt(entity.getCreatedAt() != null ? entity.getCreatedAt().toLocalDateTime() : null)
+                .updatedAt(entity.getUpdatedAt() != null ? entity.getUpdatedAt().toLocalDateTime() : null)
                 .build();
     }
 

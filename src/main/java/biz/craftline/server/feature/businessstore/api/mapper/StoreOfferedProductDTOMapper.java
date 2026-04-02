@@ -32,7 +32,7 @@ public class StoreOfferedProductDTOMapper {
         dto.setUpdatedAt(product.getUpdatedAt());
         dto.setThumbnailUrl(product.getThumbnailUrl());
         dto.setGalleryUrls(product.getGalleryUrls());
-        if(dto.getPrice()!=null){
+        if(product.getPrice()!=null){
             dto.setPrice(storeItemPriceDTOMapper.toDTO(product.getPrice()));
         }
         return dto;

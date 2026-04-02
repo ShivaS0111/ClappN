@@ -31,6 +31,8 @@ public class StoreEntityMapper {
                 .hours(entity.getHours())
                 .bannerUrl(entity.getBannerUrl())
                 .galleryUrls(entity.getGalleryUrls())
+                .createdAt(entity.getCreatedAt() != null ? entity.getCreatedAt().toLocalDateTime() : null)
+                .updatedAt(entity.getUpdatedAt() != null ? entity.getUpdatedAt().toLocalDateTime() : null)
                 .build();
     }
 

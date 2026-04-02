@@ -92,6 +92,8 @@ public class BusinessDTOMapper {
                 .galleryUrls(dto.getGalleryUrls())
                 .createdBy(dto.getCreatedBy())
                 .status(dto.getStatus())
+                .createdAt(dto.getCreatedAt())
+                .updatedAt(dto.getUpdatedAt())
                 .build();
     }
 
@@ -119,6 +121,8 @@ public class BusinessDTOMapper {
                 .galleryUrls(business.getGalleryUrls())
                 .createdBy(business.getCreatedBy())
                 .status(business.getStatus())
+                .createdAt(business.getCreatedAt())
+                .updatedAt(business.getUpdatedAt())
                 .stores(storeDTOS)
                 .build();
     }

@@ -88,7 +88,8 @@ public class OrderServiceImpl implements OrderService {
             var savedItem = orderItemRepository.save(itemEnt);
             total = total.add(BigDecimal.valueOf(it.getPrice() * it.getQuantity()));
 
-            if(it.getItemType() == 0 ) {
+            // Allocate inventory for physical products (itemType 1 = PRODUCT)
+            if(it.getItemType() != null && it.getItemType() == 1) {
                 // allocate lots FEFO (partial allowed)
                 allocationService.allocate( request.getStoreId(), it.getItemIId(), it.getQuantity(), savedItem.getId());
             }

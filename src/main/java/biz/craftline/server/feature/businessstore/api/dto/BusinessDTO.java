@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,6 +36,9 @@ public class BusinessDTO {
     private String bannerUrl;
 
     private String galleryUrls;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     private Set<StoreDTO> stores = new HashSet<>();
 
