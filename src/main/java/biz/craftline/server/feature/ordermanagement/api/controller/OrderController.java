@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.ordermanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.ordermanagement.api.dto.OrderDTO;
 import biz.craftline.server.feature.ordermanagement.api.mapper.OrderDTOMapper;
 import biz.craftline.server.feature.ordermanagement.domain.model.Order;
@@ -32,6 +33,7 @@ public class OrderController {
      * @return list of OrderDTO
      */
     @GetMapping
+    @RequirePermission("order.read")
     public ResponseEntity<APIResponse<List<OrderDTO>>> getAllOrders() {
         List<Order> orders = orderService.getAllOrders();
         List<OrderDTO> dtos = orders.stream().map(OrderDTOMapper::toDTO).toList();
@@ -44,6 +46,7 @@ public class OrderController {
      * @return list of OrderDTO
      */
     @GetMapping("/store/{storeId}")
+    @RequirePermission("order.read")
     public ResponseEntity<APIResponse<List<OrderDTO>>> getOrdersByStore(@PathVariable Long storeId) {
         List<Order> orders = orderService.getOrdersByStoreId(storeId);
         List<OrderDTO> dtos = orders.stream().map(OrderDTOMapper::toDTO).toList();
@@ -56,6 +59,7 @@ public class OrderController {
      * @return list of OrderDTO
      */
     @GetMapping("/customer/{customerId}")
+    @RequirePermission("order.read")
     public ResponseEntity<APIResponse<List<OrderDTO>>> getOrdersByCustomer(@PathVariable Long customerId) {
         List<Order> orders = orderService.getOrdersByCustomerId(customerId);
         List<OrderDTO> dtos = orders.stream().map(OrderDTOMapper::toDTO).toList();
@@ -68,6 +72,7 @@ public class OrderController {
      * @return OrderDTO or null if not found
      */
     @GetMapping("/{id}")
+    @RequirePermission("order.read")
     public ResponseEntity<APIResponse<OrderDTO>> getOrder(@PathVariable Long id) {
         Order order = orderService.getOrder(id);
         if (order != null) {
@@ -80,6 +85,7 @@ public class OrderController {
      * Places a new order. Fully maps items, delivery info, and payment info from the DTO.
      */
     @PostMapping("/new")
+    @RequirePermission("order.create")
     public ResponseEntity<APIResponse<OrderDTO>> placeOrder(@Valid @RequestBody OrderDTO dto) {
         Order order = OrderDTOMapper.fromDTO(dto);
         order.setOrderDate(LocalDateTime.now());
@@ -92,6 +98,7 @@ public class OrderController {
      * Updates an existing order. Fully maps all fields from the DTO.
      */
     @PutMapping("/update/{id}")
+    @RequirePermission("order.update")
     public ResponseEntity<APIResponse<OrderDTO>> updateOrder(@PathVariable Long id, @Valid @RequestBody OrderDTO dto) {
         Order updatedOrder = OrderDTOMapper.fromDTO(dto);
         Order saved = orderService.updateOrder(id, updatedOrder);
@@ -106,6 +113,7 @@ public class OrderController {
      * @param id order ID
      */
     @PostMapping("/{id}/cancel")
+    @RequirePermission("order.update")
     public ResponseEntity<APIResponse<Void>> cancelOrder(@PathVariable Long id) {
         orderService.cancelOrder(id);
         return APIResponse.success(null, "Order cancelled successfully");
@@ -116,6 +124,7 @@ public class OrderController {
      * @param id order ID
      */
     @PostMapping("/{id}/complete")
+    @RequirePermission("order.update")
     public ResponseEntity<APIResponse<Void>> completeOrder(@PathVariable Long id) {
         orderService.completeOrder(id);
         return APIResponse.success(null, "Order completed successfully");
@@ -127,6 +136,7 @@ public class OrderController {
      * @param status new status
      */
     @PostMapping("/{id}/status")
+    @RequirePermission("order.update")
     public ResponseEntity<APIResponse<OrderDTO>> updateOrderStatus(
             @PathVariable Long id, @RequestParam String status) {
         Order order = orderService.getOrder(id);

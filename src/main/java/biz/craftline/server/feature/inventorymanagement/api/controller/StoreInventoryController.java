@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.inventorymanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.inventorymanagement.api.dto.StoreInventoryDTO;
 import biz.craftline.server.feature.inventorymanagement.api.mapper.StoreInventoryDTOMapper;
 import biz.craftline.server.feature.inventorymanagement.domain.model.StoreInventory;
@@ -25,6 +26,7 @@ public class StoreInventoryController {
      * Get all inventory items for a specific store.
      */
     @GetMapping("/{storeId}")
+    @RequirePermission("inventory.read")
     public ResponseEntity<APIResponse<List<StoreInventoryDTO>>> getInventoryByStore(@PathVariable Long storeId) {
         List<StoreInventory> inventoryList = storeInventoryService.findByStoreId(storeId);
         List<StoreInventoryDTO> dtoList = inventoryList.stream()
@@ -34,6 +36,7 @@ public class StoreInventoryController {
     }
 
     @PostMapping("/{storeId}/{productId}/add")
+    @RequirePermission("inventory.create")
     public ResponseEntity<APIResponse<StoreInventoryDTO>> addStock(@PathVariable Long storeId, @PathVariable Long productId,
                                                                    @RequestParam int quantity,
                                                                    @RequestParam String referenceType,
@@ -45,6 +48,7 @@ public class StoreInventoryController {
 
 
     @PostMapping("/{storeId}/{productId}/sell")
+    @RequirePermission("inventory.update")
     public ResponseEntity<APIResponse<StoreInventoryDTO>> sellStock(@PathVariable Long storeId, @PathVariable Long productId,
                                                                     @RequestParam int quantity,
                                                                     @RequestParam String referenceType,

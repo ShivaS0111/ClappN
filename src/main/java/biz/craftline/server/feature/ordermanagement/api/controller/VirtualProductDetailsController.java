@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.ordermanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.ordermanagement.api.dto.VirtualProductDetailsDTO;
 import biz.craftline.server.feature.ordermanagement.api.mapper.VirtualProductDetailsDTOMapper;
 import biz.craftline.server.feature.ordermanagement.domain.model.VirtualProductDetails;
@@ -19,6 +20,7 @@ public class VirtualProductDetailsController {
     }
 
     @GetMapping
+    @RequirePermission("product.read")
     public ResponseEntity<APIResponse<List<VirtualProductDetailsDTO>>> getAllVirtualProductDetails() {
         List<VirtualProductDetails> details = virtualProductDetailsService.getAllVirtualProductDetails();
         List<VirtualProductDetailsDTO> dtos = new ArrayList<>();
@@ -29,12 +31,14 @@ public class VirtualProductDetailsController {
     }
 
     @GetMapping("/{id}")
+    @RequirePermission("product.read")
     public ResponseEntity<APIResponse<VirtualProductDetailsDTO>> getVirtualProductDetails(@PathVariable Long id) {
         VirtualProductDetails detail = virtualProductDetailsService.getVirtualProductDetails(id);
         return APIResponse.ok(detail != null ? VirtualProductDetailsDTOMapper.toDTO(detail) : null);
     }
 
     @PostMapping
+    @RequirePermission("product.create")
     public ResponseEntity<APIResponse<VirtualProductDetailsDTO>> addVirtualProductDetails(@RequestBody VirtualProductDetailsDTO dto) {
         VirtualProductDetails detail = VirtualProductDetailsDTOMapper.fromDTO(dto);
         VirtualProductDetails saved = virtualProductDetailsService.addVirtualProductDetails(detail);
@@ -42,6 +46,7 @@ public class VirtualProductDetailsController {
     }
 
     @PutMapping("/{id}")
+    @RequirePermission("product.update")
     public ResponseEntity<APIResponse<VirtualProductDetailsDTO>> updateVirtualProductDetails(@PathVariable Long id, @RequestBody VirtualProductDetailsDTO dto) {
         VirtualProductDetails detail = VirtualProductDetailsDTOMapper.fromDTO(dto);
         VirtualProductDetails updated = virtualProductDetailsService.updateVirtualProductDetails(id, detail);
@@ -49,8 +54,8 @@ public class VirtualProductDetailsController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission("product.delete")
     public void deleteVirtualProductDetails(@PathVariable Long id) {
         virtualProductDetailsService.deleteVirtualProductDetails(id);
     }
 }
-

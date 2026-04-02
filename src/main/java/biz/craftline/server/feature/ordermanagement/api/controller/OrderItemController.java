@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.ordermanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.ordermanagement.api.dto.OrderItemDTO;
 import biz.craftline.server.feature.ordermanagement.api.mapper.OrderItemDTOMapper;
 import biz.craftline.server.feature.ordermanagement.domain.model.OrderItem;
@@ -20,6 +21,7 @@ public class OrderItemController {
 
 
     @GetMapping
+    @RequirePermission("order.read")
     public ResponseEntity<APIResponse<List<OrderItemDTO>>> getAllOrderItems() {
         List<OrderItem> items = orderItemService.getAllOrderItems();
         List<OrderItemDTO> dtos = new ArrayList<>();
@@ -30,6 +32,7 @@ public class OrderItemController {
     }
 
     @GetMapping("/{id}")
+    @RequirePermission("order.read")
     public ResponseEntity<APIResponse<OrderItemDTO>> getOrderItem(@PathVariable Long id) {
         OrderItem item = orderItemService.getOrderItem(id);
         if(item!=null){
@@ -40,6 +43,7 @@ public class OrderItemController {
     }
 
     @PostMapping
+    @RequirePermission("order.create")
     public ResponseEntity<APIResponse<OrderItemDTO>> addOrderItem(@RequestBody OrderItemDTO dto) {
         OrderItem item = orderItemDTOMapper.fromDTO(dto);
         OrderItem saved = orderItemService.addOrderItem(item);
@@ -47,6 +51,7 @@ public class OrderItemController {
     }
 
     @PutMapping("/{id}")
+    @RequirePermission("order.update")
     public ResponseEntity<APIResponse<OrderItemDTO>> updateOrderItem(@PathVariable Long id, @RequestBody OrderItemDTO dto) {
         OrderItem item = orderItemDTOMapper.fromDTO(dto);
         OrderItem updated = orderItemService.updateOrderItem(id, item);
@@ -54,8 +59,8 @@ public class OrderItemController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission("order.delete")
     public void deleteOrderItem(@PathVariable Long id) {
         orderItemService.deleteOrderItem(id);
     }
 }
-

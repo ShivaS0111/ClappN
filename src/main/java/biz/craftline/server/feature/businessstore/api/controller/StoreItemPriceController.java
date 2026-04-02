@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.businessstore.api.dto.StoreItemPriceDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreItemPriceDTOMapper;
 import biz.craftline.server.feature.businessstore.api.request.AddStoreItemPriceRequest;
@@ -28,6 +29,7 @@ public class StoreItemPriceController {
 
 
     @PostMapping("/lot/price/add")
+    @RequirePermission("pricing.create")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> addStoreItemLotPrice(
             @RequestBody AddStoreItemPriceRequest dto) {
 
@@ -38,6 +40,7 @@ public class StoreItemPriceController {
     }
 
     @PostMapping("/lot/price/update")
+    @RequirePermission("pricing.update")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> updateProductLotPrice(
             @RequestBody UpdateStoreItemPriceRequest dto) {
 
@@ -48,6 +51,7 @@ public class StoreItemPriceController {
     }
 
     @GetMapping("/lot/{lotId}/price")
+    @RequirePermission("pricing.read")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> findPriceByLotId(
             @PathVariable("lotId") Long lotId) {
 
@@ -58,6 +62,7 @@ public class StoreItemPriceController {
     }
 
     @GetMapping("/lot/{lotId}/prices")
+    @RequirePermission("pricing.read")
     public ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> findPricesByLotId(
             @PathVariable("lotId") Long lotId) {
 
@@ -69,6 +74,7 @@ public class StoreItemPriceController {
 
 
     @PostMapping("/service/price/add")
+    @RequirePermission("pricing.create")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> addStoreItemServicePrice(
             @RequestBody AddStoreItemPriceRequest dto) {
 
@@ -79,6 +85,7 @@ public class StoreItemPriceController {
     }
 
     @PostMapping("/service/price/update")
+    @RequirePermission("pricing.update")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> updatePrice(
             @RequestBody UpdateStoreItemPriceRequest dto) {
 
@@ -89,6 +96,7 @@ public class StoreItemPriceController {
     }
 
     @GetMapping("/service/{serviceId}/price")
+    @RequirePermission("pricing.read")
     public ResponseEntity<APIResponse<StoreItemPriceDTO>> getServicePrice(
             @PathVariable("serviceId") Long serviceId) {
 
@@ -99,6 +107,7 @@ public class StoreItemPriceController {
     }
 
     @GetMapping("/service/{serviceId}/prices")
+    @RequirePermission("pricing.read")
     public ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> getServicePrices(
             @PathVariable("serviceId") Long serviceId) {
         System.out.println("===>Serviceid: "+ serviceId);

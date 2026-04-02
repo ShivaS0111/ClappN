@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.ordermanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.ordermanagement.api.dto.BookingDetailsDTO;
 import biz.craftline.server.feature.ordermanagement.api.mapper.BookingDetailsDTOMapper;
 import biz.craftline.server.feature.ordermanagement.domain.model.BookingDetails;
@@ -25,6 +26,7 @@ public class BookingDetailsController {
 
     @GetMapping
     @Operation(summary = "Get all bookings")
+    @RequirePermission("booking.read")
     public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getAllBookingDetails() {
         List<BookingDetails> details = bookingDetailsService.getAllBookingDetails();
         List<BookingDetailsDTO> dtos = details.stream()
@@ -35,6 +37,7 @@ public class BookingDetailsController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get booking by ID")
+    @RequirePermission("booking.read")
     public ResponseEntity<APIResponse<BookingDetailsDTO>> getBookingDetails(@PathVariable Long id) {
         BookingDetails detail = bookingDetailsService.getBookingDetails(id);
         if (detail == null) {
@@ -45,6 +48,7 @@ public class BookingDetailsController {
 
     @GetMapping("/store/{storeId}")
     @Operation(summary = "Get all bookings for a store")
+    @RequirePermission("booking.read")
     public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getBookingsByStore(@PathVariable Long storeId) {
         List<BookingDetails> details = bookingDetailsService.getBookingsByStoreId(storeId);
         List<BookingDetailsDTO> dtos = details.stream()
@@ -55,6 +59,7 @@ public class BookingDetailsController {
 
     @GetMapping("/customer/{customerId}")
     @Operation(summary = "Get all bookings for a customer")
+    @RequirePermission("booking.read")
     public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getBookingsByCustomer(@PathVariable Long customerId) {
         List<BookingDetails> details = bookingDetailsService.getBookingsByCustomerId(customerId);
         List<BookingDetailsDTO> dtos = details.stream()
@@ -65,6 +70,7 @@ public class BookingDetailsController {
 
     @GetMapping("/store/{storeId}/status/{status}")
     @Operation(summary = "Get bookings by store and status")
+    @RequirePermission("booking.read")
     public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getBookingsByStoreAndStatus(
             @PathVariable Long storeId, @PathVariable String status) {
         List<BookingDetails> details = bookingDetailsService.getBookingsByStoreAndStatus(storeId, status);
@@ -76,6 +82,7 @@ public class BookingDetailsController {
 
     @GetMapping("/store/{storeId}/date-range")
     @Operation(summary = "Get bookings by store and date range")
+    @RequirePermission("booking.read")
     public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getBookingsByStoreAndDateRange(
             @PathVariable Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
@@ -89,6 +96,7 @@ public class BookingDetailsController {
 
     @GetMapping("/staff/{staffId}")
     @Operation(summary = "Get bookings by staff member")
+    @RequirePermission("booking.read")
     public ResponseEntity<APIResponse<List<BookingDetailsDTO>>> getBookingsByStaff(@PathVariable Long staffId) {
         List<BookingDetails> details = bookingDetailsService.getBookingsByStaffId(staffId);
         List<BookingDetailsDTO> dtos = details.stream()
@@ -99,6 +107,7 @@ public class BookingDetailsController {
 
     @PostMapping
     @Operation(summary = "Create a new booking")
+    @RequirePermission("booking.create")
     public ResponseEntity<APIResponse<BookingDetailsDTO>> addBookingDetails(@RequestBody BookingDetailsDTO dto) {
         BookingDetails detail = BookingDetailsDTOMapper.fromDTO(dto);
         BookingDetails saved = bookingDetailsService.addBookingDetails(detail);
@@ -107,6 +116,7 @@ public class BookingDetailsController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a booking")
+    @RequirePermission("booking.update")
     public ResponseEntity<APIResponse<BookingDetailsDTO>> updateBookingDetails(
             @PathVariable Long id, @RequestBody BookingDetailsDTO dto) {
         BookingDetails detail = BookingDetailsDTOMapper.fromDTO(dto);
@@ -119,6 +129,7 @@ public class BookingDetailsController {
 
     @PostMapping("/{id}/status")
     @Operation(summary = "Update booking status")
+    @RequirePermission("booking.update")
     public ResponseEntity<APIResponse<BookingDetailsDTO>> updateBookingStatus(
             @PathVariable Long id, @RequestParam String status) {
         BookingDetails updated = bookingDetailsService.updateBookingStatus(id, status);
@@ -130,6 +141,7 @@ public class BookingDetailsController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a booking")
+    @RequirePermission("booking.delete")
     public ResponseEntity<APIResponse<String>> deleteBookingDetails(@PathVariable Long id) {
         bookingDetailsService.deleteBookingDetails(id);
         return APIResponse.success("Booking deleted successfully");

@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.businessstore.api.dto.BusinessDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.BusinessDTOMapper;
 import biz.craftline.server.feature.businessstore.api.request.AddNewBusinessRequest;
@@ -46,6 +47,7 @@ public class BusinessEntityController {
     @Operation(summary = "List all businesses", description = "Returns all businesses.")
     @ApiResponse(responseCode = "200", description = "List of businesses returned successfully.")
     @GetMapping
+    @RequirePermission("business.read")
     public ResponseEntity<APIResponse<Map<String, Object>>> listBusinesses(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
@@ -63,6 +65,7 @@ public class BusinessEntityController {
     @Operation(summary = "List all businesses", description = "Returns all businesses.")
     @ApiResponse(responseCode = "200", description = "List of businesses returned successfully.")
     @GetMapping("/list")
+    @RequirePermission("business.read")
     public ResponseEntity<APIResponse<List<BusinessDTO>>> list() {
         List<Business> list = service.findAll();
         List<BusinessDTO> dtoList = list.stream().map(mapper::toDTO).toList();
@@ -75,6 +78,7 @@ public class BusinessEntityController {
     @Operation(summary = "Search businesses", description = "Search businesses by keyword.")
     @ApiResponse(responseCode = "200", description = "Search results returned successfully.")
     @PostMapping("/search")
+    @RequirePermission("business.read")
     public ResponseEntity<APIResponse<List<BusinessDTO>>> search(@RequestBody SearchRequest request) {
         List<Business> list = service.search(request.keyword());
         List<BusinessDTO> dtoList = list.stream().map(mapper::toDTO).toList();
@@ -87,6 +91,7 @@ public class BusinessEntityController {
     @Operation(summary = "Add new business", description = "Creates a new business.")
     @ApiResponse(responseCode = "200", description = "Business created successfully.")
     @PostMapping
+    @RequirePermission("business.create")
     public ResponseEntity<APIResponse<BusinessDTO>> addBusiness(
             @Valid @RequestBody AddNewBusinessRequest request) {
         Business business = mapper.toDomain(request);
@@ -101,6 +106,7 @@ public class BusinessEntityController {
     @Operation(summary = "Update business", description = "Update business.")
     @ApiResponse(responseCode = "200", description = "Business updated successfully.")
     @PutMapping("/{id}")
+    @RequirePermission("business.update")
     public ResponseEntity<APIResponse<BusinessDTO>> updateBusiness(
             @Valid @RequestBody UpdateBusinessRequest request, @PathVariable("id") Long id) {
         Business businessM = mapper.toDomain(request);
@@ -116,6 +122,7 @@ public class BusinessEntityController {
     @Operation(summary = "Update business status", description = "Update business status.")
     @ApiResponse(responseCode = "200", description = "Business status updated successfully.")
     @PostMapping("/update-status")
+    @RequirePermission("business.update")
     public ResponseEntity<APIResponse<BusinessDTO>> updateBusinessStatus(
             @Valid @RequestBody StatusUpdateRequest updateRequest) {
         Business business = service.findById(updateRequest.id()).orElseThrow(()-> new RuntimeException("Business not found:: " + updateRequest.id()));
@@ -130,6 +137,7 @@ public class BusinessEntityController {
     @Operation(summary = "GET business", description = "GET business.")
     @ApiResponse(responseCode = "200", description = "business listed successfully.")
     @GetMapping("/{id}")
+    @RequirePermission("business.read")
     public ResponseEntity<APIResponse<BusinessDTO>> getBusiness( @PathVariable("id") Long id) {
         Business business = service.findById(id).orElseThrow(()-> new RuntimeException("Business not found:: " + id));
         return APIResponse.success(mapper.toDTO(business));

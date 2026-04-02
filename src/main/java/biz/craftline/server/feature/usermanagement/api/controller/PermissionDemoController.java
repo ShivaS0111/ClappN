@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.usermanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.usermanagement.domain.service.RBACService;
 import biz.craftline.server.feature.usermanagement.domain.service.UserPermissionManagementService;
 import biz.craftline.server.util.APIResponse;
@@ -7,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +25,7 @@ public class PermissionDemoController {
     private final UserPermissionManagementService userPermissionService;
 
     @GetMapping("/current-user")
+    @RequirePermission("user.read")
     public ResponseEntity<APIResponse<Map<String, Object>>> getCurrentUserPermissions() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -39,36 +40,37 @@ public class PermissionDemoController {
     }
 
     @GetMapping("/test/create-user")
-    @PreAuthorize("hasAuthority('CREATE_USER')")
+    @RequirePermission("user.create")
     public ResponseEntity<APIResponse<String>> testCreateUserPermission() {
         return APIResponse.success("✅ You have CREATE_USER authority!");
     }
 
     @GetMapping("/test/delete-user")
-    @PreAuthorize("hasAuthority('DELETE_USER')")
+    @RequirePermission("user.delete")
     public ResponseEntity<APIResponse<String>> testDeleteUserPermission() {
         return APIResponse.success("✅ You have DELETE_USER authority!");
     }
 
     @GetMapping("/test/admin-access")
-    @PreAuthorize("hasAuthority('ADMIN_ACCESS')")
+    @RequirePermission("system.settings")
     public ResponseEntity<APIResponse<String>> testAdminPermission() {
         return APIResponse.success("✅ You have ADMIN_ACCESS authority!");
     }
 
     @GetMapping("/test/custom-annotation")
-    //@RequirePermission("VIEW_REPORTS")
+    @RequirePermission("user.read")
     public ResponseEntity<APIResponse<String>> testCustomAnnotation() {
         return APIResponse.success("✅ Custom @RequirePermission annotation works!");
     }
 
     @GetMapping("/test/multiple-authorities")
-    @PreAuthorize("hasAnyAuthority('CREATE_USER', 'UPDATE_USER', 'USER_MANAGEMENT')")
+    @RequirePermission("user.read")
     public ResponseEntity<APIResponse<String>> testMultipleAuthorities() {
         return APIResponse.success("✅ You have one of the required authorities!");
     }
 
     @GetMapping("/test/hierarchy-demo/{permission}")
+    @RequirePermission("user.permissions")
     public ResponseEntity<APIResponse<Map<String, Object>>> demonstrateHierarchy(@PathVariable String permission) {
         String username = rbacService.getCurrentUsername();
         Long userId = rbacService.getUserId(username);

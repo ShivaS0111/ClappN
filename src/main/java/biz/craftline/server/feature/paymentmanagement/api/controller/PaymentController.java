@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.paymentmanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.paymentmanagement.api.request.InitiatePaymentRequest;
 import biz.craftline.server.feature.paymentmanagement.api.response.InitiatePaymentResponse;
 import biz.craftline.server.feature.paymentmanagement.domain.service.PaymentService;
@@ -24,6 +25,7 @@ public class PaymentController {
     private final PaymentTransactionRepository txRepo;
 
     @PostMapping("/initiate")
+    @RequirePermission("payment.create")
     public ResponseEntity<?> initiate(@RequestBody InitiatePaymentRequest req) {
         try {
             // Validation
@@ -53,6 +55,7 @@ public class PaymentController {
     }
 
     @GetMapping("/status/{providerPaymentId}")
+    @RequirePermission("payment.read")
     public ResponseEntity<?> status(@PathVariable String providerPaymentId) {
         try {
             if (providerPaymentId == null || providerPaymentId.trim().isEmpty()) {

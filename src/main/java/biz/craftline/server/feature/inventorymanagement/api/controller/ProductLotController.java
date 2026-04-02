@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.inventorymanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.inventorymanagement.api.dto.ProductLotDTO;
 import biz.craftline.server.feature.inventorymanagement.api.dto.ProductLotTransactionDTO;
 import biz.craftline.server.feature.inventorymanagement.api.mapper.ProductLotDTOMapper;
@@ -28,18 +29,21 @@ public class ProductLotController {
     private final ProductLotTransactionDTOMapper lotTransactionDTOMapper;
 
     @PostMapping
+    @RequirePermission("inventory.create")
     public ResponseEntity<APIResponse<ProductLotDTO>> createLot(@RequestBody AddProductLotRequest lot) {
         ProductLot productLot = lotService.createLot(productLotDTOMapper.toDomain(lot));
         return APIResponse.ok(productLotDTOMapper.toDTO(productLot));
     }
 
     @GetMapping("/{id}")
+    @RequirePermission("inventory.read")
     public ResponseEntity<APIResponse<ProductLotDTO>> getLot(@PathVariable Long id) {
         ProductLot productLot = lotService.getLotById(id);
         return APIResponse.ok(productLotDTOMapper.toDTO(productLot));
     }
 
     @GetMapping("/all/{storeProductId}")
+    @RequirePermission("inventory.read")
     public ResponseEntity<APIResponse<List<ProductLotDTO>>> getAllActiveLots(
             @PathVariable("storeProductId") Long storeProductId) {
         List<ProductLotDTO> lots = lotService.getAllActiveLots(storeProductId).stream().map(productLotDTOMapper::toDTO).toList();
@@ -47,6 +51,7 @@ public class ProductLotController {
     }
 
     @PutMapping("/{id}")
+    @RequirePermission("inventory.update")
     public ResponseEntity<APIResponse<ProductLotDTO>> updateLot(@PathVariable Long id,
                                                                 @RequestBody ProductLotDTO updatedLot) {
         updatedLot.setId(id);
@@ -55,6 +60,7 @@ public class ProductLotController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission("inventory.delete")
     public ResponseEntity<APIResponse<String>> deleteLot(@PathVariable Long id) {
         return lotService.deleteLot(id) ?
                 APIResponse.success("Success") :
@@ -63,6 +69,7 @@ public class ProductLotController {
 
     // 🔁 Transaction APIs
     @PostMapping("/{lotId}/transaction")
+    @RequirePermission("inventory.update")
     public ResponseEntity<APIResponse<ProductLotTransactionDTO>> recordTransaction(
             @PathVariable Long lotId,
             @RequestParam TransactionType type,
@@ -77,6 +84,7 @@ public class ProductLotController {
     }
 
     @GetMapping("/{lotId}/transactions")
+    @RequirePermission("inventory.read")
     public ResponseEntity<APIResponse<List<ProductLotTransactionDTO>>> getTransactionsForLot(@PathVariable Long lotId) {
         List<ProductLotTransactionDTO> list = lotService.getTransactionsForLot(lotId).stream()
                 .map(lotTransactionDTOMapper::toDTO).toList();

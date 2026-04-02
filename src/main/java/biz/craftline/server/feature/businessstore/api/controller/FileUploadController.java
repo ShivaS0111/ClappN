@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.util.APIResponse;
 import biz.craftline.server.util.FileStorageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +35,7 @@ public class FileUploadController {
     @Operation(summary = "Upload a single image", description = "Uploads a single image file and returns its URL.")
     @ApiResponse(responseCode = "200", description = "File uploaded successfully.")
     @PostMapping("/upload")
+    @RequirePermission("file.upload")
     public ResponseEntity<APIResponse<Map<String, String>>> uploadFile(
             @RequestParam("file") MultipartFile file) {
         try {
@@ -57,6 +59,7 @@ public class FileUploadController {
     @Operation(summary = "Upload multiple images", description = "Uploads multiple image files and returns their URLs.")
     @ApiResponse(responseCode = "200", description = "Files uploaded successfully.")
     @PostMapping("/upload-multiple")
+    @RequirePermission("file.upload")
     public ResponseEntity<APIResponse<Map<String, Object>>> uploadMultipleFiles(
             @RequestParam("files") MultipartFile[] files) {
         try {
@@ -79,6 +82,7 @@ public class FileUploadController {
     @Operation(summary = "Delete an uploaded file", description = "Deletes a file by its URL path.")
     @ApiResponse(responseCode = "200", description = "File deleted successfully.")
     @DeleteMapping
+    @RequirePermission("file.delete")
     public ResponseEntity<APIResponse<String>> deleteFile(@RequestParam("url") String url) {
         boolean deleted = fileStorageService.deleteFile(url);
         if (deleted) {

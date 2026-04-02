@@ -1,6 +1,6 @@
-
 package biz.craftline.server.feature.businesstype.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.businesstype.api.dto.BrandDTO;
 import biz.craftline.server.feature.businesstype.api.mapper.BrandDToMapper;
 import biz.craftline.server.feature.businesstype.domain.model.Brand;
@@ -25,6 +25,7 @@ public class BrandController {
     final BrandDToMapper brandDToMapper;
 
     @GetMapping
+    @RequirePermission("brand.read")
     public ResponseEntity<APIResponse<List<BrandDTO>>> getAllBrands() {
         return APIResponse.ok( brandService.findAll()
                 .stream()
@@ -33,6 +34,7 @@ public class BrandController {
     }
 
     @GetMapping("/{id}")
+    @RequirePermission("brand.read")
     public ResponseEntity<APIResponse<BrandDTO>> getBrand(@PathVariable Long id) {
         Brand brand = brandService.findById(id);
         if (brand == null) return null;
@@ -40,6 +42,7 @@ public class BrandController {
     }
 
     @PostMapping
+    @RequirePermission("brand.create")
     public ResponseEntity<APIResponse<BrandDTO>> addBrand(@RequestBody BrandDTO brandDTO) {
         Brand brand = brandDToMapper.toDomain(brandDTO);
         Brand saved = brandService.save(brand);
@@ -47,10 +50,9 @@ public class BrandController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission("brand.delete")
     public ResponseEntity<APIResponse<String>> deleteBrand(@PathVariable Long id) {
         brandService.delete(id);
         return APIResponse.success( "Success" );
     }
 }
-
-

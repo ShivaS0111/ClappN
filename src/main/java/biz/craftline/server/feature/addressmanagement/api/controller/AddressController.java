@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.addressmanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.addressmanagement.api.request.AddressRequest;
 import biz.craftline.server.feature.addressmanagement.api.response.AddressResponse;
 import biz.craftline.server.feature.addressmanagement.api.mapper.AddressMapper;
@@ -17,22 +18,26 @@ public class AddressController {
     private AddressService addressService;
 
     @GetMapping
+    @RequirePermission("address.read")
     public List<AddressResponse> getAllAddresses() {
         return addressService.getAllAddresses().stream().map(AddressMapper::toResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
+    @RequirePermission("address.read")
     public AddressResponse getAddressById(@PathVariable Long id) {
         Address address = addressService.getAddressById(id).orElseThrow(() -> new RuntimeException("Address not found"));
         return AddressMapper.toResponse(address);
     }
 
     @GetMapping("/search")
+    @RequirePermission("address.read")
     public List<AddressResponse> getAddressesByTypeAndReferenceId(@RequestParam String type, @RequestParam Long referenceId) {
         return addressService.getAddressesByTypeAndReferenceId(type, referenceId).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
     }
 
     @PostMapping
+    @RequirePermission("address.create")
     public AddressResponse createAddress(@RequestBody AddressRequest request) {
         Address address = AddressMapper.toDomain(request);
         Address created = addressService.createAddress(address);
@@ -40,6 +45,7 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
+    @RequirePermission("address.update")
     public AddressResponse updateAddress(@PathVariable Long id, @RequestBody AddressRequest request) {
         Address address = AddressMapper.toDomain(request);
         Address updated = addressService.updateAddress(id, address);
@@ -47,41 +53,49 @@ public class AddressController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission("address.delete")
     public void deleteAddress(@PathVariable Long id) {
         addressService.deleteAddress(id);
     }
 
     @GetMapping("/search/area")
+    @RequirePermission("address.read")
     public List<AddressResponse> getAddressesByArea(@RequestParam String area) {
         return addressService.getAddressesByArea(area).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/search/place")
+    @RequirePermission("address.read")
     public List<AddressResponse> getAddressesByPlace(@RequestParam String place) {
         return addressService.getAddressesByPlace(place).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/search/district")
+    @RequirePermission("address.read")
     public List<AddressResponse> getAddressesByDistrict(@RequestParam String district) {
         return addressService.getAddressesByDistrict(district).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/search/region")
+    @RequirePermission("address.read")
     public List<AddressResponse> getAddressesByRegion(@RequestParam String region) {
         return addressService.getAddressesByRegion(region).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/search/subregion")
+    @RequirePermission("address.read")
     public List<AddressResponse> getAddressesBySubRegion(@RequestParam String subRegion) {
         return addressService.getAddressesBySubRegion(subRegion).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/search/landmark")
+    @RequirePermission("address.read")
     public List<AddressResponse> getAddressesByLandmark(@RequestParam String landmark) {
         return addressService.getAddressesByLandmark(landmark).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/search/zipcode")
+    @RequirePermission("address.read")
     public List<AddressResponse> getAddressesByZipcode(@RequestParam String zipcode) {
         return addressService.getAddressesByZipcode(zipcode).stream().map(AddressMapper::toResponse).collect(Collectors.toList());
     }

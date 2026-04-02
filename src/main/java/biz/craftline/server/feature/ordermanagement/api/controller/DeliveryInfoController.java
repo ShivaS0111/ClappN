@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.ordermanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.ordermanagement.api.dto.DeliveryInfoDTO;
 import biz.craftline.server.feature.ordermanagement.api.mapper.DeliveryInfoDTOMapper;
 import biz.craftline.server.feature.ordermanagement.domain.model.DeliveryInfo;
@@ -19,6 +20,7 @@ public class DeliveryInfoController {
 
 
     @GetMapping
+    @RequirePermission("order.read")
     public ResponseEntity<APIResponse<List<DeliveryInfoDTO>>> getAllDeliveryInfo() {
         List<DeliveryInfo> infos = deliveryInfoService.getAllDeliveryInfo();
         List<DeliveryInfoDTO> dtos = new ArrayList<>();
@@ -29,12 +31,14 @@ public class DeliveryInfoController {
     }
 
     @GetMapping("/{id}")
+    @RequirePermission("order.read")
     public ResponseEntity<APIResponse<DeliveryInfoDTO>> getDeliveryInfo(@PathVariable Long id) {
         DeliveryInfo info = deliveryInfoService.getDeliveryInfo(id);
         return APIResponse.ok(info != null ? deliveryInfoDTOMapper.toDTO(info) : null);
     }
 
     @PostMapping
+    @RequirePermission("order.create")
     public ResponseEntity<APIResponse<DeliveryInfoDTO>> addDeliveryInfo(@RequestBody DeliveryInfoDTO dto) {
         DeliveryInfo info = deliveryInfoDTOMapper.fromDTO(dto);
         DeliveryInfo saved = deliveryInfoService.addDeliveryInfo(info);
@@ -42,6 +46,7 @@ public class DeliveryInfoController {
     }
 
     @PutMapping("/{id}")
+    @RequirePermission("order.update")
     public ResponseEntity<APIResponse<DeliveryInfoDTO>> updateDeliveryInfo(@PathVariable Long id, @RequestBody DeliveryInfoDTO dto) {
         DeliveryInfo info = deliveryInfoDTOMapper.fromDTO(dto);
         DeliveryInfo updated = deliveryInfoService.updateDeliveryInfo(id, info);
@@ -49,8 +54,8 @@ public class DeliveryInfoController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission("order.delete")
     public void deleteDeliveryInfo(@PathVariable Long id) {
         deliveryInfoService.deleteDeliveryInfo(id);
     }
 }
-

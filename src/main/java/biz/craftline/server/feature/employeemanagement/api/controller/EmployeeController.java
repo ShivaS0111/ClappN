@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.employeemanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.employeemanagement.api.dto.EmployeeRequest;
 import biz.craftline.server.feature.employeemanagement.api.dto.EmployeeResponse;
 import biz.craftline.server.feature.employeemanagement.api.mapper.EmployeeMapper;
@@ -28,6 +29,7 @@ public class EmployeeController {
     private UserService userService;
 
     @GetMapping
+    @RequirePermission("user.read")
     public ResponseEntity<APIResponse<List<EmployeeResponse>>> getAllEmployees() {
         List<EmployeeResponse> list = employeeService.getAllEmployees()
                 .stream()
@@ -36,6 +38,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/business/{businessId}")
+    @RequirePermission("user.read")
     public ResponseEntity<APIResponse<List<EmployeeResponse>>> getAllEmployeesByBusiness(@PathVariable Long businessId) {
         List<EmployeeResponse> list = employeeService.getEmployeesByBusinessId(businessId)
                 .stream()
@@ -44,6 +47,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/store/{storeId}")
+    @RequirePermission("user.read")
     public ResponseEntity<APIResponse<List<EmployeeResponse>>> getAllEmployeesByStore(@PathVariable Long storeId) {
         List<EmployeeResponse> list = employeeService.getEmployeesByStoreId(storeId)
                 .stream()
@@ -52,6 +56,7 @@ public class EmployeeController {
     }
 
     @PostMapping
+    @RequirePermission("user.create")
     public ResponseEntity<APIResponse<EmployeeResponse>> createEmployee(@RequestBody EmployeeRequest request) {
         if (request.getName() == null || request.getName().trim().isEmpty()) {
             request.setName(request.getFirstName() + " " + request.getLastName() + " " + request.getSurName());
@@ -96,6 +101,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission("user.delete")
     public void deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
     }

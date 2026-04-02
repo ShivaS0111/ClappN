@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businesstype.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.businesstype.api.dto.BusinessProductDTO;
 import biz.craftline.server.feature.businesstype.api.dto.BusinessServiceDTO;
 import biz.craftline.server.feature.businesstype.api.mapper.BusinessProductDTOMapper;
@@ -43,6 +44,7 @@ public class BusinessProductController {
     private CategoryService categoryService;
 
     @GetMapping("/{productId}")
+    @RequirePermission("product.read")
     public ResponseEntity<APIResponse<BusinessProductDTO>> getById(@PathVariable Long serviceId) {
         BusinessProduct bs = service.findById(serviceId)
                 .orElseThrow(
@@ -55,24 +57,28 @@ public class BusinessProductController {
     }
 
     @DeleteMapping("/{productId}")
+    @RequirePermission("product.delete")
     public ResponseEntity<APIResponse<String>> delete(@PathVariable Long serviceId) {
         service.deleteProductById(serviceId);
         return APIResponse.success("Deleted successfully");
     }
 
     @GetMapping("/list")
+    @RequirePermission("product.read")
     public ResponseEntity<APIResponse<List<BusinessProductDTO>>> list() {
         List<BusinessProduct> list = service.findAll();
         return APIResponse.success(convertToDTOList(list));
     }
 
     @GetMapping("/listByBusinessType/{businessTypeId}")
+    @RequirePermission("product.read")
     public ResponseEntity<APIResponse<List<BusinessProductDTO>>> listByBusinessType(@PathVariable Long businessTypeId) {
         List<BusinessProduct> list = service.findByBusinessTypeId(businessTypeId);
         return APIResponse.success(convertToDTOList(list));
     }
 
     @PostMapping("/search")
+    @RequirePermission("product.read")
     public ResponseEntity<APIResponse<List<BusinessProductDTO>>> search(
             @RequestBody SearchRequest search) {
         List<BusinessProduct> list = service.findBySearch(search.keyword());
@@ -81,6 +87,7 @@ public class BusinessProductController {
     }
 
     @PostMapping("/search-by-business-type")
+    @RequirePermission("product.read")
     public ResponseEntity<APIResponse<List<BusinessProductDTO>>> searchServiceByBusinessType(
             @RequestBody SearchServiceByBusinessRequest request) {
         List<BusinessProduct> list = service.findByBusinessTypeIdAndSearch(request.business_type_id(), request.keyword());
@@ -88,12 +95,14 @@ public class BusinessProductController {
     }
 
     @PostMapping
+    @RequirePermission("product.create")
     public ResponseEntity<APIResponse<BusinessProductDTO>> add(@RequestBody AddNewBusinessProductRequest dto) {
         BusinessProduct bs = service.save(mapper.toDomain(dto));
         return APIResponse.success(mapper.toDTO(bs));
     }
 
     @PutMapping("/{productId}")
+    @RequirePermission("product.update")
     public ResponseEntity<APIResponse<BusinessProductDTO>> update(
             @PathVariable("productId") Long productId,
             @RequestBody AddNewBusinessProductRequest dto) {
@@ -104,6 +113,7 @@ public class BusinessProductController {
     }
 
     @PostMapping("/add-all")
+    @RequirePermission("product.create")
     public ResponseEntity<APIResponse<List<BusinessProductDTO>>> addAll(
             @RequestBody List<AddNewBusinessProductRequest> requests) {
         if (requests == null || requests.isEmpty()) {
@@ -144,6 +154,7 @@ public class BusinessProductController {
     }
 
     @PostMapping("/add-all1")
+    @RequirePermission("product.create")
     public ResponseEntity<APIResponse<List<BusinessProductDTO>>> add(@RequestBody List<BusinessProductDTO> list) {
         List<BusinessProduct> services = list.stream().map(item -> mapper.toDomain(item)).toList();
         return APIResponse.success(convertToDTOList(service.save(services)));

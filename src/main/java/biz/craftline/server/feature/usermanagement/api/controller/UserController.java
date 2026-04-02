@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.usermanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.usermanagement.api.dto.UserDto;
 import biz.craftline.server.feature.usermanagement.api.dto.UserCreateRequest;
 import biz.craftline.server.feature.usermanagement.api.dto.UserUpdateRequest;
@@ -20,6 +21,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
+    @RequirePermission("user.read")
     public ResponseEntity<APIResponse<List<UserDto>>> getAllUsers() {
         return  APIResponse.success(userService.getAllUsers().stream()
             .map(UserMapper::toDto)
@@ -27,18 +29,21 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @RequirePermission("user.read")
     public ResponseEntity<APIResponse<UserDto>> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id).orElseThrow(() -> new RuntimeException("User not found"));
         return APIResponse.success( UserMapper.toDto(user));
     }
 
     @GetMapping("/email/{email}")
+    @RequirePermission("user.read")
     public ResponseEntity<APIResponse<UserDto>> getUserByEmail(@PathVariable String email) {
         User user = userService.getUserByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
         return  APIResponse.success(UserMapper.toDto(user));
     }
 
     @PostMapping
+    @RequirePermission("user.create")
     public ResponseEntity<APIResponse<UserDto>> createUser(@RequestBody UserCreateRequest request) {
         try{
             User existingUser = userService.getUserByEmail(request.getEmail()).orElse(null);
@@ -56,6 +61,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @RequirePermission("user.update")
     public ResponseEntity<APIResponse<UserDto>> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
         User user = userService.getUserById(id).orElseThrow(() -> new RuntimeException("User not found"));
         UserMapper.updateDomain(user, request);
@@ -64,11 +70,13 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission("user.delete")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
 
     @PostMapping("/{userId}/roles/{roleId}")
+    @RequirePermission("user.permissions")
     public ResponseEntity<APIResponse<UserDto>> assignRole(@PathVariable Long userId, @PathVariable Long roleId) {
         User updated = userService.assignRole(userId, roleId);
         return  APIResponse.success(UserMapper.toDto(updated));

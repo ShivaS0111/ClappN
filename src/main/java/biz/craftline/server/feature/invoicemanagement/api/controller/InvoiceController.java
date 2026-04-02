@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.invoicemanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 
 import biz.craftline.server.feature.invoicemanagement.api.dto.InvoiceRequestDTO;
 import biz.craftline.server.feature.invoicemanagement.domain.model.Invoice;
@@ -29,6 +30,7 @@ public class InvoiceController {
 
     @PostMapping("/generate")
     @Operation(summary = "Generate invoice for an order")
+    @RequirePermission("invoice.create")
     public ResponseEntity<APIResponse<Invoice>> generateInvoice(@RequestBody InvoiceRequestDTO request) {
         Invoice invoice = invoiceService.generate(request.getOrderId(), request.getStoreId());
         return APIResponse.success(invoice, "Invoice generated successfully");
@@ -36,6 +38,7 @@ public class InvoiceController {
 
     @GetMapping("/order/{orderId}")
     @Operation(summary = "Get invoice by order ID")
+    @RequirePermission("invoice.read")
     public ResponseEntity<APIResponse<Invoice>> getByOrder(@PathVariable Long orderId) {
         return invoiceService.findByOrderId(orderId)
                 .map(inv -> APIResponse.success(inv, "Invoice retrieved successfully"))
@@ -44,6 +47,7 @@ public class InvoiceController {
 
     @GetMapping
     @Operation(summary = "Get all invoices")
+    @RequirePermission("invoice.read")
     public ResponseEntity<APIResponse<List<Invoice>>> getAllInvoices() {
         List<Invoice> invoices = invoiceRepository.findAll().stream()
                 .map(e -> invoiceEntityMapper.toDomain(e, invoiceItemRepository.findByInvoiceId(e.getId())))
@@ -53,6 +57,7 @@ public class InvoiceController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get invoice by ID")
+    @RequirePermission("invoice.read")
     public ResponseEntity<APIResponse<Invoice>> getById(@PathVariable Long id) {
         return invoiceRepository.findById(id)
                 .map(e -> APIResponse.success(
@@ -63,6 +68,7 @@ public class InvoiceController {
 
     @GetMapping("/store/{storeId}")
     @Operation(summary = "Get invoices by store ID")
+    @RequirePermission("invoice.read")
     public ResponseEntity<APIResponse<List<Invoice>>> getByStore(@PathVariable Long storeId) {
         List<Invoice> invoices = invoiceRepository.findByStoreId(storeId).stream()
                 .map(e -> invoiceEntityMapper.toDomain(e, invoiceItemRepository.findByInvoiceId(e.getId())))

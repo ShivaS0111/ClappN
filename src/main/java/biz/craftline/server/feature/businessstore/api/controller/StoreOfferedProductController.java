@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedProductDTO;
 import biz.craftline.server.feature.businessstore.api.dto.StoreItemPriceDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreOfferedProductDTOMapper;
@@ -33,6 +34,7 @@ public class StoreOfferedProductController {
 
 
     @GetMapping
+    @RequirePermission("store_product.read")
     public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> list() {
         List<StoreOfferedProductDTO> dtoList = storeOfferedProductService.findAll().stream()
                 .map( productMapper::toDTO).toList();
@@ -43,6 +45,7 @@ public class StoreOfferedProductController {
     }
 
     @GetMapping("/{productId}")
+    @RequirePermission("store_product.read")
     public ResponseEntity<APIResponse<StoreOfferedProductDTO>> storeOfferedProductsByProductId(
             @PathVariable("productId") Long productId) {
         StoreOfferedProduct product = storeOfferedProductService.findById(productId);
@@ -50,6 +53,7 @@ public class StoreOfferedProductController {
     }
 
     @GetMapping("/search/{searchTerm}")
+    @RequirePermission("store_product.read")
     public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> search(
             @PathVariable("searchTerm") String searchTerm) {
         List<StoreOfferedProduct> list = storeOfferedProductService.searchProductByKeyword(searchTerm);
@@ -60,6 +64,7 @@ public class StoreOfferedProductController {
     }
 
     @GetMapping("/search/{searchTerm}/{storeId}")
+    @RequirePermission("store_product.read")
     public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> searchProductByStoreIdAndKeyword(
             @PathVariable("searchTerm") String searchTerm, @PathVariable("storeId") Long storeId) {
         List<StoreOfferedProduct> list = storeOfferedProductService.searchProductByStoreIdAndKeyword(storeId, searchTerm);
@@ -70,6 +75,7 @@ public class StoreOfferedProductController {
     }
 
     @GetMapping("/business/{businessId}")
+    @RequirePermission("store_product.read")
     public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> storeOfferedProductsByBusinessId(
             @PathVariable("businessId") Long businessId) {
         Optional<List<StoreOfferedProduct>> list = storeOfferedProductService.findProductsByBusinessId(businessId);
@@ -80,6 +86,7 @@ public class StoreOfferedProductController {
     }
 
     @GetMapping("/store/{storeId}")
+    @RequirePermission("store_product.read")
     public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> storeOfferedProducts(
             @PathVariable("storeId") Long storeId) {
         Optional<List<StoreOfferedProduct>> list = storeOfferedProductService.findProductsByStoreId(storeId);
@@ -90,6 +97,7 @@ public class StoreOfferedProductController {
     }
 
     @PostMapping("/save")
+    @RequirePermission("store_product.create")
     public ResponseEntity<APIResponse<StoreOfferedProductDTO>> save(@RequestBody AddNewStoreOfferedProductRequest req) {
         StoreOfferedProduct product = storeOfferedProductService.save(productMapper.toDomain(req));
         return APIResponse.success(productMapper.toDTO(product),
@@ -98,6 +106,7 @@ public class StoreOfferedProductController {
     }
 
     @PostMapping("/add-all")
+    @RequirePermission("store_product.create")
     public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> save(
             @RequestBody List<AddNewStoreOfferedProductRequest> requests) {
         if(requests==null || requests.isEmpty()) return APIResponse.badRequest("Invalid request");
@@ -113,6 +122,7 @@ public class StoreOfferedProductController {
     }
 
     @GetMapping("/product-price-list/{productId}")
+    @RequirePermission("store_product.read")
     public ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> priceList(
             @PathVariable("productId") Long lotId
     ) {

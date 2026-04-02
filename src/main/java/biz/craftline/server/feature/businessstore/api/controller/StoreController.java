@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.businessstore.api.dto.StoreDTO;
 import biz.craftline.server.feature.businessstore.api.dto.StoreDetailsResponse;
 import biz.craftline.server.feature.businessstore.api.dto.StoreInfo;
@@ -84,6 +85,7 @@ public class StoreController {
     @Operation(summary = "List all stores", description = "Returns all stores.")
     @ApiResponse(responseCode = "200", description = "List of stores returned successfully.")
     @GetMapping
+    @RequirePermission("store.read")
     public ResponseEntity<APIResponse<Map<String, Object>>> listStores(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
@@ -106,6 +108,7 @@ public class StoreController {
     @Operation(summary = "List all stores", description = "Returns all stores.")
     @ApiResponse(responseCode = "200", description = "List of stores returned successfully.")
     @GetMapping("/list")
+    @RequirePermission("store.read")
     public ResponseEntity<APIResponse<List<StoreDTO>>> list() {
         List<Store> list = service.findAll();
         List<StoreDTO> dtoList = list.stream().map(mapper::toDTO).toList();
@@ -118,6 +121,7 @@ public class StoreController {
     @Operation(summary = "Store details by store ID", description = "Returns  store")
     @ApiResponse(responseCode = "200", description = "store returned successfully.")
     @GetMapping("/{storeId}")
+    @RequirePermission("store.read")
     public ResponseEntity<APIResponse<StoreDTO>> storeDetails(@PathVariable("storeId") long storeId) {
         logger.info("Store: {}", storeId);
         Store store = service.findById(storeId).orElse(null);
@@ -130,6 +134,7 @@ public class StoreController {
     @Operation(summary = "Store full details by store ID", description = "Returns store details with employees, products, services, customers and orders")
     @ApiResponse(responseCode = "200", description = "Store details returned successfully.")
     @GetMapping("/{storeId}/details")
+    @RequirePermission("store.read")
     public ResponseEntity<APIResponse<StoreDetailsResponse>> storeFullDetails(@PathVariable("storeId") long storeId) {
         Store store = service.findById(storeId).orElse(null);
         if (store == null) {
@@ -163,6 +168,7 @@ public class StoreController {
     @Operation(summary = "Store Details by store id", description = "Store Details")
     @ApiResponse(responseCode = "200", description = "Store Details returned successfully.")
     @GetMapping("/store-info/{storeId}")
+    @RequirePermission("store.read")
     public ResponseEntity<APIResponse<StoreInfo>> storeDetailsById(@PathVariable("storeId") long storeId) {
         Store store = service.findById(storeId).orElse(null);
         if (store == null) {
@@ -179,6 +185,7 @@ public class StoreController {
     @Operation(summary = "List stores by business ID", description = "Returns all stores for a given business.")
     @ApiResponse(responseCode = "200", description = "List of stores returned successfully.")
     @GetMapping("/list/{businessId}")
+    @RequirePermission("store.read")
     public ResponseEntity<APIResponse<List<StoreDTO>>> list(@PathVariable("businessId") long businessId) {
         logger.info("businessId: {}", businessId);
         List<Store> list = service.findStoresByBusiness(businessId);
@@ -192,6 +199,7 @@ public class StoreController {
     @Operation(summary = "Search stores", description = "Search stores by keyword.")
     @ApiResponse(responseCode = "200", description = "Search results returned successfully.")
     @PostMapping("/search")
+    @RequirePermission("store.read")
     public ResponseEntity<APIResponse<List<StoreDTO>>> search(@RequestBody SearchRequest request) {
         List<Store> list = service.searchStores(request.keyword());
         List<StoreDTO> dtoList = list.stream().map(mapper::toDTO).toList();
@@ -204,6 +212,7 @@ public class StoreController {
     @Operation(summary = "Add new store", description = "Creates a new store.")
     @ApiResponse(responseCode = "201", description = "Store created successfully.")
     @PostMapping
+    @RequirePermission("store.create")
     public ResponseEntity<APIResponse<StoreDTO>> addStore(@RequestBody AddNewStoreRequest request) {
         Business business = null;
         if (request.getBusinessId() != null) {
@@ -224,6 +233,7 @@ public class StoreController {
     @Operation(summary = "Update store", description = "Updates an existing store.")
     @ApiResponse(responseCode = "200", description = "Store updated successfully.")
     @PutMapping("/{id}")
+    @RequirePermission("store.update")
     public ResponseEntity<APIResponse<StoreDTO>> updateStore(
             @PathVariable("id") Long id,
             @RequestBody AddNewStoreRequest request) {
@@ -256,6 +266,7 @@ public class StoreController {
     @Operation(summary = "Delete store", description = "Deletes a store by ID.")
     @ApiResponse(responseCode = "200", description = "Store deleted successfully.")
     @DeleteMapping("/{id}")
+    @RequirePermission("store.delete")
     public ResponseEntity<APIResponse<String>> deleteStore(@PathVariable("id") Long id) {
         // Check if store exists
         Store existingStore = service.findById(id).orElse(null);
@@ -273,6 +284,7 @@ public class StoreController {
     @Operation(summary = "Update store status", description = "Updates the status of a store.")
     @ApiResponse(responseCode = "200", description = "Store status updated successfully.")
     @PostMapping("/update-status")
+    @RequirePermission("store.update")
     public ResponseEntity<APIResponse<StoreDTO>> updateStoreStatus(@RequestBody StatusUpdateRequest request) {
         Store existingStore = service.findById(request.id()).orElse(null);
         if (existingStore == null) {
@@ -290,6 +302,7 @@ public class StoreController {
     @Operation(summary = "Get store metrics", description = "Returns dashboard metrics for a store.")
     @ApiResponse(responseCode = "200", description = "Store metrics returned successfully.")
     @GetMapping("/{storeId}/metrics")
+    @RequirePermission("store.metrics")
     public ResponseEntity<APIResponse<StoreMetricsDTO>> getStoreMetrics(@PathVariable("storeId") long storeId) {
         Store store = service.findById(storeId).orElse(null);
         if (store == null) {

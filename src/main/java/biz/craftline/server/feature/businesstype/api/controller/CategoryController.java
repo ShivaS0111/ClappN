@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businesstype.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.businesstype.api.dto.CategoryDTO;
 import biz.craftline.server.feature.businesstype.api.mapper.CategoryDTOMapper;
 import biz.craftline.server.feature.businesstype.api.request.*;
@@ -20,6 +21,7 @@ public class CategoryController {
     private final CategoryDTOMapper categoryDTOMapper;
 
     @GetMapping("/list")
+    @RequirePermission("category.read")
     public ResponseEntity<APIResponse<List<CategoryDTO>>> list() {
         return APIResponse.success(
                 service.findAll().stream()
@@ -29,6 +31,7 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
+    @RequirePermission("category.create")
     public ResponseEntity<APIResponse<CategoryDTO>> createCategory(@RequestBody AddCategoryRequest request) {
         return APIResponse.success(
                 categoryDTOMapper.toDTO(service.createCategory(request.getName(), request.getParentId()))
@@ -36,6 +39,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update/{id}")
+    @RequirePermission("category.update")
     public ResponseEntity<APIResponse<CategoryDTO>> update(@PathVariable("id") Long id,
                                                                @RequestBody AddCategoryRequest request) {
 
@@ -48,6 +52,7 @@ public class CategoryController {
 
 
     @GetMapping("/search")
+    @RequirePermission("category.read")
     public ResponseEntity<APIResponse<List<CategoryDTO>>> createCategory(@RequestBody SearchRequest request) {
         return APIResponse.success(
                 service.searchCategory(request.keyword()).stream()
@@ -57,6 +62,7 @@ public class CategoryController {
     }
 
     @GetMapping("/tree")
+    @RequirePermission("category.read")
     public ResponseEntity<APIResponse<List<CategoryDTO>>> getCategoryTree() {
         return APIResponse.success(
                 service.getCategoryTree().stream()
@@ -66,6 +72,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}/path")
+    @RequirePermission("category.read")
     public ResponseEntity<APIResponse<List<CategoryDTO>>> getCategoryPath(@PathVariable Long id) {
         return APIResponse.success(
                 service.getCategoryPath(id).stream()
@@ -75,6 +82,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission("category.delete")
     public ResponseEntity<APIResponse<List<CategoryDTO>>> delete(@PathVariable Long id) {
         return APIResponse.success(
                 service.getCategoryPath(id).stream()

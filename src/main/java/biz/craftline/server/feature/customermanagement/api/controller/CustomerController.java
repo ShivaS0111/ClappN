@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.customermanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.customermanagement.api.dto.CustomerDTO;
 import biz.craftline.server.feature.customermanagement.api.mapper.CustomerDTOMapper;
 import biz.craftline.server.feature.customermanagement.domain.model.Customer;
@@ -32,6 +33,7 @@ public class CustomerController {
     @Operation(summary = "List all customers", description = "Returns all customers.")
     @ApiResponse(responseCode = "200", description = "List of customers returned successfully.")
     @GetMapping
+    @RequirePermission("customer.read")
     public ResponseEntity<APIResponse<List<CustomerDTO>>> list() {
         List<CustomerDTO> customers = customerService.findAll().stream()
                 .map(mapper::toDTO)
@@ -45,6 +47,7 @@ public class CustomerController {
     @Operation(summary = "Get customer by ID", description = "Returns a customer by ID.")
     @ApiResponse(responseCode = "200", description = "Customer returned successfully.")
     @GetMapping("/{id}")
+    @RequirePermission("customer.read")
     public ResponseEntity<APIResponse<CustomerDTO>> getById(@PathVariable Long id) {
         return customerService.findById(id)
                 .map(c -> APIResponse.success(mapper.toDTO(c), "Customer retrieved successfully"))
@@ -57,6 +60,7 @@ public class CustomerController {
     @Operation(summary = "List customers by store ID", description = "Returns all customers for a given store.")
     @ApiResponse(responseCode = "200", description = "List of customers returned successfully.")
     @GetMapping("/store/{storeId}")
+    @RequirePermission("customer.read")
     public ResponseEntity<APIResponse<List<CustomerDTO>>> listByStoreId(@PathVariable Long storeId) {
         List<CustomerDTO> customers = customerService.findByStoreId(storeId).stream()
                 .map(mapper::toDTO)
@@ -70,6 +74,7 @@ public class CustomerController {
     @Operation(summary = "List customers by business ID", description = "Returns all customers for a given business.")
     @ApiResponse(responseCode = "200", description = "List of customers returned successfully.")
     @GetMapping("/business/{businessId}")
+    @RequirePermission("customer.read")
     public ResponseEntity<APIResponse<List<CustomerDTO>>> listByBusinessId(@PathVariable Long businessId) {
         List<CustomerDTO> customers = customerService.findByBusinessId(businessId).stream()
                 .map(mapper::toDTO)
@@ -83,6 +88,7 @@ public class CustomerController {
     @Operation(summary = "Create customer", description = "Creates a new customer.")
     @ApiResponse(responseCode = "201", description = "Customer created successfully.")
     @PostMapping
+    @RequirePermission("customer.create")
     public ResponseEntity<APIResponse<CustomerDTO>> create(@RequestBody CustomerDTO dto) {
         Customer customer = mapper.toDomain(dto);
         Customer saved = customerService.save(customer);
@@ -95,6 +101,7 @@ public class CustomerController {
     @Operation(summary = "Update customer", description = "Updates an existing customer.")
     @ApiResponse(responseCode = "200", description = "Customer updated successfully.")
     @PutMapping("/{id}")
+    @RequirePermission("customer.update")
     public ResponseEntity<APIResponse<CustomerDTO>> update(@PathVariable Long id, @RequestBody CustomerDTO dto) {
         return customerService.findById(id).map(existing -> {
             Customer customer = mapper.toDomain(dto);
@@ -110,6 +117,7 @@ public class CustomerController {
     @Operation(summary = "Delete customer", description = "Deletes a customer by ID.")
     @ApiResponse(responseCode = "200", description = "Customer deleted successfully.")
     @DeleteMapping("/{id}")
+    @RequirePermission("customer.delete")
     public ResponseEntity<APIResponse<String>> delete(@PathVariable Long id) {
         if (customerService.findById(id).isEmpty()) {
             return APIResponse.error("Customer not found", HttpStatus.NOT_FOUND);
@@ -124,6 +132,7 @@ public class CustomerController {
     @Operation(summary = "Update loyalty points", description = "Updates a customer's loyalty points.")
     @ApiResponse(responseCode = "200", description = "Loyalty points updated successfully.")
     @PostMapping("/{id}/loyalty-points")
+    @RequirePermission("customer.update")
     public ResponseEntity<APIResponse<CustomerDTO>> updateLoyaltyPoints(
             @PathVariable Long id, 
             @RequestParam int points) {

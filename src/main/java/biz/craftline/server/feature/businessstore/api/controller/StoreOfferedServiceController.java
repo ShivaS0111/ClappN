@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedProductDTO;
 import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedServiceDTO;
 import biz.craftline.server.feature.businessstore.api.dto.StoreItemPriceDTO;
@@ -32,6 +33,7 @@ public class StoreOfferedServiceController {
     private final StoreItemPriceService priceHandleService;
 
     @GetMapping
+    @RequirePermission("store_service.read")
     public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> list() {
         Optional<List<StoreOfferedService>> list = storeOfferedService.findAll();
         List<StoreOfferedServiceDTO> dtoList = list.orElseThrow().stream()
@@ -41,6 +43,7 @@ public class StoreOfferedServiceController {
     }
 
     @GetMapping("/{serviceId}")
+    @RequirePermission("store_service.read")
     public ResponseEntity<APIResponse<StoreOfferedServiceDTO>> storeOfferedServiceById(
             @PathVariable("serviceId") Long serviceId) {
         StoreOfferedService service = storeOfferedService.findById(serviceId);
@@ -48,6 +51,7 @@ public class StoreOfferedServiceController {
     }
 
     @GetMapping("/business/{businessId}")
+    @RequirePermission("store_service.read")
     public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> storeOfferedServicesByBusinessId(
             @PathVariable("businessId") Long businessId) {
         Optional<List<StoreOfferedService>> list = storeOfferedService.findServicesByBusinessId(businessId);
@@ -58,6 +62,7 @@ public class StoreOfferedServiceController {
     }
 
     @GetMapping("/store/{storeId}")
+    @RequirePermission("store_service.read")
     public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> storeOfferedServices(
             @PathVariable("storeId") Long storeId) {
         Optional<List<StoreOfferedService>> list = storeOfferedService.findServicesByStoreId(storeId);
@@ -68,6 +73,7 @@ public class StoreOfferedServiceController {
     }
 
     @GetMapping("/search{searchTerm}")
+    @RequirePermission("store_service.read")
     public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> searchServiceByKeyword(
             @PathVariable("searchTerm") String searchTerm) {
         List<StoreOfferedService> list = storeOfferedService.searchServiceByKeyword(searchTerm);
@@ -78,6 +84,7 @@ public class StoreOfferedServiceController {
     }
 
     @GetMapping("/search{searchTerm}/{storeId}")
+    @RequirePermission("store_service.read")
     public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> searchServiceByStoreIdAndKeyword(
             @PathVariable("storeId") Long storeId, @PathVariable("searchTerm") String searchTerm) {
         List<StoreOfferedService> list = storeOfferedService.searchServiceByStoreIdAndKeyword(storeId, searchTerm);
@@ -88,6 +95,7 @@ public class StoreOfferedServiceController {
     }
 
     @PostMapping("/save")
+    @RequirePermission("store_service.create")
     public ResponseEntity<APIResponse<StoreOfferedServiceDTO>> save(
             @RequestBody AddNewStoreOfferedServiceRequest req) {
         StoreOfferedService service = storeOfferedService.save(serviceMapper.toDomain(req));
@@ -96,6 +104,7 @@ public class StoreOfferedServiceController {
     }
 
     @PostMapping("/add-all")
+    @RequirePermission("store_service.create")
     public ResponseEntity<APIResponse<List<StoreOfferedServiceDTO>>> save(
             @RequestBody List<AddNewStoreOfferedServiceRequest> requests) {
         if(requests==null || requests.isEmpty()) return APIResponse.badRequest("Invalid request");
@@ -109,6 +118,7 @@ public class StoreOfferedServiceController {
     }
 
     @GetMapping("/service-price-list/{serviceId}")
+    @RequirePermission("store_service.read")
     public ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> priceList(
             @PathVariable("serviceId") Long serviceId
     ) {

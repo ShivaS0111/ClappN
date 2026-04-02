@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.usermanagement.api.controller;
 
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.usermanagement.api.dto.PermissionIdsRequest;
 import biz.craftline.server.feature.usermanagement.api.dto.PermissionResponse;
 import biz.craftline.server.feature.usermanagement.api.dto.RoleRequest;
@@ -22,11 +23,13 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping
+    @RequirePermission("user.permissions")
     public List<RoleResponse> getAllRoles() {
         return roleService.getAllRoles().stream().map(RoleMapper::toResponse).collect(Collectors.toList());
     }
 
     @PostMapping
+    @RequirePermission("user.permissions")
     public RoleResponse createRole(@RequestBody RoleRequest request) {
         Role role = RoleMapper.toDomain(request);
         Role created = roleService.createRole(role);
@@ -34,11 +37,13 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission("user.permissions")
     public void deleteRole(@PathVariable Long id) {
         roleService.deleteRole(id);
     }
 
     @GetMapping("/{roleId}/permissions")
+    @RequirePermission("user.permissions")
     public List<PermissionResponse> getPermissionsByRole(@PathVariable Long roleId) {
         return roleService.getPermissionsByRoleId(roleId).stream()
                 .map(PermissionMapper::toDomain)
@@ -47,12 +52,14 @@ public class RoleController {
     }
 
     @PostMapping("/{roleId}/permissions")
+    @RequirePermission("user.permissions")
     public ResponseEntity<Void> addPermissionsToRole(@PathVariable Long roleId, @RequestBody PermissionIdsRequest request) {
         roleService.addPermissionsToRole(roleId, request.getPermissionIds());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{roleId}/permissions/delete")
+    @RequirePermission("user.permissions")
     public ResponseEntity<Void> removePermissionsFromRole(@PathVariable Long roleId, @RequestBody PermissionIdsRequest request) {
         roleService.removePermissionsFromRole(roleId, request.getPermissionIds());
         return ResponseEntity.ok().build();
