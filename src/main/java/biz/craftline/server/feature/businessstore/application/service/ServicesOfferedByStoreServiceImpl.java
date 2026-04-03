@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import biz.craftline.server.enums.Item;
 
 @AllArgsConstructor
 @Service
@@ -39,6 +41,9 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
     @Autowired
     SecurityContextService securityContextService;
 
+    @Autowired
+    biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService storeItemPriceService;
+
     @Override
     public Optional<List<StoreOfferedService>> findAll() {
         List<StoreOfferedService> list = servicesOfferedByStoreRepository.findAll()
@@ -49,7 +54,7 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
                     .filter(s -> s.getStoreId() != null && accessibleStoreIds.contains(s.getStoreId()))
                     .toList();
         }
-        return Optional.of(list);
+        return Optional.of(findServicesLatestPrices(list));
     }
 
     @Override
@@ -126,7 +131,34 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
     public StoreOfferedService findById(Long id) {
         Optional<StoreOfferedServiceEntity> service = servicesOfferedByStoreRepository.findById(id);
         service.orElseThrow(() -> new RuntimeException("Service not found with id: " + id));
-        return mapper.toDomain(service.get());
+        StoreOfferedService s = mapper.toDomain(service.get());
+        // enrich single service with latest price if present
+        try {
+            storeItemPriceService.findByServiceId(s.getId()).ifPresent(p -> s.setPrice(p));
+        } catch (Exception ignore) {
+        }
+        return s;
+    }
+
+    public List<StoreOfferedService> findServicesLatestPrices(List<StoreOfferedService> services){
+        if(services==null || services.isEmpty()) return services;
+
+        Map<Long, StoreOfferedService> serviceMap = new java.util.HashMap<>(services.size());
+        for (StoreOfferedService s: services) {
+            serviceMap.put(s.getId(), s);
+        }
+
+        List<Long> keys = serviceMap.keySet().stream().toList();
+
+        storeItemPriceService.findLatestPricesForProductsInStores(keys, Item.SERVICE)
+                .forEach(price -> {
+                    StoreOfferedService svc = serviceMap.get(price.getItemId());
+                    if (svc != null) {
+                        svc.setPrice(price);
+                    }
+                });
+
+        return services;
     }
 
     private Long getCurrentUserId() {

@@ -26,7 +26,7 @@ import java.util.Optional;
 public class StoreItemPriceServiceImpl implements StoreItemPriceService {
 
     @Autowired
-    private final ServicesOfferedByStoreRepository servicesOfferedByStoreRepository;
+    private ServicesOfferedByStoreRepository servicesOfferedByStoreRepository;
 
     @Autowired
     StoreItemPriceEntityMapper mapper;
@@ -42,22 +42,22 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
 
     @Override
     public List<StoreItemPrice> findAllByLotId(Long lotId) {
-        return findAllByItemIdAndType(lotId, 2L);
+        return findAllByItemIdAndType(lotId, Item.ProductLot.getType());
     }
 
     @Override
     public Optional<StoreItemPrice> findByServiceId(Long serviceId) {
-        return findByItemIdAndType(serviceId, 1L);
+        return findByItemIdAndType(serviceId, Item.SERVICE.getType());
     }
 
     @Override
     public Optional<StoreItemPrice> findByLotId(Long productLotId) {
-        return findByItemIdAndType(productLotId, 2L);
+        return findByItemIdAndType(productLotId, Item.ProductLot.getType());
     }
 
     @Override
     public List<StoreItemPrice> findAllByServiceId(Long serviceId) {
-        return findAllByItemIdAndType(serviceId, 1L);
+        return findAllByItemIdAndType(serviceId, Item.SERVICE.getType());
     }
 
 
@@ -77,14 +77,14 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
     @Cacheable(value = "latestPriceCache", key = "'product_' + #productLotId", unless = "#result == null")
     @Transactional(readOnly = true)
     public StoreItemPrice getLatestPriceForProduct(Long productLotId) {
-        return repository.findActivePrices(2L, productLotId, PageRequest.of(0, 1))
+        return repository.findActivePrices(Item.ProductLot.getType(), productLotId, PageRequest.of(0, 1))
                 .stream().findFirst().map(mapper::toDomain)
                 .orElseThrow(() -> new EntityNotFoundException("No active price found for product lot " + productLotId));
     }
 
     private Optional<StoreItemPrice> findByItemIdAndType(Long id, Long type) {
         StoreItemPriceEntity storeItemPrice = repository.findByItemIdAndItemType(id, type).orElseThrow(() ->
-                new RuntimeException((type == 1L ? "Service" : (type == 2L ? "Product Lot" : "")) +
+                new RuntimeException((type.equals(Item.SERVICE.getType()) ? "Service" : (type.equals(Item.ProductLot.getType()) ? "Product Lot" : "")) +
                         "(" + id + ":" + type + ")" + " Price not configured yet"));
         return Optional.of(mapper.toDomain(storeItemPrice));
     }
