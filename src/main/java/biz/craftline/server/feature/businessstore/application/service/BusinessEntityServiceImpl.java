@@ -6,9 +6,18 @@ import biz.craftline.server.feature.businessstore.domain.service.BusinessEntityS
 import biz.craftline.server.feature.businessstore.infra.entity.BusinessEntity;
 import biz.craftline.server.feature.businessstore.infra.mapper.BusinessEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.BusinessEntityJpaRepository;
+import biz.craftline.server.feature.employeemanagement.api.mapper.EmployeeMapper;
+import biz.craftline.server.feature.employeemanagement.domain.model.Employee;
+import biz.craftline.server.feature.employeemanagement.domain.service.EmployeeService;
+import biz.craftline.server.feature.usermanagement.domain.model.User;
+import biz.craftline.server.feature.usermanagement.domain.service.RoleService;
+import biz.craftline.server.feature.usermanagement.domain.service.UserService;
+import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
+import biz.craftline.server.feature.usermanagement.infra.repository.RoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +35,13 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
 
     @Autowired
     SecurityContextService securityContextService;
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private EmployeeService employeeService;
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public List<Business> findAll() {
@@ -73,5 +89,45 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
         return results.stream()
                 .filter(b -> accessibleBusinessIds.contains(b.getId()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public Business createBusinessWithOwner(Business business, String ownerName, String ownerEmail, String ownerPhone, String ownerPassword) {
+        // Save business
+        Business savedBusiness = save(business);
+
+        // Check if user already exists
+        userService.getUserByEmail(ownerEmail).ifPresent(u -> {
+            throw new RuntimeException("Owner email already exists: " + ownerEmail);
+        });
+
+        User ownerUser = new User();
+        ownerUser.setFullName(ownerName);
+        ownerUser.setEmail(ownerEmail);
+        ownerUser.setPassword(ownerPassword);
+        ownerUser.setEnabled(true);
+        ownerUser.setAccountNonExpired(true);
+        ownerUser.setAccountNonLocked(true);
+        ownerUser.setCredentialsNonExpired(true);
+        User savedOwner = userService.createUserWithHashedPassword(ownerUser);
+
+        // Assign BusinessOwner role
+        Long ownerRoleId = roleService.getRoleByName("BusinessOwner")
+                .orElseThrow(() -> new RuntimeException("BusinessOwner role not found")).getId();
+        userService.assignRole(savedOwner.getId(), ownerRoleId);
+
+        // Create Employee record
+        Employee ownerEmployee = new Employee();
+        ownerEmployee.setUserId(savedOwner.getId());
+        ownerEmployee.setRoleId(ownerRoleId);
+        ownerEmployee.setBusinessId(savedBusiness.getId());
+        ownerEmployee.setName(ownerName);
+        ownerEmployee.setEmail(ownerEmail);
+        ownerEmployee.setPhone(ownerPhone);
+        ownerEmployee.setEmployeeCode("OWNER-" + savedBusiness.getId());
+        employeeService.createEmployee(ownerEmployee);
+
+        return savedBusiness;
     }
 }

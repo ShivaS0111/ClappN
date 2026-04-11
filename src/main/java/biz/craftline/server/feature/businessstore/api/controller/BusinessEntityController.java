@@ -11,12 +11,16 @@ import biz.craftline.server.feature.businessstore.domain.model.Business;
 import biz.craftline.server.feature.businessstore.domain.service.BusinessEntityService;
 import biz.craftline.server.feature.usermanagement.domain.model.User;
 import biz.craftline.server.feature.usermanagement.domain.service.UserService;
+import biz.craftline.server.feature.usermanagement.infra.repository.RoleRepository;
+import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
 import biz.craftline.server.util.APIResponse;
 import biz.craftline.server.util.UserUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -92,11 +96,18 @@ public class BusinessEntityController {
     @ApiResponse(responseCode = "200", description = "Business created successfully.")
     @PostMapping
     @RequirePermission("business.create")
+    @Transactional
     public ResponseEntity<APIResponse<BusinessDTO>> addBusiness(
             @Valid @RequestBody AddNewBusinessRequest request) {
         Business business = mapper.toDomain(request);
         business.setCreatedBy(getCurrentUserId());
-        Business savedBusiness = service.save(business);
+        Business savedBusiness = service.createBusinessWithOwner(
+            business,
+            request.getOwnerName(),
+            request.getOwnerEmail(),
+            request.getOwnerPhone(),
+            request.getOwnerPassword()
+        );
         return APIResponse.success(mapper.toDTO(savedBusiness));
     }
 

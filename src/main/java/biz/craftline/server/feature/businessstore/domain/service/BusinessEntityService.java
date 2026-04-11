@@ -19,4 +19,9 @@ public interface BusinessEntityService {
     Business save(Business business);
 
     List<Business> search(String keyword);
+
+    /**
+     * Creates a new business and its owner (user, role assignment, employee record) in a single transaction.
+     */
+    Business createBusinessWithOwner(Business business, String ownerName, String ownerEmail, String ownerPhone, String ownerPassword);
 }

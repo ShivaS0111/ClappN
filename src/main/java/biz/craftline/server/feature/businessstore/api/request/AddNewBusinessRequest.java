@@ -32,4 +32,21 @@ public class AddNewBusinessRequest {
 
     private String galleryUrls;
 
+    // --- Owner fields for automatic BusinessOwner creation ---
+    @NotNull(message = "Owner name is required")
+    @Size(min = 2, max = 100, message = "Owner name must be between 2 and 100 characters")
+    private String ownerName;
+
+    @NotNull(message = "Owner email is required")
+    @Size(min = 5, max = 100, message = "Owner email must be between 5 and 100 characters")
+    private String ownerEmail;
+
+    @NotNull(message = "Owner phone is required")
+    @Size(min = 7, max = 20, message = "Owner phone must be between 7 and 20 characters")
+    private String ownerPhone;
+
+    @NotNull(message = "Owner password is required")
+    @Size(min = 6, max = 100, message = "Owner password must be between 6 and 100 characters")
+    private String ownerPassword;
+
 }
