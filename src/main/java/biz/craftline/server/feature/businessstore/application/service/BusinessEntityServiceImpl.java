@@ -113,7 +113,7 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
         User savedOwner = userService.createUserWithHashedPassword(ownerUser);
 
         // Assign BusinessOwner role
-        Long ownerRoleId = roleService.getRoleByName("BusinessOwner")
+        Long ownerRoleId = roleService.getRoleByName("BUSINESS_OWNER")
                 .orElseThrow(() -> new RuntimeException("BusinessOwner role not found")).getId();
         userService.assignRole(savedOwner.getId(), ownerRoleId);
 

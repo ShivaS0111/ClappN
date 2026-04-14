@@ -15,6 +15,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.security.auth.login.AccountException;
+import javax.security.auth.login.AccountLockedException;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +37,16 @@ public class GlobalExceptionHandler {
 
     // ─── Security: 403 Forbidden ─────────────────────────────────────
 
+    @ExceptionHandler(AccountException.class)
+    public ResponseEntity<APIResponse<String>> handleAccountException(AccountException ex) {
+        log.warn("Access exception: {}", ex.getMessage());
+        return APIResponse.error("Access denied: " + ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+    @ExceptionHandler(AccountLockedException.class)
+    public ResponseEntity<APIResponse<String>> handleAccountLockedException(AccountLockedException ex) {
+        log.warn("Access exception: {}", ex.getMessage());
+        return APIResponse.error("Access denied: " + ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<APIResponse<String>> handleAccessDeniedException(AccessDeniedException ex) {
         log.warn("Access denied: {}", ex.getMessage());

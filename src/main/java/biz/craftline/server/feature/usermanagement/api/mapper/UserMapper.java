@@ -68,7 +68,7 @@ public class UserMapper {
         entity.setEmail(user.getEmail());
         entity.setPassword(user.getPassword());
         entity.setEnabled(user.isEnabled());
-        entity.setVerified(user.getVerified());
+        entity.setVerified(user.getVerified()!=null?user.getVerified():0);
         return entity;
     }
 

@@ -33,6 +33,10 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import javax.security.auth.login.AccountException;
+import javax.security.auth.login.AccountExpiredException;
+import javax.security.auth.login.AccountLockedException;
+import javax.security.auth.login.AccountNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -104,29 +108,40 @@ public class AuthController {
                             loginRequest.getPassword()
                     )
             );
-
-            // Use the authenticated principal's authorities to derive permissions (avoid calling RBACService here)
-            List<String> permissions = authentication.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .distinct()
-                    .collect(Collectors.toList());
-
             // Get full AuthUser with scope data (storeIds, businessIds) from Employee table
             AuthUser user = userService.getAuthUserByEmail(loginRequest.getUsername());
+            if(user==null){
+                throw new AccountNotFoundException("Account not found");
 
-            TokenInfo tokenInfo = tokenProvider.generateTokenWithClaims(
-                    loginRequest.getUsername(),
-                    permissions,
-                    user.getRoles(),
-                    user.getStoreIds(),
-                    user.getBusinessIds()
-            );
+            }else if(user.getVerified()==null || user.getVerified()==0){
+                   throw new AccountLockedException("Account not verified");
+            }
+            if(authentication.isAuthenticated()){
 
-            log.info("User {} authenticated successfully with {} permissions, roles: {}, storeIds: {}, businessIds: {}",
-                    loginRequest.getUsername(), permissions.size(), user.getRoles(), user.getStoreIds(), user.getBusinessIds());
+                // Use the authenticated principal's authorities to derive permissions (avoid calling RBACService here)
+                List<String> permissions = authentication.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .distinct()
+                        .collect(Collectors.toList());
 
-            LoginResponse response = new LoginResponse(user, tokenInfo);
-            return APIResponse.success(response);
+
+                TokenInfo tokenInfo = tokenProvider.generateTokenWithClaims(
+                        loginRequest.getUsername(),
+                        permissions,
+                        user.getRoles(),
+                        user.getStoreIds(),
+                        user.getBusinessIds()
+                );
+
+                log.info("User {} authenticated successfully with {} permissions, roles: {}, storeIds: {}, businessIds: {}",
+                        loginRequest.getUsername(), permissions.size(), user.getRoles(), user.getStoreIds(), user.getBusinessIds());
+
+                LoginResponse response = new LoginResponse(user, tokenInfo);
+                return APIResponse.success(response);
+
+            }else{
+                throw  new AccountException();
+            }
 
         } catch (AuthenticationException e) {
             // Log full exception to capture stack traces like StackOverflowError wrapped in other exceptions
