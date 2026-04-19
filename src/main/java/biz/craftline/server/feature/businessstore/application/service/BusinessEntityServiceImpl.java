@@ -107,6 +107,8 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
         ownerUser.setEmail(ownerEmail);
         ownerUser.setPassword(ownerPassword);
         ownerUser.setEnabled(true);
+        // Owner should be verified by server-side business creation flow
+        ownerUser.setVerified(1);
         ownerUser.setAccountNonExpired(true);
         ownerUser.setAccountNonLocked(true);
         ownerUser.setCredentialsNonExpired(true);

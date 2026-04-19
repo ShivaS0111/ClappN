@@ -38,7 +38,6 @@ public class RequirePermissionAspect {
 
         String username = auth.getName();
         String requiredPermission = requirePermission.value();
-
         // Check if user has the required permission using RBAC service
         boolean hasPermission = rbacService.currentUserHasPermission(requiredPermission);
 

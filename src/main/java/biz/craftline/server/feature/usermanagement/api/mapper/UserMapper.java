@@ -68,7 +68,9 @@ public class UserMapper {
         entity.setEmail(user.getEmail());
         entity.setPassword(user.getPassword());
         entity.setEnabled(user.isEnabled());
-        entity.setVerified(user.getVerified()!=null?user.getVerified():0);
+        // Avoid accidental unboxing of a possibly-null Integer which can cause NPE.
+        Integer verified = user.getVerified();
+        entity.setVerified(verified != null ? verified : 0);
         return entity;
     }
 
