@@ -126,6 +126,10 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public boolean isCurrentUserSystemAdmin() {
+        return securityContextService.isSystemAdmin();
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Use fetch-join query to load roles, permissions and user-specific overrides in one round-trip

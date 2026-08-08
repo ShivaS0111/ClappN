@@ -228,12 +228,59 @@ INSERT INTO `permission` (`name`) VALUES
 ('shipping.track'),
 ('shipping.rates'),
 
--- Inventory Extended (5)
+-- Inventory CRUD (controllers) + extended ops
+('inventory.create'),
+('inventory.read'),
+('inventory.update'),
+('inventory.delete'),
 ('inventory.adjust'),
 ('inventory.audit'),
 ('inventory.forecast'),
 ('inventory.alerts'),
 ('inventory.reorder'),
+
+-- Booking (controllers)
+('booking.create'),
+('booking.read'),
+('booking.update'),
+('booking.delete'),
+
+-- Invoice (controllers)
+('invoice.create'),
+('invoice.read'),
+('invoice.update'),
+('invoice.delete'),
+
+-- Payment (controllers)
+('payment.create'),
+('payment.read'),
+('payment.update'),
+('payment.refund'),
+
+-- Pricing (controllers)
+('pricing.create'),
+('pricing.read'),
+('pricing.update'),
+('pricing.delete'),
+
+-- Address (controllers)
+('address.create'),
+('address.read'),
+('address.update'),
+('address.delete'),
+
+-- Brand (controllers)
+('brand.create'),
+('brand.read'),
+('brand.update'),
+('brand.delete'),
+
+-- File upload (controllers)
+('file.upload'),
+('file.delete'),
+
+-- Order delete (controllers)
+('order.delete'),
 
 -- Returns & RMA (6)
 ('returns.create'),
@@ -307,8 +354,19 @@ WHERE `name` IN (
   'store.read', 'store.create', 'store.update', 'store.metrics',
   'product.read', 'product.create', 'product.update', 'product.inventory',
   'service.read', 'service.create', 'service.update',
-  'user.read', 'user.create', 'user.update',
-  'order.read',
+  'category.read', 'brand.read', 'brand.create',
+  'address.read', 'address.create', 'address.update',
+  'file.upload',
+  'user.read', 'user.create', 'user.update', 'user.permissions',
+  'order.read', 'order.create', 'order.update',
+  'booking.read', 'booking.create', 'booking.update',
+  'invoice.read', 'invoice.create',
+  'payment.read', 'payment.create',
+  'pricing.read', 'pricing.create', 'pricing.update',
+  'store_product.create', 'store_product.read', 'store_product.update', 'store_product.delete',
+  'store_service.create', 'store_service.read', 'store_service.update', 'store_service.delete',
+  'inventory.read', 'inventory.create', 'inventory.update', 'inventory.adjust', 'inventory.alerts',
+  'customer.read', 'customer.create', 'customer.update',
   'finance.view', 'finance.pricing', 'finance.reports',
   'reports.sales', 'reports.inventory',
   'marketing.campaigns', 'marketing.packages', 'marketing.analytics',
@@ -325,8 +383,19 @@ WHERE `name` IN (
   'store.read', 'store.update', 'store.metrics',
   'product.read', 'product.create', 'product.update',
   'service.read', 'service.create', 'service.update',
+  'category.read', 'brand.read',
+  'address.read', 'address.create', 'address.update',
+  'file.upload',
   'user.read', 'user.create', 'user.update',
-  'order.read',
+  'order.read', 'order.create', 'order.update',
+  'booking.read', 'booking.create', 'booking.update',
+  'invoice.read', 'invoice.create',
+  'payment.read', 'payment.create',
+  'pricing.read', 'pricing.update',
+  'store_product.read', 'store_product.update',
+  'store_service.read', 'store_service.update',
+  'inventory.read', 'inventory.update', 'inventory.adjust',
+  'customer.read', 'customer.create', 'customer.update',
   'finance.view',
   'reports.sales',
   'analytics.dashboard', 'analytics.sales',
@@ -341,8 +410,17 @@ WHERE `name` IN (
   'store.read', 'store.update', 'store.metrics',
   'product.read', 'product.create', 'product.update',
   'service.read', 'service.update',
+  'category.read', 'brand.read',
+  'address.read',
   'user.read',
-  'order.read',
+  'order.read', 'order.create', 'order.update',
+  'booking.read', 'booking.create',
+  'invoice.read',
+  'payment.read',
+  'pricing.read',
+  'store_product.read', 'store_service.read',
+  'inventory.read',
+  'customer.read', 'customer.create',
   'reports.sales',
   'analytics.dashboard', 'analytics.sales'
 );
@@ -358,16 +436,25 @@ WHERE `name` IN (
   'store.read', 'store.update', 'store.delete', 'store.metrics', 'store.settings',
   'product.read', 'product.create', 'product.update', 'product.delete', 'product.inventory',
   'service.read', 'service.create', 'service.update', 'service.delete',
-  'order.read', 'order.update', 'order.cancel', 'order.refund',
+  'category.read', 'brand.read', 'brand.create',
+  'address.read', 'address.create', 'address.update', 'address.delete',
+  'file.upload', 'file.delete',
+  'order.read', 'order.create', 'order.update', 'order.cancel', 'order.refund', 'order.delete',
+  'booking.read', 'booking.create', 'booking.update', 'booking.delete',
+  'invoice.read', 'invoice.create',
+  'payment.read', 'payment.create',
+  'pricing.read', 'pricing.create', 'pricing.update',
   'finance.view', 'finance.pricing', 'finance.reports',
   'user.read', 'user.create', 'user.update', 'user.delete', 'user.permissions',
   'reports.sales', 'reports.inventory', 'reports.user',
   'analytics.dashboard', 'analytics.sales', 'analytics.inventory',
-  'inventory.adjust', 'inventory.audit', 'inventory.forecast',
+  'inventory.create', 'inventory.read', 'inventory.update', 'inventory.delete',
+  'inventory.adjust', 'inventory.audit', 'inventory.forecast', 'inventory.alerts',
   'marketing.campaigns',
   'coupon.create', 'coupon.read', 'coupon.update',
   'store_product.create', 'store_product.read', 'store_product.update', 'store_product.delete',
   'store_service.create', 'store_service.read', 'store_service.update', 'store_service.delete',
+  'customer.create', 'customer.read', 'customer.update', 'customer.delete',
   'bulk.import', 'bulk.export', 'bulk.update',
   'warehouse.read', 'warehouse.operations',
   'approval.discount', 'approval.refund',
@@ -382,14 +469,23 @@ WHERE `name` IN (
   'store.read', 'store.update', 'store.metrics',
   'product.read', 'product.update', 'product.inventory',
   'service.read', 'service.update',
-  'order.read', 'order.update', 'order.cancel',
+  'category.read', 'brand.read',
+  'address.read', 'address.create', 'address.update',
+  'file.upload',
+  'order.read', 'order.create', 'order.update', 'order.cancel',
+  'booking.read', 'booking.create', 'booking.update',
+  'invoice.read', 'invoice.create',
+  'payment.read', 'payment.create',
+  'pricing.read', 'pricing.update',
   'finance.view',
   'user.read', 'user.create', 'user.update',
   'reports.sales', 'reports.inventory',
   'analytics.dashboard', 'analytics.sales',
+  'inventory.create', 'inventory.read', 'inventory.update',
   'inventory.adjust', 'inventory.alerts', 'inventory.audit',
   'store_product.read', 'store_product.update',
   'store_service.read', 'store_service.update',
+  'customer.create', 'customer.read', 'customer.update',
   'marketing.campaigns',
   'bulk.import', 'bulk.export',
   'warehouse.read', 'warehouse.operations',
@@ -433,8 +529,10 @@ WHERE `name` IN (
   'store.read',
   'product.read',
   'order.create', 'order.read',
-  'customer.read',
-  'store_product.read'
+  'booking.read', 'booking.create',
+  'customer.read', 'customer.create',
+  'store_product.read',
+  'payment.create', 'payment.read'
 );
 
 -- CASHIER - Payment Processing
@@ -445,7 +543,11 @@ WHERE `name` IN (
   'order.create', 'order.read',
   'product.read',
   'finance.view',
-  'store_product.read'
+  'store_product.read',
+  'payment.create', 'payment.read',
+  'invoice.read', 'invoice.create',
+  'customer.read', 'customer.create',
+  'pricing.read'
 );
 
 -- INVENTORY_STAFF - Stock Management
@@ -454,6 +556,7 @@ SELECT (SELECT `id` FROM `role` WHERE `name` = 'INVENTORY_STAFF'), `id` FROM `pe
 WHERE `name` IN (
   'store.read',
   'product.read', 'product.inventory',
+  'inventory.create', 'inventory.read', 'inventory.update',
   'inventory.adjust', 'inventory.alerts',
   'reports.inventory',
   'warehouse.read',
@@ -524,11 +627,13 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`)
 SELECT (SELECT `id` FROM `role` WHERE `name` = 'INVENTORY_MANAGER'), `id` FROM `permission`
 WHERE `name` IN (
   'product.read', 'product.update', 'product.inventory',
+  'inventory.create', 'inventory.read', 'inventory.update', 'inventory.delete',
   'inventory.adjust', 'inventory.audit', 'inventory.forecast', 'inventory.alerts', 'inventory.reorder',
   'reports.inventory',
   'warehouse.read', 'warehouse.operations',
   'bulk.import', 'bulk.export',
-  'analytics.inventory'
+  'analytics.inventory',
+  'store_product.read', 'store_product.update'
 );
 
 -- SALES_MANAGER

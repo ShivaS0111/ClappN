@@ -11,7 +11,9 @@ import java.util.List;
 public interface BookingDetailsRepository extends JpaRepository<BookingDetailsEntity, Long> {
     
     List<BookingDetailsEntity> findByStoreId(Long storeId);
-    
+
+    List<BookingDetailsEntity> findByStoreIdIn(List<Long> storeIds);
+
     List<BookingDetailsEntity> findByCustomerId(Long customerId);
     
     List<BookingDetailsEntity> findByStoreIdAndBookingStatus(Long storeId, String bookingStatus);

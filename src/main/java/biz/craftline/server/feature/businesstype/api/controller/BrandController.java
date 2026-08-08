@@ -37,8 +37,10 @@ public class BrandController {
     @RequirePermission("brand.read")
     public ResponseEntity<APIResponse<BrandDTO>> getBrand(@PathVariable Long id) {
         Brand brand = brandService.findById(id);
-        if (brand == null) return null;
-        return APIResponse.ok( brandDToMapper.toDTO(brand) );
+        if (brand == null) {
+            return APIResponse.error("Brand not found", org.springframework.http.HttpStatus.NOT_FOUND);
+        }
+        return APIResponse.ok(brandDToMapper.toDTO(brand));
     }
 
     @PostMapping
@@ -46,13 +48,21 @@ public class BrandController {
     public ResponseEntity<APIResponse<BrandDTO>> addBrand(@RequestBody BrandDTO brandDTO) {
         Brand brand = brandDToMapper.toDomain(brandDTO);
         Brand saved = brandService.save(brand);
-        return APIResponse.ok( brandDToMapper.toDTO(saved) );
+        return APIResponse.ok(brandDToMapper.toDTO(saved));
+    }
+
+    @PutMapping("/{id}")
+    @RequirePermission("brand.update")
+    public ResponseEntity<APIResponse<BrandDTO>> updateBrand(@PathVariable Long id, @RequestBody BrandDTO brandDTO) {
+        Brand brand = brandDToMapper.toDomain(brandDTO);
+        Brand updated = brandService.update(id, brand);
+        return APIResponse.ok(brandDToMapper.toDTO(updated));
     }
 
     @DeleteMapping("/{id}")
     @RequirePermission("brand.delete")
     public ResponseEntity<APIResponse<String>> deleteBrand(@PathVariable Long id) {
         brandService.delete(id);
-        return APIResponse.success( "Success" );
+        return APIResponse.success("Success");
     }
 }

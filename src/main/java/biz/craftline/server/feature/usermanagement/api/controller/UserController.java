@@ -46,17 +46,21 @@ public class UserController {
     @PostMapping
     @RequirePermission("user.create")
     public ResponseEntity<APIResponse<UserDto>> createUser(@RequestBody UserCreateRequest request) {
-        try{
+        // Direct user creation is SYSTEM_ADMIN only; business users must use employee APIs
+        if (!userService.isCurrentUserSystemAdmin()) {
+            throw new org.springframework.security.access.AccessDeniedException(
+                    "Only SYSTEM_ADMIN can create users via this endpoint. Use employee APIs instead.");
+        }
+        try {
             User existingUser = userService.getUserByEmail(request.getEmail()).orElse(null);
-            if(existingUser!=null) {
+            if (existingUser != null) {
                 throw new RuntimeException("User with this email already exists");
             }
 
             User user = UserMapper.toDomain(request);
             User created = userService.createUserWithHashedPassword(user);
             return APIResponse.success(UserMapper.toDto(created));
-        } catch (RuntimeException ex){
-            // Proceed to create user
+        } catch (RuntimeException ex) {
             throw ex;
         }
     }
@@ -67,19 +71,23 @@ public class UserController {
         User user = userService.getUserById(id).orElseThrow(() -> new RuntimeException("User not found"));
         UserMapper.updateDomain(user, request);
         User updated = userService.updateUser(id, user);
-        return  APIResponse.success(UserMapper.toDto(updated));
+        return APIResponse.success(UserMapper.toDto(updated));
     }
 
     @DeleteMapping("/{id}")
     @RequirePermission("user.delete")
     public void deleteUser(@PathVariable Long id) {
+        User user = userService.getUserById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        userService.assertCanViewUser(user);
         userService.deleteUser(id);
     }
 
     @PostMapping("/{userId}/roles/{roleId}")
     @RequirePermission("user.permissions")
     public ResponseEntity<APIResponse<UserDto>> assignRole(@PathVariable Long userId, @PathVariable Long roleId) {
+        User user = userService.getUserById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        userService.assertCanViewUser(user);
         User updated = userService.assignRole(userId, roleId);
-        return  APIResponse.success(UserMapper.toDto(updated));
+        return APIResponse.success(UserMapper.toDto(updated));
     }
 }

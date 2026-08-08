@@ -1,18 +1,24 @@
 package biz.craftline.server.config;
 
+import biz.craftline.server.feature.usermanagement.infra.entity.PermissionEntity;
+import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
+import biz.craftline.server.feature.usermanagement.infra.repository.PermissionRepository;
+import biz.craftline.server.feature.usermanagement.infra.repository.RoleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.*;
 
 /**
- * Database Seed Configuration (Reflection-based approach)
- * Loads initial data for Business Types, Categories, Roles, and Permissions
- * Uses reflection to avoid compile-time class dependencies
+ * Database Seed Configuration
+ * Loads initial data for Business Types, Categories, Roles, and Permissions.
+ * RBAC names match db/role-permissions-data.sql and @RequirePermission controllers.
  */
 @Slf4j
 @Configuration
@@ -32,30 +38,124 @@ public class DataSeedConfig {
 
     private void executeSeed(ApplicationContext applicationContext) {
         try {
-            // Get repositories using reflection
             Object businessTypeRepo = getRepositoryBean(applicationContext, "businessTypeJpaRepository");
             Object categoryRepo = getRepositoryBean(applicationContext, "categoryJpaRepository");
-            Object permissionRepo = getRepositoryBean(applicationContext, "permissionRepository");
-            Object roleRepo = getRepositoryBean(applicationContext, "roleRepository");
             Object businessRepo = getRepositoryBean(applicationContext, "businessEntityJpaRepository");
             Object storeRepo = getRepositoryBean(applicationContext, "storeRepository");
 
-            // Check if business type count is 0
+            PermissionRepository permissionRepo = applicationContext.getBean(PermissionRepository.class);
+            RoleRepository roleRepo = applicationContext.getBean(RoleRepository.class);
+            TransactionTemplate tx = new TransactionTemplate(
+                    applicationContext.getBean(PlatformTransactionManager.class));
+
+            // Always align RBAC catalog (idempotent upsert by name)
+            tx.executeWithoutResult(status -> alignRbacCatalog(permissionRepo, roleRepo));
+
             if (businessTypeRepo != null && isRepositoryEmpty(businessTypeRepo)) {
-                log.info("Starting database seed...");
-                
+                log.info("Starting business/category/store seed...");
                 seedBusinessTypes(businessTypeRepo);
                 seedCategories(categoryRepo);
-                seedPermissions(permissionRepo);
-                seedRoles(roleRepo);
                 seedBusinessAndStores(businessRepo, storeRepo);
-                
                 log.info("Database seed completed successfully!");
             } else {
-                log.info("Database already populated. Skipping seed.");
+                log.info("Business types already populated. Skipping business/category/store seed.");
             }
         } catch (Exception e) {
             log.error("Error executing seed", e);
+        }
+    }
+
+    private void alignRbacCatalog(PermissionRepository permissionRepo, RoleRepository roleRepo) {
+        renameLegacyRoles(roleRepo);
+        seedPermissions(permissionRepo);
+        seedRoles(roleRepo);
+        seedRolePermissions(permissionRepo, roleRepo);
+    }
+
+    private void renameLegacyRoles(RoleRepository roleRepo) {
+        int renamed = 0;
+        for (Map.Entry<String, String> entry : RbacSeedData.LEGACY_ROLE_RENAMES.entrySet()) {
+            String legacy = entry.getKey();
+            String canonical = entry.getValue();
+            Optional<RoleEntity> legacyRole = roleRepo.findByName(legacy);
+            if (legacyRole.isEmpty()) {
+                continue;
+            }
+            if (roleRepo.findByName(canonical).isPresent()) {
+                log.warn("Both '{}' and '{}' exist — leaving '{}' as-is; merge manually if needed",
+                        legacy, canonical, legacy);
+                continue;
+            }
+            RoleEntity role = legacyRole.get();
+            role.setName(canonical);
+            roleRepo.save(role);
+            renamed++;
+            log.info("Renamed role '{}' → '{}'", legacy, canonical);
+        }
+        if (renamed > 0) {
+            log.info("Renamed {} legacy role name(s) to SCREAMING_SNAKE", renamed);
+        }
+    }
+
+    private void seedPermissions(PermissionRepository permissionRepo) {
+        int created = 0;
+        for (String name : RbacSeedData.PERMISSIONS) {
+            if (permissionRepo.findByName(name).isEmpty()) {
+                permissionRepo.save(new PermissionEntity(name));
+                created++;
+            }
+        }
+        log.info("Permissions catalog ready ({} new, {} total defined)", created, RbacSeedData.PERMISSIONS.length);
+    }
+
+    private void seedRoles(RoleRepository roleRepo) {
+        int created = 0;
+        for (String name : RbacSeedData.ROLES) {
+            if (roleRepo.findByName(name).isEmpty()) {
+                RoleEntity role = new RoleEntity();
+                role.setName(name);
+                roleRepo.save(role);
+                created++;
+            }
+        }
+        log.info("Roles catalog ready ({} new, {} total defined)", created, RbacSeedData.ROLES.length);
+    }
+
+    private void seedRolePermissions(PermissionRepository permissionRepo, RoleRepository roleRepo) {
+        Map<String, PermissionEntity> permissionsByName = new HashMap<>();
+        for (PermissionEntity p : permissionRepo.findAll()) {
+            permissionsByName.put(p.getName(), p);
+        }
+
+        // SYSTEM_ADMIN → all permissions
+        roleRepo.findByName("SYSTEM_ADMIN").ifPresent(admin -> {
+            Set<PermissionEntity> all = new HashSet<>(permissionsByName.values());
+            if (admin.getPermissions() == null || admin.getPermissions().size() < all.size()) {
+                admin.setPermissions(all);
+                roleRepo.save(admin);
+                log.info("Assigned {} permissions to SYSTEM_ADMIN", all.size());
+            }
+        });
+
+        for (Map.Entry<String, List<String>> entry : RbacSeedData.rolePermissionMap().entrySet()) {
+            roleRepo.findByName(entry.getKey()).ifPresent(role -> {
+                Set<PermissionEntity> desired = new HashSet<>();
+                for (String permName : entry.getValue()) {
+                    PermissionEntity perm = permissionsByName.get(permName);
+                    if (perm != null) {
+                        desired.add(perm);
+                    } else {
+                        log.warn("Permission '{}' missing while assigning to role '{}'", permName, entry.getKey());
+                    }
+                }
+                Set<PermissionEntity> current = role.getPermissions() != null ? role.getPermissions() : new HashSet<>();
+                if (!current.containsAll(desired)) {
+                    current.addAll(desired);
+                    role.setPermissions(current);
+                    roleRepo.save(role);
+                    log.info("Ensured {} permissions on role {}", desired.size(), entry.getKey());
+                }
+            });
         }
     }
 
@@ -213,69 +313,6 @@ public class DataSeedConfig {
             log.info("Successfully seeded {} categories", categories.size());
         } catch (Exception e) {
             log.error("Error seeding categories", e);
-        }
-    }
-
-    private void seedPermissions(Object repository) {
-        try {
-            log.info("Seeding Permissions...");
-            List<Map<String, String>> permissions = new ArrayList<>();
-            
-            String[] perms = {
-                    "store.create", "store.read", "store.update", "store.delete", "store.metrics", "store.settings",
-                    "product.create", "product.read", "product.update", "product.delete", "product.inventory",
-                    "service.create", "service.read", "service.update", "service.delete",
-                    "business.create", "business.read", "business.update", "business.delete",
-                    "category.create", "category.read", "category.update", "category.delete",
-                    "user.create", "user.read", "user.update", "user.delete",
-                    "order.create", "order.read", "order.update", "order.cancel", "order.refund",
-                    "finance.view", "finance.reports", "finance.pricing", "finance.coupons",
-                    "marketing.campaigns", "marketing.analytics", "marketing.packages",
-                    "reports.sales", "reports.inventory", "reports.user", "reports.system",
-                    "security.monitor", "security.access", "security.audit",
-                    "system.logs", "system.settings", "system.backup", "system.maintenance"
-            };
-            
-            for (String perm : perms) {
-                Map<String, String> p = new HashMap<>();
-                p.put("name", perm);
-                permissions.add(p);
-            }
-            
-            invokeSaveAll(repository, permissions);
-            log.info("Successfully seeded {} permissions", permissions.size());
-        } catch (Exception e) {
-            log.error("Error seeding permissions", e);
-        }
-    }
-
-    private void seedRoles(Object repository) {
-        try {
-            log.info("Seeding Roles...");
-            List<Map<String, String>> roles = new ArrayList<>();
-            
-            String[] roleNames = {
-                    "SystemAdmin", "BusinessOwner", "BusinessAdmin", "BusinessManager",
-                    "StoreOwner", "StoreManager", "AssistantManager", "ShiftSupervisor",
-                    "SalesAssociate", "Cashier", "InventoryStaff", "CustomerServiceRep",
-                    "StockKeeper", "VisualMerchandiser", "SecurityStaff", "CleaningStaff",
-                    "InventoryManager", "SalesManager", "CustomerService", "FinanceManager",
-                    "MarketingManager", "SecurityOfficer", "MaintenanceStaff", "Customer",
-                    "Guest", "VendorAdmin", "VendorManager", "ApprovalManager",
-                    "ContentManager", "AnalyticsManager", "SupportManager", "WarehouseManager",
-                    "LogisticsManager", "QualityAssurance", "ReturnsManager"
-            };
-            
-            for (String roleName : roleNames) {
-                Map<String, String> role = new HashMap<>();
-                role.put("name", roleName);
-                roles.add(role);
-            }
-            
-            invokeSaveAll(repository, roles);
-            log.info("Successfully seeded {} roles", roles.size());
-        } catch (Exception e) {
-            log.error("Error seeding roles", e);
         }
     }
 

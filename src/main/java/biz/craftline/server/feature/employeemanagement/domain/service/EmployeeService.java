@@ -83,13 +83,16 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Long id) {
-        employeeRepository.findById(id).ifPresent(entity -> {
-            if (entity.getStoreId() != null) {
-                securityContextService.validateStoreAccess(entity.getStoreId());
-            } else if (entity.getBusinessId() != null) {
-                securityContextService.validateBusinessAccess(entity.getBusinessId());
-            }
-        });
+        EmployeeEntity entity = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found: " + id));
+        if (entity.getStoreId() != null) {
+            securityContextService.validateStoreAccess(entity.getStoreId());
+        } else if (entity.getBusinessId() != null) {
+            securityContextService.validateBusinessAccess(entity.getBusinessId());
+        } else if (!securityContextService.isSystemAdmin()) {
+            throw new org.springframework.security.access.AccessDeniedException(
+                    "Employee has no store/business scope");
+        }
         employeeRepository.deleteById(id);
     }
 }

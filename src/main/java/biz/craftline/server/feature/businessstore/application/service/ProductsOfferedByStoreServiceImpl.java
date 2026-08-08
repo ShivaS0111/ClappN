@@ -62,6 +62,8 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
 
     @Override
     public void deleteStoreProductById(Long id) {
+        // Enforce store scope before delete (IDOR protection)
+        findById(id);
         productsOfferedByStoreRepository.deleteStoreProductById(id);
     }
 

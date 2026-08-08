@@ -18,5 +18,7 @@ public interface ProductLotRepository extends JpaRepository<ProductLotEntity, Lo
 
     List<ProductLotEntity> findByStoreIdAndProductIdAndActiveTrue(Long storeId, Long productId);
 
+    List<ProductLotEntity> findByStoreIdIn(List<Long> storeIds);
 
+    List<ProductLotEntity> findByStoreIdInAndActiveTrue(List<Long> storeIds);
 }

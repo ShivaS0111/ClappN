@@ -39,6 +39,15 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    public Brand update(Long id, Brand brand) {
+        BrandEntity existing = brandJpaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Brand not found: " + id));
+        BrandEntity incoming = BrandEntityMapper.toEntity(brand);
+        incoming.setId(existing.getId());
+        return BrandEntityMapper.toDomain(brandJpaRepository.save(incoming));
+    }
+
+    @Override
     public void delete(Long id) {
         brandJpaRepository.deleteById(id);
     }

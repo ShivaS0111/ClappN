@@ -1,68 +1,50 @@
-2026-04-20T20:55:02.764+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 21.0.8 with PID 3464 (D:\work\clapp\ClappN\target\classes started by Shiva in D:\work\clapp\ClappN)
-2026-04-20T20:55:02.770+05:30 DEBUG 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
-2026-04-20T20:55:02.771+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
-2026-04-20T20:55:02.843+05:30  INFO 3464 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-04-20T20:55:02.844+05:30  INFO 3464 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-04-20T20:55:04.339+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-20T20:55:04.624+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 273 ms. Found 41 JPA repository interfaces.
-2026-04-20T20:55:06.002+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
-2026-04-20T20:55:06.015+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-04-20T20:55:06.016+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
-2026-04-20T20:55:06.117+05:30  INFO 3464 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-04-20T20:55:06.119+05:30  INFO 3464 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3275 ms
-2026-04-20T20:55:06.250+05:30 DEBUG 3464 --- [restartedMain] b.c.s.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
-2026-04-20T20:55:06.465+05:30  INFO 3464 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
-2026-04-20T20:55:06.465+05:30  INFO 3464 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
-2026-04-20T20:55:06.465+05:30  INFO 3464 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : 
-2026-04-20T20:55:06.477+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-04-20T20:55:06.961+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4264179a
-2026-04-20T20:55:06.963+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-04-20T20:55:07.001+05:30  INFO 3464 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
-2026-04-20T20:55:07.125+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.049s)
-2026-04-20T20:55:07.143+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `clapp`: 3
-2026-04-20T20:55:07.143+05:30 ERROR 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` has version 3, but no migration could be resolved in the configured locations !
-2026-04-20T20:55:07.144+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` is up to date. No migration necessary.
-2026-04-20T20:55:07.317+05:30  INFO 3464 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-04-20T20:55:07.396+05:30  INFO 3464 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
-2026-04-20T20:55:07.399+05:30  INFO 3464 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
-2026-04-20T20:55:07.552+05:30  INFO 3464 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
-2026-04-20T20:55:07.679+05:30  INFO 3464 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-04-20T20:55:07.731+05:30  WARN 3464 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-04-20T20:55:08.138+05:30  INFO 3464 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
-2026-04-20T20:55:09.368+05:30  INFO 3464 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2026-04-20T20:55:09.870+05:30  INFO 3464 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-04-20T20:55:10.254+05:30  INFO 3464 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-04-20T20:55:11.565+05:30  INFO 3464 --- [restartedMain] b.c.server.util.FileStorageService       : Upload directory initialized at: D:\work\clapp\ClappN\uploads
-2026-04-20T20:55:12.680+05:30  INFO 3464 --- [restartedMain] b.c.s.f.p.a.p.StripePaymentProvider      : Stripe initialized with publishable key: pk_test_YOUR_STRIPE_PUB
-2026-04-20T20:55:13.129+05:30  WARN 3464 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-04-20T20:55:13.534+05:30  INFO 3464 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@a9a4fbb, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@67ebc6ad, org.springframework.security.web.context.SecurityContextHolderFilter@57fda883, org.springframework.security.web.header.HeaderWriterFilter@28ec1747, org.springframework.web.filter.CorsFilter@1ed82a9e, org.springframework.security.web.authentication.logout.LogoutFilter@48ea3acf, biz.craftline.server.config.security.JwtAuthenticationFilter@31e19ff6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1d649b2c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@15101253, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@182f9673, org.springframework.security.web.session.SessionManagementFilter@342ff2f7, org.springframework.security.web.access.ExceptionTranslationFilter@23361cfc, org.springframework.security.web.access.intercept.AuthorizationFilter@429fd7f4]
-2026-04-20T20:55:14.083+05:30  INFO 3464 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-04-20T20:55:14.117+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
-2026-04-20T20:55:14.129+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Started ServerApplication in 11.891 seconds (process running for 13.481)
-2026-04-20T20:55:14.132+05:30  INFO 3464 --- [restartedMain] b.c.server.config.DataSeedConfig         : Starting database seed initialization...
-2026-04-20T20:55:14.206+05:30  INFO 3464 --- [restartedMain] b.c.server.config.DataSeedConfig         : Database already populated. Skipping seed.
-2026-04-20T20:56:56.024+05:30  INFO 3464 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 7 class path changes (0 additions, 0 deletions, 7 modifications)
-2026-04-20T20:56:56.031+05:30  INFO 3464 --- [Thread-5] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2026-04-20T20:56:56.045+05:30  INFO 3464 --- [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-04-20T20:56:56.048+05:30  INFO 3464 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2026-04-20T20:56:56.055+05:30  INFO 3464 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2026-04-20T20:56:56.164+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 21.0.8 with PID 3464 (D:\work\clapp\ClappN\target\classes started by Shiva in D:\work\clapp\ClappN)
-2026-04-20T20:56:56.164+05:30 DEBUG 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
-2026-04-20T20:56:56.164+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
-2026-04-20T20:56:56.565+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-20T20:56:56.707+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 141 ms. Found 41 JPA repository interfaces.
-2026-04-20T20:56:56.905+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
-2026-04-20T20:56:56.906+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-04-20T20:56:56.906+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
-2026-04-20T20:56:56.935+05:30  INFO 3464 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-04-20T20:56:56.935+05:30  INFO 3464 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 769 ms
-2026-04-20T20:56:56.945+05:30 ERROR 3464 --- [restartedMain] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'jwtAuthenticationFilter' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\JwtAuthenticationFilter.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'jwtTokenProvider': Lookup method resolution failed
-2026-04-20T20:56:56.947+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2026-04-20T20:56:56.949+05:30  WARN 3464 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
-2026-04-20T20:56:56.954+05:30  INFO 3464 --- [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+2026-08-08T21:38:26.478+05:30  INFO 18400 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 17.0.14 with PID 18400 (D:\work\clapp\ClappN\target\classes started by Shiva in D:\work\clapp\ClappN)
+2026-08-08T21:38:26.484+05:30 DEBUG 18400 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
+2026-08-08T21:38:26.486+05:30  INFO 18400 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
+2026-08-08T21:38:26.532+05:30  INFO 18400 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-08-08T21:38:26.532+05:30  INFO 18400 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-08-08T21:38:27.534+05:30  INFO 18400 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-08T21:38:27.730+05:30  INFO 18400 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 189 ms. Found 42 JPA repository interfaces.
+2026-08-08T21:38:28.823+05:30  INFO 18400 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2026-08-08T21:38:28.834+05:30  INFO 18400 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-08-08T21:38:28.834+05:30  INFO 18400 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2026-08-08T21:38:28.913+05:30  INFO 18400 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-08-08T21:38:28.913+05:30  INFO 18400 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2380 ms
+2026-08-08T21:38:29.111+05:30  INFO 18400 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
+2026-08-08T21:38:29.112+05:30  INFO 18400 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-08-08T21:38:29.112+05:30  INFO 18400 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : 
+2026-08-08T21:38:29.124+05:30  INFO 18400 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-08T21:38:29.485+05:30  INFO 18400 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@c720ae4
+2026-08-08T21:38:29.488+05:30  INFO 18400 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-08T21:38:29.520+05:30  INFO 18400 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
+2026-08-08T21:38:29.621+05:30 ERROR 18400 --- [restartedMain] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'userScopeFilter' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\UserScopeFilter.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userScopeResolver' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\UserScopeResolver.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in biz.craftline.server.feature.usermanagement.infra.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+2026-08-08T21:38:29.648+05:30  INFO 18400 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-08-08T21:38:29.651+05:30  WARN 18400 --- [restartedMain] o.a.c.loader.WebappClassLoaderBase       : The web application [ROOT] appears to have started a thread named [HikariPool-1 housekeeper] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.14/jdk.internal.misc.Unsafe.park(Native Method)
+ java.base@17.0.14/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:252)
+ java.base@17.0.14/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1679)
+ java.base@17.0.14/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+ java.base@17.0.14/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1062)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1122)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.14/java.lang.Thread.run(Thread.java:840)
+2026-08-08T21:38:29.651+05:30  WARN 18400 --- [restartedMain] o.a.c.loader.WebappClassLoaderBase       : The web application [ROOT] appears to have started a thread named [HikariPool-1 connection adder] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.14/java.lang.Thread.sleep(Native Method)
+ app//com.zaxxer.hikari.util.UtilityElf.quietlySleep(UtilityElf.java:53)
+ app//com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:745)
+ app//com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:712)
+ java.base@17.0.14/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.14/java.lang.Thread.run(Thread.java:840)
+2026-08-08T21:38:29.654+05:30  WARN 18400 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2026-08-08T21:38:29.655+05:30  INFO 18400 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-08-08T21:38:29.661+05:30  INFO 18400 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-08-08T21:38:29.671+05:30  INFO 18400 --- [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
 
 Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
-2026-04-20T20:56:56.973+05:30 ERROR 3464 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+2026-08-08T21:38:29.689+05:30 ERROR 18400 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
 
 org.springframework.context.ApplicationContextException: Unable to start web server
 	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:164) ~[spring-boot-3.1.4.jar:3.1.4]
@@ -74,8 +56,10 @@ org.springframework.context.ApplicationContextException: Unable to start web ser
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1309) ~[spring-boot-3.1.4.jar:3.1.4]
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1298) ~[spring-boot-3.1.4.jar:3.1.4]
 	at biz.craftline.server.ServerApplication.main(ServerApplication.java:17) ~[classes/:na]
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
 	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.1.4.jar:3.1.4]
 Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
 	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:142) ~[spring-boot-3.1.4.jar:3.1.4]
@@ -84,8 +68,8 @@ Caused by: org.springframework.boot.web.server.WebServerException: Unable to sta
 	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:211) ~[spring-boot-3.1.4.jar:3.1.4]
 	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:183) ~[spring-boot-3.1.4.jar:3.1.4]
 	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:161) ~[spring-boot-3.1.4.jar:3.1.4]
-	... 11 common frames omitted
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jwtAuthenticationFilter' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\JwtAuthenticationFilter.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'jwtTokenProvider': Lookup method resolution failed
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userScopeFilter' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\UserScopeFilter.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userScopeResolver' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\UserScopeResolver.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in biz.craftline.server.feature.usermanagement.infra.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:801) ~[spring-beans-6.0.12.jar:6.0.12]
 	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.0.12.jar:6.0.12]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1352) ~[spring-beans-6.0.12.jar:6.0.12]
@@ -108,7 +92,7 @@ Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Err
 	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
 	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
 	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
-	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[na:na]
 	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
 	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145) ~[na:na]
 	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
@@ -116,7 +100,7 @@ Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Err
 	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
 	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
 	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
-	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[na:na]
 	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
 	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145) ~[na:na]
 	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
@@ -128,12 +112,12 @@ Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Err
 	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
 	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:485) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
 	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:123) ~[spring-boot-3.1.4.jar:3.1.4]
-	... 16 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtTokenProvider': Lookup method resolution failed
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:481) ~[spring-beans-6.0.12.jar:6.0.12]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:351) ~[spring-beans-6.0.12.jar:6.0.12]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1291) ~[spring-beans-6.0.12.jar:6.0.12]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1186) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 18 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userScopeResolver' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\UserScopeResolver.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in biz.craftline.server.feature.usermanagement.infra.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:801) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1352) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1189) ~[spring-beans-6.0.12.jar:6.0.12]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:560) ~[spring-beans-6.0.12.jar:6.0.12]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
 	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
@@ -145,185 +129,636 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1337) ~[spring-beans-6.0.12.jar:6.0.12]
 	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:910) ~[spring-beans-6.0.12.jar:6.0.12]
 	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:788) ~[spring-beans-6.0.12.jar:6.0.12]
-	... 57 common frames omitted
-Caused by: java.lang.IllegalStateException: Failed to introspect Class [biz.craftline.server.config.security.JwtTokenProvider] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@6718b7fd]
-	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-6.0.12.jar:6.0.12]
-	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320) ~[spring-core-6.0.12.jar:6.0.12]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:459) ~[spring-beans-6.0.12.jar:6.0.12]
-	... 71 common frames omitted
-Caused by: java.lang.NoClassDefFoundError: TokenInfo
-	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
-	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3578) ~[na:na]
-	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2676) ~[na:na]
-	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-6.0.12.jar:6.0.12]
+	... 59 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userRepository' defined in biz.craftline.server.feature.usermanagement.infra.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1682) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:597) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1417) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1337) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:910) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:788) ~[spring-beans-6.0.12.jar:6.0.12]
 	... 73 common frames omitted
-Caused by: java.lang.ClassNotFoundException: TokenInfo
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641) ~[na:na]
-	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188) ~[na:na]
-	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526) ~[na:na]
-	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
-	at java.base/java.lang.Class.forName(Class.java:534) ~[na:na]
-	at java.base/java.lang.Class.forName(Class.java:513) ~[na:na]
-	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:121) ~[spring-boot-devtools-3.1.4.jar:3.1.4]
-	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526) ~[na:na]
-	... 77 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaSharedEM_entityManagerFactory': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:688) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:512) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1332) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1162) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:560) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 87 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Validate failed: Migrations have failed validation
+Detected applied migration not resolved locally: 1.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Detected applied migration not resolved locally: 2.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Detected applied migration not resolved locally: 3.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1770) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:312) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 99 common frames omitted
+Caused by: org.flywaydb.core.api.exception.FlywayValidateException: Validate failed: Migrations have failed validation
+Detected applied migration not resolved locally: 1.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Detected applied migration not resolved locally: 2.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Detected applied migration not resolved locally: 3.
+If you removed this migration intentionally, run repair to mark the migration as deleted.
+Need more flexibility with validation rules? Learn more: https://rd.gt/3AbJUZE
+	at org.flywaydb.core.Flyway.lambda$migrate$0(Flyway.java:146) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.FlywayExecutor.execute(FlywayExecutor.java:196) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.Flyway.migrate(Flyway.java:140) ~[flyway-core-9.16.3.jar:na]
+	at org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer.afterPropertiesSet(FlywayMigrationInitializer.java:66) ~[spring-boot-autoconfigure-3.1.4.jar:3.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1817) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 108 common frames omitted
 
-2026-04-20T20:57:08.445+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 21.0.8 with PID 3464 (D:\work\clapp\ClappN\target\classes started by Shiva in D:\work\clapp\ClappN)
-2026-04-20T20:57:08.445+05:30 DEBUG 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
-2026-04-20T20:57:08.445+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
-2026-04-20T20:57:13.339+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-20T20:57:13.472+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 132 ms. Found 41 JPA repository interfaces.
-2026-04-20T20:57:13.634+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
-2026-04-20T20:57:13.635+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-04-20T20:57:13.636+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
-2026-04-20T20:57:13.662+05:30  INFO 3464 --- [restartedMain] o.a.c.c.C.[Tomcat-1].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
-2026-04-20T20:57:13.662+05:30  INFO 3464 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5215 ms
-2026-04-20T20:57:13.685+05:30 DEBUG 3464 --- [restartedMain] b.c.s.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
-2026-04-20T20:57:13.724+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
-2026-04-20T20:57:13.739+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1879b31a
-2026-04-20T20:57:13.739+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
-2026-04-20T20:57:13.741+05:30  INFO 3464 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
-2026-04-20T20:57:13.758+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.007s)
-2026-04-20T20:57:13.771+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `clapp`: 3
-2026-04-20T20:57:13.772+05:30 ERROR 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` has version 3, but no migration could be resolved in the configured locations !
-2026-04-20T20:57:13.773+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` is up to date. No migration necessary.
-2026-04-20T20:57:13.815+05:30  INFO 3464 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-04-20T20:57:13.822+05:30  INFO 3464 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
-2026-04-20T20:57:13.822+05:30  INFO 3464 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-04-20T20:57:13.823+05:30  WARN 3464 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-04-20T20:57:14.006+05:30  INFO 3464 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
-2026-04-20T20:57:14.387+05:30  INFO 3464 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2026-04-20T20:57:14.758+05:30  INFO 3464 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-04-20T20:57:15.257+05:30  INFO 3464 --- [restartedMain] b.c.server.util.FileStorageService       : Upload directory initialized at: D:\work\clapp\ClappN\uploads
-2026-04-20T20:57:15.964+05:30  INFO 3464 --- [restartedMain] b.c.s.f.p.a.p.StripePaymentProvider      : Stripe initialized with publishable key: pk_test_YOUR_STRIPE_PUB
-2026-04-20T20:57:16.157+05:30  WARN 3464 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-04-20T20:57:16.299+05:30  INFO 3464 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7161ea75, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@51bacd0c, org.springframework.security.web.context.SecurityContextHolderFilter@61673ea5, org.springframework.security.web.header.HeaderWriterFilter@6cc638d6, org.springframework.web.filter.CorsFilter@5d3225de, org.springframework.security.web.authentication.logout.LogoutFilter@3768b9df, biz.craftline.server.config.security.JwtAuthenticationFilter@7f884546, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@28cd1294, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4c827469, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2b0b813f, org.springframework.security.web.session.SessionManagementFilter@1b91b83c, org.springframework.security.web.access.ExceptionTranslationFilter@7e433cee, org.springframework.security.web.access.intercept.AuthorizationFilter@5fafea87]
-2026-04-20T20:57:16.468+05:30  INFO 3464 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-04-20T20:57:16.492+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
-2026-04-20T20:57:16.499+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Started ServerApplication in 8.073 seconds (process running for 135.852)
-2026-04-20T20:57:16.502+05:30  INFO 3464 --- [restartedMain] b.c.server.config.DataSeedConfig         : Starting database seed initialization...
-2026-04-20T20:57:16.523+05:30  INFO 3464 --- [restartedMain] b.c.server.config.DataSeedConfig         : Database already populated. Skipping seed.
-2026-04-20T20:57:16.527+05:30  INFO 3464 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
-2026-04-20T20:57:38.064+05:30  INFO 3464 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (0 additions, 0 deletions, 3 modifications)
-2026-04-20T20:57:38.070+05:30  INFO 3464 --- [Thread-7] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2026-04-20T20:57:38.076+05:30  INFO 3464 --- [Thread-7] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-04-20T20:57:38.077+05:30  INFO 3464 --- [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
-2026-04-20T20:57:38.082+05:30  INFO 3464 --- [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
-2026-04-20T20:57:38.192+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 21.0.8 with PID 3464 (D:\work\clapp\ClappN\target\classes started by Shiva in D:\work\clapp\ClappN)
-2026-04-20T20:57:38.192+05:30 DEBUG 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
-2026-04-20T20:57:38.192+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
-2026-04-20T20:57:38.563+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-20T20:57:38.744+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 180 ms. Found 41 JPA repository interfaces.
-2026-04-20T20:57:38.946+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
-2026-04-20T20:57:38.947+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-04-20T20:57:38.947+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
-2026-04-20T20:57:38.978+05:30  INFO 3464 --- [restartedMain] o.a.c.c.C.[Tomcat-1].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
-2026-04-20T20:57:38.978+05:30  INFO 3464 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 782 ms
-2026-04-20T20:57:39.000+05:30 DEBUG 3464 --- [restartedMain] b.c.s.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
-2026-04-20T20:57:39.039+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
-2026-04-20T20:57:39.105+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@34105df7
-2026-04-20T20:57:39.105+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
-2026-04-20T20:57:39.106+05:30  INFO 3464 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
-2026-04-20T20:57:39.119+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.004s)
-2026-04-20T20:57:39.127+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `clapp`: 3
-2026-04-20T20:57:39.127+05:30 ERROR 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` has version 3, but no migration could be resolved in the configured locations !
-2026-04-20T20:57:39.127+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` is up to date. No migration necessary.
-2026-04-20T20:57:39.163+05:30  INFO 3464 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-04-20T20:57:39.171+05:30  INFO 3464 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
-2026-04-20T20:57:39.172+05:30  INFO 3464 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-04-20T20:57:39.173+05:30  WARN 3464 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-04-20T20:57:39.349+05:30  INFO 3464 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
-2026-04-20T20:57:39.761+05:30  INFO 3464 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2026-04-20T20:57:40.062+05:30  INFO 3464 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-04-20T20:57:40.436+05:30  INFO 3464 --- [restartedMain] b.c.server.util.FileStorageService       : Upload directory initialized at: D:\work\clapp\ClappN\uploads
-2026-04-20T20:57:41.065+05:30  INFO 3464 --- [restartedMain] b.c.s.f.p.a.p.StripePaymentProvider      : Stripe initialized with publishable key: pk_test_YOUR_STRIPE_PUB
-2026-04-20T20:57:41.228+05:30  WARN 3464 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-04-20T20:57:41.326+05:30  INFO 3464 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@434b5cb7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@20488e44, org.springframework.security.web.context.SecurityContextHolderFilter@5614a5d1, org.springframework.security.web.header.HeaderWriterFilter@3a0a09d1, org.springframework.web.filter.CorsFilter@1189a50, org.springframework.security.web.authentication.logout.LogoutFilter@77b97db9, biz.craftline.server.config.security.JwtAuthenticationFilter@124e6abf, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@493d1f81, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7583bac3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1bf61b59, org.springframework.security.web.session.SessionManagementFilter@586681bc, org.springframework.security.web.access.ExceptionTranslationFilter@3b6dca3d, org.springframework.security.web.access.intercept.AuthorizationFilter@6eb1ba20]
-2026-04-20T20:57:41.459+05:30  INFO 3464 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-04-20T20:57:41.472+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
-2026-04-20T20:57:41.476+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Started ServerApplication in 3.315 seconds (process running for 160.828)
-2026-04-20T20:57:41.477+05:30  INFO 3464 --- [restartedMain] b.c.server.config.DataSeedConfig         : Starting database seed initialization...
-2026-04-20T20:57:41.483+05:30  INFO 3464 --- [restartedMain] b.c.server.config.DataSeedConfig         : Database already populated. Skipping seed.
-2026-04-20T20:57:41.485+05:30  INFO 3464 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
-2026-04-20T20:57:47.249+05:30  INFO 3464 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (0 additions, 0 deletions, 3 modifications)
-2026-04-20T20:57:47.254+05:30  INFO 3464 --- [Thread-14] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2026-04-20T20:57:47.259+05:30  INFO 3464 --- [Thread-14] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-04-20T20:57:47.260+05:30  INFO 3464 --- [Thread-14] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
-2026-04-20T20:57:47.265+05:30  INFO 3464 --- [Thread-14] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
-2026-04-20T20:57:47.376+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 21.0.8 with PID 3464 (D:\work\clapp\ClappN\target\classes started by Shiva in D:\work\clapp\ClappN)
-2026-04-20T20:57:47.377+05:30 DEBUG 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
-2026-04-20T20:57:47.377+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
-2026-04-20T20:57:47.688+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-20T20:57:47.788+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 101 ms. Found 41 JPA repository interfaces.
-2026-04-20T20:57:47.938+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
-2026-04-20T20:57:47.939+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-04-20T20:57:47.939+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
-2026-04-20T20:57:47.971+05:30  INFO 3464 --- [restartedMain] o.a.c.c.C.[Tomcat-1].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
-2026-04-20T20:57:47.971+05:30  INFO 3464 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 592 ms
-2026-04-20T20:57:47.994+05:30 DEBUG 3464 --- [restartedMain] b.c.s.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
-2026-04-20T20:57:48.025+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
-2026-04-20T20:57:48.042+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection com.mysql.cj.jdbc.ConnectionImpl@19b93f88
-2026-04-20T20:57:48.043+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
-2026-04-20T20:57:48.044+05:30  INFO 3464 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
-2026-04-20T20:57:48.061+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.006s)
-2026-04-20T20:57:48.070+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `clapp`: 3
-2026-04-20T20:57:48.070+05:30 ERROR 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` has version 3, but no migration could be resolved in the configured locations !
-2026-04-20T20:57:48.071+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` is up to date. No migration necessary.
-2026-04-20T20:57:48.116+05:30  INFO 3464 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-04-20T20:57:48.124+05:30  INFO 3464 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
-2026-04-20T20:57:48.124+05:30  INFO 3464 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-04-20T20:57:48.125+05:30  WARN 3464 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-04-20T20:57:48.291+05:30  INFO 3464 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
-2026-04-20T20:57:48.966+05:30  INFO 3464 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2026-04-20T20:57:49.264+05:30  INFO 3464 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-04-20T20:57:49.725+05:30  INFO 3464 --- [restartedMain] b.c.server.util.FileStorageService       : Upload directory initialized at: D:\work\clapp\ClappN\uploads
-2026-04-20T20:57:50.355+05:30  INFO 3464 --- [restartedMain] b.c.s.f.p.a.p.StripePaymentProvider      : Stripe initialized with publishable key: pk_test_YOUR_STRIPE_PUB
-2026-04-20T20:57:50.538+05:30  WARN 3464 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-04-20T20:57:50.670+05:30  INFO 3464 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@78a21d38, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7ce6ddc4, org.springframework.security.web.context.SecurityContextHolderFilter@2833aa8d, org.springframework.security.web.header.HeaderWriterFilter@158a115d, org.springframework.web.filter.CorsFilter@ed411ba, org.springframework.security.web.authentication.logout.LogoutFilter@7eba44d6, biz.craftline.server.config.security.JwtAuthenticationFilter@31c21156, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@287c1063, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@38b2b632, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@70241b5b, org.springframework.security.web.session.SessionManagementFilter@bef88d1, org.springframework.security.web.access.ExceptionTranslationFilter@1aa2683d, org.springframework.security.web.access.intercept.AuthorizationFilter@79ffa7f7]
-2026-04-20T20:57:50.843+05:30  INFO 3464 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-04-20T20:57:50.856+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
-2026-04-20T20:57:50.860+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Started ServerApplication in 3.506 seconds (process running for 170.212)
-2026-04-20T20:57:50.861+05:30  INFO 3464 --- [restartedMain] b.c.server.config.DataSeedConfig         : Starting database seed initialization...
-2026-04-20T20:57:50.867+05:30  INFO 3464 --- [restartedMain] b.c.server.config.DataSeedConfig         : Database already populated. Skipping seed.
-2026-04-20T20:57:50.869+05:30  INFO 3464 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
-2026-04-20T20:57:55.538+05:30  INFO 3464 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (0 additions, 0 deletions, 3 modifications)
-2026-04-20T20:57:55.543+05:30  INFO 3464 --- [Thread-18] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2026-04-20T20:57:55.548+05:30  INFO 3464 --- [Thread-18] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-04-20T20:57:55.549+05:30  INFO 3464 --- [Thread-18] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown initiated...
-2026-04-20T20:57:55.554+05:30  INFO 3464 --- [Thread-18] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown completed.
-2026-04-20T20:57:55.660+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 21.0.8 with PID 3464 (D:\work\clapp\ClappN\target\classes started by Shiva in D:\work\clapp\ClappN)
-2026-04-20T20:57:55.661+05:30 DEBUG 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
-2026-04-20T20:57:55.661+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
-2026-04-20T20:57:55.946+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-20T20:57:56.043+05:30  INFO 3464 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 96 ms. Found 41 JPA repository interfaces.
-2026-04-20T20:57:56.161+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
-2026-04-20T20:57:56.162+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-04-20T20:57:56.162+05:30  INFO 3464 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
-2026-04-20T20:57:56.188+05:30  INFO 3464 --- [restartedMain] o.a.c.c.C.[Tomcat-1].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
-2026-04-20T20:57:56.189+05:30  INFO 3464 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 526 ms
-2026-04-20T20:57:56.205+05:30 DEBUG 3464 --- [restartedMain] b.c.s.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
-2026-04-20T20:57:56.230+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Starting...
-2026-04-20T20:57:56.240+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5802972c
-2026-04-20T20:57:56.241+05:30  INFO 3464 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Start completed.
-2026-04-20T20:57:56.242+05:30  INFO 3464 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
-2026-04-20T20:57:56.254+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.005s)
-2026-04-20T20:57:56.261+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `clapp`: 3
-2026-04-20T20:57:56.261+05:30 ERROR 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` has version 3, but no migration could be resolved in the configured locations !
-2026-04-20T20:57:56.261+05:30  INFO 3464 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `clapp` is up to date. No migration necessary.
-2026-04-20T20:57:56.301+05:30  INFO 3464 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-04-20T20:57:56.307+05:30  INFO 3464 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
-2026-04-20T20:57:56.307+05:30  INFO 3464 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-04-20T20:57:56.309+05:30  WARN 3464 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-04-20T20:57:56.411+05:30  INFO 3464 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
-2026-04-20T20:57:56.731+05:30  INFO 3464 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2026-04-20T20:57:56.982+05:30  INFO 3464 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-04-20T20:57:57.312+05:30  INFO 3464 --- [restartedMain] b.c.server.util.FileStorageService       : Upload directory initialized at: D:\work\clapp\ClappN\uploads
-2026-04-20T20:57:57.908+05:30  INFO 3464 --- [restartedMain] b.c.s.f.p.a.p.StripePaymentProvider      : Stripe initialized with publishable key: pk_test_YOUR_STRIPE_PUB
-2026-04-20T20:57:58.037+05:30  WARN 3464 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-04-20T20:57:58.125+05:30  INFO 3464 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@224cd230, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4e49fd19, org.springframework.security.web.context.SecurityContextHolderFilter@15c405a4, org.springframework.security.web.header.HeaderWriterFilter@15e6730f, org.springframework.web.filter.CorsFilter@5e156b17, org.springframework.security.web.authentication.logout.LogoutFilter@2ecb6e4f, biz.craftline.server.config.security.JwtAuthenticationFilter@6f772c46, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1504c870, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6523c54d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@458d1f06, org.springframework.security.web.session.SessionManagementFilter@44327f51, org.springframework.security.web.access.ExceptionTranslationFilter@f36e598, org.springframework.security.web.access.intercept.AuthorizationFilter@2a78c232]
-2026-04-20T20:57:58.264+05:30  INFO 3464 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-04-20T20:57:58.275+05:30  INFO 3464 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
-2026-04-20T20:57:58.277+05:30  INFO 3464 --- [restartedMain] biz.craftline.server.ServerApplication   : Started ServerApplication in 2.638 seconds (process running for 177.629)
-2026-04-20T20:57:58.277+05:30  INFO 3464 --- [restartedMain] b.c.server.config.DataSeedConfig         : Starting database seed initialization...
-2026-04-20T20:57:58.282+05:30  INFO 3464 --- [restartedMain] b.c.server.config.DataSeedConfig         : Database already populated. Skipping seed.
-2026-04-20T20:57:58.283+05:30  INFO 3464 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2026-08-08T21:40:38.344+05:30  INFO 5024 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 17.0.14 with PID 5024 (D:\work\clapp\ClappN\target\classes started by Shiva in D:\work\clapp\ClappN)
+2026-08-08T21:40:38.346+05:30 DEBUG 5024 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
+2026-08-08T21:40:38.347+05:30  INFO 5024 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
+2026-08-08T21:40:38.391+05:30  INFO 5024 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-08-08T21:40:38.391+05:30  INFO 5024 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-08-08T21:40:39.420+05:30  INFO 5024 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-08T21:40:39.637+05:30  INFO 5024 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 209 ms. Found 42 JPA repository interfaces.
+2026-08-08T21:40:40.554+05:30  INFO 5024 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2026-08-08T21:40:40.575+05:30  INFO 5024 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-08-08T21:40:40.576+05:30  INFO 5024 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2026-08-08T21:40:40.702+05:30  INFO 5024 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-08-08T21:40:40.703+05:30  INFO 5024 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2310 ms
+2026-08-08T21:40:40.900+05:30  INFO 5024 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
+2026-08-08T21:40:40.901+05:30  INFO 5024 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-08-08T21:40:40.901+05:30  INFO 5024 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : 
+2026-08-08T21:40:40.917+05:30  INFO 5024 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-08T21:40:41.251+05:30  INFO 5024 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2f88fa2c
+2026-08-08T21:40:41.253+05:30  INFO 5024 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-08T21:40:41.285+05:30  INFO 5024 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
+2026-08-08T21:40:41.343+05:30  INFO 5024 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `clapp`: 3
+2026-08-08T21:40:41.343+05:30  WARN 5024 --- [restartedMain] o.f.core.internal.command.DbMigrate      : outOfOrder mode is active. Migration of schema `clapp` may not be reproducible.
+2026-08-08T21:40:41.354+05:30  INFO 5024 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Migrating schema `clapp` to version "4 - add banner gallery to business store"
+2026-08-08T21:40:41.384+05:30 ERROR 5024 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Migration of schema `clapp` to version "4 - add banner gallery to business store" failed! Please restore backups and roll back database and code!
+2026-08-08T21:40:41.407+05:30 ERROR 5024 --- [restartedMain] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'userScopeFilter' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\UserScopeFilter.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userScopeResolver' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\UserScopeResolver.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in biz.craftline.server.feature.usermanagement.infra.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+2026-08-08T21:40:41.430+05:30  INFO 5024 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-08-08T21:40:41.433+05:30  WARN 5024 --- [restartedMain] o.a.c.loader.WebappClassLoaderBase       : The web application [ROOT] appears to have started a thread named [HikariPool-1 housekeeper] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.14/jdk.internal.misc.Unsafe.park(Native Method)
+ java.base@17.0.14/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:252)
+ java.base@17.0.14/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1679)
+ java.base@17.0.14/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+ java.base@17.0.14/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1062)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1122)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.14/java.lang.Thread.run(Thread.java:840)
+2026-08-08T21:40:41.435+05:30  WARN 5024 --- [restartedMain] o.a.c.loader.WebappClassLoaderBase       : The web application [ROOT] appears to have started a thread named [HikariPool-1 connection adder] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.14/com.sun.crypto.provider.GHASH.blockMult(GHASH.java:73)
+ java.base@17.0.14/com.sun.crypto.provider.GHASH.processBlock(GHASH.java:166)
+ java.base@17.0.14/com.sun.crypto.provider.GHASH.processBlocks(GHASH.java:282)
+ java.base@17.0.14/com.sun.crypto.provider.GHASH.update(GHASH.java:179)
+ java.base@17.0.14/com.sun.crypto.provider.GHASH.update(GHASH.java:197)
+ java.base@17.0.14/com.sun.crypto.provider.GHASH.doFinal(GHASH.java:221)
+ java.base@17.0.14/com.sun.crypto.provider.GHASH.doFinal(GHASH.java:343)
+ java.base@17.0.14/com.sun.crypto.provider.GaloisCounterMode$GCMEngine.doLastBlock(GaloisCounterMode.java:797)
+ java.base@17.0.14/com.sun.crypto.provider.GaloisCounterMode$GCMDecrypt.doFinal(GaloisCounterMode.java:1478)
+ java.base@17.0.14/com.sun.crypto.provider.GaloisCounterMode.engineDoFinal(GaloisCounterMode.java:447)
+ java.base@17.0.14/javax.crypto.Cipher.doFinal(Cipher.java:2500)
+ java.base@17.0.14/sun.security.ssl.SSLCipher$T13GcmReadCipherGenerator$GcmReadCipher.decrypt(SSLCipher.java:1933)
+ java.base@17.0.14/sun.security.ssl.SSLSocketInputRecord.decodeInputRecord(SSLSocketInputRecord.java:264)
+ java.base@17.0.14/sun.security.ssl.SSLSocketInputRecord.decode(SSLSocketInputRecord.java:181)
+ java.base@17.0.14/sun.security.ssl.SSLTransport.decode(SSLTransport.java:111)
+ java.base@17.0.14/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1513)
+ java.base@17.0.14/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1484)
+ java.base@17.0.14/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1069)
+ java.base@17.0.14/java.io.FilterInputStream.read(FilterInputStream.java:132)
+ app//com.mysql.cj.protocol.FullReadInputStream.readFully(FullReadInputStream.java:64)
+ app//com.mysql.cj.protocol.a.SimplePacketReader.readHeaderLocal(SimplePacketReader.java:81)
+ app//com.mysql.cj.protocol.a.SimplePacketReader.readHeader(SimplePacketReader.java:63)
+ app//com.mysql.cj.protocol.a.SimplePacketReader.readHeader(SimplePacketReader.java:45)
+ app//com.mysql.cj.protocol.a.TimeTrackingPacketReader.readHeader(TimeTrackingPacketReader.java:52)
+ app//com.mysql.cj.protocol.a.TimeTrackingPacketReader.readHeader(TimeTrackingPacketReader.java:41)
+ app//com.mysql.cj.protocol.a.MultiPacketReader.readHeader(MultiPacketReader.java:54)
+ app//com.mysql.cj.protocol.a.MultiPacketReader.readHeader(MultiPacketReader.java:44)
+ app//com.mysql.cj.protocol.a.NativeProtocol.readMessage(NativeProtocol.java:576)
+ app//com.mysql.cj.protocol.a.NativeProtocol.checkErrorMessage(NativeProtocol.java:762)
+ app//com.mysql.cj.protocol.a.NativeProtocol.sendCommand(NativeProtocol.java:701)
+ app//com.mysql.cj.protocol.a.NativeProtocol.sendCommand(NativeProtocol.java:156)
+ app//com.mysql.cj.NativeSession.loadServerVariables(NativeSession.java:445)
+ app//com.mysql.cj.jdbc.ConnectionImpl.initializePropsFromServer(ConnectionImpl.java:1269)
+ app//com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:956)
+ app//com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815)
+ app//com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446)
+ app//com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:239)
+ app//com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188)
+ app//com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+ app//com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+ app//com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+ app//com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+ app//com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:733)
+ app//com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:712)
+ java.base@17.0.14/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.14/java.lang.Thread.run(Thread.java:840)
+2026-08-08T21:40:41.437+05:30  WARN 5024 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2026-08-08T21:40:41.437+05:30  INFO 5024 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-08-08T21:40:41.450+05:30  INFO 5024 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-08-08T21:40:41.461+05:30  INFO 5024 --- [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-08-08T21:40:41.477+05:30 ERROR 5024 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:164) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:602) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1309) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1298) ~[spring-boot-3.1.4.jar:3.1.4]
+	at biz.craftline.server.ServerApplication.main(ServerApplication.java:17) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.1.4.jar:3.1.4]
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:142) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:104) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:489) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:211) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:183) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:161) ~[spring-boot-3.1.4.jar:3.1.4]
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userScopeFilter' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\UserScopeFilter.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userScopeResolver' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\UserScopeResolver.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in biz.craftline.server.feature.usermanagement.infra.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:801) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1352) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1189) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:560) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:210) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:173) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:168) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:153) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:86) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:261) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:235) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4850) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:846) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:241) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:433) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:918) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:485) ~[tomcat-embed-core-10.1.13.jar:10.1.13]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:123) ~[spring-boot-3.1.4.jar:3.1.4]
+	... 18 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userScopeResolver' defined in file [D:\work\clapp\ClappN\target\classes\biz\craftline\server\config\security\UserScopeResolver.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in biz.craftline.server.feature.usermanagement.infra.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:801) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1352) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1189) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:560) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1417) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1337) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:910) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:788) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 59 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userRepository' defined in biz.craftline.server.feature.usermanagement.infra.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1682) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:597) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1417) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1337) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:910) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:788) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 73 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaSharedEM_entityManagerFactory': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:688) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:512) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1332) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1162) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:560) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 87 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Migration V4__add_banner_gallery_to_business_store.sql failed
+-------------------------------------------------------------
+SQL State  : 42S21
+Error Code : 1060
+Message    : Duplicate column name 'banner_url'
+Location   : db/migration/V4__add_banner_gallery_to_business_store.sql (D:\work\clapp\ClappN\target\classes\db\migration\V4__add_banner_gallery_to_business_store.sql)
+Line       : 2
+Statement  : -- Add banner and gallery fields to business table
+ALTER TABLE `business` ADD COLUMN `banner_url` VARCHAR(500) NULL
+
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1770) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:312) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 99 common frames omitted
+Caused by: org.flywaydb.core.internal.command.DbMigrate$FlywayMigrateException: Migration V4__add_banner_gallery_to_business_store.sql failed
+-------------------------------------------------------------
+SQL State  : 42S21
+Error Code : 1060
+Message    : Duplicate column name 'banner_url'
+Location   : db/migration/V4__add_banner_gallery_to_business_store.sql (D:\work\clapp\ClappN\target\classes\db\migration\V4__add_banner_gallery_to_business_store.sql)
+Line       : 2
+Statement  : -- Add banner and gallery fields to business table
+ALTER TABLE `business` ADD COLUMN `banner_url` VARCHAR(500) NULL
+
+	at org.flywaydb.core.internal.command.DbMigrate.doMigrateGroup(DbMigrate.java:384) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.command.DbMigrate.lambda$applyMigrations$1(DbMigrate.java:274) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.jdbc.TransactionalExecutionTemplate.execute(TransactionalExecutionTemplate.java:55) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.command.DbMigrate.applyMigrations(DbMigrate.java:273) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.command.DbMigrate.migrateGroup(DbMigrate.java:246) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.command.DbMigrate.lambda$migrateAll$0(DbMigrate.java:141) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.database.mysql.MySQLNamedLockTemplate.execute(MySQLNamedLockTemplate.java:58) ~[flyway-mysql-9.16.3.jar:na]
+	at org.flywaydb.database.mysql.MySQLConnection.lock(MySQLConnection.java:152) ~[flyway-mysql-9.16.3.jar:na]
+	at org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory.lock(JdbcTableSchemaHistory.java:144) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.command.DbMigrate.migrateAll(DbMigrate.java:141) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.command.DbMigrate.migrate(DbMigrate.java:98) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.Flyway.lambda$migrate$0(Flyway.java:188) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.FlywayExecutor.execute(FlywayExecutor.java:196) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.Flyway.migrate(Flyway.java:140) ~[flyway-core-9.16.3.jar:na]
+	at org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer.afterPropertiesSet(FlywayMigrationInitializer.java:66) ~[spring-boot-autoconfigure-3.1.4.jar:3.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1817) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 108 common frames omitted
+Caused by: org.flywaydb.core.internal.sqlscript.FlywaySqlScriptException: Migration V4__add_banner_gallery_to_business_store.sql failed
+-------------------------------------------------------------
+SQL State  : 42S21
+Error Code : 1060
+Message    : Duplicate column name 'banner_url'
+Location   : db/migration/V4__add_banner_gallery_to_business_store.sql (D:\work\clapp\ClappN\target\classes\db\migration\V4__add_banner_gallery_to_business_store.sql)
+Line       : 2
+Statement  : -- Add banner and gallery fields to business table
+ALTER TABLE `business` ADD COLUMN `banner_url` VARCHAR(500) NULL
+
+	at org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor.handleException(DefaultSqlScriptExecutor.java:275) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor.executeStatement(DefaultSqlScriptExecutor.java:222) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor.execute(DefaultSqlScriptExecutor.java:126) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.resolver.sql.SqlMigrationExecutor.executeOnce(SqlMigrationExecutor.java:68) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.resolver.sql.SqlMigrationExecutor.lambda$execute$0(SqlMigrationExecutor.java:57) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.database.DefaultExecutionStrategy.execute(DefaultExecutionStrategy.java:27) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.resolver.sql.SqlMigrationExecutor.execute(SqlMigrationExecutor.java:56) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.command.DbMigrate.doMigrateGroup(DbMigrate.java:376) ~[flyway-core-9.16.3.jar:na]
+	... 124 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Duplicate column name 'banner_url'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:763) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:648) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94) ~[HikariCP-5.0.1.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-5.0.1.jar:na]
+	at org.flywaydb.core.internal.jdbc.JdbcTemplate.executeStatement(JdbcTemplate.java:201) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.sqlscript.ParsedSqlStatement.execute(ParsedSqlStatement.java:95) ~[flyway-core-9.16.3.jar:na]
+	at org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor.executeStatement(DefaultSqlScriptExecutor.java:210) ~[flyway-core-9.16.3.jar:na]
+	... 130 common frames omitted
+
+2026-08-08T21:41:20.378+05:30  INFO 15340 --- [restartedMain] biz.craftline.server.ServerApplication   : Starting ServerApplication using Java 17.0.14 with PID 15340 (D:\work\clapp\ClappN\target\classes started by Shiva in D:\work\clapp\ClappN)
+2026-08-08T21:41:20.380+05:30 DEBUG 15340 --- [restartedMain] biz.craftline.server.ServerApplication   : Running with Spring Boot v3.1.4, Spring v6.0.12
+2026-08-08T21:41:20.381+05:30  INFO 15340 --- [restartedMain] biz.craftline.server.ServerApplication   : The following 1 profile is active: "dev"
+2026-08-08T21:41:20.420+05:30  INFO 15340 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-08-08T21:41:20.420+05:30  INFO 15340 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-08-08T21:41:21.306+05:30  INFO 15340 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-08T21:41:21.495+05:30  INFO 15340 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 183 ms. Found 42 JPA repository interfaces.
+2026-08-08T21:41:22.418+05:30  INFO 15340 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2026-08-08T21:41:22.427+05:30  INFO 15340 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-08-08T21:41:22.427+05:30  INFO 15340 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2026-08-08T21:41:22.500+05:30  INFO 15340 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-08-08T21:41:22.501+05:30  INFO 15340 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2080 ms
+2026-08-08T21:41:22.676+05:30  INFO 15340 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
+2026-08-08T21:41:22.677+05:30  INFO 15340 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-08-08T21:41:22.677+05:30  INFO 15340 --- [restartedMain] o.f.c.internal.license.VersionPrinter    : 
+2026-08-08T21:41:22.690+05:30  INFO 15340 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-08T21:41:22.968+05:30  INFO 15340 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@47743725
+2026-08-08T21:41:22.970+05:30  INFO 15340 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-08T21:41:22.998+05:30  INFO 15340 --- [restartedMain] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:mysql://127.0.0.1:3306/clapp (MySQL 8.0)
+2026-08-08T21:41:23.046+05:30  INFO 15340 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `clapp`: 3
+2026-08-08T21:41:23.047+05:30  WARN 15340 --- [restartedMain] o.f.core.internal.command.DbMigrate      : outOfOrder mode is active. Migration of schema `clapp` may not be reproducible.
+2026-08-08T21:41:23.057+05:30  INFO 15340 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Migrating schema `clapp` to version "12 - create password reset tokens table"
+2026-08-08T21:41:23.154+05:30  INFO 15340 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Migrating schema `clapp` to version "13 - align role permission names"
+2026-08-08T21:41:23.197+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'file.upload' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'file.delete' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'store_product.create' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'store_product.read' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'store_product.update' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'store_product.delete' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'store_service.create' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'store_service.read' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'store_service.update' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'store_service.delete' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'customer.create' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'customer.read' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'customer.update' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'customer.delete' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.198+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry 'user.permissions' for key 'permission.UK_2ojme20jpga3r4r79tdso17gi' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-106' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-104' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-109' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-107' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-105' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-108' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-46' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-49' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-101' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-51' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-47' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-102' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-52' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-48' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.224+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-50' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-103' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-166' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-164' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-163' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-165' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-16' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-19' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-17' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-18' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-30' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-33' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-31' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-32' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-162' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-161' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-95' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-98' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-99' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-96' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-100' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-97' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-34' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-37' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.225+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-35' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-36' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-110' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-113' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-114' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-111' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-115' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-112' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-148' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-150' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-149' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-147' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-172' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-171' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-80' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-78' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-79' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-77' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-128' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-131' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-129' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-130' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-132' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-87' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-85' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-86' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-145' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-143' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-144' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.226+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-146' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-38' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-41' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-39' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-40' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-75' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-72' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-73' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-76' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-74' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-42' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-45' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-43' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-44' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-169' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-167' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-170' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-168' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-57' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-58' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-7' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-10' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.227+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-11' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-8' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-9' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-141' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-139' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-140' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-142' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-53' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-54' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-56' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-55' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-83' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-81' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-84' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-82' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-135' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-133' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-136' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-134' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-137' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-138' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-158' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-157' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.228+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-155' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-156' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-92' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-93' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-94' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-12' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-15' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-13' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-14' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-125' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-122' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-127' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-123' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-126' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-124' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-59' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-62' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-60' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-61' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-63' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-66' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-64' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-65' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-1' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-4' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-5' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-2' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-6' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-3' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-154' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-151' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-153' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.230+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-152' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-90' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-89' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-91' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-88' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-159' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-160' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-67' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-70' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-71' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-68' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-69' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-27' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-24' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-29' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-28' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-20' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-23' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-26' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-21' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-25' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-22' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-116' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-119' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-120' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.231+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-117' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.232+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-121' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.232+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '1-118' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.248+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '5-74' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.248+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '6-74' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.248+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '5-59' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.248+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '5-60' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.248+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '6-60' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.248+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '5-61' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.248+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '6-61' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.248+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '5-63' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.249+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '5-64' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.249+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '6-64' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.249+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '5-65' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.249+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '6-65' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.249+05:30  WARN 15340 --- [restartedMain] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: Duplicate entry '5-71' for key 'role_permission.PRIMARY' (SQL State: 23000 - Error Code: 1062)
+2026-08-08T21:41:23.272+05:30  INFO 15340 --- [restartedMain] o.f.core.internal.command.DbMigrate      : Successfully applied 2 migrations to schema `clapp`, now at version v13 (execution time 00:00.245s)
+2026-08-08T21:41:23.449+05:30  INFO 15340 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-08T21:41:23.533+05:30  INFO 15340 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2026-08-08T21:41:23.536+05:30  INFO 15340 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2026-08-08T21:41:23.682+05:30  INFO 15340 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2026-08-08T21:41:23.791+05:30  INFO 15340 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-08T21:41:23.832+05:30  WARN 15340 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-08-08T21:41:24.200+05:30  INFO 15340 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2026-08-08T21:41:25.297+05:30  INFO 15340 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2026-08-08T21:41:25.743+05:30  INFO 15340 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-08T21:41:26.156+05:30  INFO 15340 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-08T21:41:26.938+05:30 DEBUG 15340 --- [restartedMain] b.c.s.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2026-08-08T21:41:26.939+05:30 DEBUG 15340 --- [restartedMain] b.c.s.config.security.UserScopeFilter    : Filter 'userScopeFilter' configured for use
+2026-08-08T21:41:27.607+05:30  INFO 15340 --- [restartedMain] b.c.server.util.FileStorageService       : Upload directory initialized at: D:\work\clapp\ClappN\uploads
+2026-08-08T21:41:28.713+05:30  INFO 15340 --- [restartedMain] b.c.s.f.p.a.p.StripePaymentProvider      : Stripe initialized with publishable key: pk_test_YOUR_STRIPE_PUB
+2026-08-08T21:41:29.132+05:30  WARN 15340 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-08T21:41:29.471+05:30  INFO 15340 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@100a8fd1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@20e48328, org.springframework.security.web.context.SecurityContextHolderFilter@1a91976a, org.springframework.security.web.header.HeaderWriterFilter@7f037f75, org.springframework.web.filter.CorsFilter@6e41fd1f, org.springframework.security.web.authentication.logout.LogoutFilter@7c293a2d, biz.craftline.server.config.security.JwtAuthenticationFilter@6bfd68bf, biz.craftline.server.config.security.UserScopeFilter@4d068e5e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@14ae8d0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1e193b7b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5e76ff01, org.springframework.security.web.session.SessionManagementFilter@3b35d2d5, org.springframework.security.web.access.ExceptionTranslationFilter@73b7d2ce, org.springframework.security.web.access.intercept.AuthorizationFilter@3623b877]
+2026-08-08T21:41:29.915+05:30  INFO 15340 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-08-08T21:41:29.960+05:30  INFO 15340 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
+2026-08-08T21:41:29.974+05:30  INFO 15340 --- [restartedMain] biz.craftline.server.ServerApplication   : Started ServerApplication in 9.945 seconds (process running for 10.368)
+2026-08-08T21:41:29.976+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Starting database seed initialization...
+2026-08-08T21:41:30.100+05:30  WARN 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Both 'Customer' and 'CUSTOMER' exist — leaving 'Customer' as-is; merge manually if needed
+2026-08-08T21:41:30.121+05:30  WARN 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Both 'Cashier' and 'CASHIER' exist — leaving 'Cashier' as-is; merge manually if needed
+2026-08-08T21:41:30.177+05:30  WARN 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Both 'Guest' and 'GUEST' exist — leaving 'Guest' as-is; merge manually if needed
+2026-08-08T21:41:30.814+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Permissions catalog ready (0 new, 201 total defined)
+2026-08-08T21:41:30.898+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Roles catalog ready (0 new, 35 total defined)
+2026-08-08T21:41:30.947+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 69 permissions on role BUSINESS_OWNER
+2026-08-08T21:41:30.955+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 47 permissions on role BUSINESS_ADMIN
+2026-08-08T21:41:30.960+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 28 permissions on role BUSINESS_MANAGER
+2026-08-08T21:41:30.966+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 88 permissions on role STORE_OWNER
+2026-08-08T21:41:30.971+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 55 permissions on role STORE_MANAGER
+2026-08-08T21:41:30.974+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 32 permissions on role ASSISTANT_MANAGER
+2026-08-08T21:41:30.978+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 13 permissions on role SHIFT_SUPERVISOR
+2026-08-08T21:41:30.981+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 11 permissions on role SALES_ASSOCIATE
+2026-08-08T21:41:30.991+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 20 permissions on role INVENTORY_MANAGER
+2026-08-08T21:41:30.996+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 17 permissions on role CUSTOMER_SERVICE_REP
+2026-08-08T21:41:31.000+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 19 permissions on role FINANCE_MANAGER
+2026-08-08T21:41:31.004+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Ensured 10 permissions on role CUSTOMER
+2026-08-08T21:41:31.091+05:30  INFO 15340 --- [restartedMain] b.c.server.config.DataSeedConfig         : Business types already populated. Skipping business/category/store seed.
+2026-08-08T21:41:37.798+05:30  INFO 15340 --- [http-nio-9090-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-08T21:41:37.798+05:30  INFO 15340 --- [http-nio-9090-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-08-08T21:41:37.800+05:30  INFO 15340 --- [http-nio-9090-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-08-08T21:41:58.397+05:30  WARN 15340 --- [http-nio-9090-exec-4] b.c.s.config.GlobalExceptionHandler      : Validation error: username: Username is required
+2026-08-08T21:41:58.419+05:30  WARN 15340 --- [http-nio-9090-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<biz.craftline.server.util.APIResponse<biz.craftline.server.feature.usermanagement.api.dto.LoginResponse>> biz.craftline.server.feature.usermanagement.api.controller.AuthController.authenticateUser(biz.craftline.server.feature.usermanagement.api.dto.LoginRequest): [Field error in object 'loginRequest' on field 'username': rejected value [null]; codes [NotBlank.loginRequest.username,NotBlank.username,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginRequest.username,username]; arguments []; default message [username]]; default message [Username is required]] ]
+2026-08-08T21:41:58.528+05:30  WARN 15340 --- [http-nio-9090-exec-3] b.c.s.config.GlobalExceptionHandler      : Validation error: username: Username is required
+2026-08-08T21:41:58.529+05:30  WARN 15340 --- [http-nio-9090-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<biz.craftline.server.util.APIResponse<biz.craftline.server.feature.usermanagement.api.dto.LoginResponse>> biz.craftline.server.feature.usermanagement.api.controller.AuthController.authenticateUser(biz.craftline.server.feature.usermanagement.api.dto.LoginRequest): [Field error in object 'loginRequest' on field 'username': rejected value [null]; codes [NotBlank.loginRequest.username,NotBlank.username,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginRequest.username,username]; arguments []; default message [username]]; default message [Username is required]] ]
+2026-08-08T21:41:58.539+05:30  WARN 15340 --- [http-nio-9090-exec-6] b.c.s.config.GlobalExceptionHandler      : Validation error: username: Username is required
+2026-08-08T21:41:58.540+05:30  WARN 15340 --- [http-nio-9090-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<biz.craftline.server.util.APIResponse<biz.craftline.server.feature.usermanagement.api.dto.LoginResponse>> biz.craftline.server.feature.usermanagement.api.controller.AuthController.authenticateUser(biz.craftline.server.feature.usermanagement.api.dto.LoginRequest): [Field error in object 'loginRequest' on field 'username': rejected value [null]; codes [NotBlank.loginRequest.username,NotBlank.username,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginRequest.username,username]; arguments []; default message [username]]; default message [Username is required]] ]
+2026-08-08T21:41:58.545+05:30  WARN 15340 --- [http-nio-9090-exec-7] b.c.s.config.GlobalExceptionHandler      : Validation error: username: Username is required
+2026-08-08T21:41:58.546+05:30  WARN 15340 --- [http-nio-9090-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<biz.craftline.server.util.APIResponse<biz.craftline.server.feature.usermanagement.api.dto.LoginResponse>> biz.craftline.server.feature.usermanagement.api.controller.AuthController.authenticateUser(biz.craftline.server.feature.usermanagement.api.dto.LoginRequest): [Field error in object 'loginRequest' on field 'username': rejected value [null]; codes [NotBlank.loginRequest.username,NotBlank.username,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginRequest.username,username]; arguments []; default message [username]]; default message [Username is required]] ]
+2026-08-08T21:41:58.552+05:30  WARN 15340 --- [http-nio-9090-exec-8] b.c.s.config.GlobalExceptionHandler      : Validation error: username: Username is required
+2026-08-08T21:41:58.553+05:30  WARN 15340 --- [http-nio-9090-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<biz.craftline.server.util.APIResponse<biz.craftline.server.feature.usermanagement.api.dto.LoginResponse>> biz.craftline.server.feature.usermanagement.api.controller.AuthController.authenticateUser(biz.craftline.server.feature.usermanagement.api.dto.LoginRequest): [Field error in object 'loginRequest' on field 'username': rejected value [null]; codes [NotBlank.loginRequest.username,NotBlank.username,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginRequest.username,username]; arguments []; default message [username]]; default message [Username is required]] ]
+2026-08-08T21:41:58.558+05:30  WARN 15340 --- [http-nio-9090-exec-9] b.c.s.config.GlobalExceptionHandler      : Validation error: username: Username is required
+2026-08-08T21:41:58.559+05:30  WARN 15340 --- [http-nio-9090-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<biz.craftline.server.util.APIResponse<biz.craftline.server.feature.usermanagement.api.dto.LoginResponse>> biz.craftline.server.feature.usermanagement.api.controller.AuthController.authenticateUser(biz.craftline.server.feature.usermanagement.api.dto.LoginRequest): [Field error in object 'loginRequest' on field 'username': rejected value [null]; codes [NotBlank.loginRequest.username,NotBlank.username,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginRequest.username,username]; arguments []; default message [username]]; default message [Username is required]] ]

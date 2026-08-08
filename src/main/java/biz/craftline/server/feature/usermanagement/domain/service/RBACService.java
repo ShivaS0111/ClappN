@@ -107,6 +107,11 @@ public class RBACService {
     }
 
     public boolean currentUserHasPermission(String permissionName) {
+        if (biz.craftline.server.config.security.UserScopeContextHolder.isPresent()) {
+            return biz.craftline.server.config.security.UserScopeContextHolder.require()
+                    .hasPermission(permissionName);
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             return false;
@@ -124,6 +129,9 @@ public class RBACService {
     }
 
     public boolean currentUserHasRole(String roleName) {
+        if (biz.craftline.server.config.security.UserScopeContextHolder.isPresent()) {
+            return biz.craftline.server.config.security.UserScopeContextHolder.require().hasRole(roleName);
+        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             return false;

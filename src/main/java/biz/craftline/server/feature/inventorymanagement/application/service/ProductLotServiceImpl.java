@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.inventorymanagement.application.service;
 
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.inventorymanagement.domain.model.ProductLot;
 import biz.craftline.server.feature.inventorymanagement.domain.model.ProductLotTransaction;
 import biz.craftline.server.feature.inventorymanagement.domain.service.ProductLotService;
@@ -26,6 +27,7 @@ public class ProductLotServiceImpl implements ProductLotService {
     private final ProductLotRepository lotRepository;
     private final ProductLotTransactionRepository transactionRepository;
     private final StoreInventoryService storeInventoryService;
+    private final SecurityContextService securityContextService;
 
     private final ProductLotTransactionEntityMapper productLotTransactionEntityMapper;
     private final ProductLotEntityMapper productLotEntityMapper;
@@ -33,6 +35,7 @@ public class ProductLotServiceImpl implements ProductLotService {
     @Transactional(Transactional.TxType.REQUIRED)
     @Override
     public ProductLot createLot(ProductLot lot) {
+        securityContextService.validateStoreAccess(lot.getStoreId());
 
         ProductLotEntity lotEntity = productLotEntityMapper.toEntity(lot);
         ProductLotEntity savedLotEntity= lotRepository.save(lotEntity);
@@ -51,20 +54,33 @@ public class ProductLotServiceImpl implements ProductLotService {
     public ProductLot getLotById(Long id) {
         ProductLotEntity lotEntity = lotRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Lot not found for id:"+id));
-
+        securityContextService.validateStoreAccess(lotEntity.getStoreId());
         return productLotEntityMapper.toDomain( lotEntity );
     }
 
     @Override
     public List<ProductLot> getAllActiveLots(Long storeProductId) {
-        return lotRepository.findByProductIdAndActiveTrue(storeProductId)
+        List<ProductLot> lots = lotRepository.findByProductIdAndActiveTrue(storeProductId)
                 .stream()
                 .map(productLotEntityMapper::toDomain)
+                .toList();
+        List<Long> accessible = securityContextService.getAccessibleStoreIds();
+        if (accessible == null) {
+            return lots;
+        }
+        return lots.stream()
+                .filter(l -> l.getStoreId() != null && accessible.contains(l.getStoreId()))
                 .toList();
     }
 
     @Override
     public ProductLot updateLot(ProductLot lot) {
+        if (lot.getId() != null) {
+            ProductLotEntity existing = lotRepository.findById(lot.getId())
+                    .orElseThrow(() -> new RuntimeException("Lot not found for id:" + lot.getId()));
+            securityContextService.validateStoreAccess(existing.getStoreId());
+        }
+        securityContextService.validateStoreAccess(lot.getStoreId());
         ProductLotEntity lotEntity = productLotEntityMapper.toEntity(lot);
         ProductLotEntity savedLotEntity= lotRepository.save(lotEntity);
         return productLotEntityMapper.toDomain(savedLotEntity);
@@ -72,11 +88,11 @@ public class ProductLotServiceImpl implements ProductLotService {
 
     @Override
     public boolean deleteLot(Long id) {
-        if (lotRepository.existsById(id)) {
+        return lotRepository.findById(id).map(entity -> {
+            securityContextService.validateStoreAccess(entity.getStoreId());
             lotRepository.deleteById(id);
             return true;
-        }
-        return false;
+        }).orElse(false);
     }
 
 
@@ -94,6 +110,7 @@ public class ProductLotServiceImpl implements ProductLotService {
                                                    String reason, String referenceId, long performedBy) {
         ProductLotEntity lot = lotRepository.findById(lotId)
                 .orElseThrow(() -> new RuntimeException("Lot not found: " + lotId));
+        securityContextService.validateStoreAccess(lot.getStoreId());
 
         int before = lot.getAvailable();
 

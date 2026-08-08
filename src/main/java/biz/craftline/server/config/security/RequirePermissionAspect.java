@@ -31,14 +31,14 @@ public class RequirePermissionAspect {
     public Object checkPermission(ProceedingJoinPoint joinPoint, RequirePermission requirePermission) throws Throwable {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth == null || !auth.isAuthenticated()) {
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(String.valueOf(auth.getPrincipal()))) {
             log.warn("Unauthenticated access attempt to method requiring permission: {}", requirePermission.value());
             throw new AccessDeniedException("Authentication required");
         }
 
         String username = auth.getName();
         String requiredPermission = requirePermission.value();
-        // Check if user has the required permission using RBAC service
+        // Prefer request-scoped DB permissions (UserScopeFilter); fall back to RBACService
         boolean hasPermission = rbacService.currentUserHasPermission(requiredPermission);
 
         if (!hasPermission) {

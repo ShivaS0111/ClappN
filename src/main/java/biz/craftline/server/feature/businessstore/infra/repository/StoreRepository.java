@@ -21,4 +21,6 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
     List<StoreEntity> searchStoreByStoreName(String keyword);
 
     List<StoreEntity> findByBusinessId(long businessId);
+
+    List<StoreEntity> findByBusinessIdIn(List<Long> businessIds);
 }

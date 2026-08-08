@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -16,8 +16,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * Authenticates the caller from JWT identity (subject/email) only.
+ * Permissions and store/business scope are loaded per-request by {@link UserScopeFilter}.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -33,25 +36,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 String username = tokenProvider.getUsernameFromToken(jwt);
-                List<String> permissions = tokenProvider.getPermissionsFromToken(jwt);
-                List<String> roles = tokenProvider.getRolesFromToken(jwt);
-                List<Long> storeIds = tokenProvider.getStoreIdsFromToken(jwt);
-                List<Long> businessIds = tokenProvider.getBusinessIdsFromToken(jwt);
 
-                // Convert permissions to Spring Security authorities
-                List<SimpleGrantedAuthority> authorities = permissions != null ?
-                    permissions.stream()
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList()) :
-                    List.of();
-
-                ScopedAuthenticationToken authentication =
-                    new ScopedAuthenticationToken(username, null, authorities, roles, storeIds, businessIds);
+                // Identity only — authorities filled by UserScopeFilter from DB
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(username, null, List.of());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.debug("Set Security context for user: {}, permissions: {}, roles: {}, storeIds: {}, businessIds: {}",
-                        username, permissions, roles, storeIds, businessIds);
+
+                log.debug("JWT identity set for user: {}", username);
             }
         } catch (Exception ex) {
             log.error("Could not set user authentication in security context", ex);
