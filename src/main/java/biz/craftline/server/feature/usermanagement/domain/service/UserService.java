@@ -52,7 +52,9 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AuthUser user = userRepository.findByEmail(username).map(UserMapper::toAuthUser)
+        // Use fetch-join query to load roles, permissions and user-specific overrides in one round-trip
+        AuthUser user = userRepository.findByEmailWithRolesAndPermissions(username)
+                .map(UserMapper::toAuthUser)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
         log.info("Loaded user: {}", user.getEmail());
 

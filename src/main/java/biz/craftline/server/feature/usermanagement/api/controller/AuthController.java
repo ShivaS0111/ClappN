@@ -6,11 +6,12 @@ import biz.craftline.server.feature.usermanagement.api.dto.RegisterRequest;
 import biz.craftline.server.feature.usermanagement.api.dto.RegisterResponse;
 import biz.craftline.server.feature.usermanagement.domain.model.AuthUser;
 import biz.craftline.server.feature.usermanagement.domain.model.TokenInfo;
-import biz.craftline.server.feature.usermanagement.domain.model.User;
 import biz.craftline.server.config.security.JwtTokenProvider;
+import biz.craftline.server.feature.usermanagement.domain.model.User;
 import biz.craftline.server.feature.usermanagement.domain.service.UserService;
 import biz.craftline.server.feature.usermanagement.domain.service.RBACService;
 import biz.craftline.server.feature.usermanagement.api.dto.*;
+import biz.craftline.server.feature.usermanagement.infra.repository.RefreshTokenRepository;
 import biz.craftline.server.util.APIResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -56,8 +57,9 @@ public class AuthController {
     private final RBACService rbacService;
     private final PasswordEncoder passwordEncoder;
 
-    // In-memory storage for refresh tokens and reset tokens (use Redis in production)
-    private final ConcurrentHashMap<String, RefreshTokenInfo> refreshTokenStore = new ConcurrentHashMap<>();
+    // Persistent refresh token repository (preferred for multi-instance deployments)
+    private final RefreshTokenRepository refreshTokenRepository;
+    // In-memory storage for password reset tokens (use Redis in production)
     private final ConcurrentHashMap<String, PasswordResetInfo> passwordResetStore = new ConcurrentHashMap<>();
 
     @PostMapping("/register")
@@ -118,12 +120,9 @@ public class AuthController {
             }
             if(authentication.isAuthenticated()){
 
-                // Use the authenticated principal's authorities to derive permissions (avoid calling RBACService here)
-                List<String> permissions = authentication.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .distinct()
-                        .collect(Collectors.toList());
-
+                // Derive effective permissions from DB (roles + user-allowed - user-denied)
+                // This ensures the JWT contains the user's effective permission snapshot at login.
+                List<String> permissions = rbacService.getUserPermissions(loginRequest.getUsername());
 
                 TokenInfo tokenInfo = tokenProvider.generateTokenWithClaims(
                         loginRequest.getUsername(),
@@ -132,6 +131,15 @@ public class AuthController {
                         user.getStoreIds(),
                         user.getBusinessIds()
                 );
+
+                // Persist refresh token in DB so refresh endpoint and revocation work across instances.
+                if (tokenInfo.getRefreshToken() != null) {
+                    refreshTokenRepository.save(new biz.craftline.server.feature.usermanagement.infra.entity.RefreshTokenEntity(
+                            tokenInfo.getRefreshToken(),
+                            loginRequest.getUsername(),
+                            LocalDateTime.now().plusDays(30)
+                    ));
+                }
 
                 log.info("User {} authenticated successfully with {} permissions, roles: {}, storeIds: {}, businessIds: {}",
                         loginRequest.getUsername(), permissions.size(), user.getRoles(), user.getStoreIds(), user.getBusinessIds());
@@ -158,18 +166,52 @@ public class AuthController {
     public ResponseEntity<APIResponse<TokenInfo>> refreshToken(@Valid @RequestBody RefreshTokenRequest refreshRequest) {
         try {
             String refreshToken = refreshRequest.getRefreshToken();
-            RefreshTokenInfo tokenInfo = refreshTokenStore.get(refreshToken);
+            // Try to find a non-revoked token (normal flow)
+            var tokenEntityOpt = refreshTokenRepository.findByTokenAndRevokedFalse(refreshToken);
 
-            if (tokenInfo == null || tokenInfo.isExpired()) {
-                refreshTokenStore.remove(refreshToken);
+            if (tokenEntityOpt.isEmpty()) {
+                // Token either doesn't exist or is revoked. Check if it exists at all.
+                var maybe = refreshTokenRepository.findByToken(refreshToken);
+                if (maybe.isPresent()) {
+                    // Token exists but is revoked -> reuse detected. Revoke all tokens for this user as a precaution.
+                    String uname = maybe.get().getUsername();
+                    var all = refreshTokenRepository.findAllByUsername(uname);
+                    all.forEach(t -> t.setRevoked(true));
+                    refreshTokenRepository.saveAll(all);
+                    log.warn("Refresh token reuse detected for user {}. Revoked all tokens.", uname);
+                    return APIResponse.unauthorised("Invalid or expired refresh token");
+                }
                 return APIResponse.unauthorised("Invalid or expired refresh token");
             }
 
-            // Generate new access token
-            List<String> permissions = rbacService.getUserPermissions(tokenInfo.username());
-            TokenInfo response = (RefreshResponse) tokenProvider.generateTokenWithPermissions(tokenInfo.username(), permissions);
+            var tokenEntity = tokenEntityOpt.get();
+            if (tokenEntity.getExpiresAt().isBefore(LocalDateTime.now())) {
+                // expired -> mark as revoked
+                tokenEntity.setRevoked(true);
+                refreshTokenRepository.save(tokenEntity);
+                return APIResponse.unauthorised("Invalid or expired refresh token");
+            }
 
-            log.info("Token refreshed for user: {}", tokenInfo.username());
+            // Generate new access token using current DB permissions
+            List<String> permissions = rbacService.getUserPermissions(tokenEntity.getUsername());
+            TokenInfo response = tokenProvider.generateTokenWithPermissions(tokenEntity.getUsername(), permissions);
+
+            // Rotate refresh token: mark old token revoked and save replacedBy, persist new token
+            tokenEntity.setRevoked(true);
+            if (response.getRefreshToken() != null) {
+                tokenEntity.setReplacedBy(response.getRefreshToken());
+            }
+            refreshTokenRepository.save(tokenEntity);
+
+            if (response.getRefreshToken() != null) {
+                refreshTokenRepository.save(new biz.craftline.server.feature.usermanagement.infra.entity.RefreshTokenEntity(
+                        response.getRefreshToken(),
+                        tokenEntity.getUsername(),
+                        LocalDateTime.now().plusDays(30)
+                ));
+            }
+
+            log.info("Token refreshed for user: {} (rotated refresh token)", tokenEntity.getUsername());
             return APIResponse.success(response);
 
         } catch (Exception e) {
@@ -181,8 +223,12 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<APIResponse<String>> logout(@Valid @RequestBody LogoutRequest logoutRequest) {
         try {
-            // Remove refresh token from store
-            refreshTokenStore.remove(logoutRequest.getRefreshToken());
+            // Mark given refresh token as revoked for audit
+            var tokenOpt = refreshTokenRepository.findByToken(logoutRequest.getRefreshToken());
+            tokenOpt.ifPresent(t -> {
+                t.setRevoked(true);
+                refreshTokenRepository.save(t);
+            });
 
             log.info("User logged out successfully");
             return APIResponse.success("Logged out successfully");
@@ -249,6 +295,30 @@ public class AuthController {
         } catch (Exception e) {
             log.error("Password reset failed", e);
             return APIResponse.badRequest("Password reset failed");
+        }
+    }
+
+    /**
+     * Revoke all refresh tokens for a given username. Admin-only operation.
+     */
+    @PostMapping("/revoke-all-refresh-tokens/{username}")
+    public ResponseEntity<APIResponse<String>> revokeAllRefreshTokens(@PathVariable String username) {
+        try {
+            // Only allow SYSTEM_ADMIN to call this endpoint
+            if (!rbacService.currentUserHasRole("SYSTEM_ADMIN")) {
+                return APIResponse.unauthorised("Insufficient privileges");
+            }
+
+            // Mark all tokens revoked for audit and reuse-detection purposes
+            var all = refreshTokenRepository.findAllByUsername(username);
+            all.forEach(t -> t.setRevoked(true));
+            refreshTokenRepository.saveAll(all);
+
+            log.info("All refresh tokens revoked for user: {} by admin", username);
+            return APIResponse.success("Revoked all refresh tokens for user: " + username);
+        } catch (Exception e) {
+            log.error("Failed to revoke refresh tokens for user: {}", username, e);
+            return APIResponse.badRequest("Failed to revoke refresh tokens");
         }
     }
 

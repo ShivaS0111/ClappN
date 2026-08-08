@@ -28,7 +28,7 @@ public class RoleEntity {
         inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     @JsonManagedReference
-    private Set<PermissionEntity> permissions;
+    private Set<PermissionEntity> permissions = new HashSet<>();
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     // This is the crucial part: tell Jackson to ignore the back-reference

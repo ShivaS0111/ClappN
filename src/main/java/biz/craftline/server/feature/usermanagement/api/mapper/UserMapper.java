@@ -51,12 +51,26 @@ public class UserMapper {
         List<Role> roles = entity.getRoles().stream().map(RoleMapper::toDomain).toList();
         user.setRoles(roles.stream().map(Role::getName).toList());
 
-        List<String> permissions = entity.getRoles().stream().map(RoleEntity::getPermissions)
-                .flatMap(perms -> perms.stream().map(PermissionEntity::getName)).toList();
-        user.setPermissions(permissions);
+        // Compute effective permissions: start with role permissions, add user-allowed, remove user-denied
+        List<String> rolePermissions = entity.getRoles().stream()
+                .map(RoleEntity::getPermissions)
+                .flatMap(perms -> perms.stream().map(PermissionEntity::getName))
+                .toList();
 
-        user.setAllowedPermissions(entity.getAllowedPermissions().stream().map(p->p.getPermission().getName()).toList());
-        user.setDeniedPermissions(entity.getDeniedPermissions().stream().map(p->p.getPermission().getName()).toList());
+        List<String> allowed = entity.getAllowedPermissions().stream()
+                .map(p -> p.getPermission().getName()).toList();
+
+        List<String> denied = entity.getDeniedPermissions().stream()
+                .map(p -> p.getPermission().getName()).toList();
+
+        // apply hierarchy
+        java.util.Set<String> finalPermissions = new java.util.HashSet<>(rolePermissions);
+        finalPermissions.addAll(allowed);
+        denied.forEach(finalPermissions::remove);
+        user.setPermissions(finalPermissions.stream().toList());
+
+        user.setAllowedPermissions(allowed);
+        user.setDeniedPermissions(denied);
 
         return user;
     }

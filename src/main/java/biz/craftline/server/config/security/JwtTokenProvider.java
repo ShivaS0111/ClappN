@@ -79,10 +79,10 @@ public class JwtTokenProvider {
 
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser()
-                .verifyWith(getSigningKey())
+                .setSigningKey(getSigningKey())
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)
+                .getBody();
 
         return claims.getSubject();
     }
@@ -90,10 +90,10 @@ public class JwtTokenProvider {
     @SuppressWarnings("unchecked")
     public List<String> getPermissionsFromToken(String token) {
         Claims claims = Jwts.parser()
-                .verifyWith(getSigningKey())
+                .setSigningKey(getSigningKey())
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)
+                .getBody();
 
         return (List<String>) claims.get("permissions");
     }
@@ -101,10 +101,10 @@ public class JwtTokenProvider {
     @SuppressWarnings("unchecked")
     public List<String> getRolesFromToken(String token) {
         Claims claims = Jwts.parser()
-                .verifyWith(getSigningKey())
+                .setSigningKey(getSigningKey())
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)
+                .getBody();
 
         List<String> roles = (List<String>) claims.get("roles");
         return roles != null ? roles : List.of();
@@ -113,10 +113,10 @@ public class JwtTokenProvider {
     @SuppressWarnings("unchecked")
     public List<Long> getStoreIdsFromToken(String token) {
         Claims claims = Jwts.parser()
-                .verifyWith(getSigningKey())
+                .setSigningKey(getSigningKey())
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)
+                .getBody();
 
         List<?> raw = (List<?>) claims.get("storeIds");
         return raw != null ? raw.stream().map(v -> ((Number) v).longValue()).toList() : List.of();
@@ -125,10 +125,10 @@ public class JwtTokenProvider {
     @SuppressWarnings("unchecked")
     public List<Long> getBusinessIdsFromToken(String token) {
         Claims claims = Jwts.parser()
-                .verifyWith(getSigningKey())
+                .setSigningKey(getSigningKey())
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)
+                .getBody();
 
         List<?> raw = (List<?>) claims.get("businessIds");
         return raw != null ? raw.stream().map(v -> ((Number) v).longValue()).toList() : List.of();
@@ -137,9 +137,9 @@ public class JwtTokenProvider {
     public boolean validateToken(String authToken) {
         try {
             Jwts.parser()
-                .verifyWith(getSigningKey())
+                .setSigningKey(getSigningKey())
                 .build()
-                .parseSignedClaims(authToken);
+                .parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException ex) {
             log.error("Invalid JWT token");
