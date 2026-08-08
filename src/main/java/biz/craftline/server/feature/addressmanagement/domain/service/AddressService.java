@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.addressmanagement.domain.service;
 
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.addressmanagement.domain.model.Address;
 import biz.craftline.server.feature.addressmanagement.api.mapper.AddressMapper;
 import biz.craftline.server.feature.addressmanagement.infra.entity.AddressEntity;
@@ -12,14 +13,22 @@ import biz.craftline.server.feature.addressmanagement.infra.repository.PlaceRepo
 import biz.craftline.server.feature.addressmanagement.infra.repository.RegionRepository;
 import biz.craftline.server.feature.addressmanagement.infra.repository.SubRegionRepository;
 import biz.craftline.server.feature.addressmanagement.infra.repository.ZipcodeRepository;
+import biz.craftline.server.feature.customermanagement.infra.entity.CustomerEntity;
+import biz.craftline.server.feature.customermanagement.infra.repository.CustomerRepository;
+import biz.craftline.server.feature.employeemanagement.infra.entity.EmployeeEntity;
+import biz.craftline.server.feature.employeemanagement.infra.repository.EmployeeRepository;
+import biz.craftline.server.feature.usermanagement.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class  AddressService {
+public class AddressService {
     @Autowired
     private AddressRepository addressRepository;
     @Autowired
@@ -38,24 +47,36 @@ public class  AddressService {
     private LandmarkRepository landmarkRepository;
     @Autowired
     private ZipcodeRepository zipcodeRepository;
+    @Autowired
+    private SecurityContextService securityContextService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     public List<Address> getAllAddresses() {
-        return addressRepository.findAll().stream()
-            .map(AddressMapper::toDomain)
-            .collect(Collectors.toList());
+        return filterAccessible(addressRepository.findAll().stream()
+                .map(AddressMapper::toDomain)
+                .collect(Collectors.toList()));
     }
 
     public Optional<Address> getAddressById(Long id) {
-        return addressRepository.findById(id).map(AddressMapper::toDomain);
+        Optional<Address> address = addressRepository.findById(id).map(AddressMapper::toDomain);
+        address.ifPresent(this::assertCanAccessAddress);
+        return address;
     }
 
     public List<Address> getAddressesByTypeAndReferenceId(String type, Long referenceId) {
+        assertCanAccessTypeAndReference(type, referenceId);
         return addressRepository.findByTypeAndReferenceId(type, referenceId).stream()
-            .map(AddressMapper::toDomain)
-            .collect(Collectors.toList());
+                .map(AddressMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
     public Address createAddress(Address address) {
+        assertCanAccessTypeAndReference(address.getType(), address.getReferenceId());
         AddressEntity entity = new AddressEntity();
         entity.setStreet(address.getStreet());
         entity.setCity(address.getCity());
@@ -80,11 +101,14 @@ public class  AddressService {
 
     public Address updateAddress(Long id, Address addressDetails) {
         return addressRepository.findById(id).map(entity -> {
+            assertCanAccessAddress(AddressMapper.toDomain(entity));
+            if (addressDetails.getType() != null && addressDetails.getReferenceId() != null) {
+                assertCanAccessTypeAndReference(addressDetails.getType(), addressDetails.getReferenceId());
+            }
             entity.setStreet(addressDetails.getStreet());
             entity.setCity(addressDetails.getCity());
             entity.setState(addressDetails.getState());
             entity.setPostalCode(addressDetails.getPostalCode());
-            //entity.setCountry(addressDetails.getCountry());
             entity.setType(addressDetails.getType());
             entity.setReferenceId(addressDetails.getReferenceId());
             AddressEntity updated = addressRepository.save(entity);
@@ -93,42 +117,122 @@ public class  AddressService {
     }
 
     public void deleteAddress(Long id) {
-        addressRepository.deleteById(id);
+        addressRepository.findById(id).ifPresent(entity -> {
+            assertCanAccessAddress(AddressMapper.toDomain(entity));
+            addressRepository.deleteById(id);
+        });
     }
 
     public List<Address> getAddressesByArea(String area) {
-        return addressRepository.findByArea_Name(area).stream()
-            .map(AddressMapper::toDomain)
-            .collect(Collectors.toList());
+        return filterAccessible(addressRepository.findByArea_Name(area).stream()
+                .map(AddressMapper::toDomain).collect(Collectors.toList()));
     }
+
     public List<Address> getAddressesByPlace(String place) {
-        return addressRepository.findByPlace_Name(place).stream()
-            .map(AddressMapper::toDomain)
-            .collect(Collectors.toList());
+        return filterAccessible(addressRepository.findByPlace_Name(place).stream()
+                .map(AddressMapper::toDomain).collect(Collectors.toList()));
     }
+
     public List<Address> getAddressesByDistrict(String district) {
-        return addressRepository.findByDistrict_Name(district).stream()
-            .map(AddressMapper::toDomain)
-            .collect(Collectors.toList());
+        return filterAccessible(addressRepository.findByDistrict_Name(district).stream()
+                .map(AddressMapper::toDomain).collect(Collectors.toList()));
     }
+
     public List<Address> getAddressesByRegion(String region) {
-        return addressRepository.findByRegion_Name(region).stream()
-            .map(AddressMapper::toDomain)
-            .collect(Collectors.toList());
+        return filterAccessible(addressRepository.findByRegion_Name(region).stream()
+                .map(AddressMapper::toDomain).collect(Collectors.toList()));
     }
+
     public List<Address> getAddressesBySubRegion(String subRegion) {
-        return addressRepository.findBySubRegion_Name(subRegion).stream()
-            .map(AddressMapper::toDomain)
-            .collect(Collectors.toList());
+        return filterAccessible(addressRepository.findBySubRegion_Name(subRegion).stream()
+                .map(AddressMapper::toDomain).collect(Collectors.toList()));
     }
+
     public List<Address> getAddressesByLandmark(String landmark) {
-        return addressRepository.findByLandmark_Name(landmark).stream()
-            .map(AddressMapper::toDomain)
-            .collect(Collectors.toList());
+        return filterAccessible(addressRepository.findByLandmark_Name(landmark).stream()
+                .map(AddressMapper::toDomain).collect(Collectors.toList()));
     }
+
     public List<Address> getAddressesByZipcode(String zipcode) {
-        return addressRepository.findByZipcode_Code(zipcode).stream()
-            .map(AddressMapper::toDomain)
-            .collect(Collectors.toList());
+        return filterAccessible(addressRepository.findByZipcode_Code(zipcode).stream()
+                .map(AddressMapper::toDomain).collect(Collectors.toList()));
+    }
+
+    private List<Address> filterAccessible(List<Address> addresses) {
+        if (securityContextService.isSystemAdmin()) {
+            return addresses;
+        }
+        return addresses.stream().filter(this::canAccessAddress).collect(Collectors.toList());
+    }
+
+    private void assertCanAccessAddress(Address address) {
+        if (!canAccessAddress(address)) {
+            throw new AccessDeniedException("You do not have access to this address");
+        }
+    }
+
+    private boolean canAccessAddress(Address address) {
+        if (address == null) {
+            return false;
+        }
+        if (securityContextService.isSystemAdmin()) {
+            return true;
+        }
+        try {
+            assertCanAccessTypeAndReference(address.getType(), address.getReferenceId());
+            return true;
+        } catch (AccessDeniedException ex) {
+            return false;
+        }
+    }
+
+    /**
+     * Scope address ownership via type + referenceId:
+     * BUSINESS → business access; STORE → store access;
+     * USER → same rules as user visibility; EMPLOYEE → employee store/business;
+     * CUSTOMER → customer store/business; DELIVERY → admin only (no reliable store link).
+     */
+    private void assertCanAccessTypeAndReference(String type, Long referenceId) {
+        if (type == null || referenceId == null) {
+            throw new AccessDeniedException("Address type and referenceId are required");
+        }
+        if (securityContextService.isSystemAdmin()) {
+            return;
+        }
+
+        String normalized = type.trim().toUpperCase(Locale.ROOT);
+        switch (normalized) {
+            case "BUSINESS" -> securityContextService.validateBusinessAccess(referenceId);
+            case "STORE" -> securityContextService.validateStoreAccess(referenceId);
+            case "USER" -> {
+                // getUserById enforces store/business overlap (or self / admin)
+                userService.getUserById(referenceId)
+                        .orElseThrow(() -> new AccessDeniedException("User not found for address"));
+            }
+            case "EMPLOYEE" -> {
+                EmployeeEntity employee = employeeRepository.findById(referenceId)
+                        .orElseThrow(() -> new AccessDeniedException("Employee not found for address"));
+                if (employee.getStoreId() != null) {
+                    securityContextService.validateStoreAccess(employee.getStoreId());
+                } else if (employee.getBusinessId() != null) {
+                    securityContextService.validateBusinessAccess(employee.getBusinessId());
+                } else {
+                    throw new AccessDeniedException("Employee has no store/business scope");
+                }
+            }
+            case "CUSTOMER" -> {
+                CustomerEntity customer = customerRepository.findById(referenceId)
+                        .orElseThrow(() -> new AccessDeniedException("Customer not found for address"));
+                if (customer.getStoreId() != null) {
+                    securityContextService.validateStoreAccess(customer.getStoreId());
+                } else if (customer.getBusinessId() != null) {
+                    securityContextService.validateBusinessAccess(customer.getBusinessId());
+                } else {
+                    throw new AccessDeniedException("Customer has no store/business scope");
+                }
+            }
+            case "DELIVERY" -> throw new AccessDeniedException("Delivery address access requires SYSTEM_ADMIN or order APIs");
+            default -> throw new AccessDeniedException("Unknown address type: " + type);
+        }
     }
 }

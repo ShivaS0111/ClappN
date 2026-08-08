@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.usermanagement.domain.service;
 
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.employeemanagement.infra.entity.EmployeeEntity;
 import biz.craftline.server.feature.employeemanagement.infra.repository.EmployeeRepository;
 import biz.craftline.server.feature.usermanagement.domain.model.AuthUser;
@@ -21,9 +22,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,19 +38,92 @@ public class UserService implements UserDetailsService {
     private RoleRepository roleRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private SecurityContextService securityContextService;
 
     public List<User> getAllUsers() {
-        return userRepository.findAll().stream()
+        List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
+        List<Long> accessibleBusinessIds = securityContextService.getAccessibleBusinessIds();
+
+        // SYSTEM_ADMIN — unrestricted
+        if (accessibleStoreIds == null && accessibleBusinessIds == null) {
+            return userRepository.findAll().stream()
+                    .map(UserMapper::toDomain)
+                    .collect(Collectors.toList());
+        }
+
+        Set<Long> visibleUserIds = new HashSet<>();
+        if (accessibleStoreIds != null && !accessibleStoreIds.isEmpty()) {
+            employeeRepository.findByStoreIdIn(accessibleStoreIds).stream()
+                    .map(EmployeeEntity::getUserId)
+                    .filter(Objects::nonNull)
+                    .forEach(visibleUserIds::add);
+        }
+        if (accessibleBusinessIds != null && !accessibleBusinessIds.isEmpty()) {
+            employeeRepository.findByBusinessIdIn(accessibleBusinessIds).stream()
+                    .map(EmployeeEntity::getUserId)
+                    .filter(Objects::nonNull)
+                    .forEach(visibleUserIds::add);
+        }
+
+        // Always include self
+        try {
+            visibleUserIds.add(securityContextService.getCurrentUserId());
+        } catch (Exception ignored) {
+            // no authenticated context
+        }
+
+        if (visibleUserIds.isEmpty()) {
+            return List.of();
+        }
+
+        return userRepository.findAllById(visibleUserIds).stream()
                 .map(UserMapper::toDomain)
                 .collect(Collectors.toList());
     }
 
     public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id).map(UserMapper::toDomain);
+        Optional<User> user = userRepository.findById(id).map(UserMapper::toDomain);
+        user.ifPresent(this::assertCanViewUser);
+        return user;
     }
 
     public Optional<User> getUserByEmail(String email) {
+        // Used by auth and internal flows — do not enforce API scope here.
+        // Controllers that expose this must call assertCanViewUser.
         return userRepository.findByEmail(email).map(UserMapper::toDomain);
+    }
+
+    /**
+     * Enforce that the current request may view the given user (store/business overlap or self).
+     */
+    public void assertCanViewUser(User user) {
+        if (!biz.craftline.server.config.security.UserScopeContextHolder.isPresent()) {
+            return;
+        }
+        if (securityContextService.isSystemAdmin()) {
+            return;
+        }
+        if (Objects.equals(user.getId(), securityContextService.getCurrentUserId())) {
+            return;
+        }
+
+        List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
+        List<Long> accessibleBusinessIds = securityContextService.getAccessibleBusinessIds();
+
+        List<EmployeeEntity> targetEmployees = employeeRepository.findByUserId(user.getId());
+        boolean allowed = targetEmployees.stream().anyMatch(e -> {
+            if (accessibleStoreIds != null && e.getStoreId() != null && accessibleStoreIds.contains(e.getStoreId())) {
+                return true;
+            }
+            return accessibleBusinessIds != null && e.getBusinessId() != null
+                    && accessibleBusinessIds.contains(e.getBusinessId());
+        });
+
+        if (!allowed) {
+            throw new org.springframework.security.access.AccessDeniedException(
+                    "You do not have access to user: " + user.getId());
+        }
     }
 
     @Override
@@ -107,12 +183,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).map(userEntity -> {
             userEntity.setFullName(userDetails.getFullName());
             userEntity.setEmail(userDetails.getEmail());
-            userEntity.setPassword(userDetails.getPassword());
+            // Password changes must go through updatePassword / changePassword (hashed)
             userEntity.setEnabled(userDetails.isEnabled());
             userEntity.setAccountNonLocked(userDetails.isAccountNonLocked());
             userEntity.setAccountNonExpired(userDetails.isAccountNonExpired());
             userEntity.setCredentialsNonExpired(userDetails.isCredentialsNonExpired());
-            // userEntity.setAddress(userDetails.getAddress());
             UserEntity updated = userRepository.save(userEntity);
             return UserMapper.toDomain(updated);
         }).orElseThrow(() -> new RuntimeException("User not found"));
@@ -131,12 +206,35 @@ public class UserService implements UserDetailsService {
     }
 
     public User createUserWithHashedPassword(User newUser) {
-        // Here you would hash the password before saving
-        // For example, using BCryptPasswordEncoder
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String hashedPassword = encoder.encode(newUser.getPassword());
         newUser.setPassword(hashedPassword);
         return createUser(newUser);
+    }
+
+    /**
+     * Update password for an existing user (hashed). Does not create a new user.
+     */
+    public void updatePassword(String email, String rawPassword) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(rawPassword));
+        userRepository.save(user);
+    }
+
+    /**
+     * Change password for the current user after verifying the old password.
+     */
+    public void changePassword(String email, String currentRawPassword, String newRawPassword) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!encoder.matches(currentRawPassword, user.getPassword())) {
+            throw new org.springframework.security.authentication.BadCredentialsException("Current password is incorrect");
+        }
+        user.setPassword(encoder.encode(newRawPassword));
+        userRepository.save(user);
     }
 
     public AuthUser getAuthUserByEmail(

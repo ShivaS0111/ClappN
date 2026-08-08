@@ -124,10 +124,11 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
 
     @Override
     public StoreOfferedProduct findById(Long id) {
-        Optional<StoreOfferedProductEntity>  service = productsOfferedByStoreRepository.findById(id);
-        service.orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
-
-        return mapper.toDomain(service.get());
+        Optional<StoreOfferedProductEntity> product = productsOfferedByStoreRepository.findById(id);
+        StoreOfferedProductEntity entity = product.orElseThrow(
+                () -> new RuntimeException("Product not found with id: " + id));
+        securityContextService.validateStoreAccess(entity.getStoreId());
+        return mapper.toDomain(entity);
     }
 
     @Override

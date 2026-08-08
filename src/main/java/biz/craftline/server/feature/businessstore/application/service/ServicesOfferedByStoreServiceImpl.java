@@ -130,8 +130,10 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
     @Override
     public StoreOfferedService findById(Long id) {
         Optional<StoreOfferedServiceEntity> service = servicesOfferedByStoreRepository.findById(id);
-        service.orElseThrow(() -> new RuntimeException("Service not found with id: " + id));
-        StoreOfferedService s = mapper.toDomain(service.get());
+        StoreOfferedServiceEntity entity = service.orElseThrow(
+                () -> new RuntimeException("Service not found with id: " + id));
+        securityContextService.validateStoreAccess(entity.getStoreId());
+        StoreOfferedService s = mapper.toDomain(entity);
         // enrich single service with latest price if present
         try {
             storeItemPriceService.findByServiceId(s.getId()).ifPresent(p -> s.setPrice(p));

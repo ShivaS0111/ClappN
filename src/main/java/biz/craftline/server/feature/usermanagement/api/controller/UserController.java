@@ -39,7 +39,8 @@ public class UserController {
     @RequirePermission("user.read")
     public ResponseEntity<APIResponse<UserDto>> getUserByEmail(@PathVariable String email) {
         User user = userService.getUserByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        return  APIResponse.success(UserMapper.toDto(user));
+        userService.assertCanViewUser(user);
+        return APIResponse.success(UserMapper.toDto(user));
     }
 
     @PostMapping

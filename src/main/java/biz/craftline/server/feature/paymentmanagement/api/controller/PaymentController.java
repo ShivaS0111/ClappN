@@ -1,6 +1,9 @@
 package biz.craftline.server.feature.paymentmanagement.api.controller;
 
 import biz.craftline.server.config.security.RequirePermission;
+import biz.craftline.server.config.security.SecurityContextService;
+import biz.craftline.server.feature.ordermanagement.infra.entity.OrderEntity;
+import biz.craftline.server.feature.ordermanagement.infra.repository.OrderRepository;
 import biz.craftline.server.feature.paymentmanagement.api.request.InitiatePaymentRequest;
 import biz.craftline.server.feature.paymentmanagement.api.response.InitiatePaymentResponse;
 import biz.craftline.server.feature.paymentmanagement.domain.service.PaymentService;
@@ -10,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -23,12 +27,13 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     private final PaymentTransactionRepository txRepo;
+    private final OrderRepository orderRepository;
+    private final SecurityContextService securityContextService;
 
     @PostMapping("/initiate")
     @RequirePermission("payment.create")
     public ResponseEntity<?> initiate(@RequestBody InitiatePaymentRequest req) {
         try {
-            // Validation
             if (req.getOrderId() == null || req.getOrderId() <= 0) {
                 return ResponseEntity.badRequest().body("Invalid orderId");
             }
@@ -42,11 +47,20 @@ public class PaymentController {
                 return ResponseEntity.badRequest().body("Payment gateway is required");
             }
 
+            // Scope: caller must access the order's store
+            OrderEntity order = orderRepository.findById(req.getOrderId())
+                    .orElseThrow(() -> new IllegalArgumentException("Order not found: " + req.getOrderId()));
+            securityContextService.validateStoreAccess(order.getStoreId());
+
             log.info("Initiating payment: orderId={}, amount={}, currency={}, gateway={}",
-                req.getOrderId(), req.getAmount(), req.getCurrency(), req.getGateway());
+                    req.getOrderId(), req.getAmount(), req.getCurrency(), req.getGateway());
 
             InitiatePaymentResponse response = paymentService.initiate(req);
             return ResponseEntity.ok(response);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             log.error("Payment initiation failed", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -62,16 +76,38 @@ public class PaymentController {
                 return ResponseEntity.badRequest().body("providerPaymentId is required");
             }
             Optional<PaymentTransaction> tx = txRepo.findByProviderPaymentId(providerPaymentId);
-            if (tx.isPresent()) {
-                return ResponseEntity.ok(tx.get());
-            } else {
+            if (tx.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("Payment transaction not found");
             }
+
+            PaymentTransaction payment = tx.get();
+            assertCanAccessPayment(payment);
+            return ResponseEntity.ok(payment);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error("Error fetching payment status", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error fetching status: " + e.getMessage());
+        }
+    }
+
+    private void assertCanAccessPayment(PaymentTransaction payment) {
+        if (securityContextService.isSystemAdmin()) {
+            return;
+        }
+        String orderIdRaw = payment.getOrderId();
+        if (orderIdRaw == null || orderIdRaw.isBlank()) {
+            throw new AccessDeniedException("Payment is not linked to an accessible order");
+        }
+        try {
+            Long orderId = Long.parseLong(orderIdRaw.trim());
+            OrderEntity order = orderRepository.findById(orderId)
+                    .orElseThrow(() -> new AccessDeniedException("Order not found for payment"));
+            securityContextService.validateStoreAccess(order.getStoreId());
+        } catch (NumberFormatException ex) {
+            throw new AccessDeniedException("Invalid order reference on payment");
         }
     }
 }
