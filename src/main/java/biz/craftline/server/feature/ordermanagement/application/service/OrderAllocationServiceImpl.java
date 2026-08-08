@@ -2,7 +2,6 @@ package biz.craftline.server.feature.ordermanagement.application.service;
 
 import biz.craftline.server.feature.inventorymanagement.domain.model.ProductLot;
 import biz.craftline.server.feature.inventorymanagement.domain.service.ProductLotService;
-import biz.craftline.server.feature.inventorymanagement.domain.service.StoreInventoryService;
 import biz.craftline.server.feature.ordermanagement.domain.model.OrderAllocatedLot;
 import biz.craftline.server.feature.ordermanagement.infra.entity.OrderAllocatedLotEntity;
 import biz.craftline.server.feature.ordermanagement.infra.repository.OrderAllocatedLotRepository;
@@ -21,7 +20,6 @@ import java.util.List;
 public class OrderAllocationServiceImpl {
 
     private final ProductLotService productLotService;
-    private final StoreInventoryService storeInventoryService;
     private final OrderAllocatedLotRepository allocatedLotRepository;
 
     private static final DateTimeFormatter DATE_FORMATTER =
@@ -54,9 +52,6 @@ public class OrderAllocationServiceImpl {
 
             // create product lot transaction - BLOCK (delegated to productLotRepository/service)
             productLotService.productLotBlock(lot.getId(), allocate, "ORDER_ALLOC", orderItemId);
-
-            // update store inventory block
-            storeInventoryService.adjustBlocked(storeId, productId, allocate, "order-block");
 
             // persist allocation record
             OrderAllocatedLotEntity ent =

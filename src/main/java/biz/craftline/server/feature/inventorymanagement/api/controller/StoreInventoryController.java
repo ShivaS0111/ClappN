@@ -35,6 +35,17 @@ public class StoreInventoryController {
         return APIResponse.success(dtoList, "Store inventory retrieved successfully");
     }
 
+    @GetMapping("/{storeId}/low-stock")
+    @RequirePermission("inventory.read")
+    public ResponseEntity<APIResponse<List<StoreInventoryDTO>>> getLowStock(
+            @PathVariable Long storeId,
+            @RequestParam(defaultValue = "5") int threshold) {
+        List<StoreInventoryDTO> dtoList = storeInventoryService.findLowStockByStoreId(storeId, threshold).stream()
+                .map(storeInventoryDTOMapper::toDomain)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtoList, "Low stock items retrieved successfully");
+    }
+
     @PostMapping("/{storeId}/{productId}/add")
     @RequirePermission("inventory.create")
     public ResponseEntity<APIResponse<StoreInventoryDTO>> addStock(@PathVariable Long storeId, @PathVariable Long productId,

@@ -36,6 +36,21 @@ public class StoreInventoryServiceImpl implements StoreInventoryService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<StoreInventory> findLowStockByStoreId(Long storeId, int threshold) {
+        securityContextService.validateStoreAccess(storeId);
+        return storeInventoryRepository.findLowStockByStoreId(storeId, threshold)
+                .stream()
+                .map(storeInventoryEntityMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public long countLowStockByStoreId(Long storeId, int threshold) {
+        securityContextService.validateStoreAccess(storeId);
+        return storeInventoryRepository.countLowStockByStoreId(storeId, threshold);
+    }
+
     @Transactional
     public StoreInventory addStock(Long storeId, Long productId, int quantity, String referenceType,
                                    String referenceId, String reason) {

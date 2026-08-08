@@ -21,6 +21,7 @@ import biz.craftline.server.feature.customermanagement.domain.model.Customer;
 import biz.craftline.server.feature.customermanagement.domain.service.CustomerService;
 import biz.craftline.server.feature.employeemanagement.domain.model.Employee;
 import biz.craftline.server.feature.employeemanagement.domain.service.EmployeeService;
+import biz.craftline.server.feature.inventorymanagement.domain.service.StoreInventoryService;
 import biz.craftline.server.feature.ordermanagement.domain.model.Order;
 import biz.craftline.server.feature.ordermanagement.domain.service.OrderService;
 import biz.craftline.server.util.APIResponse;
@@ -33,6 +34,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +61,7 @@ public class StoreController {
     private final ProductsOfferedByStoreService productsOfferedByStoreService;
     private final StoreOfferedServiceDTOMapper storeOfferedServiceDTOMapper;
     private final StoreOfferedProductDTOMapper storeOfferedProductDTOMapper;
+    private final StoreInventoryService storeInventoryService;
 
     public StoreController(StoreDTOMapper mapper, StoreService service,
                            BusinessEntityService businessService,
@@ -66,7 +71,8 @@ public class StoreController {
                            ServicesOfferedByStoreService servicesOfferedByStoreService,
                            ProductsOfferedByStoreService productsOfferedByStoreService,
                            StoreOfferedServiceDTOMapper storeOfferedServiceDTOMapper,
-                           StoreOfferedProductDTOMapper storeOfferedProductDTOMapper) {
+                           StoreOfferedProductDTOMapper storeOfferedProductDTOMapper,
+                           StoreInventoryService storeInventoryService) {
         this.mapper = mapper;
         this.service = service;
         this.businessService = businessService;
@@ -77,6 +83,7 @@ public class StoreController {
         this.productsOfferedByStoreService = productsOfferedByStoreService;
         this.storeOfferedServiceDTOMapper = storeOfferedServiceDTOMapper;
         this.storeOfferedProductDTOMapper = storeOfferedProductDTOMapper;
+        this.storeInventoryService = storeInventoryService;
     }
 
     /**
@@ -316,23 +323,42 @@ public class StoreController {
         
         int activeCustomers = (int) customers.stream().filter(c -> c.getStatus() == 1).count();
         int pendingOrders = (int) orders.stream()
-                .filter(o -> "CREATED".equals(o.getStatus()) || "BLOCKED".equals(o.getStatus()))
+                .filter(o -> "CREATED".equals(o.getStatus()) || "BLOCKED".equals(o.getStatus())
+                        || "CONFIRMED".equals(o.getStatus()))
                 .count();
-        double totalRevenue = orders.stream()
-                .filter(o -> "COMPLETED".equals(o.getStatus()))
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
+        List<Order> todayOrdersList = orders.stream()
+                .filter(o -> o.getOrderDate() != null
+                        && !o.getOrderDate().isBefore(startOfDay)
+                        && !o.getOrderDate().isAfter(endOfDay))
+                .toList();
+        double todayRevenue = todayOrdersList.stream()
+                .filter(o -> "COMPLETED".equals(o.getStatus()) || "DELIVERED".equals(o.getStatus()))
                 .mapToDouble(o -> o.getTotalAmount() != null ? o.getTotalAmount() : 0.0)
                 .sum();
+
+        LocalDateTime startOfMonth = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        double monthlyRevenue = orders.stream()
+                .filter(o -> o.getOrderDate() != null && !o.getOrderDate().isBefore(startOfMonth))
+                .filter(o -> "COMPLETED".equals(o.getStatus()) || "DELIVERED".equals(o.getStatus()))
+                .mapToDouble(o -> o.getTotalAmount() != null ? o.getTotalAmount() : 0.0)
+                .sum();
+
         int totalProducts = productsOfferedByStoreService.findProductsByStoreId(storeId)
                 .orElse(List.of()).size();
+        int lowStockThreshold = 5;
+        long lowStockItems = storeInventoryService.countLowStockByStoreId(storeId, lowStockThreshold);
 
         StoreMetricsDTO metrics = StoreMetricsDTO.builder()
-                .todayRevenue(0.0) // TODO: Filter by today's date
-                .todayOrders(orders.size())
+                .todayRevenue(todayRevenue)
+                .todayOrders(todayOrdersList.size())
                 .activeCustomers(activeCustomers)
                 .totalProducts(totalProducts)
-                .lowStockItems(0) // TODO: Join with inventory data
+                .lowStockItems((int) lowStockItems)
                 .pendingOrders(pendingOrders)
-                .monthlyRevenue(totalRevenue)
+                .monthlyRevenue(monthlyRevenue)
                 .monthlyGrowth(0.0)
                 .totalEmployees(employees.size())
                 .build();

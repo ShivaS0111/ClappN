@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface OrderAllocatedLotRepository extends JpaRepository<OrderAllocatedLotEntity, Long> {
     List<OrderAllocatedLotEntity> findByOrderItemId(Long orderItemId);
+
+    List<OrderAllocatedLotEntity> findByOrderItemIdIn(List<Long> orderItemIds);
 }

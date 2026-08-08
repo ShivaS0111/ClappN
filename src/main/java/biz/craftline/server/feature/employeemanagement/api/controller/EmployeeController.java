@@ -1,5 +1,6 @@
 package biz.craftline.server.feature.employeemanagement.api.controller;
 
+import biz.craftline.server.config.mail.MailService;
 import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.employeemanagement.api.dto.EmployeeRequest;
 import biz.craftline.server.feature.employeemanagement.api.dto.EmployeeResponse;
@@ -27,6 +28,9 @@ public class EmployeeController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MailService mailService;
 
     @GetMapping
     @RequirePermission("user.read")
@@ -86,8 +90,19 @@ public class EmployeeController {
             newUser.setAccountNonExpired(true);
             newUser.setCredentialsNonExpired(true);
             User created = userService.createUserWithHashedPassword(newUser);
-            // TODO: Send temporary password to employee via email service
-            log.info("Created user account for employee: {}. Temporary password must be sent via email.", request.getEmail());
+            try {
+                mailService.sendText(
+                        request.getEmail(),
+                        "Your Clapp account",
+                        "Hello " + request.getName() + ",\n\n"
+                                + "An account was created for you.\n"
+                                + "Email: " + request.getEmail() + "\n"
+                                + "Temporary password: " + tempPassword + "\n\n"
+                                + "Please sign in and change your password."
+                );
+            } catch (Exception mailEx) {
+                log.warn("Failed to send employee invite email to {}: {}", request.getEmail(), mailEx.getMessage());
+            }
             return created;
         });
     }

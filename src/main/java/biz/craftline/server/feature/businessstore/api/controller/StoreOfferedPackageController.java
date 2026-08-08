@@ -1,52 +1,74 @@
 package biz.craftline.server.feature.businessstore.api.controller;
 
-import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedPackage;
+import biz.craftline.server.config.security.RequirePermission;
 import biz.craftline.server.feature.businessstore.api.dto.StoreOfferedPackageDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreOfferedPackageDTOMapper;
-import biz.craftline.server.feature.businessstore.domain.service.StoreOfferedPackageService;
+import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedPackage;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedProduct;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreOfferedPackageService;
+import biz.craftline.server.util.APIResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/store-offered-packages")
+@RequiredArgsConstructor
 public class StoreOfferedPackageController {
+
     private final StoreOfferedPackageService packageService;
-    // You would inject services for StoreOfferedProduct/Service lookup here in a real app
 
-    public StoreOfferedPackageController(StoreOfferedPackageService packageService) {
-        this.packageService = packageService;
-    }
-
- /*   @GetMapping
-    public List<StoreOfferedPackageDTO> getAllPackages() {
-        List<StoreOfferedPackage> packages = packageService.getAllPackages();
-        List<StoreOfferedPackageDTO> dtos = new ArrayList<>();
-        for (StoreOfferedPackage pkg : packages) {
-            dtos.add(StoreOfferedPackageDTOMapper.toDTO(pkg));
-        }
-        return dtos;
+    @GetMapping("/store/{storeId}")
+    @RequirePermission("package.read")
+    public ResponseEntity<APIResponse<List<StoreOfferedPackageDTO>>> listByStore(@PathVariable Long storeId) {
+        List<StoreOfferedPackageDTO> dtos = packageService.findPackagesByStoreId(storeId)
+                .orElse(List.of())
+                .stream()
+                .map(StoreOfferedPackageDTOMapper::toDTO)
+                .collect(Collectors.toList());
+        return APIResponse.success(dtos, "Packages retrieved");
     }
 
     @GetMapping("/{id}")
-    public StoreOfferedPackageDTO getPackage(@PathVariable Long id) {
-        StoreOfferedPackage pkg = packageService.getPackage(id);
-        return pkg != null ? StoreOfferedPackageDTOMapper.toDTO(pkg) : null;
+    @RequirePermission("package.read")
+    public ResponseEntity<APIResponse<StoreOfferedPackageDTO>> getPackage(@PathVariable Long id) {
+        return APIResponse.success(StoreOfferedPackageDTOMapper.toDTO(packageService.findById(id)), "Package retrieved");
     }
 
     @PostMapping
-    public StoreOfferedPackageDTO createPackage(@RequestBody StoreOfferedPackageDTO dto) {
-        // In a real app, fetch products/services by IDs
+    @RequirePermission("package.create")
+    public ResponseEntity<APIResponse<StoreOfferedPackageDTO>> createPackage(@RequestBody StoreOfferedPackageDTO dto) {
         Set<StoreOfferedProduct> products = new HashSet<>();
+        if (dto.getProductIds() != null) {
+            dto.getProductIds().forEach(id -> {
+                StoreOfferedProduct p = new StoreOfferedProduct();
+                p.setId(id);
+                products.add(p);
+            });
+        }
         Set<StoreOfferedService> services = new HashSet<>();
+        if (dto.getServiceIds() != null) {
+            dto.getServiceIds().forEach(id -> {
+                StoreOfferedService s = new StoreOfferedService();
+                s.setId(id);
+                services.add(s);
+            });
+        }
         StoreOfferedPackage pkg = StoreOfferedPackageDTOMapper.toModel(dto, products, services);
-        StoreOfferedPackage saved = packageService.savePackage(pkg);
-        return StoreOfferedPackageDTOMapper.toDTO(saved);
+        StoreOfferedPackage saved = packageService.save(pkg);
+        return APIResponse.success(StoreOfferedPackageDTOMapper.toDTO(saved), "Package created");
     }
 
     @DeleteMapping("/{id}")
-    public void deletePackage(@PathVariable Long id) {
-        packageService.deletePackage(id);
-    }*/
+    @RequirePermission("package.delete")
+    public ResponseEntity<APIResponse<Void>> deletePackage(@PathVariable Long id) {
+        packageService.deleteStorePackageById(id);
+        return APIResponse.success(null, "Package deleted");
+    }
 }

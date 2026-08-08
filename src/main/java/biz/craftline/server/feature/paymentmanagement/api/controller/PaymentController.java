@@ -93,6 +93,53 @@ public class PaymentController {
         }
     }
 
+    @PostMapping("/{providerPaymentId}/confirm")
+    @RequirePermission("payment.create")
+    public ResponseEntity<?> confirm(@PathVariable String providerPaymentId) {
+        try {
+            PaymentTransaction existing = txRepo.findByProviderPaymentId(providerPaymentId)
+                    .orElseThrow(() -> new IllegalArgumentException("Payment transaction not found"));
+            assertCanAccessPayment(existing);
+            PaymentTransaction confirmed = paymentService.confirm(providerPaymentId);
+            return ResponseEntity.ok(confirmed);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            log.error("Payment confirm failed", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Payment confirm failed: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/{providerPaymentId}/refund")
+    @RequirePermission("payment.refund")
+    public ResponseEntity<?> refund(
+            @PathVariable String providerPaymentId,
+            @RequestBody(required = false) biz.craftline.server.feature.paymentmanagement.api.request.RefundPaymentRequest body) {
+        try {
+            PaymentTransaction existing = txRepo.findByProviderPaymentId(providerPaymentId)
+                    .orElseThrow(() -> new IllegalArgumentException("Payment transaction not found"));
+            assertCanAccessPayment(existing);
+            Long amount = body != null ? body.getAmount() : null;
+            PaymentTransaction refunded = paymentService.refund(providerPaymentId, amount);
+            return ResponseEntity.ok(refunded);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            log.error("Payment refund failed", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Payment refund failed: " + e.getMessage());
+        }
+    }
+
     private void assertCanAccessPayment(PaymentTransaction payment) {
         if (securityContextService.isSystemAdmin()) {
             return;

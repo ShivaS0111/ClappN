@@ -17,4 +17,8 @@ public interface StoreInventoryService {
 
     List<StoreInventory> findByStoreId(Long storeId);
 
+    List<StoreInventory> findLowStockByStoreId(Long storeId, int threshold);
+
+    long countLowStockByStoreId(Long storeId, int threshold);
+
 }

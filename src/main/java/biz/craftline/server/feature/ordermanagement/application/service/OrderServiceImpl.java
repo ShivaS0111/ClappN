@@ -1,13 +1,18 @@
 package biz.craftline.server.feature.ordermanagement.application.service;
 
 import biz.craftline.server.config.security.SecurityContextService;
+import biz.craftline.server.feature.inventorymanagement.application.enums.TransactionType;
+import biz.craftline.server.feature.inventorymanagement.domain.service.ProductLotService;
 import biz.craftline.server.feature.ordermanagement.application.enums.OrderItemStatus;
 import biz.craftline.server.feature.ordermanagement.application.enums.OrderStatus;
 import biz.craftline.server.feature.ordermanagement.domain.model.Order;
 import biz.craftline.server.feature.ordermanagement.domain.service.OrderService;
+import biz.craftline.server.feature.ordermanagement.infra.entity.OrderAllocatedLotEntity;
 import biz.craftline.server.feature.ordermanagement.infra.entity.OrderEntity;
+import biz.craftline.server.feature.ordermanagement.infra.entity.OrderItemEntity;
 import biz.craftline.server.feature.ordermanagement.infra.mapper.OrderEntityMapper;
 import biz.craftline.server.feature.ordermanagement.infra.mapper.OrderItemEntityMapper;
+import biz.craftline.server.feature.ordermanagement.infra.repository.OrderAllocatedLotRepository;
 import biz.craftline.server.feature.ordermanagement.infra.repository.OrderItemRepository;
 import biz.craftline.server.feature.ordermanagement.infra.repository.OrderRepository;
 import lombok.AllArgsConstructor;
@@ -17,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -25,6 +31,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository repository;
     private final OrderItemRepository orderItemRepository;
     private final OrderAllocationServiceImpl allocationService;
+    private final OrderAllocatedLotRepository allocatedLotRepository;
+    private final ProductLotService productLotService;
     private final SecurityContextService securityContextService;
 
     @Override
@@ -125,53 +133,99 @@ public class OrderServiceImpl implements OrderService {
         saved.setTotalAmount(total);
         saved.setStatus(OrderStatus.BLOCKED.toString());
         repository.save(saved);
-        initiatePayment(total);
 
         return OrderEntityMapper.toDomain(saved, orderItemRepository.findByOrder_Id(saved.getId()));
     }
 
-    private void initiatePayment(BigDecimal total) {
-    }
-
-    private void confirmPayment(BigDecimal total) {
-    }
-
-
     @Override
+    @Transactional
     public Order updateOrder(Long id, Order order) {
         OrderEntity existing = repository.findById(id).orElse(null);
         if (existing == null) return null;
         securityContextService.validateStoreAccess(existing.getStoreId());
+        if (order.getStoreId() != null) {
+            securityContextService.validateStoreAccess(order.getStoreId());
+        }
         OrderEntity entity = OrderEntityMapper.toEntity(order);
         entity.setId(id);
+        if (entity.getStoreId() == null) {
+            entity.setStoreId(existing.getStoreId());
+        }
         OrderEntity saved = repository.save(entity);
         return OrderEntityMapper.toModel(saved);
     }
 
     @Override
     public void deleteOrder(Long id) {
-        repository.deleteById(id);
+        repository.findById(id).ifPresentOrElse(entity -> {
+            securityContextService.validateStoreAccess(entity.getStoreId());
+            repository.deleteById(id);
+        }, () -> {
+            // no-op if missing
+        });
     }
 
+    private static final Set<String> CANCELLABLE = Set.of(
+            OrderStatus.CREATED.name(), OrderStatus.BLOCKED.name(), OrderStatus.CONFIRMED.name());
+    private static final Set<String> COMPLETABLE = Set.of(
+            OrderStatus.CREATED.name(), OrderStatus.BLOCKED.name(), OrderStatus.CONFIRMED.name(),
+            OrderStatus.PACKED.name(), OrderStatus.SHIPPED.name());
+
     @Override
+    @Transactional
     public void cancelOrder(Long id) {
-        repository.findById(id).ifPresent(entity -> {
-            securityContextService.validateStoreAccess(entity.getStoreId());
-            entity.setStatus("CANCELLED");
-            repository.save(entity);
-            initiateRefund(entity.getTotalAmount());
-        });
-    }
-
-    private void initiateRefund(BigDecimal totalAmount) {
+        OrderEntity entity = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found: " + id));
+        securityContextService.validateStoreAccess(entity.getStoreId());
+        String status = entity.getStatus() != null ? entity.getStatus() : "";
+        if (OrderStatus.CANCELLED.name().equals(status) || OrderStatus.COMPLETED.name().equals(status)) {
+            throw new IllegalStateException("Cannot cancel order in status: " + status);
+        }
+        if (!CANCELLABLE.contains(status) && !status.isBlank()) {
+            throw new IllegalStateException("Cannot cancel order in status: " + status);
+        }
+        releaseAllocations(id, false);
+        entity.setStatus(OrderStatus.CANCELLED.name());
+        repository.save(entity);
     }
 
     @Override
+    @Transactional
     public void completeOrder(Long id) {
-        repository.findById(id).ifPresent(entity -> {
-            securityContextService.validateStoreAccess(entity.getStoreId());
-            entity.setStatus("COMPLETED");
-            repository.save(entity);
-        });
+        OrderEntity entity = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found: " + id));
+        securityContextService.validateStoreAccess(entity.getStoreId());
+        String status = entity.getStatus() != null ? entity.getStatus() : "";
+        if (OrderStatus.COMPLETED.name().equals(status) || OrderStatus.CANCELLED.name().equals(status)) {
+            throw new IllegalStateException("Cannot complete order in status: " + status);
+        }
+        if (!COMPLETABLE.contains(status) && !status.isBlank()) {
+            throw new IllegalStateException("Cannot complete order in status: " + status);
+        }
+        releaseAllocations(id, true);
+        entity.setStatus(OrderStatus.COMPLETED.name());
+        repository.save(entity);
+    }
+
+    /** confirmSale=true converts blocked stock to sold; false only unblocks (cancel). */
+    private void releaseAllocations(Long orderId, boolean confirmSale) {
+        List<OrderItemEntity> items = orderItemRepository.findByOrder_Id(orderId);
+        if (items.isEmpty()) {
+            return;
+        }
+        List<Long> itemIds = items.stream().map(OrderItemEntity::getId).toList();
+        List<OrderAllocatedLotEntity> allocations = allocatedLotRepository.findByOrderItemIdIn(itemIds);
+        for (OrderAllocatedLotEntity alloc : allocations) {
+            int qty = alloc.getAllocatedQuantity();
+            productLotService.recordTransaction(
+                    alloc.getProductLotId(), TransactionType.UNBLOCK, qty,
+                    confirmSale ? "ORDER_COMPLETE_UNBLOCK" : "ORDER_CANCEL_UNBLOCK",
+                    String.valueOf(orderId), 0L);
+            if (confirmSale) {
+                productLotService.recordTransaction(
+                        alloc.getProductLotId(), TransactionType.SOLD, qty,
+                        "ORDER_COMPLETE_SOLD", String.valueOf(orderId), 0L);
+            }
+        }
     }
 }

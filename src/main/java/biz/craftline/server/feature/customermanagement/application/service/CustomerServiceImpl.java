@@ -74,7 +74,18 @@ public class CustomerServiceImpl implements CustomerService {
     
     @Override
     public Optional<Customer> findByEmail(String email) {
-        return repository.findByEmail(email).map(mapper::toDomain);
+        Optional<Customer> customer = repository.findByEmail(email).map(mapper::toDomain);
+        customer.ifPresent(c -> {
+            if (c.getStoreId() != null) {
+                securityContextService.validateStoreAccess(c.getStoreId());
+            } else if (c.getBusinessId() != null) {
+                securityContextService.validateBusinessAccess(c.getBusinessId());
+            } else if (!securityContextService.isSystemAdmin()) {
+                throw new org.springframework.security.access.AccessDeniedException(
+                        "Customer has no store/business scope");
+            }
+        });
+        return customer;
     }
     
     @Override
@@ -124,6 +135,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public Customer recordOrder(Long customerId, double orderAmount) {
         return repository.findById(customerId).map(entity -> {
+            if (entity.getStoreId() != null) {
+                securityContextService.validateStoreAccess(entity.getStoreId());
+            } else if (entity.getBusinessId() != null) {
+                securityContextService.validateBusinessAccess(entity.getBusinessId());
+            } else if (!securityContextService.isSystemAdmin()) {
+                throw new org.springframework.security.access.AccessDeniedException(
+                        "Customer has no store/business scope");
+            }
             entity.setTotalOrders(entity.getTotalOrders() + 1);
             entity.setTotalSpent(entity.getTotalSpent() + orderAmount);
             entity.setLastOrderDate(LocalDateTime.now());
