@@ -39,6 +39,7 @@ public class UserScopeFilter extends OncePerRequestFilter {
             "/api/auth/register",
             "/api/auth/login",
             "/api/auth/refresh-token",
+            "/api/auth/refresh",
             "/api/auth/logout",
             "/api/auth/forgot-password",
             "/api/auth/reset-password"

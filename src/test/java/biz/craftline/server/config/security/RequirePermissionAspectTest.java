@@ -109,6 +109,26 @@ class RequirePermissionAspectTest {
         assertThrows(AccessDeniedException.class, this::invokeAspect);
     }
 
+    @Test
+    void unrestrictedAdmin_allowsAnyPermissionViaAspect() throws Throwable {
+        UserScopeContextHolder.set(UserScopeContext.builder()
+                .userId(1L)
+                .email("admin@test.com")
+                .roles(List.of("SYSTEM_ADMIN"))
+                .permissions(Set.of())
+                .unrestricted(true)
+                .build());
+
+        when(rbacService.currentUserHasPermission(anyString())).thenAnswer(inv ->
+                UserScopeContextHolder.require().hasPermission(inv.getArgument(0)));
+        authenticate("admin@test.com");
+        when(requirePermission.value()).thenReturn("user.delete");
+        when(joinPoint.proceed()).thenReturn("ok");
+
+        assertEquals("ok", aspect.checkPermission(joinPoint, requirePermission));
+        verify(joinPoint).proceed();
+    }
+
     private void invokeAspect() {
         try {
             aspect.checkPermission(joinPoint, requirePermission);

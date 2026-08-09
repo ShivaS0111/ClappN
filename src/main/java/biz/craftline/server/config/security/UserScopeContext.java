@@ -45,6 +45,10 @@ public class UserScopeContext {
         if (permission == null || permission.isBlank()) {
             return false;
         }
+        // SYSTEM_ADMIN (and any unrestricted principal) bypasses permission catalog checks
+        if (unrestricted) {
+            return true;
+        }
         return permissions != null && permissions.contains(permission);
     }
 

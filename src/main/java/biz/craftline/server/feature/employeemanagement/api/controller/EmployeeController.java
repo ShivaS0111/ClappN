@@ -115,6 +115,21 @@ public class EmployeeController {
         return sb.toString();
     }
 
+    @PutMapping("/{id}")
+    @RequirePermission("user.update")
+    public ResponseEntity<APIResponse<EmployeeResponse>> updateEmployee(
+            @PathVariable Long id,
+            @RequestBody EmployeeRequest request) {
+        if (request.getName() == null || request.getName().trim().isEmpty()) {
+            String first = request.getFirstName() != null ? request.getFirstName() : "";
+            String last = request.getLastName() != null ? request.getLastName() : "";
+            String sur = request.getSurName() != null ? request.getSurName() : "";
+            request.setName((first + " " + last + " " + sur).trim());
+        }
+        Employee updated = employeeService.updateEmployee(id, EmployeeMapper.toDomain(request));
+        return APIResponse.ok(EmployeeMapper.toResponse(updated));
+    }
+
     @DeleteMapping("/{id}")
     @RequirePermission("user.delete")
     public void deleteEmployee(@PathVariable Long id) {

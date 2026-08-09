@@ -17,5 +17,6 @@ public class StoreOfferedPackageDTO {
     private Set<Long> serviceIds;
     private Double price;
     private Boolean available;
+    private Integer status;
 
 }

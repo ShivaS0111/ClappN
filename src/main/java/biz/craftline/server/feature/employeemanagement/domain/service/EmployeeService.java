@@ -82,6 +82,61 @@ public class EmployeeService {
         return EmployeeMapper.toDomain(saved);
     }
 
+    public Employee updateEmployee(Long id, Employee updates) {
+        EmployeeEntity entity = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found: " + id));
+
+        if (entity.getStoreId() != null) {
+            securityContextService.validateStoreAccess(entity.getStoreId());
+        } else if (entity.getBusinessId() != null) {
+            securityContextService.validateBusinessAccess(entity.getBusinessId());
+        } else if (!securityContextService.isSystemAdmin()) {
+            throw new org.springframework.security.access.AccessDeniedException(
+                    "Employee has no store/business scope");
+        }
+
+        if (updates.getStoreId() != null) {
+            securityContextService.validateStoreAccess(updates.getStoreId());
+            entity.setStoreId(updates.getStoreId());
+        }
+        if (updates.getBusinessId() != null) {
+            securityContextService.validateBusinessAccess(updates.getBusinessId());
+            entity.setBusinessId(updates.getBusinessId());
+        }
+        if (updates.getName() != null) {
+            entity.setName(updates.getName());
+        }
+        if (updates.getFirstName() != null) {
+            entity.setFirstName(updates.getFirstName());
+        }
+        if (updates.getLastName() != null) {
+            entity.setLastName(updates.getLastName());
+        }
+        if (updates.getSurName() != null) {
+            entity.setSurName(updates.getSurName());
+        }
+        if (updates.getEmail() != null) {
+            entity.setEmail(updates.getEmail());
+        }
+        if (updates.getPhone() != null) {
+            entity.setPhone(updates.getPhone());
+        }
+        if (updates.getRoleId() != null) {
+            entity.setRoleId(updates.getRoleId());
+        }
+        if (updates.getEmployeeCode() != null) {
+            entity.setEmployeeCode(updates.getEmployeeCode());
+        }
+        if (updates.getJoinDate() != null) {
+            entity.setJoinDate(updates.getJoinDate());
+        }
+        if (updates.getLeaveDate() != null) {
+            entity.setLeaveDate(updates.getLeaveDate());
+        }
+
+        return EmployeeMapper.toDomain(employeeRepository.save(entity));
+    }
+
     public void deleteEmployee(Long id) {
         EmployeeEntity entity = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found: " + id));

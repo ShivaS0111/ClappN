@@ -44,25 +44,18 @@ public class StoreOfferedPackageController {
     @PostMapping
     @RequirePermission("package.create")
     public ResponseEntity<APIResponse<StoreOfferedPackageDTO>> createPackage(@RequestBody StoreOfferedPackageDTO dto) {
-        Set<StoreOfferedProduct> products = new HashSet<>();
-        if (dto.getProductIds() != null) {
-            dto.getProductIds().forEach(id -> {
-                StoreOfferedProduct p = new StoreOfferedProduct();
-                p.setId(id);
-                products.add(p);
-            });
-        }
-        Set<StoreOfferedService> services = new HashSet<>();
-        if (dto.getServiceIds() != null) {
-            dto.getServiceIds().forEach(id -> {
-                StoreOfferedService s = new StoreOfferedService();
-                s.setId(id);
-                services.add(s);
-            });
-        }
-        StoreOfferedPackage pkg = StoreOfferedPackageDTOMapper.toModel(dto, products, services);
-        StoreOfferedPackage saved = packageService.save(pkg);
+        StoreOfferedPackage saved = packageService.save(toPackageModel(dto));
         return APIResponse.success(StoreOfferedPackageDTOMapper.toDTO(saved), "Package created");
+    }
+
+    @PutMapping("/{id}")
+    @RequirePermission("package.update")
+    public ResponseEntity<APIResponse<StoreOfferedPackageDTO>> updatePackage(
+            @PathVariable Long id,
+            @RequestBody StoreOfferedPackageDTO dto) {
+        dto.setId(id);
+        StoreOfferedPackage saved = packageService.save(toPackageModel(dto));
+        return APIResponse.success(StoreOfferedPackageDTOMapper.toDTO(saved), "Package updated");
     }
 
     @DeleteMapping("/{id}")
@@ -70,5 +63,25 @@ public class StoreOfferedPackageController {
     public ResponseEntity<APIResponse<Void>> deletePackage(@PathVariable Long id) {
         packageService.deleteStorePackageById(id);
         return APIResponse.success(null, "Package deleted");
+    }
+
+    private StoreOfferedPackage toPackageModel(StoreOfferedPackageDTO dto) {
+        Set<StoreOfferedProduct> products = new HashSet<>();
+        if (dto.getProductIds() != null) {
+            dto.getProductIds().forEach(pid -> {
+                StoreOfferedProduct p = new StoreOfferedProduct();
+                p.setId(pid);
+                products.add(p);
+            });
+        }
+        Set<StoreOfferedService> services = new HashSet<>();
+        if (dto.getServiceIds() != null) {
+            dto.getServiceIds().forEach(sid -> {
+                StoreOfferedService s = new StoreOfferedService();
+                s.setId(sid);
+                services.add(s);
+            });
+        }
+        return StoreOfferedPackageDTOMapper.toModel(dto, products, services);
     }
 }

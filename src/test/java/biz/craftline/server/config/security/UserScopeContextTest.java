@@ -26,6 +26,21 @@ class UserScopeContextTest {
         assertTrue(ctx.canAccessStore(99L));
         assertTrue(ctx.canAccessBusiness(5L));
         assertNull(ctx.getEffectiveStoreIds());
+        assertTrue(ctx.hasPermission("user.delete"));
+        assertTrue(ctx.hasPermission("any.permission"));
+    }
+
+    @Test
+    void unrestrictedAdmin_hasPermissionEvenWithEmptySet() {
+        UserScopeContext ctx = UserScopeContext.builder()
+                .userId(1L)
+                .email("admin@test.com")
+                .roles(List.of("SYSTEM_ADMIN"))
+                .permissions(Set.of())
+                .unrestricted(true)
+                .build();
+
+        assertTrue(ctx.hasPermission("order.create"));
     }
 
     @Test

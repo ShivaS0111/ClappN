@@ -16,6 +16,7 @@ public class StoreOfferedPackageDTOMapper {
         dto.setDescription(pkg.getDescription());
         dto.setPrice(pkg.getPrice());
         dto.setAvailable(pkg.getAvailable());
+        dto.setStatus(pkg.getStatus());
         if (pkg.getProducts() != null) {
             dto.setProductIds(pkg.getProducts().stream().map(StoreOfferedProduct::getId).collect(Collectors.toSet()));
         }
@@ -33,6 +34,7 @@ public class StoreOfferedPackageDTOMapper {
         pkg.setDescription(dto.getDescription());
         pkg.setPrice(dto.getPrice());
         pkg.setAvailable(dto.getAvailable());
+        pkg.setStatus(dto.getStatus() != null ? dto.getStatus() : (Boolean.FALSE.equals(dto.getAvailable()) ? 0 : 1));
         pkg.setProducts(products);
         pkg.setServices(services);
         return pkg;
