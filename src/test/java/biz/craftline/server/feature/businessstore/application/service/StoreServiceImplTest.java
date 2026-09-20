@@ -35,6 +35,7 @@ class StoreServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        when(securityContextService.getAccessibleStoreIds()).thenReturn(null); // unrestricted (SYSTEM_ADMIN)
     }
 
     @Test

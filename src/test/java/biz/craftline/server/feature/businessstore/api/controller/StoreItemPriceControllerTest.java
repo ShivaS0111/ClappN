@@ -67,7 +67,6 @@ class StoreItemPriceControllerTest {
 
     @Test
     void getServicePrice_Success() {
-        // Arrange
         Long serviceId = 1L;
         StoreItemPrice domainModel = StoreItemPrice.builder()
                 .id(1L)
@@ -79,14 +78,15 @@ class StoreItemPriceControllerTest {
                 .itemId(serviceId)
                 .price(29.99)
                 .build();
-        //when(storeItemPriceService.findByServiceId(serviceId)).thenReturn(java.util.Optional.of(domainModel));
-        //when(mapper.toDTO(domainModel)).thenReturn(expectedDto);
-        // Act
-        ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> response = storeItemPriceController.getServicePrices(serviceId);
-        // Assert
+        when(storeItemPriceService.findAllByServiceId(serviceId)).thenReturn(java.util.List.of(domainModel));
+        when(mapper.toDTO(domainModel)).thenReturn(expectedDto);
+
+        ResponseEntity<APIResponse<List<StoreItemPriceDTO>>> response =
+                storeItemPriceController.getServicePrices(serviceId);
+
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(expectedDto, response.getBody().getData());
+        assertEquals(java.util.List.of(expectedDto), response.getBody().getData());
     }
 }

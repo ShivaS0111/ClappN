@@ -2,14 +2,20 @@ package biz.craftline.server.feature.businessstore.application.service;
 
 import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
+import biz.craftline.server.feature.businessstore.domain.service.StoreItemPriceService;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedServiceEntity;
 import biz.craftline.server.feature.businessstore.infra.mapper.StoreOfferedServiceEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.ServicesOfferedByStoreRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessServicesJpaRepository;
+import biz.craftline.server.feature.usermanagement.domain.model.User;
+import biz.craftline.server.feature.usermanagement.domain.service.UserService;
+import biz.craftline.server.util.UserUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
@@ -21,25 +27,45 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class ServicesOfferedByStoreServiceImplTest {
-    @Mock
-    private ServicesOfferedByStoreRepository servicesOfferedByStoreRepository;
-    @Mock
-    private StoreOfferedServiceEntityMapper mapper;
-    @Mock
-    private BusinessServicesJpaRepository businessServicesJpaRepository;
-    @Mock
-    private SecurityContextService securityContextService;
-    @InjectMocks
-    private ServicesOfferedByStoreServiceImpl service;
+    @Mock private ServicesOfferedByStoreRepository servicesOfferedByStoreRepository;
+    @Mock private StoreOfferedServiceEntityMapper mapper;
+    @Mock private BusinessServicesJpaRepository businessServicesJpaRepository;
+    @Mock private SecurityContextService securityContextService;
+    @Mock private UserService userService;
+    @Mock private StoreItemPriceService storeItemPriceService;
+    @InjectMocks private ServicesOfferedByStoreServiceImpl service;
+
+    private MockedStatic<UserUtil> userUtil;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        doNothing().when(securityContextService).validateStoreAccess(any());
+        userUtil = mockStatic(UserUtil.class);
+        userUtil.when(UserUtil::requireCurrentUsername).thenReturn("owner@clapp.test");
+        User user = new User();
+        user.setId(99L);
+        when(userService.getUserByEmail("owner@clapp.test")).thenReturn(Optional.of(user));
+    }
+
+    @AfterEach
+    void tearDown() {
+        if (userUtil != null) {
+            userUtil.close();
+        }
     }
 
     @Test
     void deleteStoreServiceById_CallsRepository() {
         Long id = 1L;
+        StoreOfferedServiceEntity entity = new StoreOfferedServiceEntity();
+        entity.setId(id);
+        entity.setStoreId(10L);
+        when(servicesOfferedByStoreRepository.findById(id)).thenReturn(Optional.of(entity));
+        when(mapper.toDomain(entity)).thenReturn(
+                StoreOfferedService.builder().id(id).storeId(10L).build());
+        when(storeItemPriceService.findByServiceId(id)).thenReturn(Optional.empty());
+
         service.deleteStoreServiceById(id);
         verify(servicesOfferedByStoreRepository).deleteStoreServiceById(id);
     }
@@ -56,10 +82,7 @@ class ServicesOfferedByStoreServiceImplTest {
         when(mapper.toDomain(entity2)).thenReturn(service2);
         Optional<List<StoreOfferedService>> result = service.findServicesByStoreId(storeId);
         assertTrue(result.isPresent());
-        List<StoreOfferedService> sorted = result.get().stream().sorted((a, b) -> Long.compare(a.getId(), b.getId())).toList();
-        assertEquals(2, sorted.size());
-        //assertEquals(service1, sorted.get(0));
-        //assertEquals(service2, sorted.get(1));
+        assertEquals(2, result.get().size());
     }
 
     @Test
@@ -71,7 +94,6 @@ class ServicesOfferedByStoreServiceImplTest {
         when(mapper.toEntity(domain)).thenReturn(entity);
         when(servicesOfferedByStoreRepository.save(entity)).thenReturn(savedEntity);
         when(mapper.toDomain(savedEntity)).thenReturn(savedDomain);
-        StoreOfferedService result = service.save(domain);
-        assertEquals(savedDomain, result);
+        assertEquals(savedDomain, service.save(domain));
     }
 }

@@ -89,4 +89,82 @@ class SecurityContextServiceScopeTest {
         assertNull(securityContextService.getAccessibleStoreIds());
         assertDoesNotThrow(() -> securityContextService.validateStoreAccess(12345L));
     }
+
+    @Test
+    void getters_fromScopeContext() {
+        UserScopeContextHolder.set(UserScopeContext.builder()
+                .userId(7L)
+                .email("mgr@test.com")
+                .roles(List.of("STORE_MANAGER"))
+                .permissions(Set.of("store.read", "order.read"))
+                .accessibleStoreIds(List.of(1L))
+                .accessibleBusinessIds(List.of(10L))
+                .effectiveStoreIds(List.of(1L))
+                .effectiveBusinessIds(List.of(10L))
+                .unrestricted(false)
+                .build());
+
+        assertEquals("mgr@test.com", securityContextService.getCurrentUsername());
+        assertEquals(7L, securityContextService.getCurrentUserId());
+        assertEquals(List.of("STORE_MANAGER"), securityContextService.getCurrentUserRoles());
+        assertEquals(List.of(1L), securityContextService.getCurrentUserStoreIds());
+        assertEquals(List.of(10L), securityContextService.getCurrentUserBusinessIds());
+        assertTrue(securityContextService.getCurrentUserPermissions().contains("store.read"));
+        assertTrue(securityContextService.hasRole("STORE_MANAGER"));
+        assertTrue(securityContextService.hasPermission("order.read"));
+        assertFalse(securityContextService.isSystemAdmin());
+        assertFalse(securityContextService.isBusinessLevel());
+        assertEquals(List.of(10L), securityContextService.getAccessibleBusinessIds());
+    }
+
+    @Test
+    void validateBusinessAccess_deniesForeignBusiness() {
+        UserScopeContextHolder.set(UserScopeContext.builder()
+                .userId(2L)
+                .email("user@test.com")
+                .roles(List.of("BUSINESS_ADMIN"))
+                .permissions(Set.of())
+                .accessibleStoreIds(List.of())
+                .accessibleBusinessIds(List.of(10L))
+                .effectiveStoreIds(List.of())
+                .effectiveBusinessIds(List.of(10L))
+                .unrestricted(false)
+                .build());
+
+        assertDoesNotThrow(() -> securityContextService.validateBusinessAccess(10L));
+        assertThrows(AccessDeniedException.class,
+                () -> securityContextService.validateBusinessAccess(99L));
+    }
+
+    @Test
+    void validateStoreAccessForAll_iterates() {
+        UserScopeContextHolder.set(UserScopeContext.builder()
+                .userId(2L)
+                .email("user@test.com")
+                .roles(List.of("STORE_MANAGER"))
+                .permissions(Set.of())
+                .accessibleStoreIds(List.of(1L, 2L))
+                .accessibleBusinessIds(List.of(10L))
+                .effectiveStoreIds(List.of(1L, 2L))
+                .effectiveBusinessIds(List.of(10L))
+                .unrestricted(false)
+                .build());
+
+        assertDoesNotThrow(() -> securityContextService.validateStoreAccessForAll(List.of(1L, 2L)));
+        assertDoesNotThrow(() -> securityContextService.validateStoreAccessForAll(null));
+    }
+
+    @Test
+    void businessLevelRole_detected() {
+        UserScopeContextHolder.set(UserScopeContext.builder()
+                .userId(3L)
+                .email("owner@test.com")
+                .roles(List.of("BUSINESS_OWNER"))
+                .permissions(Set.of())
+                .accessibleBusinessIds(List.of(1L))
+                .effectiveBusinessIds(List.of(1L))
+                .unrestricted(false)
+                .build());
+        assertTrue(securityContextService.isBusinessLevel());
+    }
 }

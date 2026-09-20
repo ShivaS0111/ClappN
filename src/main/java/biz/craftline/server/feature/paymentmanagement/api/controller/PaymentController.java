@@ -37,9 +37,10 @@ public class PaymentController {
             if (req.getOrderId() == null || req.getOrderId() <= 0) {
                 return ResponseEntity.badRequest().body("Invalid orderId");
             }
-            if (req.getAmount() == null || req.getAmount() <= 0) {
-                return ResponseEntity.badRequest().body("Invalid amount");
-            }
+        // Amounts are always minor units (cents/paise)
+        if (req.getAmount() == null || req.getAmount() <= 0) {
+            return ResponseEntity.badRequest().body("Invalid amount (use minor units, e.g. paise/cents)");
+        }
             if (req.getCurrency() == null || req.getCurrency().trim().isEmpty()) {
                 return ResponseEntity.badRequest().body("Currency is required");
             }

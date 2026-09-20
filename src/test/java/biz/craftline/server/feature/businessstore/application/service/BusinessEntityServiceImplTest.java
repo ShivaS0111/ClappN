@@ -33,6 +33,7 @@ class BusinessEntityServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        when(securityContextService.getAccessibleBusinessIds()).thenReturn(null); // unrestricted
     }
 
     @Test
