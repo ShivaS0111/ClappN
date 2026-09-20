@@ -2,11 +2,15 @@ package biz.craftline.server.config.security;
 
 import biz.craftline.server.feature.businessstore.infra.entity.StoreEntity;
 import biz.craftline.server.feature.businessstore.infra.repository.StoreRepository;
-import biz.craftline.server.feature.employeemanagement.infra.entity.EmployeeEntity;
-import biz.craftline.server.feature.employeemanagement.infra.repository.EmployeeRepository;
-import biz.craftline.server.feature.usermanagement.domain.service.RBACService;
+import biz.craftline.server.feature.membership.infra.entity.MembershipEntity;
+import biz.craftline.server.feature.membership.infra.repository.MembershipRepository;
+import biz.craftline.server.feature.usermanagement.infra.entity.PermissionEntity;
 import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
+import biz.craftline.server.feature.usermanagement.infra.entity.UserAllowedPermissionEntity;
+import biz.craftline.server.feature.usermanagement.infra.entity.UserDeniedPermissionEntity;
 import biz.craftline.server.feature.usermanagement.infra.entity.UserEntity;
+import biz.craftline.server.feature.usermanagement.infra.repository.UserAllowedPermissionRepository;
+import biz.craftline.server.feature.usermanagement.infra.repository.UserDeniedPermissionRepository;
 import biz.craftline.server.feature.usermanagement.infra.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +23,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * Loads fresh permissions and store/business scope from the database once per request.
+ * Loads permissions and store/business scope from Membership (+ platform User roles).
+ * JWT is identity only; EmployeeProfile is HR data and is not used for access.
  */
 @Service
 @RequiredArgsConstructor
@@ -34,9 +40,10 @@ public class UserScopeResolver {
     );
 
     private final UserRepository userRepository;
-    private final EmployeeRepository employeeRepository;
+    private final MembershipRepository membershipRepository;
     private final StoreRepository storeRepository;
-    private final RBACService rbacService;
+    private final UserAllowedPermissionRepository allowedPermissionRepository;
+    private final UserDeniedPermissionRepository deniedPermissionRepository;
 
     @Transactional(readOnly = true)
     public UserScopeContext resolve(String email, Long activeStoreId, Long activeBusinessId) {
@@ -44,13 +51,42 @@ public class UserScopeResolver {
                 .or(() -> userRepository.findByEmail(email))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
 
-        List<String> roles = user.getRoles() == null ? List.of() :
-                user.getRoles().stream().map(RoleEntity::getName).filter(Objects::nonNull).toList();
+        List<MembershipEntity> memberships = membershipRepository
+                .findByUserIdAndStatus(user.getId(), MembershipEntity.STATUS_ACTIVE);
 
-        List<String> permissionList = rbacService.getUserPermissions(email);
-        Set<String> permissions = permissionList != null ? new HashSet<>(permissionList) : Set.of();
+        boolean unrestricted = user.getRoles() != null && user.getRoles().stream()
+                .map(RoleEntity::getName)
+                .filter(Objects::nonNull)
+                .anyMatch(ROLE_SYSTEM_ADMIN::equalsIgnoreCase);
 
-        boolean unrestricted = roles.stream().anyMatch(ROLE_SYSTEM_ADMIN::equalsIgnoreCase);
+        // Memberships relevant to this request (optional active business / store filter for roles)
+        List<MembershipEntity> roleMemberships = memberships;
+        if (!unrestricted && activeBusinessId != null) {
+            roleMemberships = memberships.stream()
+                    .filter(m -> Objects.equals(m.getBusinessId(), activeBusinessId))
+                    .toList();
+            if (roleMemberships.isEmpty()) {
+                throw new AccessDeniedException("You do not have access to business: " + activeBusinessId);
+            }
+        }
+
+        Set<String> roleNames = new HashSet<>();
+        if (user.getRoles() != null) {
+            user.getRoles().stream()
+                    .map(RoleEntity::getName)
+                    .filter(Objects::nonNull)
+                    .forEach(roleNames::add);
+        }
+        for (MembershipEntity m : roleMemberships) {
+            if (m.getRoles() != null) {
+                m.getRoles().stream()
+                        .map(RoleEntity::getName)
+                        .filter(Objects::nonNull)
+                        .forEach(roleNames::add);
+            }
+        }
+
+        Set<String> permissions = buildPermissions(user, roleMemberships);
 
         List<Long> accessibleStoreIds;
         List<Long> accessibleBusinessIds;
@@ -59,29 +95,29 @@ public class UserScopeResolver {
             accessibleStoreIds = null;
             accessibleBusinessIds = null;
         } else {
-            List<EmployeeEntity> employees = employeeRepository.findByUserId(user.getId());
-            List<Long> assignedStoreIds = employees.stream()
-                    .map(EmployeeEntity::getStoreId)
-                    .filter(Objects::nonNull)
-                    .distinct()
-                    .toList();
-            List<Long> assignedBusinessIds = employees.stream()
-                    .map(EmployeeEntity::getBusinessId)
+            accessibleBusinessIds = memberships.stream()
+                    .map(MembershipEntity::getBusinessId)
                     .filter(Objects::nonNull)
                     .distinct()
                     .toList();
 
-            accessibleBusinessIds = assignedBusinessIds;
+            Set<Long> storeIds = new HashSet<>();
+            for (MembershipEntity m : memberships) {
+                Set<Long> scopes = m.getStoreScopes() != null ? m.getStoreScopes() : Set.of();
+                boolean businessLevel = m.getRoles() != null && m.getRoles().stream()
+                        .map(RoleEntity::getName)
+                        .filter(Objects::nonNull)
+                        .anyMatch(BUSINESS_LEVEL_ROLES::contains);
 
-            boolean businessLevel = roles.stream().anyMatch(BUSINESS_LEVEL_ROLES::contains);
-            if (businessLevel && assignedStoreIds.isEmpty() && !assignedBusinessIds.isEmpty()) {
-                accessibleStoreIds = storeRepository.findByBusinessIdIn(assignedBusinessIds).stream()
-                        .map(StoreEntity::getId)
-                        .distinct()
-                        .toList();
-            } else {
-                accessibleStoreIds = assignedStoreIds;
+                if (!scopes.isEmpty()) {
+                    storeIds.addAll(scopes);
+                } else if (businessLevel) {
+                    storeRepository.findByBusinessId(m.getBusinessId()).stream()
+                            .map(StoreEntity::getId)
+                            .forEach(storeIds::add);
+                }
             }
+            accessibleStoreIds = storeIds.stream().distinct().toList();
         }
 
         if (activeStoreId != null && !unrestricted) {
@@ -105,7 +141,7 @@ public class UserScopeResolver {
             } else if (activeBusinessId != null && accessibleStoreIds != null) {
                 Set<Long> storesInBusiness = storeRepository.findByBusinessId(activeBusinessId).stream()
                         .map(StoreEntity::getId)
-                        .collect(java.util.stream.Collectors.toSet());
+                        .collect(Collectors.toSet());
                 effectiveStoreIds = accessibleStoreIds.stream()
                         .filter(storesInBusiness::contains)
                         .toList();
@@ -116,13 +152,13 @@ public class UserScopeResolver {
             }
         }
 
-        log.debug("Resolved request scope for {}: unrestricted={}, stores={}, businesses={}, effectiveStores={}, activeStore={}, activeBusiness={}",
-                email, unrestricted, accessibleStoreIds, accessibleBusinessIds, effectiveStoreIds, activeStoreId, activeBusinessId);
+        log.debug("Resolved membership scope for {}: unrestricted={}, stores={}, businesses={}, roles={}",
+                email, unrestricted, accessibleStoreIds, accessibleBusinessIds, roleNames);
 
         return UserScopeContext.builder()
                 .userId(user.getId())
                 .email(email)
-                .roles(roles)
+                .roles(roleNames.stream().sorted().toList())
                 .permissions(permissions)
                 .accessibleStoreIds(accessibleStoreIds)
                 .accessibleBusinessIds(accessibleBusinessIds)
@@ -132,5 +168,48 @@ public class UserScopeResolver {
                 .activeBusinessId(activeBusinessId)
                 .unrestricted(unrestricted)
                 .build();
+    }
+
+    private Set<String> buildPermissions(UserEntity user, List<MembershipEntity> memberships) {
+        Set<String> permissions = new HashSet<>();
+
+        if (user.getRoles() != null) {
+            user.getRoles().stream()
+                    .filter(Objects::nonNull)
+                    .flatMap(r -> r.getPermissions() == null ? java.util.stream.Stream.empty() : r.getPermissions().stream())
+                    .map(PermissionEntity::getName)
+                    .filter(Objects::nonNull)
+                    .forEach(permissions::add);
+        }
+
+        for (MembershipEntity m : memberships) {
+            if (m.getRoles() == null) continue;
+            m.getRoles().stream()
+                    .filter(Objects::nonNull)
+                    .flatMap(r -> r.getPermissions() == null ? java.util.stream.Stream.empty() : r.getPermissions().stream())
+                    .map(PermissionEntity::getName)
+                    .filter(Objects::nonNull)
+                    .forEach(permissions::add);
+        }
+
+        List<UserAllowedPermissionEntity> allowed = allowedPermissionRepository.findByUserId(user.getId());
+        if (allowed != null) {
+            allowed.stream()
+                    .map(UserAllowedPermissionEntity::getPermission)
+                    .filter(Objects::nonNull)
+                    .map(PermissionEntity::getName)
+                    .forEach(permissions::add);
+        }
+
+        List<UserDeniedPermissionEntity> denied = deniedPermissionRepository.findByUserId(user.getId());
+        if (denied != null) {
+            denied.stream()
+                    .map(UserDeniedPermissionEntity::getPermission)
+                    .filter(Objects::nonNull)
+                    .map(PermissionEntity::getName)
+                    .forEach(permissions::remove);
+        }
+
+        return permissions;
     }
 }

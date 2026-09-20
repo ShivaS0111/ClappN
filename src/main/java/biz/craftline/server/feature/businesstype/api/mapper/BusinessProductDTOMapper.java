@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -56,7 +55,8 @@ public class BusinessProductDTOMapper {
                 .description(dto.getDesc())
                 .businessType(dto.getBusinessTypeId() != null ? BusinessType.builder().id(dto.getBusinessTypeId()).build() : null)
                 .brand(dto.getBrandId() != null ? Brand.builder().id(dto.getBrandId()).build() : null)
-                .categories(dto.getCategories().stream().map( catId -> Category.builder().id(catId).build()).toList())
+                .categories((dto.getCategories() != null ? dto.getCategories() : List.<Long>of()).stream()
+                        .map(catId -> Category.builder().id(catId).build()).toList())
                 .amount(dto.getAmount())
                 .currency(dto.getCurrency())
                 .status(dto.getStatus())

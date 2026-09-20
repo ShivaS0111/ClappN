@@ -69,6 +69,9 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
     @Transactional
     @Override
     public Optional<StoreItemPrice> updateServicePrice(StoreItemPrice itemPrice) {
+        if (itemPrice.getItemId() == null) {
+            throw new IllegalArgumentException("itemId is required");
+        }
         assertCanAccessStoreService(itemPrice.getItemId());
         return updatePrice(itemPrice, Item.SERVICE.getType());
     }
@@ -76,6 +79,9 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
     @Transactional
     @Override
     public Optional<StoreItemPrice> updateLotPrice(StoreItemPrice itemPrice) {
+        if (itemPrice.getItemId() == null) {
+            throw new IllegalArgumentException("itemId is required");
+        }
         assertCanAccessLot(itemPrice.getItemId());
         return updatePrice(itemPrice, Item.ProductLot.getType());
     }
@@ -92,7 +98,7 @@ public class StoreItemPriceServiceImpl implements StoreItemPriceService {
 
     private Optional<StoreItemPrice> findByItemIdAndType(Long id, Long type) {
         StoreItemPriceEntity storeItemPrice = repository.findByItemIdAndItemType(id, type).orElseThrow(() ->
-                new RuntimeException((type.equals(Item.SERVICE.getType()) ? "Service" : (type.equals(Item.ProductLot.getType()) ? "Product Lot" : "")) +
+                new EntityNotFoundException((type.equals(Item.SERVICE.getType()) ? "Service" : (type.equals(Item.ProductLot.getType()) ? "Product Lot" : "")) +
                         "(" + id + ":" + type + ")" + " Price not configured yet"));
         return Optional.of(mapper.toDomain(storeItemPrice));
     }

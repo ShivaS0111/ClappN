@@ -293,6 +293,12 @@ public class StoreController {
     @PostMapping("/update-status")
     @RequirePermission("store.update")
     public ResponseEntity<APIResponse<StoreDTO>> updateStoreStatus(@RequestBody StatusUpdateRequest request) {
+        if (request == null || request.id() == null) {
+            throw new IllegalArgumentException("id is required");
+        }
+        if (request.status() == null) {
+            throw new IllegalArgumentException("status is required");
+        }
         Store existingStore = service.findById(request.id()).orElse(null);
         if (existingStore == null) {
             return APIResponse.error("Store not found", HttpStatus.NOT_FOUND);

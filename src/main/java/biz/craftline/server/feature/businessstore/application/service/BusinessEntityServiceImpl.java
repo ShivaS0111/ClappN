@@ -6,7 +6,6 @@ import biz.craftline.server.feature.businessstore.domain.service.BusinessEntityS
 import biz.craftline.server.feature.businessstore.infra.entity.BusinessEntity;
 import biz.craftline.server.feature.businessstore.infra.mapper.BusinessEntityMapper;
 import biz.craftline.server.feature.businessstore.infra.repository.BusinessEntityJpaRepository;
-import biz.craftline.server.feature.employeemanagement.api.mapper.EmployeeMapper;
 import biz.craftline.server.feature.employeemanagement.domain.model.Employee;
 import biz.craftline.server.feature.employeemanagement.domain.service.EmployeeService;
 import biz.craftline.server.feature.usermanagement.domain.model.User;
@@ -80,7 +79,8 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
 
     @Override
     public List<Business> search(String keyword) {
-        List<Business> results = businessEntityRepository.findByNameContaining(keyword.toLowerCase())
+        String q = keyword == null ? "" : keyword.trim().toLowerCase();
+        List<Business> results = businessEntityRepository.findByNameContaining(q)
                 .stream().map(mapper::toDomain).collect(Collectors.toList());
         List<Long> accessibleBusinessIds = securityContextService.getAccessibleBusinessIds();
         if (accessibleBusinessIds == null) {

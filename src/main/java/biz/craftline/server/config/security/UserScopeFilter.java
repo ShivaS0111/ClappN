@@ -59,7 +59,7 @@ public class UserScopeFilter extends OncePerRequestFilter {
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")
                 || path.equals("/swagger-ui.html")
-                || path.startsWith("/actuator/health")
+                || path.startsWith("/actuator/")
                 || path.startsWith("/api/payments/webhook/")
                 || path.startsWith("/payment/callback");
     }

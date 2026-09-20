@@ -45,10 +45,10 @@ public class BusinessProductController {
 
     @GetMapping("/{productId}")
     @RequirePermission("product.read")
-    public ResponseEntity<APIResponse<BusinessProductDTO>> getById(@PathVariable Long serviceId) {
-        BusinessProduct bs = service.findById(serviceId)
+    public ResponseEntity<APIResponse<BusinessProductDTO>> getById(@PathVariable("productId") Long productId) {
+        BusinessProduct bs = service.findById(productId)
                 .orElseThrow(
-                        () -> new IllegalArgumentException("Invalid Business Service ID: " + serviceId)
+                        () -> new IllegalArgumentException("Invalid Business Product ID: " + productId)
                 );
         if (bs == null) {
             return APIResponse.success(null);
@@ -58,8 +58,8 @@ public class BusinessProductController {
 
     @DeleteMapping("/{productId}")
     @RequirePermission("product.delete")
-    public ResponseEntity<APIResponse<String>> delete(@PathVariable Long serviceId) {
-        service.deleteProductById(serviceId);
+    public ResponseEntity<APIResponse<String>> delete(@PathVariable("productId") Long productId) {
+        service.deleteProductById(productId);
         return APIResponse.success("Deleted successfully");
     }
 
@@ -134,7 +134,8 @@ public class BusinessProductController {
         List<BusinessProduct> products = requests.stream()
                 .map(request -> {
                     BusinessProduct product = mapper.toDomain(request);
-                    List<Category> matchedCategories = request.getCategories().stream()
+                    List<Category> matchedCategories = (request.getCategories() != null
+                            ? request.getCategories() : List.<Long>of()).stream()
                             .map(categoryMap::get)
                             .filter(Objects::nonNull)
                             .toList();

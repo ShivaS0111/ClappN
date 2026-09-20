@@ -6,7 +6,9 @@ import biz.craftline.server.feature.usermanagement.infra.repository.PermissionRe
 import biz.craftline.server.feature.usermanagement.infra.repository.RoleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,16 +21,25 @@ import java.util.*;
  * Database Seed Configuration
  * Loads initial data for Business Types, Categories, Roles, and Permissions.
  * RBAC names match db/role-permissions-data.sql and @RequirePermission controllers.
+ * Demo business/store data is gated by {@code app.seed.demo-data} (false in prod).
  */
 @Slf4j
 @Configuration
+@ConditionalOnProperty(name = "app.seed.enabled", havingValue = "true", matchIfMissing = true)
 public class DataSeedConfig {
+
+    @Value("${app.seed.demo-data:true}")
+    private boolean seedDemoData;
+
+    @Value("${app.seed.rbac-align:true}")
+    private boolean seedRbacAlign;
 
     @Bean
     public CommandLineRunner seedDatabase(ApplicationContext applicationContext) {
         return args -> {
             try {
-                log.info("Starting database seed initialization...");
+                log.info("Starting database seed initialization (rbacAlign={}, demoData={})...",
+                        seedRbacAlign, seedDemoData);
                 executeSeed(applicationContext);
             } catch (Exception e) {
                 log.error("Error initializing seed", e);
@@ -48,15 +59,18 @@ public class DataSeedConfig {
             TransactionTemplate tx = new TransactionTemplate(
                     applicationContext.getBean(PlatformTransactionManager.class));
 
-            // Always align RBAC catalog (idempotent upsert by name)
-            tx.executeWithoutResult(status -> alignRbacCatalog(permissionRepo, roleRepo));
+            if (seedRbacAlign) {
+                tx.executeWithoutResult(status -> alignRbacCatalog(permissionRepo, roleRepo));
+            }
 
-            if (businessTypeRepo != null && isRepositoryEmpty(businessTypeRepo)) {
+            if (seedDemoData && businessTypeRepo != null && isRepositoryEmpty(businessTypeRepo)) {
                 log.info("Starting business/category/store seed...");
                 seedBusinessTypes(businessTypeRepo);
                 seedCategories(categoryRepo);
                 seedBusinessAndStores(businessRepo, storeRepo);
                 log.info("Database seed completed successfully!");
+            } else if (!seedDemoData) {
+                log.info("Demo data seed disabled (app.seed.demo-data=false).");
             } else {
                 log.info("Business types already populated. Skipping business/category/store seed.");
             }
@@ -81,9 +95,11 @@ public class DataSeedConfig {
             if (legacyRole.isEmpty()) {
                 continue;
             }
-            if (roleRepo.findByName(canonical).isPresent()) {
-                log.warn("Both '{}' and '{}' exist — leaving '{}' as-is; merge manually if needed",
-                        legacy, canonical, legacy);
+            Optional<RoleEntity> canonicalRole = roleRepo.findByName(canonical);
+            if (canonicalRole.isPresent()) {
+                // Both exist — do not delete legacy (may still be referenced by user_roles FK)
+                log.warn("Skipping delete of legacy role '{}' because canonical '{}' already exists",
+                        legacy, canonical);
                 continue;
             }
             RoleEntity role = legacyRole.get();
@@ -127,34 +143,32 @@ public class DataSeedConfig {
             permissionsByName.put(p.getName(), p);
         }
 
-        // SYSTEM_ADMIN → all permissions
-        roleRepo.findByName("SYSTEM_ADMIN").ifPresent(admin -> {
-            Set<PermissionEntity> all = new HashSet<>(permissionsByName.values());
-            if (admin.getPermissions() == null || admin.getPermissions().size() < all.size()) {
-                admin.setPermissions(all);
-                roleRepo.save(admin);
-                log.info("Assigned {} permissions to SYSTEM_ADMIN", all.size());
-            }
-        });
+        Map<String, List<String>> roleMap = RbacSeedData.rolePermissionMap();
 
-        for (Map.Entry<String, List<String>> entry : RbacSeedData.rolePermissionMap().entrySet()) {
-            roleRepo.findByName(entry.getKey()).ifPresent(role -> {
+        // Exact sync: each known role gets precisely the canonical permission set (not additive).
+        for (String roleName : RbacSeedData.ROLES) {
+            roleRepo.findByName(roleName).ifPresent(role -> {
                 Set<PermissionEntity> desired = new HashSet<>();
-                for (String permName : entry.getValue()) {
-                    PermissionEntity perm = permissionsByName.get(permName);
-                    if (perm != null) {
-                        desired.add(perm);
-                    } else {
-                        log.warn("Permission '{}' missing while assigning to role '{}'", permName, entry.getKey());
+                if ("SYSTEM_ADMIN".equals(roleName)) {
+                    desired.addAll(permissionsByName.values());
+                } else if (roleMap.containsKey(roleName)) {
+                    for (String permName : roleMap.get(roleName)) {
+                        PermissionEntity perm = permissionsByName.get(permName);
+                        if (perm != null) {
+                            desired.add(perm);
+                        } else {
+                            log.warn("Permission '{}' missing while assigning to role '{}'", permName, roleName);
+                        }
                     }
                 }
-                Set<PermissionEntity> current = role.getPermissions() != null ? role.getPermissions() : new HashSet<>();
-                if (!current.containsAll(desired)) {
-                    current.addAll(desired);
-                    role.setPermissions(current);
-                    roleRepo.save(role);
-                    log.info("Ensured {} permissions on role {}", desired.size(), entry.getKey());
+                // Mutate the persistent collection so join rows are deleted/inserted correctly
+                if (role.getPermissions() == null) {
+                    role.setPermissions(new HashSet<>());
                 }
+                role.getPermissions().clear();
+                role.getPermissions().addAll(desired);
+                roleRepo.save(role);
+                log.info("Synced role '{}' to {} permission(s)", roleName, desired.size());
             });
         }
     }

@@ -60,7 +60,7 @@ public class ProductLotServiceImpl implements ProductLotService {
 
     @Override
     public List<ProductLot> getAllActiveLots(Long storeProductId) {
-        List<ProductLot> lots = lotRepository.findByProductIdAndActiveTrue(storeProductId)
+        List<ProductLot> lots = lotRepository.findByProductIdAndActive(storeProductId, 1)
                 .stream()
                 .map(productLotEntityMapper::toDomain)
                 .toList();
@@ -173,7 +173,7 @@ public class ProductLotServiceImpl implements ProductLotService {
 
 
     public List<ProductLot> findByStoreIdAndProductIdAndActiveTrue(Long storeId, Long productId){
-        return  lotRepository.findByStoreIdAndProductIdAndActiveTrue(storeId,productId)
+        return  lotRepository.findByStoreIdAndProductIdAndActive(storeId, productId, 1)
                 .stream().map(productLotEntityMapper::toDomain).toList();
     }
 }

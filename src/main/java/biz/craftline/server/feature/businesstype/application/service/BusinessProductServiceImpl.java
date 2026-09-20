@@ -15,6 +15,7 @@ import biz.craftline.server.feature.businesstype.infra.repository.BrandJpaReposi
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessProductJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessTypeJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.CategoryJpaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
     @Override
     public void deleteProductById(Long id) {
         BusinessProductEntity bs = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Business Product not found, id: %d".formatted(id)));
+                .orElseThrow(() -> new EntityNotFoundException("Business Product not found, id: %d".formatted(id)));
         bs.setStatus(Status.DELETED.getCode());
         repository.save(bs);
     }
@@ -78,7 +79,7 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
     public BusinessProduct update(BusinessProduct businessProduct) {
 
         BusinessProductEntity product = repository.findById(businessProduct.getId())
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new EntityNotFoundException(
                         "Business Product not found, id: " + businessProduct.getId()
                 ));
 
@@ -147,7 +148,7 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
         if (businessType != null && businessType.getId() != null) {
             return businessTypeJpaRepository
                     .findById(businessType.getId())
-                    .orElseThrow(() -> new RuntimeException("BusinessType not valid"));
+                    .orElseThrow(() -> new EntityNotFoundException("BusinessType not valid"));
         }
         return null;
     }

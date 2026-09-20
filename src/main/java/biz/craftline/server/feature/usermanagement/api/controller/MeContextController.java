@@ -1,3 +1,5 @@
+package biz.craftline.server.feature.usermanagement.api.controller;
+
 import biz.craftline.server.config.security.UserScopeContext;
 import biz.craftline.server.config.security.UserScopeContextHolder;
 import biz.craftline.server.feature.usermanagement.api.dto.MeContextResponse;

@@ -22,6 +22,8 @@ public class EmployeeResponse {
 
     private String joinDate;
     private String leaveDate;
-    // Getters and setters
+
+    private String jobTitle;
+    private String status;
 }
 

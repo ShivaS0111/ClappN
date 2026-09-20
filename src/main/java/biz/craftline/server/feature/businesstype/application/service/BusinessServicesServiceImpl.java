@@ -12,6 +12,7 @@ import biz.craftline.server.feature.businesstype.infra.mapper.BusinessServiceEnt
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessServicesJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessTypeJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.CategoryJpaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,12 +105,15 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
     }
 
     private BusinessTypeEntity getBusinessTypeEntity(BusinessType businessType) {
-        if (businessType != null && businessType.getId() != null) {
-            return businessTypeJpaRepository
-                    .findById(businessType.getId())
-                    .orElseThrow(() -> new RuntimeException("BusinessType not valid"));
+        if (businessType == null || businessType.getId() == null) {
+            throw new IllegalArgumentException("businessTypeId is required");
         }
-        return null;
+        if (businessType.getId() <= 0) {
+            throw new IllegalArgumentException("businessTypeId is required");
+        }
+        return businessTypeJpaRepository
+                .findById(businessType.getId())
+                .orElseThrow(() -> new EntityNotFoundException("BusinessType not valid"));
     }
 
     @Override

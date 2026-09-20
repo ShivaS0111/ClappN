@@ -15,8 +15,8 @@ import biz.craftline.server.feature.addressmanagement.infra.repository.SubRegion
 import biz.craftline.server.feature.addressmanagement.infra.repository.ZipcodeRepository;
 import biz.craftline.server.feature.customermanagement.infra.entity.CustomerEntity;
 import biz.craftline.server.feature.customermanagement.infra.repository.CustomerRepository;
-import biz.craftline.server.feature.employeemanagement.infra.entity.EmployeeEntity;
-import biz.craftline.server.feature.employeemanagement.infra.repository.EmployeeRepository;
+import biz.craftline.server.feature.membership.infra.entity.MembershipEntity;
+import biz.craftline.server.feature.membership.infra.repository.MembershipRepository;
 import biz.craftline.server.feature.usermanagement.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -52,7 +52,7 @@ public class AddressService {
     @Autowired
     private UserService userService;
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private MembershipRepository membershipRepository;
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -210,14 +210,14 @@ public class AddressService {
                         .orElseThrow(() -> new AccessDeniedException("User not found for address"));
             }
             case "EMPLOYEE" -> {
-                EmployeeEntity employee = employeeRepository.findById(referenceId)
-                        .orElseThrow(() -> new AccessDeniedException("Employee not found for address"));
-                if (employee.getStoreId() != null) {
-                    securityContextService.validateStoreAccess(employee.getStoreId());
-                } else if (employee.getBusinessId() != null) {
-                    securityContextService.validateBusinessAccess(employee.getBusinessId());
+                MembershipEntity membership = membershipRepository.findById(referenceId)
+                        .orElseThrow(() -> new AccessDeniedException("Employee/membership not found for address"));
+                if (membership.getStoreScopes() != null && !membership.getStoreScopes().isEmpty()) {
+                    membership.getStoreScopes().forEach(securityContextService::validateStoreAccess);
+                } else if (membership.getBusinessId() != null) {
+                    securityContextService.validateBusinessAccess(membership.getBusinessId());
                 } else {
-                    throw new AccessDeniedException("Employee has no store/business scope");
+                    throw new AccessDeniedException("Membership has no store/business scope");
                 }
             }
             case "CUSTOMER" -> {

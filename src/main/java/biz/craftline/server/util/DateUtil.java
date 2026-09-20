@@ -24,7 +24,7 @@ public class DateUtil {
     }
 
     public String formatDateTime(LocalDateTime dateTime) {
-        return dateTime != null ? DATE_FORMATTER_YMDHMS.format(dateTime) : null;
+        return dateTime != null ? LOCALDATETIME_FORMATTER_YMDHMS.format(dateTime) : null;
     }
 
     public String formatYMD(Date dateTime) {

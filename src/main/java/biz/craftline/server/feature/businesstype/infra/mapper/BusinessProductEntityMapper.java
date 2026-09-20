@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class BusinessProductEntityMapper {
 
@@ -27,7 +29,9 @@ public class BusinessProductEntityMapper {
         entity.setDescription(domain.getDescription());
         entity.setStatus(domain.getStatus());
         entity.setAmount(domain.getAmount());
-        entity.setCategories(domain.getCategories().stream().map(mapper::toEntity).toList());
+        entity.setCategories(domain.getCategories() != null
+                ? domain.getCategories().stream().map(mapper::toEntity).toList()
+                : List.of());
         entity.setCurrency(domain.getCurrency());
         entity.setThumbnailUrl(domain.getThumbnailUrl());
         entity.setGalleryUrls(domain.getGalleryUrls());
@@ -41,7 +45,9 @@ public class BusinessProductEntityMapper {
                 entity.getDescription(),
                 entity.getStatus(),
                 entity.getBusinessType()!=null? businessTypeEntityMapper.toDomain(entity.getBusinessType()):null,
-                entity.getCategories().stream().map(mapper::toDomain).toList(),
+                entity.getCategories() != null
+                        ? entity.getCategories().stream().map(mapper::toDomain).toList()
+                        : List.of(),
                 entity.getAmount(),
                 entity.getCurrency(),
                 entity.getBrand()!=null? brandEntityMapper.toDomain(entity.getBrand()):null,

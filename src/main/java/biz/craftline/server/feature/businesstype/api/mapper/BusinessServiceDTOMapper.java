@@ -71,6 +71,15 @@ public class BusinessServiceDTOMapper {
     }
 
     public BusinessService toDomain(AddNewBusinessServiceRequest dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("Request body is required");
+        }
+        if (dto.getName() == null || dto.getName().isBlank()) {
+            throw new IllegalArgumentException("Service name is required");
+        }
+        if (dto.getBusinessTypeId() <= 0) {
+            throw new IllegalArgumentException("businessTypeId is required");
+        }
 
         List<Category> categoryList = dto.getCategoryIds() != null ?
                 categoryService.findAllByIds(dto.getCategoryIds()).stream().peek(c -> c.setChildren(null)).toList()

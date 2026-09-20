@@ -22,6 +22,7 @@ public class EmployeeRequest {
     private Long storeId;
     private Long businessId;
 
-    // Getters and setters
+    private String jobTitle;
+    private String status;
 }
 

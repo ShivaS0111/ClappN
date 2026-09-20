@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Employee {
+    /** Membership id (API primary key). */
     private Long id;
     private String employeeCode;
     private String name;
@@ -22,6 +23,7 @@ public class Employee {
 
     private String joinDate;
     private String leaveDate;
-    // Getters and setters
-}
 
+    private String jobTitle;
+    private String status;
+}

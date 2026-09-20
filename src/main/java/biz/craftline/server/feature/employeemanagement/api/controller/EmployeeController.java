@@ -62,10 +62,22 @@ public class EmployeeController {
     @PostMapping
     @RequirePermission("user.create")
     public ResponseEntity<APIResponse<EmployeeResponse>> createEmployee(@RequestBody EmployeeRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request body is required");
+        }
+        if (request.getBusinessId() == null && request.getStoreId() == null) {
+            throw new IllegalArgumentException("businessId or storeId is required");
+        }
         if (request.getName() == null || request.getName().trim().isEmpty()) {
-            request.setName(request.getFirstName() + " " + request.getLastName() + " " + request.getSurName());
+            String first = request.getFirstName() != null ? request.getFirstName() : "";
+            String last = request.getLastName() != null ? request.getLastName() : "";
+            String sur = request.getSurName() != null ? request.getSurName() : "";
+            request.setName((first + " " + last + " " + sur).trim());
         }
         if (request.getUserId() == null || request.getUserId() <= 0) {
+            if (request.getEmail() == null || request.getEmail().isBlank()) {
+                throw new IllegalArgumentException("userId or email is required");
+            }
             User user = createUserIfNotExists(request);
             request.setUserId(user.getId());
         }

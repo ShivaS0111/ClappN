@@ -3,7 +3,13 @@
 # Location: src/main/resources/db/migration/
 # Naming:   V{version}__description.sql
 #
-# Current chain: V1 baseline → V2 placeholder → V3…V14 incremental DDL
+# Current chain: V1…V14 → V15 membership + employee_profile → V16 drop legacy employee
+#
+# V15–V16 model
+# - membership: User ↔ Business with status, roles (membership_role), store scopes
+# - employee_profile: HR fields (employee_number, hire_date, job_title, …) per membership
+# - V15 migrates legacy `employee` rows; V16 drops the `employee` table
+# - SYSTEM_ADMIN stays on user_roles
 #
 # Existing databases
 # - If flyway_schema_history already has versions but checksums fail after

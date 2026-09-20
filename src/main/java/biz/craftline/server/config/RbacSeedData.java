@@ -193,6 +193,7 @@ public final class RbacSeedData {
         ));
 
         map.put("BUSINESS_ADMIN", List.of(
+                "business.read",
                 "store.read", "store.update", "store.metrics",
                 "product.read", "product.create", "product.update",
                 "service.read", "service.create", "service.update",
@@ -207,6 +208,7 @@ public final class RbacSeedData {
                 "pricing.read", "pricing.update",
                 "store_product.read", "store_product.update",
                 "store_service.read", "store_service.update",
+                "package.read", "package.update",
                 "inventory.read", "inventory.update", "inventory.adjust",
                 "customer.read", "customer.create", "customer.update",
                 "finance.view",

@@ -1,7 +1,6 @@
 package biz.craftline.server.feature.inventorymanagement.infra.repository;
 
 import biz.craftline.server.feature.inventorymanagement.infra.entity.ProductLotEntity;
-import biz.craftline.server.feature.businessstore.infra.entity.StoreOfferedProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,13 +11,14 @@ public interface ProductLotRepository extends JpaRepository<ProductLotEntity, Lo
 
     List<ProductLotEntity> findByProductId(Long productId);
 
-    List<ProductLotEntity> findByActiveTrue();
+    /** active is an int flag (1 = active), not boolean */
+    List<ProductLotEntity> findByActive(int active);
 
-    List<ProductLotEntity> findByProductIdAndActiveTrue(Long productId);
+    List<ProductLotEntity> findByProductIdAndActive(Long productId, int active);
 
-    List<ProductLotEntity> findByStoreIdAndProductIdAndActiveTrue(Long storeId, Long productId);
+    List<ProductLotEntity> findByStoreIdAndProductIdAndActive(Long storeId, Long productId, int active);
 
     List<ProductLotEntity> findByStoreIdIn(List<Long> storeIds);
 
-    List<ProductLotEntity> findByStoreIdInAndActiveTrue(List<Long> storeIds);
+    List<ProductLotEntity> findByStoreIdInAndActive(List<Long> storeIds, int active);
 }

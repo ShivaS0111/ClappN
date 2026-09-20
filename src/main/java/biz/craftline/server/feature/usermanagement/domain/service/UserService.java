@@ -1,8 +1,8 @@
 package biz.craftline.server.feature.usermanagement.domain.service;
 
 import biz.craftline.server.config.security.SecurityContextService;
-import biz.craftline.server.feature.employeemanagement.infra.entity.EmployeeEntity;
-import biz.craftline.server.feature.employeemanagement.infra.repository.EmployeeRepository;
+import biz.craftline.server.feature.membership.infra.entity.MembershipEntity;
+import biz.craftline.server.feature.membership.infra.repository.MembershipRepository;
 import biz.craftline.server.feature.usermanagement.domain.model.AuthUser;
 import biz.craftline.server.feature.usermanagement.domain.model.User;
 import biz.craftline.server.feature.usermanagement.api.mapper.UserMapper;
@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private MembershipRepository membershipRepository;
     @Autowired
     private SecurityContextService securityContextService;
 
@@ -54,14 +54,14 @@ public class UserService implements UserDetailsService {
 
         Set<Long> visibleUserIds = new HashSet<>();
         if (accessibleStoreIds != null && !accessibleStoreIds.isEmpty()) {
-            employeeRepository.findByStoreIdIn(accessibleStoreIds).stream()
-                    .map(EmployeeEntity::getUserId)
+            membershipRepository.findByStoreScopeIn(accessibleStoreIds).stream()
+                    .map(MembershipEntity::getUserId)
                     .filter(Objects::nonNull)
                     .forEach(visibleUserIds::add);
         }
         if (accessibleBusinessIds != null && !accessibleBusinessIds.isEmpty()) {
-            employeeRepository.findByBusinessIdIn(accessibleBusinessIds).stream()
-                    .map(EmployeeEntity::getUserId)
+            membershipRepository.findByBusinessIdIn(accessibleBusinessIds).stream()
+                    .map(MembershipEntity::getUserId)
                     .filter(Objects::nonNull)
                     .forEach(visibleUserIds::add);
         }
@@ -111,13 +111,16 @@ public class UserService implements UserDetailsService {
         List<Long> accessibleStoreIds = securityContextService.getAccessibleStoreIds();
         List<Long> accessibleBusinessIds = securityContextService.getAccessibleBusinessIds();
 
-        List<EmployeeEntity> targetEmployees = employeeRepository.findByUserId(user.getId());
-        boolean allowed = targetEmployees.stream().anyMatch(e -> {
-            if (accessibleStoreIds != null && e.getStoreId() != null && accessibleStoreIds.contains(e.getStoreId())) {
+        List<MembershipEntity> targetMemberships = membershipRepository.findByUserId(user.getId());
+        boolean allowed = targetMemberships.stream().anyMatch(m -> {
+            if (accessibleBusinessIds != null && m.getBusinessId() != null
+                    && accessibleBusinessIds.contains(m.getBusinessId())) {
                 return true;
             }
-            return accessibleBusinessIds != null && e.getBusinessId() != null
-                    && accessibleBusinessIds.contains(e.getBusinessId());
+            if (accessibleStoreIds != null && m.getStoreScopes() != null) {
+                return m.getStoreScopes().stream().anyMatch(accessibleStoreIds::contains);
+            }
+            return false;
         });
 
         if (!allowed) {
@@ -241,6 +244,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public AuthUser getAuthUserByEmail(
             @NotBlank(message = "Username is required")
             @Email(message = "Username must be a valid email")
@@ -248,15 +252,17 @@ public class UserService implements UserDetailsService {
         AuthUser authUser = userRepository.findByEmail(username).map(UserMapper::toAuthUser)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
 
-        // Populate storeIds and businessIds from Employee table
-        List<EmployeeEntity> employeeRecords = employeeRepository.findByUserId(authUser.getId());
-        List<Long> storeIds = employeeRecords.stream()
-                .map(EmployeeEntity::getStoreId)
+        // Populate storeIds and businessIds from Membership
+        List<MembershipEntity> memberships = membershipRepository
+                .findByUserIdAndStatus(authUser.getId(), MembershipEntity.STATUS_ACTIVE);
+        List<Long> storeIds = memberships.stream()
+                .flatMap(m -> m.getStoreScopes() == null ? java.util.stream.Stream.<Long>empty() : m.getStoreScopes().stream())
                 .filter(Objects::nonNull)
                 .distinct()
                 .toList();
-        List<Long> businessIds = employeeRecords.stream()
-                .map(EmployeeEntity::getBusinessId)
+        // Expand business-level empty scopes for auth payload convenience
+        List<Long> businessIds = memberships.stream()
+                .map(MembershipEntity::getBusinessId)
                 .filter(Objects::nonNull)
                 .distinct()
                 .toList();

@@ -35,6 +35,12 @@ public class InvoiceServiceImpl implements InvoiceDomainService {
     @Override
     @Transactional
     public Invoice generate(Long orderId, Long storeId) {
+        if (orderId == null) {
+            throw new IllegalArgumentException("orderId is required");
+        }
+        if (storeId == null) {
+            throw new IllegalArgumentException("storeId is required");
+        }
         securityContextService.validateStoreAccess(storeId);
 
         OrderEntity order = orderRepository.findById(orderId)

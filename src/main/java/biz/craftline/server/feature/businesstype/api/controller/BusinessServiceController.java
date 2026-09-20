@@ -23,7 +23,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/business-service")
+@RequestMapping("/api/business-service")
 public class BusinessServiceController {
 
     @Autowired
@@ -36,9 +36,9 @@ public class BusinessServiceController {
     private BusinessTypeService businessTypeService;
 
 
-    @GetMapping("/{productId}")
+    @GetMapping("/{serviceId}")
     @RequirePermission("service.read")
-    public ResponseEntity<APIResponse<BusinessServiceDTO>> getById(@PathVariable Long serviceId) {
+    public ResponseEntity<APIResponse<BusinessServiceDTO>> getById(@PathVariable("serviceId") Long serviceId) {
         BusinessService bs = service.findById(serviceId).orElseThrow( () -> new IllegalArgumentException("Invalid Business Service ID: " + serviceId));
         if (bs == null) {
             return APIResponse.success(null);
