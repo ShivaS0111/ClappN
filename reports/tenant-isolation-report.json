@@ -1,0 +1,326 @@
+{
+  "title" : "ClappN Tenant Isolation Report",
+  "generatedAt" : "2026-09-20T13:40:27.747882Z",
+  "category" : "A Tenant security",
+  "summary" : {
+    "pass" : 30,
+    "fail" : 0,
+    "warn" : 0,
+    "total" : 30
+  },
+  "seed" : {
+    "businessAId" : 252,
+    "businessBId" : 302,
+    "storeA1Id" : 454,
+    "storeA2Id" : 53,
+    "storeA3Id" : 353,
+    "storeB1Id" : 354,
+    "storeB2Id" : 355,
+    "customerAId" : 1,
+    "customerBId" : 5,
+    "storeProductAId" : 39,
+    "storeProductBId" : 31,
+    "specialUsers" : {
+      "scope.business_a" : {
+        "email" : "thorough.scope.business_a@clapp.test",
+        "userId" : 455
+      },
+      "scope.store_a1" : {
+        "email" : "thorough.scope.store_a1@clapp.test",
+        "userId" : 456
+      },
+      "scope.store_a1_a2" : {
+        "email" : "thorough.scope.store_a1_a2@clapp.test",
+        "userId" : 457
+      },
+      "scope.business_b" : {
+        "email" : "thorough.scope.business_b@clapp.test",
+        "userId" : 458
+      },
+      "scope.none" : {
+        "email" : "thorough.scope.none@clapp.test",
+        "userId" : 459
+      },
+      "scope.inactive" : {
+        "email" : "thorough.scope.inactive@clapp.test",
+        "userId" : 460
+      },
+      "auth.disabled" : {
+        "email" : "thorough.auth.disabled@clapp.test",
+        "userId" : 505
+      }
+    }
+  },
+  "results" : [ {
+    "user" : "scope.store_a1",
+    "probe" : "GET /api/stores/{A1}",
+    "method" : "GET",
+    "path" : "/api/stores/454",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Store retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.4869009\",\"data\":{\"id\":454,\"storeName\":\"Thorough Store…"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET /api/stores/{A3} deny",
+    "method" : "GET",
+    "path" : "/api/stores/353",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 353\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.4943685\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET /api/stores/{B1} deny",
+    "method" : "GET",
+    "path" : "/api/stores/354",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 354\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.5040522\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET /api/stores/list scoped",
+    "method" : "GET",
+    "path" : "/api/stores/list",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "scoped list OK"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET /api/business/{A} no business.read",
+    "method" : "GET",
+    "path" : "/api/business/252",
+    "category" : "PERMISSION",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.5214422\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET /api/business/{B} deny",
+    "method" : "GET",
+    "path" : "/api/business/302",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.52659\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET store-product A1 allow",
+    "method" : "GET",
+    "path" : "/api/store-product/39",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Product retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.5387085\",\"data\":{\"id\":39,\"aliasName\":\"Thorough Temp…"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET store-product B1 deny",
+    "method" : "GET",
+    "path" : "/api/store-product/31",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 354\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.5484497\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET store-product/store/A1",
+    "method" : "GET",
+    "path" : "/api/store-product/store/454",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.5567894\",\"data\":[{\"id\":39,\"aliasName\":\"Thoro…"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET store-product/store/B1 deny",
+    "method" : "GET",
+    "path" : "/api/store-product/store/354",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 354\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.5678159\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET customer A allow",
+    "method" : "GET",
+    "path" : "/api/customers/1",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Customer retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.5760977\",\"data\":{\"id\":1,\"storeId\":454,\"businessId\"…"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET customer B deny",
+    "method" : "GET",
+    "path" : "/api/customers/5",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 354\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.5889716\"}"
+  }, {
+    "user" : "scope.business_a",
+    "probe" : "GET store A1 (biz-wide)",
+    "method" : "GET",
+    "path" : "/api/stores/454",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Store retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.601654\",\"data\":{\"id\":454,\"storeName\":\"Thorough Store …"
+  }, {
+    "user" : "scope.business_a",
+    "probe" : "GET store A2 (biz-wide)",
+    "method" : "GET",
+    "path" : "/api/stores/53",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Store retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.61315\",\"data\":{\"id\":53,\"storeName\":\"Thorough Store Be…"
+  }, {
+    "user" : "scope.business_a",
+    "probe" : "GET store A3 (biz-wide)",
+    "method" : "GET",
+    "path" : "/api/stores/353",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Store retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.6233649\",\"data\":{\"id\":353,\"storeName\":\"Thorough Store…"
+  }, {
+    "user" : "scope.business_a",
+    "probe" : "GET store B1 deny (biz-wide)",
+    "method" : "GET",
+    "path" : "/api/stores/354",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 354\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.6339069\"}"
+  }, {
+    "user" : "scope.business_a",
+    "probe" : "GET /api/stores/list only A",
+    "method" : "GET",
+    "path" : "/api/stores/list",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "scoped list OK"
+  }, {
+    "user" : "scope.business_a",
+    "probe" : "GET business A allow",
+    "method" : "GET",
+    "path" : "/api/business/252",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.6566352\",\"data\":{\"id\":252,\"businessName\":\"Thorough Test Business\",\"descrip…"
+  }, {
+    "user" : "scope.business_a",
+    "probe" : "GET business B deny",
+    "method" : "GET",
+    "path" : "/api/business/302",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to business: 302\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.6669598\"}"
+  }, {
+    "user" : "scope.store_a1_a2",
+    "probe" : "GET A1 (multi-store)",
+    "method" : "GET",
+    "path" : "/api/stores/454",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Store retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.6756664\",\"data\":{\"id\":454,\"storeName\":\"Thorough Store…"
+  }, {
+    "user" : "scope.store_a1_a2",
+    "probe" : "GET A2 (multi-store)",
+    "method" : "GET",
+    "path" : "/api/stores/53",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Store retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.6851159\",\"data\":{\"id\":53,\"storeName\":\"Thorough Store …"
+  }, {
+    "user" : "scope.store_a1_a2",
+    "probe" : "GET A3 deny (multi-store)",
+    "method" : "GET",
+    "path" : "/api/stores/353",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 353\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.6922723\"}"
+  }, {
+    "user" : "scope.store_a1_a2",
+    "probe" : "list A1+A2 only",
+    "method" : "GET",
+    "path" : "/api/stores/list",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "scoped list OK"
+  }, {
+    "user" : "scope.none",
+    "probe" : "none → protected store",
+    "method" : "GET",
+    "path" : "/api/stores/454",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store.read\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.7095974\"}"
+  }, {
+    "user" : "scope.none",
+    "probe" : "none → protected business",
+    "method" : "GET",
+    "path" : "/api/business/252",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-09-20T19:10:27.7171443\"}"
+  }, {
+    "user" : "scope.inactive",
+    "probe" : "inactive → protected store",
+    "method" : "GET",
+    "path" : "/api/stores/454",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"You do not have access to business: 252\",\"status\":403}"
+  }, {
+    "user" : "scope.inactive",
+    "probe" : "inactive → protected business",
+    "method" : "GET",
+    "path" : "/api/business/252",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"You do not have access to business: 252\",\"status\":403}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "X-Store-Id=A1 ok",
+    "method" : "GET",
+    "path" : "/api/me/context",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Current user context\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:10:27.7341681\",\"data\":{\"userId\":456,\"email\":\"thorough.scope.store_a…"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "X-Store-Id=A3 → 403",
+    "method" : "GET",
+    "path" : "/api/me/context",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"You do not have access to store: 353\",\"status\":403}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "X-Store-Id=B1 → 403",
+    "method" : "GET",
+    "path" : "/api/stores/list",
+    "category" : "TENANT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"You do not have access to store: 354\",\"status\":403}"
+  } ],
+  "failures" : [ ]
+}

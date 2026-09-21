@@ -1,0 +1,1940 @@
+{
+  "generatedAt" : "2026-08-10T10:51:46.926676700Z",
+  "title" : "ClappN Thorough System Feature Report",
+  "passwordForAllThoroughUsers" : "Test@12345",
+  "seed" : {
+    "businessId" : 252,
+    "storeAId" : 52,
+    "storeBId" : 53,
+    "productTemplateId" : 6,
+    "serviceTemplateId" : 102,
+    "storeProductId" : 5,
+    "storeServiceId" : 4,
+    "packageId" : 1,
+    "customerId" : 1,
+    "roleCount" : 35,
+    "membershipCount" : 32,
+    "permissionMappedRoles" : 14,
+    "emailsByRole" : {
+      "SYSTEM_ADMIN" : "thorough.system_admin@clapp.test",
+      "BUSINESS_OWNER" : "thorough.business_owner@clapp.test",
+      "BUSINESS_ADMIN" : "thorough.business_admin@clapp.test",
+      "BUSINESS_MANAGER" : "thorough.business_manager@clapp.test",
+      "STORE_OWNER" : "thorough.store_owner@clapp.test",
+      "STORE_MANAGER" : "thorough.store_manager@clapp.test",
+      "ASSISTANT_MANAGER" : "thorough.assistant_manager@clapp.test",
+      "SHIFT_SUPERVISOR" : "thorough.shift_supervisor@clapp.test",
+      "SALES_ASSOCIATE" : "thorough.sales_associate@clapp.test",
+      "CASHIER" : "thorough.cashier@clapp.test",
+      "INVENTORY_STAFF" : "thorough.inventory_staff@clapp.test",
+      "CUSTOMER_SERVICE_REP" : "thorough.customer_service_rep@clapp.test",
+      "STOCK_KEEPER" : "thorough.stock_keeper@clapp.test",
+      "VISUAL_MERCHANDISER" : "thorough.visual_merchandiser@clapp.test",
+      "SECURITY_STAFF" : "thorough.security_staff@clapp.test",
+      "CLEANING_STAFF" : "thorough.cleaning_staff@clapp.test",
+      "INVENTORY_MANAGER" : "thorough.inventory_manager@clapp.test",
+      "SALES_MANAGER" : "thorough.sales_manager@clapp.test",
+      "CUSTOMER_SERVICE" : "thorough.customer_service@clapp.test",
+      "FINANCE_MANAGER" : "thorough.finance_manager@clapp.test",
+      "MARKETING_MANAGER" : "thorough.marketing_manager@clapp.test",
+      "SECURITY_OFFICER" : "thorough.security_officer@clapp.test",
+      "MAINTENANCE_STAFF" : "thorough.maintenance_staff@clapp.test",
+      "CUSTOMER" : "thorough.customer@clapp.test",
+      "GUEST" : "thorough.guest@clapp.test",
+      "VENDOR_ADMIN" : "thorough.vendor_admin@clapp.test",
+      "VENDOR_MANAGER" : "thorough.vendor_manager@clapp.test",
+      "APPROVAL_MANAGER" : "thorough.approval_manager@clapp.test",
+      "CONTENT_MANAGER" : "thorough.content_manager@clapp.test",
+      "ANALYTICS_MANAGER" : "thorough.analytics_manager@clapp.test",
+      "SUPPORT_MANAGER" : "thorough.support_manager@clapp.test",
+      "WAREHOUSE_MANAGER" : "thorough.warehouse_manager@clapp.test",
+      "LOGISTICS_MANAGER" : "thorough.logistics_manager@clapp.test",
+      "QUALITY_ASSURANCE" : "thorough.quality_assurance@clapp.test",
+      "RETURNS_MANAGER" : "thorough.returns_manager@clapp.test"
+    }
+  },
+  "summary" : {
+    "totalProbes" : 241,
+    "pass" : 168,
+    "fail" : 37,
+    "warn" : 36,
+    "skip" : 0,
+    "passRate" : 69.70954356846472,
+    "loginSuccess" : 35,
+    "loginTotal" : 35
+  },
+  "results" : [ {
+    "category" : "AUTH",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "BUSINESS_OWNER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "STORE_OWNER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "STORE_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "ASSISTANT_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "SHIFT_SUPERVISOR",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "CASHIER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "INVENTORY_STAFF",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "CUSTOMER_SERVICE_REP",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "STOCK_KEEPER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "VISUAL_MERCHANDISER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "SECURITY_STAFF",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "CLEANING_STAFF",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "INVENTORY_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "SALES_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "CUSTOMER_SERVICE",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "FINANCE_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "MARKETING_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "SECURITY_OFFICER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "MAINTENANCE_STAFF",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "CUSTOMER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "GUEST",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "VENDOR_ADMIN",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "VENDOR_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "APPROVAL_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "CONTENT_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "ANALYTICS_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "SUPPORT_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "WAREHOUSE_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "LOGISTICS_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "QUALITY_ASSURANCE",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "AUTH",
+    "role" : "RETURNS_MANAGER",
+    "action" : "POST /api/auth/login",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "token issued"
+  }, {
+    "category" : "SCOPE",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "ASSISTANT_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "SHIFT_SUPERVISOR",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "CASHIER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "CUSTOMER_SERVICE_REP",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "STOCK_KEEPER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "VISUAL_MERCHANDISER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "SECURITY_STAFF",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "CLEANING_STAFF",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "INVENTORY_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "SALES_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "CUSTOMER_SERVICE",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "MARKETING_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "SECURITY_OFFICER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "MAINTENANCE_STAFF",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "GUEST",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "VENDOR_ADMIN",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "VENDOR_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "APPROVAL_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "CONTENT_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "ANALYTICS_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "SUPPORT_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "WAREHOUSE_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "LOGISTICS_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "QUALITY_ASSURANCE",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "SCOPE",
+    "role" : "RETURNS_MANAGER",
+    "action" : "GET /api/me/context",
+    "verdict" : "FAIL",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/business [business.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Businesses retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:41.9247003\",\"data\":{\"content\":[{\"id\":1,\"businessName\":\"NonVeg Centers\",…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/stores [store.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Stores retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:41.9840074\",\"data\":{\"content\":[{\"id\":1,\"storeName\":\"NVC, Karmanghat\",\"descr…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/business-product [product.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:42.0251002\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/business-service [service.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:42.0519223\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/brands [brand.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.0822769\",\"data\":[{\"id\":1,\"name\":\"Apple\",\"description\":\"Consumer electronics and software brand…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/categories/list [category.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.2250559\",\"data\":[{\"id\":1,\"name\":\"Electronics\",\"description\":null,\"parentId\":null,\"brand\":null,…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/orders [order.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.2991914\",\"data\":[{\"id\":2,\"storeId\":null,\"customerId\":null,\"totalAmount\":240.0,\"orderDate\":\"202…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/employees [user.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.4322992\",\"data\":[{\"id\":1,\"name\":\"Thorough BUSINESS OWNER\",\"firstName\":null,\"lastName\":null,\"su…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/customers [customer.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Customers retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.4731452\",\"data\":[{\"id\":1,\"storeId\":52,\"businessId\":252,\"firstName\":\"T…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/invoices [invoice.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Invoices retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.5039891\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/store-offered-packages [package.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:42.5291531\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/store-product [store_product.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.5756987\",\"data\":[{\"id\":1,\"aliasName\":\"Chicken\",\"description\":\"Ch…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/store-service [store_service.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store services retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.6370351\",\"data\":[{\"id\":1,\"aliasName\":\"Meat Cutting Service\",\"des…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store inventory retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.7111042\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/business [business.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Businesses retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.7594812\",\"data\":{\"content\":[{\"id\":252,\"businessName\":\"Thorough Test …"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/stores [store.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Stores retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.7928089\",\"data\":{\"content\":[{\"id\":52,\"storeName\":\"Thorough Store Alpha\",…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/business-product [product.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:42.8176544\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/business-service [service.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:42.8644429\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/brands [brand.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:42.8968658\",\"data\":[{\"id\":1,\"name\":\"Apple\",\"description\":\"Consumer electronics and software brand…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/categories/list [category.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.0045212\",\"data\":[{\"id\":1,\"name\":\"Electronics\",\"description\":null,\"parentId\":null,\"brand\":null,…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/orders [order.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.0456635\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/employees [user.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.1610896\",\"data\":[{\"id\":4,\"name\":\"Thorough STORE OWNER\",\"firstName\":null,\"lastName\":null,\"surNa…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/customers [customer.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Customers retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.192613\",\"data\":[{\"id\":1,\"storeId\":52,\"businessId\":252,\"firstName\":\"Th…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/invoices [invoice.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Invoices retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.2178173\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/store-offered-packages [package.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:43.2414597\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/store-product [store_product.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.273445\",\"data\":[{\"id\":5,\"aliasName\":\"Thorough Template Product\",…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/store-service [store_service.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store services retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.2991863\",\"data\":[{\"id\":4,\"aliasName\":\"Thorough Template Service\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store inventory retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.3307093\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "verdict" : "FAIL",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Businesses retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.370576\",\"data\":{\"content\":[{\"id\":252,\"businessName\":\"Thorough Test B…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/stores [store.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Stores retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.4091387\",\"data\":{\"content\":[{\"id\":52,\"storeName\":\"Thorough Store Alpha\",…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/business-product [product.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:43.4352696\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/business-service [service.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:43.4645537\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/brands [brand.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.4864106\",\"data\":[{\"id\":1,\"name\":\"Apple\",\"description\":\"Consumer electronics and software brand…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/categories/list [category.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.5766635\",\"data\":[{\"id\":1,\"name\":\"Electronics\",\"description\":null,\"parentId\":null,\"brand\":null,…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/orders [order.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.5971742\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/employees [user.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.7359725\",\"data\":[{\"id\":4,\"name\":\"Thorough STORE OWNER\",\"firstName\":null,\"lastName\":null,\"surNa…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/customers [customer.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Customers retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.7679385\",\"data\":[{\"id\":1,\"storeId\":52,\"businessId\":252,\"firstName\":\"T…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/invoices [invoice.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Invoices retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.7970402\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/store-offered-packages [package.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:43.8264739\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/store-product [store_product.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.8594675\",\"data\":[{\"id\":5,\"aliasName\":\"Thorough Template Product\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/store-service [store_service.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store services retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.8960248\",\"data\":[{\"id\":4,\"aliasName\":\"Thorough Template Service\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store inventory retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.92381\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:43.954661\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/stores [store.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Stores retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.9791033\",\"data\":{\"content\":[{\"id\":52,\"storeName\":\"Thorough Store Alpha\",…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/business-product [product.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:44.0080423\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/business-service [service.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:44.0280159\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/brands [brand.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.0510518\",\"data\":[{\"id\":1,\"name\":\"Apple\",\"description\":\"Consumer electronics and software brand…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/categories/list [category.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.1531444\",\"data\":[{\"id\":1,\"name\":\"Electronics\",\"description\":null,\"parentId\":null,\"brand\":null,…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/orders [order.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.1906044\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/employees [user.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.3322903\",\"data\":[{\"id\":4,\"name\":\"Thorough STORE OWNER\",\"firstName\":null,\"lastName\":null,\"surNa…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/customers [customer.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Customers retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.3550604\",\"data\":[{\"id\":1,\"storeId\":52,\"businessId\":252,\"firstName\":\"T…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/invoices [invoice.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Invoices retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.3769499\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/store-offered-packages [package.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:44.4010226\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/store-product [store_product.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.4229878\",\"data\":[{\"id\":5,\"aliasName\":\"Thorough Template Product\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/store-service [store_service.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store services retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.4491379\",\"data\":[{\"id\":4,\"aliasName\":\"Thorough Template Service\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store inventory retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.4727853\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:44.4858638\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/stores [store.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Stores retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.5072879\",\"data\":{\"content\":[{\"id\":52,\"storeName\":\"Thorough Store Alpha\",…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/business-product [product.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:44.5303737\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/business-service [service.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:44.5583836\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/brands [brand.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.5806393\",\"data\":[{\"id\":1,\"name\":\"Apple\",\"description\":\"Consumer electronics and software brand…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/categories/list [category.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.6627559\",\"data\":[{\"id\":1,\"name\":\"Electronics\",\"description\":null,\"parentId\":null,\"brand\":null,…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/orders [order.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.6769533\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/employees [user.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.7249832\",\"data\":[{\"id\":4,\"name\":\"Thorough STORE OWNER\",\"firstName\":null,\"lastName\":null,\"surNa…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/customers [customer.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Customers retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.7410658\",\"data\":[{\"id\":1,\"storeId\":52,\"businessId\":252,\"firstName\":\"T…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/invoices [invoice.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Invoices retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.7570018\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/store-offered-packages [package.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:44.7774702\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/store-product [store_product.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.7950964\",\"data\":[{\"id\":5,\"aliasName\":\"Thorough Template Product\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/store-service [store_service.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store services retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.8109116\",\"data\":[{\"id\":4,\"aliasName\":\"Thorough Template Service\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store inventory retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.8265709\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:44.8380436\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/stores [store.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Stores retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.8570665\",\"data\":{\"content\":[{\"id\":52,\"storeName\":\"Thorough Store Alpha\",…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/business-product [product.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:44.8805923\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/business-service [service.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:44.9005075\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/brands [brand.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:44.9406377\",\"data\":[{\"id\":1,\"name\":\"Apple\",\"description\":\"Consumer electronics and software brand…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/categories/list [category.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.0446721\",\"data\":[{\"id\":1,\"name\":\"Electronics\",\"description\":null,\"parentId\":null,\"brand\":null,…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/orders [order.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.0649366\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/employees [user.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.1385267\",\"data\":[{\"id\":4,\"name\":\"Thorough STORE OWNER\",\"firstName\":null,\"lastName\":null,\"surNa…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/customers [customer.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Customers retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.152169\",\"data\":[{\"id\":1,\"storeId\":52,\"businessId\":252,\"firstName\":\"Th…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/invoices [invoice.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Invoices retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.1683444\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/store-offered-packages [package.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:45.1850823\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/store-product [store_product.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.2073641\",\"data\":[{\"id\":5,\"aliasName\":\"Thorough Template Product\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/store-service [store_service.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store services retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.2261081\",\"data\":[{\"id\":4,\"aliasName\":\"Thorough Template Service\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store inventory retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.2408575\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.2606279\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/stores [store.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Stores retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.2796952\",\"data\":{\"content\":[{\"id\":52,\"storeName\":\"Thorough Store Alpha\",…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/business-product [product.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:45.2964227\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/business-service [service.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:45.3159296\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/brands [brand.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: brand.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.3335584\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/categories/list [category.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: category.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.3505761\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/orders [order.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.371731\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/employees [user.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: user.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.3841228\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/customers [customer.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Customers retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.3996483\",\"data\":[{\"id\":1,\"storeId\":52,\"businessId\":252,\"firstName\":\"T…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/invoices [invoice.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Invoices retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.41449\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/store-offered-packages [package.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:45.4369013\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/store-product [store_product.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.4593365\",\"data\":[{\"id\":5,\"aliasName\":\"Thorough Template Product\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/store-service [store_service.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_service.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.4715565\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CASHIER",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: inventory.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.4880136\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.5040633\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/stores [store.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Stores retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.5282881\",\"data\":{\"content\":[{\"id\":52,\"storeName\":\"Thorough Store Alpha\",…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/business-product [product.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:45.5518313\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/business-service [service.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:45.580215\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/brands [brand.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: brand.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.5984559\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/categories/list [category.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: category.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.6174646\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/orders [order.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: order.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.6341512\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/employees [user.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: user.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.6514909\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/customers [customer.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: customer.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.6682607\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/invoices [invoice.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: invoice.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.6875215\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/store-offered-packages [package.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:45.7029624\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/store-product [store_product.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.7259159\",\"data\":[{\"id\":5,\"aliasName\":\"Thorough Template Product\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/store-service [store_service.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_service.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.7430435\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store inventory retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.7668407\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.7852876\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/stores [store.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.798274\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/business-product [product.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:45.8159193\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/business-service [service.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:45.836638\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/brands [brand.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: brand.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.8536935\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/categories/list [category.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: category.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.8706479\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/orders [order.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.8881471\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/employees [user.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: user.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.8994845\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/customers [customer.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: customer.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.9159795\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/invoices [invoice.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Invoices retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:45.9378716\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/store-offered-packages [package.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:45.9591507\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/store-product [store_product.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_product.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.9757077\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/store-service [store_service.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_service.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:45.9962075\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: inventory.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.014224\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.0358651\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/stores [store.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.0538864\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/business-product [product.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.0779085\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/business-service [service.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.1020953\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/brands [brand.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: brand.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.1201107\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/categories/list [category.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: category.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.1351243\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/orders [order.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:46.1518048\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/employees [user.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: user.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.1681755\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/customers [customer.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Customers retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:46.182086\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/invoices [invoice.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: invoice.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.2015984\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/store-offered-packages [package.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.2376314\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/store-product [store_product.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_product.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.2555624\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/store-service [store_service.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_service.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.2692972\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "CUSTOMER",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: inventory.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.2838347\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.2981212\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/stores [store.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.3138056\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/business-product [product.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.3302874\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/business-service [service.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.3473568\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/brands [brand.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: brand.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.363315\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/categories/list [category.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: category.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.3787963\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/orders [order.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: order.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.3945101\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/employees [user.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: user.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.4114204\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/customers [customer.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: customer.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.4286517\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/invoices [invoice.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: invoice.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.4454476\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/store-offered-packages [package.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.465364\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/store-product [store_product.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_product.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.4822503\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/store-service [store_service.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_service.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.5003013\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "GUEST",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: inventory.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.5188361\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: business.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.5354526\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/stores [store.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Stores retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:46.5563924\",\"data\":{\"content\":[{\"id\":52,\"storeName\":\"Thorough Store Alpha\",…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/business-product [product.read] expect=ALLOW",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.5759628\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/business-service [service.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.6102973\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/brands [brand.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: brand.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.6319318\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/categories/list [category.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: category.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.6496326\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/orders [order.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:46.6694482\",\"data\":[]}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/employees [user.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: user.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.6860372\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/customers [customer.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Customers retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:46.7008965\",\"data\":[{\"id\":1,\"storeId\":52,\"businessId\":252,\"firstName\":\"T…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/invoices [invoice.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: invoice.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.7177493\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/store-offered-packages [package.read] expect=DENY",
+    "verdict" : "WARN",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.7386464\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/store-product [store_product.read] expect=ALLOW",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:46.7666833\",\"data\":[{\"id\":5,\"aliasName\":\"Thorough Template Product\"…"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/store-service [store_service.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_service.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.7869964\"}"
+  }, {
+    "category" : "MATRIX",
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/store-inventory/52 [inventory.read] expect=DENY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: inventory.read\",\"statusCode\":403,\"timestamp\":\"2026-08-10T16:21:46.805715\"}"
+  }, {
+    "category" : "WRITE",
+    "role" : "BUSINESS_OWNER",
+    "action" : "POST /api/customers",
+    "verdict" : "PASS",
+    "httpStatus" : 201,
+    "detail" : "{\"success\":true,\"message\":\"Customer created successfully\",\"statusCode\":201,\"timestamp\":\"2026-08-10T16:21:46.8556992\",\"data\":{\"id\":3,\"storeId\":52,\"businessId\":252,\"firstName\":\"Probe…"
+  }, {
+    "category" : "WRITE",
+    "role" : "CASHIER",
+    "action" : "POST /api/orders",
+    "verdict" : "FAIL",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.8865028\"}"
+  }, {
+    "category" : "WRITE",
+    "role" : "CASHIER",
+    "action" : "DELETE /api/stores/{id}",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect deny store.delete"
+  } ],
+  "failures" : [ {
+    "role" : "SYSTEM_ADMIN",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "BUSINESS_OWNER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "BUSINESS_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "STORE_OWNER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "STORE_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "ASSISTANT_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "SHIFT_SUPERVISOR",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "SALES_ASSOCIATE",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "CASHIER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "INVENTORY_STAFF",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "CUSTOMER_SERVICE_REP",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "STOCK_KEEPER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "VISUAL_MERCHANDISER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "SECURITY_STAFF",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "CLEANING_STAFF",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "INVENTORY_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "SALES_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "CUSTOMER_SERVICE",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "FINANCE_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "MARKETING_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "SECURITY_OFFICER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "MAINTENANCE_STAFF",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "CUSTOMER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "GUEST",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "VENDOR_ADMIN",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "VENDOR_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "APPROVAL_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "CONTENT_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "ANALYTICS_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "SUPPORT_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "WAREHOUSE_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "LOGISTICS_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "QUALITY_ASSURANCE",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "RETURNS_MANAGER",
+    "action" : "GET /api/me/context",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "role" : "BUSINESS_ADMIN",
+    "action" : "GET /api/business [business.read] expect=DENY",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Businesses retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T16:21:43.370576\",\"data\":{\"content\":[{\"id\":252,\"businessName\":\"Thorough Test B…"
+  }, {
+    "role" : "CASHIER",
+    "action" : "POST /api/orders",
+    "httpStatus" : 500,
+    "detail" : "{\"success\":false,\"message\":\"Internal server error\",\"statusCode\":500,\"timestamp\":\"2026-08-10T16:21:46.8865028\"}"
+  } ]
+}

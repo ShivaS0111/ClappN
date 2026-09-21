@@ -1,0 +1,44 @@
+{
+  "overall" : "PASS",
+  "generatedAt" : "2026-09-20T13:40:27.804965800Z",
+  "anyFail" : 0,
+  "requiredPresent" : true,
+  "slices" : {
+    "full-api-role-authz-report.json" : {
+      "present" : true,
+      "pass" : 3360,
+      "fail" : 0,
+      "skip" : 0
+    },
+    "tenant-isolation-report.json" : {
+      "present" : true,
+      "pass" : 30,
+      "fail" : 0,
+      "skip" : 0
+    },
+    "auth-full-report.json" : {
+      "present" : true,
+      "pass" : 9,
+      "fail" : 0,
+      "skip" : 1
+    },
+    "crud-idor-report.json" : {
+      "present" : true,
+      "pass" : 16,
+      "fail" : 0,
+      "skip" : 0
+    },
+    "template-catalog-admin-report.json" : {
+      "present" : true,
+      "pass" : 10,
+      "fail" : 0,
+      "skip" : 0
+    },
+    "indirect-integrity-report.json" : {
+      "present" : true,
+      "pass" : 3,
+      "fail" : 0,
+      "skip" : 0
+    }
+  }
+}

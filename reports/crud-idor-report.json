@@ -1,0 +1,158 @@
+{
+  "title" : "ClappN CRUD / IDOR / Products Report",
+  "generatedAt" : "2026-08-10T12:39:38.634340500Z",
+  "category" : "A+B",
+  "summary" : {
+    "pass" : 16,
+    "fail" : 0,
+    "warn" : 0,
+    "skip" : 0,
+    "total" : 16
+  },
+  "results" : [ {
+    "user" : "scope.store_a1",
+    "probe" : "GET store A1 allow",
+    "method" : "GET",
+    "path" : "/api/stores/404",
+    "category" : "IDOR",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Store retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:38.15415\",\"data\":{\"id\":404,\"storeName\":\"Thorough Store A…"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET store A3 deny",
+    "method" : "GET",
+    "path" : "/api/stores/353",
+    "category" : "IDOR",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 353\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:38.18584\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET store B1 deny",
+    "method" : "GET",
+    "path" : "/api/stores/354",
+    "category" : "IDOR",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 354\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:38.2090063\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET customer A allow",
+    "method" : "GET",
+    "path" : "/api/customers/1",
+    "category" : "IDOR",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Customer retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:38.2335839\",\"data\":{\"id\":1,\"storeId\":404,\"businessId\"…"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET customer B deny",
+    "method" : "GET",
+    "path" : "/api/customers/5",
+    "category" : "IDOR",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 354\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:38.2582728\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "PUT foreign store A3 → 403",
+    "method" : "PUT",
+    "path" : "/api/stores/353",
+    "category" : "IDOR",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: You do not have access to store: 353\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:38.3062536\"}"
+  }, {
+    "user" : "scope.business_a",
+    "probe" : "A3 name unchanged after foreign PUT",
+    "method" : "GET",
+    "path" : "/api/stores/353",
+    "category" : "INTEGRITY",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "before=Thorough Store Gamma after=Thorough Store Gamma"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "DELETE foreign store B1 → 403",
+    "method" : "DELETE",
+    "path" : "/api/stores/354",
+    "category" : "IDOR",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store.delete\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:38.3525249\"}"
+  }, {
+    "user" : "scope.business_b",
+    "probe" : "B1 still readable after denied DELETE",
+    "method" : "GET",
+    "path" : "/api/stores/354",
+    "category" : "INTEGRITY",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Store retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:38.3787396\",\"data\":{\"id\":354,\"storeName\":\"Thorough Store…"
+  }, {
+    "user" : "CASHIER",
+    "probe" : "CASHIER DELETE A1 → 403 (no store.delete)",
+    "method" : "DELETE",
+    "path" : "/api/stores/404",
+    "category" : "PERMISSION",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store.delete\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:38.3930171\"}"
+  }, {
+    "user" : "scope.business_a",
+    "probe" : "BUSINESS_OWNER list stores A",
+    "method" : "GET",
+    "path" : "/api/stores/list",
+    "category" : "CRUD",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:38.433878\",\"data\":[{\"id\":53,\"storeName\":\"Thorough Store Beta\",\"description\":\"…"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET store-product/store/A1 allow",
+    "method" : "GET",
+    "path" : "/api/store-product/store/404",
+    "category" : "PRODUCT",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Store products retrieved successfully\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:38.4613058\",\"data\":[{\"id\":35,\"aliasName\":\"Thoro…"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET store-product/store/B1 deny",
+    "method" : "GET",
+    "path" : "/api/store-product/store/354",
+    "category" : "PRODUCT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: You do not have access to store: 354\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:38.5019289\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "POST empty store-product → 4xx not 500",
+    "method" : "POST",
+    "path" : "/api/store-product/save",
+    "category" : "PRODUCT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_product.create\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:38.5328171\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "PUT B1 as store_a1 → 403",
+    "method" : "PUT",
+    "path" : "/api/stores/354",
+    "category" : "INTEGRITY",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: You do not have access to store: 354\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:38.5998872\"}"
+  }, {
+    "user" : "scope.business_b",
+    "probe" : "B1 storeName not HACKED after denied PUT",
+    "method" : "GET",
+    "path" : "/api/stores/354",
+    "category" : "INTEGRITY",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "before=Thorough Store B1 after=Thorough Store B1"
+  } ],
+  "failures" : [ ]
+}

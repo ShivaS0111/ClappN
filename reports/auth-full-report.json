@@ -1,0 +1,105 @@
+{
+  "title" : "ClappN Auth Full Report",
+  "generatedAt" : "2026-09-20T13:39:38.145397100Z",
+  "category" : "1 Authentication",
+  "summary" : {
+    "pass" : 9,
+    "fail" : 0,
+    "warn" : 0,
+    "skip" : 1,
+    "total" : 10
+  },
+  "notes" : [ "Password change: SKIP (optional)", "Disabled user email: thorough.auth.disabled@clapp.test" ],
+  "results" : [ {
+    "user" : "valid-user",
+    "probe" : "Valid login → 200 + token",
+    "method" : "POST",
+    "path" : "/api/auth/login",
+    "category" : "AUTH",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "tokenPresent=true | {\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:09:37.4964406\",\"data\":{\"user\":{\"id\":456,\"fullName\":\"Thorough scope store_a1\",\"em…"
+  }, {
+    "user" : "valid-user",
+    "probe" : "Invalid password → 401",
+    "method" : "POST",
+    "path" : "/api/auth/login",
+    "category" : "AUTH",
+    "verdict" : "PASS",
+    "httpStatus" : 401,
+    "detail" : "{\"success\":false,\"message\":\"Invalid username or password\",\"statusCode\":401,\"timestamp\":\"2026-09-20T19:09:37.6752907\"}"
+  }, {
+    "user" : "unknown",
+    "probe" : "Unknown user → 401",
+    "method" : "POST",
+    "path" : "/api/auth/login",
+    "category" : "AUTH",
+    "verdict" : "PASS",
+    "httpStatus" : 401,
+    "detail" : "{\"success\":false,\"message\":\"Invalid username or password\",\"statusCode\":401,\"timestamp\":\"2026-09-20T19:09:37.7571278\"}"
+  }, {
+    "user" : "anonymous",
+    "probe" : "No Authorization → 401",
+    "method" : "GET",
+    "path" : "/api/stores/list",
+    "category" : "AUTH",
+    "verdict" : "PASS",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "user" : "garbage",
+    "probe" : "Garbage Bearer → 401",
+    "method" : "GET",
+    "path" : "/api/stores/list",
+    "category" : "AUTH",
+    "verdict" : "PASS",
+    "httpStatus" : 401,
+    "detail" : "{\"data\":null,\"success\":false,\"message\":\"Unauthorized: authentication required\",\"status\":401}"
+  }, {
+    "user" : "auth.disabled",
+    "probe" : "Disabled user login → 401/403",
+    "method" : "POST",
+    "path" : "/api/auth/login",
+    "category" : "AUTH",
+    "verdict" : "PASS",
+    "httpStatus" : 401,
+    "detail" : "{\"success\":false,\"message\":\"Invalid username or password\",\"statusCode\":401,\"timestamp\":\"2026-09-20T19:09:37.860304\"}"
+  }, {
+    "user" : "valid-user",
+    "probe" : "Logout with refreshToken",
+    "method" : "POST",
+    "path" : "/api/auth/logout",
+    "category" : "AUTH",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:09:37.8837576\",\"data\":\"Logged out successfully\"}"
+  }, {
+    "user" : "anonymous",
+    "probe" : "Logout blank refreshToken → 4xx",
+    "method" : "POST",
+    "path" : "/api/auth/logout",
+    "category" : "AUTH",
+    "verdict" : "PASS",
+    "httpStatus" : 400,
+    "detail" : "{\"success\":false,\"message\":\"Validation error: refreshToken: Refresh token is required\",\"statusCode\":400,\"timestamp\":\"2026-09-20T19:09:37.9144644\"}"
+  }, {
+    "user" : "valid-user",
+    "probe" : "GET /api/me/context after login → 200",
+    "method" : "GET",
+    "path" : "/api/me/context",
+    "category" : "AUTH",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "{\"success\":true,\"message\":\"Current user context\",\"statusCode\":200,\"timestamp\":\"2026-09-20T19:09:38.1361069\",\"data\":{\"userId\":456,\"email\":\"thorough.scope.store_a…"
+  }, {
+    "user" : "",
+    "probe" : "Password change",
+    "method" : "POST",
+    "path" : "/api/auth/change-password",
+    "category" : "AUTH",
+    "verdict" : "SKIP",
+    "httpStatus" : 0,
+    "detail" : "optional — skipped (complex flow)"
+  } ],
+  "failures" : [ ]
+}

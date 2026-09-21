@@ -1,0 +1,105 @@
+{
+  "title" : "ClappN Template / Catalog / Admin Report",
+  "generatedAt" : "2026-08-10T12:39:50.151025400Z",
+  "category" : "C Shared catalog authorization",
+  "summary" : {
+    "pass" : 10,
+    "fail" : 0,
+    "warn" : 0,
+    "skip" : 0,
+    "total" : 10
+  },
+  "notes" : [ "SHARED_CATALOG: templates are business-type scoped, not business-id scoped", "STORE_MANAGER brand.read=true → ALLOW on /api/brands is correct", "Delivery-info and virtual-product-details list endpoints require SYSTEM_ADMIN (service-layer AccessDeniedException), not merely order.read/product.read" ],
+  "results" : [ {
+    "user" : "SYSTEM_ADMIN",
+    "probe" : "SYSTEM_ADMIN GET /api/brands",
+    "method" : "GET",
+    "path" : "/api/brands",
+    "category" : "SHARED_CATALOG",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:49.7216719\",\"data\":[{\"id\":1,\"name\":\"Apple\",\"description\":\"Consumer electronic…"
+  }, {
+    "user" : "SYSTEM_ADMIN",
+    "probe" : "SYSTEM_ADMIN GET /api/categories/list",
+    "method" : "GET",
+    "path" : "/api/categories/list",
+    "category" : "SHARED_CATALOG",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:49.827\",\"data\":[{\"id\":1,\"name\":\"Electronics\",\"description\":null,\"parentId\":nu…"
+  }, {
+    "user" : "SYSTEM_ADMIN",
+    "probe" : "SYSTEM_ADMIN GET /api/business-type/list",
+    "method" : "GET",
+    "path" : "/api/business-type/list",
+    "category" : "SHARED_CATALOG",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:49.887352\",\"data\":[{\"id\":1,\"businessName\":\"Retail Store\",\"description\":\"A pla…"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "store_a1 GET /api/brands (brand.read=true)",
+    "method" : "GET",
+    "path" : "/api/brands",
+    "category" : "SHARED_CATALOG",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:49.9302533\",\"data\":[{\"id\":1,\"name\":\"Apple\",\"description\":\"Consumer electronic…"
+  }, {
+    "user" : "CASHIER",
+    "probe" : "CASHIER POST /api/brands (brand.create=false)",
+    "method" : "POST",
+    "path" : "/api/brands",
+    "category" : "PERMISSION",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: brand.create\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:49.964403\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "GET /api/business-product/list (product.read)",
+    "method" : "GET",
+    "path" : "/api/business-product/list",
+    "category" : "SHARED_CATALOG",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:50.0261208\",\"data\":[{\"id\":1,\"name\":\"Chicken\",\"desc\":\"Chicken sale\",\"status\":1…"
+  }, {
+    "user" : "SYSTEM_ADMIN",
+    "probe" : "SYSTEM_ADMIN GET /api/delivery-info",
+    "method" : "GET",
+    "path" : "/api/delivery-info",
+    "category" : "ADMIN",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:50.0639405\",\"data\":[]}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "store_a1 GET /api/delivery-info → 403",
+    "method" : "GET",
+    "path" : "/api/delivery-info",
+    "category" : "ADMIN",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: Listing all delivery info requires SYSTEM_ADMIN\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:50.1084126\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "store_a1 GET /api/virtual-product-details → 403",
+    "method" : "GET",
+    "path" : "/api/virtual-product-details",
+    "category" : "ADMIN",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "expect=DENY | {\"success\":false,\"message\":\"Access denied: Listing all virtual product details requires SYSTEM_ADMIN\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:50.1237513\"…"
+  }, {
+    "user" : "SYSTEM_ADMIN",
+    "probe" : "SYSTEM_ADMIN GET /api/virtual-product-details",
+    "method" : "GET",
+    "path" : "/api/virtual-product-details",
+    "category" : "ADMIN",
+    "verdict" : "PASS",
+    "httpStatus" : 200,
+    "detail" : "expect=ALLOW | {\"success\":true,\"message\":\"Success\",\"statusCode\":200,\"timestamp\":\"2026-08-10T18:09:50.1490236\",\"data\":[]}"
+  } ],
+  "failures" : [ ]
+}

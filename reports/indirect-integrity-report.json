@@ -1,0 +1,42 @@
+{
+  "title" : "ClappN Indirect Integrity Report",
+  "generatedAt" : "2026-08-10T12:39:42.350946100Z",
+  "category" : "A Indirect/Integrity",
+  "summary" : {
+    "pass" : 3,
+    "fail" : 0,
+    "warn" : 0,
+    "skip" : 0,
+    "total" : 3
+  },
+  "notes" : [ "Deny preferred as 403 from RequirePermissionInterceptor / validateStoreAccess; 4xx after authz gate is PASS for allow-gate probes when documented." ],
+  "results" : [ {
+    "user" : "scope.store_a1",
+    "probe" : "POST store-product storeId=B1 as store_a1 → DENY",
+    "method" : "POST",
+    "path" : "/api/store-product/save",
+    "category" : "INDIRECT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: Access denied. Required permission: store_product.create\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:42.2987529\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "POST /api/orders/new storeId=B1 → DENY",
+    "method" : "POST",
+    "path" : "/api/orders/new",
+    "category" : "INDIRECT",
+    "verdict" : "PASS",
+    "httpStatus" : 403,
+    "detail" : "{\"success\":false,\"message\":\"Access denied: You do not have access to store: 354\",\"statusCode\":403,\"timestamp\":\"2026-08-10T18:09:42.3343022\"}"
+  }, {
+    "user" : "scope.store_a1",
+    "probe" : "POST order customerB + storeA1 → deny/validation",
+    "method" : "POST",
+    "path" : "/api/orders/new",
+    "category" : "INDIRECT",
+    "verdict" : "PASS",
+    "httpStatus" : 400,
+    "detail" : "{\"success\":false,\"message\":\"Order must have items\",\"statusCode\":400,\"timestamp\":\"2026-08-10T18:09:42.3499395\"}"
+  } ],
+  "failures" : [ ]
+}
