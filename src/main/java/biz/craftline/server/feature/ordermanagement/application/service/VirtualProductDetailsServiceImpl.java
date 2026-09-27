@@ -47,6 +47,10 @@ public class VirtualProductDetailsServiceImpl implements VirtualProductDetailsSe
 
     @Override
     public VirtualProductDetails addVirtualProductDetails(VirtualProductDetails details) {
+        if (!securityContextService.isSystemAdmin()) {
+            throw new AccessDeniedException(
+                    "Creating virtual product details directly requires SYSTEM_ADMIN");
+        }
         VirtualProductDetailsEntity entity = VirtualProductDetailsEntityMapper.toEntity(details);
         VirtualProductDetailsEntity saved = repository.save(entity);
         return VirtualProductDetailsEntityMapper.toModel(saved);
@@ -54,6 +58,10 @@ public class VirtualProductDetailsServiceImpl implements VirtualProductDetailsSe
 
     @Override
     public VirtualProductDetails updateVirtualProductDetails(Long id, VirtualProductDetails details) {
+        if (!securityContextService.isSystemAdmin()) {
+            throw new AccessDeniedException(
+                    "Updating virtual product details directly requires SYSTEM_ADMIN");
+        }
         if (!repository.existsById(id)) return null;
         VirtualProductDetailsEntity entity = VirtualProductDetailsEntityMapper.toEntity(details);
         entity.setId(id);

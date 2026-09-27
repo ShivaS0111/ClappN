@@ -170,10 +170,16 @@ public class EmployeeService {
 
     @Transactional
     public void deleteEmployee(Long id) {
+        deactivateEmployee(id);
+    }
+
+    @Transactional
+    public Employee deactivateEmployee(Long id) {
         MembershipEntity membership = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Employee (membership) not found: " + id));
         assertCanAccessMembership(membership);
-        membershipRepository.delete(membership);
+        membership.setStatus(MembershipEntity.STATUS_INACTIVE);
+        return EmployeeMapper.fromMembership(membershipRepository.save(membership));
     }
 
     private void assertCanAccessMembership(MembershipEntity m) {
@@ -227,10 +233,10 @@ public class EmployeeService {
         if (storeId == null) {
             return;
         }
-        if (membership.getStoreScopes() == null) {
-            membership.setStoreScopes(new HashSet<>());
-        }
-        membership.getStoreScopes().add(storeId);
+        // Replace (not accumulate) primary store scope for API compatibility
+        Set<Long> scopes = new HashSet<>();
+        scopes.add(storeId);
+        membership.setStoreScopes(scopes);
     }
 
     private void applyProfile(MembershipEntity membership, Employee employee) {

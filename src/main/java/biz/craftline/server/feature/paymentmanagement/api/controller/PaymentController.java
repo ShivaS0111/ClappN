@@ -53,6 +53,19 @@ public class PaymentController {
                     .orElseThrow(() -> new IllegalArgumentException("Order not found: " + req.getOrderId()));
             securityContextService.validateStoreAccess(order.getStoreId());
 
+            // Amount must match order total in minor units (paise/cents)
+            if (order.getTotalAmount() != null) {
+                long expectedMinor = order.getTotalAmount()
+                        .movePointRight(2)
+                        .setScale(0, java.math.RoundingMode.HALF_UP)
+                        .longValueExact();
+                if (!req.getAmount().equals(expectedMinor)) {
+                    return ResponseEntity.badRequest().body(
+                            "Amount mismatch: expected " + expectedMinor
+                                    + " minor units for order total " + order.getTotalAmount());
+                }
+            }
+
             log.info("Initiating payment: orderId={}, amount={}, currency={}, gateway={}",
                     req.getOrderId(), req.getAmount(), req.getCurrency(), req.getGateway());
 
@@ -66,6 +79,25 @@ public class PaymentController {
             log.error("Payment initiation failed", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Payment initiation failed: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/order/{orderId}")
+    @RequirePermission("payment.read")
+    public ResponseEntity<?> byOrder(@PathVariable Long orderId) {
+        try {
+            OrderEntity order = orderRepository.findById(orderId)
+                    .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+            securityContextService.validateStoreAccess(order.getStoreId());
+            return ResponseEntity.ok(txRepo.findByOrderId(String.valueOf(orderId)));
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            log.error("Error fetching payments for order", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching payments: " + e.getMessage());
         }
     }
 

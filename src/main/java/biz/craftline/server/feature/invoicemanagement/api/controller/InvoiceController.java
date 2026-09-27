@@ -39,11 +39,25 @@ public class InvoiceController {
     private final MailService mailService;
 
     @PostMapping("/generate")
-    @Operation(summary = "Generate invoice for an order")
+    @Operation(summary = "Generate invoice for an order (idempotent per order)")
     @RequirePermission("invoice.create")
     public ResponseEntity<APIResponse<Invoice>> generateInvoice(@RequestBody InvoiceRequestDTO request) {
         Invoice invoice = invoiceService.generate(request.getOrderId(), request.getStoreId());
         return APIResponse.success(invoice, "Invoice generated successfully");
+    }
+
+    @PostMapping("/{id}/void")
+    @Operation(summary = "Void an invoice")
+    @RequirePermission("invoice.create")
+    public ResponseEntity<APIResponse<Invoice>> voidInvoice(@PathVariable Long id) {
+        try {
+            Invoice invoice = invoiceService.voidInvoice(id);
+            return APIResponse.success(invoice, "Invoice voided successfully");
+        } catch (IllegalStateException e) {
+            return APIResponse.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (IllegalArgumentException e) {
+            return APIResponse.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/order/{orderId}")

@@ -50,6 +50,16 @@ public class InvoiceServiceImpl implements InvoiceDomainService {
             throw new AccessDeniedException("Order does not belong to store: " + storeId);
         }
 
+        // Idempotent: return existing non-void invoice for the order
+        Optional<InvoiceEntity> existing = invoiceRepository.findByOrderId(orderId);
+        if (existing.isPresent()) {
+            InvoiceEntity e = existing.get();
+            securityContextService.validateStoreAccess(e.getStoreId());
+            if (e.getStatus() != InvoiceStatus.VOID && e.getStatus() != InvoiceStatus.CANCELLED) {
+                return mapper.toDomain(e, invoiceItemRepository.findByInvoiceId(e.getId()));
+            }
+        }
+
         InvoiceEntity entity = InvoiceEntity.builder()
                 .orderId(orderId)
                 .storeId(storeId)
@@ -78,6 +88,23 @@ public class InvoiceServiceImpl implements InvoiceDomainService {
             securityContextService.validateStoreAccess(e.getStoreId());
             return mapper.toDomain(e, invoiceItemRepository.findByInvoiceId(e.getId()));
         });
+    }
+
+    @Override
+    @Transactional
+    public Invoice voidInvoice(Long invoiceId) {
+        InvoiceEntity entity = invoiceRepository.findById(invoiceId)
+                .orElseThrow(() -> new IllegalArgumentException("Invoice not found: " + invoiceId));
+        securityContextService.validateStoreAccess(entity.getStoreId());
+        if (entity.getStatus() == InvoiceStatus.VOID) {
+            return mapper.toDomain(entity, invoiceItemRepository.findByInvoiceId(entity.getId()));
+        }
+        if (entity.getStatus() == InvoiceStatus.PAID) {
+            throw new IllegalStateException("Cannot void a paid invoice");
+        }
+        entity.setStatus(InvoiceStatus.VOID);
+        InvoiceEntity saved = invoiceRepository.save(entity);
+        return mapper.toDomain(saved, invoiceItemRepository.findByInvoiceId(saved.getId()));
     }
 
     public Invoice getById(Long id) {

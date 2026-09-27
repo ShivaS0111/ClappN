@@ -166,6 +166,7 @@ public class ProductLotServiceImpl implements ProductLotService {
     public List<ProductLotTransaction> getTransactionsForLot(Long lotId) {
         ProductLotEntity lot = lotRepository.findById(lotId)
                 .orElseThrow(() -> new RuntimeException("Lot not found"));
+        securityContextService.validateStoreAccess(lot.getStoreId());
         return transactionRepository.findByProductLot(lot).stream()
                 .map(productLotTransactionEntityMapper::toDomain)
                 .toList();

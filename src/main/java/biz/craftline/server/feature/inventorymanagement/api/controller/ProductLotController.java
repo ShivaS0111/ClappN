@@ -1,6 +1,7 @@
 package biz.craftline.server.feature.inventorymanagement.api.controller;
 
 import biz.craftline.server.config.security.RequirePermission;
+import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.inventorymanagement.api.dto.ProductLotDTO;
 import biz.craftline.server.feature.inventorymanagement.api.dto.ProductLotTransactionDTO;
 import biz.craftline.server.feature.inventorymanagement.api.mapper.ProductLotDTOMapper;
@@ -24,6 +25,7 @@ import java.util.List;
 public class ProductLotController {
 
     private final ProductLotService lotService;
+    private final SecurityContextService securityContextService;
 
     private final ProductLotDTOMapper productLotDTOMapper;
     private final ProductLotTransactionDTOMapper lotTransactionDTOMapper;
@@ -76,10 +78,12 @@ public class ProductLotController {
             @RequestParam int quantity,
             @RequestParam(required = false) String reason,
             @RequestParam(required = false) String referenceId,
-            @RequestParam long performedBy
+            @RequestParam(required = false) Long performedBy
     ) {
+        Long actorId = securityContextService.getCurrentUserId();
+        long by = actorId != null ? actorId : (performedBy != null ? performedBy : 0L);
         ProductLotTransaction tx = lotService.recordTransaction(lotId, type, quantity,
-                reason, referenceId, performedBy);
+                reason, referenceId, by);
         return APIResponse.ok(lotTransactionDTOMapper.toDTO(tx));
     }
 

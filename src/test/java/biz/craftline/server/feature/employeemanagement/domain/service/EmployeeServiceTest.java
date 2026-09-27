@@ -192,8 +192,11 @@ class EmployeeServiceTest {
     void deleteEmployee_success() {
         MembershipEntity m = membership(1L, 9L, 2L);
         when(membershipRepository.findById(1L)).thenReturn(Optional.of(m));
+        when(membershipRepository.save(any(MembershipEntity.class))).thenAnswer(inv -> inv.getArgument(0));
         employeeService.deleteEmployee(1L);
-        verify(membershipRepository).delete(m);
+        verify(membershipRepository).save(m);
+        assertEquals(MembershipEntity.STATUS_INACTIVE, m.getStatus());
+        verify(membershipRepository, never()).delete(any());
     }
 
     @Test

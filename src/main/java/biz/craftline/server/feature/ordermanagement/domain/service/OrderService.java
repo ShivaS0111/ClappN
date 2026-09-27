@@ -16,4 +16,5 @@ public interface OrderService {
     void deleteOrder(Long id);
     void cancelOrder(Long id);
     void completeOrder(Long id);
+    Order updateOrderStatus(Long id, String status);
 }

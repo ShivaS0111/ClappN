@@ -3,6 +3,8 @@ package biz.craftline.server.feature.paymentmanagement.infra.repository;
 import biz.craftline.server.feature.paymentmanagement.infra.entity.PaymentTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -10,4 +12,6 @@ public interface PaymentTransactionRepository extends JpaRepository<PaymentTrans
     Optional<PaymentTransaction> findByProviderPaymentId(String providerPaymentId);
 
     Optional<PaymentTransaction> findByProviderOrderId(String providerOrderId);
+
+    List<PaymentTransaction> findByOrderId(String orderId);
 }

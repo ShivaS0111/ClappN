@@ -207,6 +207,38 @@ public class OrderServiceImpl implements OrderService {
         repository.save(entity);
     }
 
+    @Override
+    @Transactional
+    public Order updateOrderStatus(Long id, String status) {
+        if (status == null || status.isBlank()) {
+            throw new IllegalArgumentException("status is required");
+        }
+        OrderStatus parsed;
+        try {
+            parsed = OrderStatus.valueOf(status.trim().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(
+                    "Invalid order status: " + status + ". Allowed: " + java.util.Arrays.toString(OrderStatus.values()));
+        }
+        if (parsed == OrderStatus.CANCELLED) {
+            cancelOrder(id);
+            return getOrder(id);
+        }
+        if (parsed == OrderStatus.COMPLETED) {
+            completeOrder(id);
+            return getOrder(id);
+        }
+        OrderEntity entity = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found: " + id));
+        securityContextService.validateStoreAccess(entity.getStoreId());
+        String current = entity.getStatus() != null ? entity.getStatus() : "";
+        if (OrderStatus.CANCELLED.name().equals(current) || OrderStatus.COMPLETED.name().equals(current)) {
+            throw new IllegalStateException("Cannot change status from terminal state: " + current);
+        }
+        entity.setStatus(parsed.name());
+        return OrderEntityMapper.toModel(repository.save(entity));
+    }
+
     /** confirmSale=true converts blocked stock to sold; false only unblocks (cancel). */
     private void releaseAllocations(Long orderId, boolean confirmSale) {
         List<OrderItemEntity> items = orderItemRepository.findByOrder_Id(orderId);

@@ -151,12 +151,16 @@ public class OrderController {
     @RequirePermission("order.update")
     public ResponseEntity<APIResponse<OrderDTO>> updateOrderStatus(
             @PathVariable Long id, @RequestParam String status) {
-        Order order = orderService.getOrder(id);
-        if (order == null) {
-            return APIResponse.success(null, "Order not found");
+        try {
+            Order saved = orderService.updateOrderStatus(id, status);
+            if (saved == null) {
+                return APIResponse.success(null, "Order not found");
+            }
+            return APIResponse.success(OrderDTOMapper.toDTO(saved), "Order status updated to " + saved.getStatus());
+        } catch (IllegalArgumentException e) {
+            return APIResponse.badRequest(e.getMessage());
+        } catch (IllegalStateException e) {
+            return APIResponse.badRequest(e.getMessage());
         }
-        order.setStatus(status);
-        Order saved = orderService.updateOrder(id, order);
-        return APIResponse.success(OrderDTOMapper.toDTO(saved), "Order status updated to " + status);
     }
 }

@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface InvoiceDomainService {
     Invoice generate(Long orderId, Long storeId);
     Optional<Invoice> findByOrderId(Long orderId);
+    Invoice voidInvoice(Long invoiceId);
 }

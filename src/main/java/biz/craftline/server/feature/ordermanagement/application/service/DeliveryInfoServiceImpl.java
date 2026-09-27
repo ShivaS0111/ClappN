@@ -49,6 +49,11 @@ public class DeliveryInfoServiceImpl implements DeliveryInfoService {
 
     @Override
     public DeliveryInfo addDeliveryInfo(DeliveryInfo deliveryInfo) {
+        // No store FK on delivery_info — standalone writes are admin-only; attach via order APIs otherwise.
+        if (!securityContextService.isSystemAdmin()) {
+            throw new AccessDeniedException(
+                    "Creating delivery info directly requires SYSTEM_ADMIN; attach via order APIs");
+        }
         DeliveryInfoEntity entity = DeliveryInfoEntityMapper.toEntity(deliveryInfo);
         DeliveryInfoEntity saved = repository.save(entity);
         return DeliveryInfoEntityMapper.toModel(saved);
@@ -56,6 +61,10 @@ public class DeliveryInfoServiceImpl implements DeliveryInfoService {
 
     @Override
     public DeliveryInfo updateDeliveryInfo(Long id, DeliveryInfo deliveryInfo) {
+        if (!securityContextService.isSystemAdmin()) {
+            throw new AccessDeniedException(
+                    "Updating delivery info directly requires SYSTEM_ADMIN; use order APIs");
+        }
         if (!repository.existsById(id)) return null;
         DeliveryInfoEntity entity = DeliveryInfoEntityMapper.toEntity(deliveryInfo);
         entity.setId(id);

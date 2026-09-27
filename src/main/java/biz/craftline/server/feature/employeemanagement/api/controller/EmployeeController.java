@@ -41,6 +41,14 @@ public class EmployeeController {
         return APIResponse.ok(list);
     }
 
+    @GetMapping("/{id}")
+    @RequirePermission("user.read")
+    public ResponseEntity<APIResponse<EmployeeResponse>> getEmployee(@PathVariable Long id) {
+        return employeeService.getEmployeeById(id)
+                .map(e -> APIResponse.ok(EmployeeMapper.toResponse(e)))
+                .orElse(APIResponse.error("Employee not found", org.springframework.http.HttpStatus.NOT_FOUND));
+    }
+
     @GetMapping("/business/{businessId}")
     @RequirePermission("user.read")
     public ResponseEntity<APIResponse<List<EmployeeResponse>>> getAllEmployeesByBusiness(@PathVariable Long businessId) {
@@ -142,9 +150,18 @@ public class EmployeeController {
         return APIResponse.ok(EmployeeMapper.toResponse(updated));
     }
 
+    @PostMapping("/{id}/deactivate")
+    @RequirePermission("user.update")
+    public ResponseEntity<APIResponse<EmployeeResponse>> deactivateEmployee(@PathVariable Long id) {
+        Employee deactivated = employeeService.deactivateEmployee(id);
+        return APIResponse.ok(EmployeeMapper.toResponse(deactivated));
+    }
+
     @DeleteMapping("/{id}")
     @RequirePermission("user.delete")
-    public void deleteEmployee(@PathVariable Long id) {
-        employeeService.deleteEmployee(id);
+    public ResponseEntity<APIResponse<EmployeeResponse>> deleteEmployee(@PathVariable Long id) {
+        // Soft-delete: deactivate membership instead of hard delete
+        Employee deactivated = employeeService.deactivateEmployee(id);
+        return APIResponse.ok(EmployeeMapper.toResponse(deactivated));
     }
 }

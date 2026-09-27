@@ -105,12 +105,23 @@ public class AddressService {
             if (addressDetails.getType() != null && addressDetails.getReferenceId() != null) {
                 assertCanAccessTypeAndReference(addressDetails.getType(), addressDetails.getReferenceId());
             }
-            entity.setStreet(addressDetails.getStreet());
-            entity.setCity(addressDetails.getCity());
-            entity.setState(addressDetails.getState());
-            entity.setPostalCode(addressDetails.getPostalCode());
-            entity.setType(addressDetails.getType());
-            entity.setReferenceId(addressDetails.getReferenceId());
+            if (addressDetails.getStreet() != null) entity.setStreet(addressDetails.getStreet());
+            if (addressDetails.getCity() != null) entity.setCity(addressDetails.getCity());
+            if (addressDetails.getState() != null) entity.setState(addressDetails.getState());
+            if (addressDetails.getPostalCode() != null) entity.setPostalCode(addressDetails.getPostalCode());
+            if (addressDetails.getType() != null) entity.setType(addressDetails.getType());
+            if (addressDetails.getReferenceId() != null) entity.setReferenceId(addressDetails.getReferenceId());
+            if (addressDetails.getDigiPin() != null) entity.setDigiPin(addressDetails.getDigiPin());
+            if (addressDetails.getLatitude() != null) entity.setLatitude(addressDetails.getLatitude());
+            if (addressDetails.getLongitude() != null) entity.setLongitude(addressDetails.getLongitude());
+            if (addressDetails.getAreaId() != null) entity.setArea(areaRepository.findById(addressDetails.getAreaId()).orElse(null));
+            if (addressDetails.getPlaceId() != null) entity.setPlace(placeRepository.findById(addressDetails.getPlaceId()).orElse(null));
+            if (addressDetails.getCountryId() != null) entity.setCountry(countryRepository.findById(addressDetails.getCountryId()).orElse(null));
+            if (addressDetails.getDistrictId() != null) entity.setDistrict(districtRepository.findById(addressDetails.getDistrictId()).orElse(null));
+            if (addressDetails.getRegionId() != null) entity.setRegion(regionRepository.findById(addressDetails.getRegionId()).orElse(null));
+            if (addressDetails.getSubRegionId() != null) entity.setSubRegion(subRegionRepository.findById(addressDetails.getSubRegionId()).orElse(null));
+            if (addressDetails.getLandmarkId() != null) entity.setLandmark(landmarkRepository.findById(addressDetails.getLandmarkId()).orElse(null));
+            if (addressDetails.getZipcodeId() != null) entity.setZipcode(zipcodeRepository.findById(addressDetails.getZipcodeId()).orElse(null));
             AddressEntity updated = addressRepository.save(entity);
             return AddressMapper.toDomain(updated);
         }).orElseThrow(() -> new RuntimeException("Address not found"));

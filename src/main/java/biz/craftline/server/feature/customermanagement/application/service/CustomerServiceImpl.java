@@ -35,10 +35,29 @@ public class CustomerServiceImpl implements CustomerService {
                     .map(mapper::toDomain)
                     .collect(Collectors.toList());
         }
-        if (accessibleStoreIds.isEmpty()) {
+        // Business-scoped users may have empty store list but accessible businesses
+        List<Long> accessibleBusinessIds = securityContextService.getAccessibleBusinessIds();
+        boolean hasStores = accessibleStoreIds != null && !accessibleStoreIds.isEmpty();
+        boolean hasBusinesses = accessibleBusinessIds != null && !accessibleBusinessIds.isEmpty();
+        if (!hasStores && !hasBusinesses) {
             return List.of();
         }
-        return repository.findByStoreIdIn(accessibleStoreIds).stream()
+        if (hasStores && hasBusinesses) {
+            java.util.LinkedHashMap<Long, Customer> byId = new java.util.LinkedHashMap<>();
+            repository.findByStoreIdIn(accessibleStoreIds).stream()
+                    .map(mapper::toDomain)
+                    .forEach(c -> byId.put(c.getId(), c));
+            repository.findByBusinessIdIn(accessibleBusinessIds).stream()
+                    .map(mapper::toDomain)
+                    .forEach(c -> byId.putIfAbsent(c.getId(), c));
+            return List.copyOf(byId.values());
+        }
+        if (hasStores) {
+            return repository.findByStoreIdIn(accessibleStoreIds).stream()
+                    .map(mapper::toDomain)
+                    .collect(Collectors.toList());
+        }
+        return repository.findByBusinessIdIn(accessibleBusinessIds).stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }
@@ -91,7 +110,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public Customer save(Customer customer) {
-        // Validate scope for the target store/business
+        if (customer.getStoreId() == null && customer.getBusinessId() == null) {
+            throw new IllegalArgumentException("storeId or businessId is required");
+        }
         if (customer.getStoreId() != null) {
             securityContextService.validateStoreAccess(customer.getStoreId());
         }
@@ -109,13 +130,16 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        repository.findById(id).ifPresent(entity -> {
-            if (entity.getStoreId() != null) {
-                securityContextService.validateStoreAccess(entity.getStoreId());
-            } else if (entity.getBusinessId() != null) {
-                securityContextService.validateBusinessAccess(entity.getBusinessId());
-            }
-        });
+        CustomerEntity entity = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found: " + id));
+        if (entity.getStoreId() != null) {
+            securityContextService.validateStoreAccess(entity.getStoreId());
+        } else if (entity.getBusinessId() != null) {
+            securityContextService.validateBusinessAccess(entity.getBusinessId());
+        } else if (!securityContextService.isSystemAdmin()) {
+            throw new org.springframework.security.access.AccessDeniedException(
+                    "Customer has no store/business scope");
+        }
         repository.deleteById(id);
     }
     

@@ -46,7 +46,12 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public OrderItem addOrderItem(OrderItem orderItem) {
         OrderItemEntity entity = OrderItemEntityMapper.toEntity(orderItem);
-        if (entity.getOrder() != null) {
+        if (entity.getOrder() == null || entity.getOrder().getStoreId() == null) {
+            if (!securityContextService.isSystemAdmin()) {
+                throw new org.springframework.security.access.AccessDeniedException(
+                        "Order item must be linked to a store-scoped order");
+            }
+        } else {
             validateAccess(entity);
         }
         OrderItemEntity saved = repository.save(entity);
@@ -75,6 +80,11 @@ public class OrderItemServiceImpl implements OrderItemService {
     private void validateAccess(OrderItemEntity entity) {
         if (entity.getOrder() != null && entity.getOrder().getStoreId() != null) {
             securityContextService.validateStoreAccess(entity.getOrder().getStoreId());
+            return;
+        }
+        if (!securityContextService.isSystemAdmin()) {
+            throw new org.springframework.security.access.AccessDeniedException(
+                    "Order item is not linked to an accessible store");
         }
     }
 

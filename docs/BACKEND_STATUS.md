@@ -44,16 +44,16 @@
 | Module | Controllers / surface | Status | ~% |
 |--------|----------------------|--------|----|
 | **usermanagement** | Auth, User, Role, Permission, MeContext, Navigation | Strong — JWT, refresh DB, mail on forgot-password, RBAC seed | **92%** |
-| **membership** | Entities/repos only (used by employee/scope) | Membership + EmployeeProfile model | **85%** |
-| **employeemanagement** | `/api/employees` CRUD + invite mail | Membership-based employee; update endpoint present | **85%** |
+| **membership** | Entities/repos only (used by employee/scope) | Membership + EmployeeProfile; soft-deactivate | **88%** |
+| **employeemanagement** | `/api/employees` CRUD + GET by id + deactivate | Membership-based; store scope replace; soft delete | **92%** |
 | **businessstore** | Business, Store, store-product/service, packages, pricing, files | CRUD + metrics + packages; hardened assign + PUT/DELETE + **`/assign` multi-store** | **95%** |
 | **businesstype** | Types, categories, brands, business-product/service | Master catalog with **tenant `businessId`** + scoped CRUD + `listByBusiness` | **92%** |
-| **customermanagement** | `/api/customers` | Scoped CRUD | **85%** |
-| **addressmanagement** | `/api/addresses` | Scoped CRUD | **85%** |
-| **inventorymanagement** | Store inventory, lots, **low-stock** API | Lots + adjust + low-stock count | **82%** |
-| **ordermanagement** | Orders, items, bookings, delivery, virtual products | Lifecycle create/update/cancel/complete/status | **80%** |
-| **invoicemanagement** | Generate, list, **PDF**, **email** | Usable; tax engine light | **80%** |
-| **paymentmanagement** | Initiate, status, **confirm**, **refund**, Stripe/Razorpay webhooks | Code complete; needs real keys + staging smoke | **85%** code / **~60%** ops |
+| **customermanagement** | `/api/customers` | Scoped CRUD; businessId list; require store/business on create | **92%** |
+| **addressmanagement** | `/api/addresses` | Scoped CRUD; update maps geo FKs | **90%** |
+| **inventorymanagement** | Store inventory, lots, **low-stock** API | Lots + adjust; lot-tx scoped; performedBy from auth | **90%** |
+| **ordermanagement** | Orders, items, bookings, delivery, virtual products | Lifecycle + enum status; delivery/virtual admin-only standalone writes | **90%** |
+| **invoicemanagement** | Generate (idempotent), void, list, **PDF**, **email** | Usable; tax engine light | **88%** |
+| **paymentmanagement** | Initiate (amount vs order), by-order, status, **confirm**, **refund**, webhooks | Code complete; needs real keys + staging smoke | **90%** code / **~60%** ops |
 | **couponmanagement** | Package folders only — **no Java sources** | Scaffold only; RBAC names may exist | **5%** |
 
 ### Catalog model (important)
@@ -135,8 +135,9 @@ Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean 
 | Store offerings | `/api/store-product`, `/api/store-service` (+ `/assign`, `/unassign`, PUT/DELETE `/{id}`), packages |
 | Inventory | `/api/store-inventory`, lots APIs |
 | Orders / bookings | `/api/orders` (+ item/booking/delivery controllers) |
-| Invoices | `/api/invoices`, `/{id}/pdf`, `/{id}/email` |
-| Payments | `/api/payments/initiate`, `/status/{id}`, `/{id}/confirm`, `/{id}/refund`, `/api/payments/webhook/{stripe\|razorpay}` |
+| Invoices | `/api/invoices`, `/generate`, `/{id}/void`, `/{id}/pdf`, `/{id}/email` |
+| Payments | `/api/payments/initiate`, `/order/{orderId}`, `/status/{id}`, `/{id}/confirm`, `/{id}/refund`, `/api/payments/webhook/{stripe\|razorpay}` |
+| Employees | `/api/employees`, `/{id}`, `/{id}/deactivate` |
 | Actuator | `/actuator/health`, `/actuator/info` (metrics auth’d) |
 
 ---
