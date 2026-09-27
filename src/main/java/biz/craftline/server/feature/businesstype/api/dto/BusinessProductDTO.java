@@ -24,6 +24,8 @@ public class BusinessProductDTO {
 
     private int status;
 
+    private Long businessId;
+
     private BusinessTypeDTO businessType;
 
     private List<Category> categories;

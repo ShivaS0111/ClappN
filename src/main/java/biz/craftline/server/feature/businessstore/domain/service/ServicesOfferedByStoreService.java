@@ -20,7 +20,15 @@ public interface ServicesOfferedByStoreService {
 
     List<StoreOfferedService> save(List<StoreOfferedService> entity);
 
+    StoreOfferedService update(Long id, StoreOfferedService entity);
+
     StoreOfferedService findById(Long id);
+
+    List<StoreOfferedService> assignToStores(Long businessId, Long businessServiceId,
+                                             List<Long> storeIds, boolean allStores,
+                                             String aliasName, String description, int status);
+
+    int unassignFromStores(Long businessId, Long businessServiceId, List<Long> storeIds, boolean allStores);
 
     List<StoreOfferedService>  searchServiceByKeyword(String searchTerm);
 

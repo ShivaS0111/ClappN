@@ -1,9 +1,7 @@
 package biz.craftline.server.feature.businesstype.infra.mapper;
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessService;
-import biz.craftline.server.feature.businesstype.domain.model.BusinessType;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessServiceEntity;
-import biz.craftline.server.feature.businesstype.infra.entity.BusinessTypeEntity;
 import biz.craftline.server.feature.businesstype.infra.entity.CategoryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +23,7 @@ public class BusinessServiceEntityMapper {
         entity.setServiceName(domain.getServiceName());
         entity.setDescription(domain.getDescription());
         entity.setStatus(domain.getStatus() != null ? domain.getStatus() : 0);
+        entity.setBusinessId(domain.getBusinessId());
         entity.setAmount(domain.getAmount());
         entity.setBusinessType(mapper.toEntity(domain.getBusinessType()));
         entity.setCurrency(domain.getCurrency());
@@ -39,26 +38,28 @@ public class BusinessServiceEntityMapper {
     }
 
     public BusinessService toDomain(BusinessServiceEntity entity) {
-        return new BusinessService(
-                entity.getId(),
-                entity.getServiceName(),
-                entity.getDescription(),
-                entity.getStatus(),
-                mapper.toDomain(entity.getBusinessType()),
-                entity.getAmount(),
-                entity.getCreatedBy(),
-                entity.getCategories() != null ? entity.getCategories()
-                        .stream().map(c -> categoryEntityMapper.toDomain(c)).toList() : null,
-                entity.getDuration(),
-                entity.getThumbnailUrl(),
-                entity.getGalleryUrls()
-        );
+        return BusinessService.builder()
+                .id(entity.getId())
+                .serviceName(entity.getServiceName())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .businessId(entity.getBusinessId())
+                .businessType(mapper.toDomain(entity.getBusinessType()))
+                .amount(entity.getAmount())
+                .currency(entity.getCurrency())
+                .categories(entity.getCategories() != null ? entity.getCategories()
+                        .stream().map(c -> categoryEntityMapper.toDomain(c)).toList() : null)
+                .duration(entity.getDuration())
+                .thumbnailUrl(entity.getThumbnailUrl())
+                .galleryUrls(entity.getGalleryUrls())
+                .build();
     }
 
     public BusinessService toUpdate(BusinessService old, BusinessService updated) {
         if (updated.getServiceName() != null) old.setServiceName(updated.getServiceName());
         if (updated.getDescription() != null) old.setDescription(updated.getDescription());
         if (updated.getStatus() != null) old.setStatus(updated.getStatus());
+        if (updated.getBusinessId() != null) old.setBusinessId(updated.getBusinessId());
         if (updated.getBusinessType() != null) old.setBusinessType(updated.getBusinessType());
         if (updated.getAmount() != null) old.setAmount(updated.getAmount());
         if (updated.getCurrency() != null) old.setCurrency(updated.getCurrency());

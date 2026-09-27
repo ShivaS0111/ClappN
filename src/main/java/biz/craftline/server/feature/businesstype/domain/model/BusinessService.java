@@ -16,6 +16,8 @@ public class BusinessService {
     private String serviceName;
     private String description;
     private Integer status;
+    /** Owning tenant business; null = platform/shared template. */
+    private Long businessId;
     private BusinessType businessType;
     private Float amount;
     private Long currency;

@@ -1,34 +1,31 @@
-# 📱 CraftLane (ClappN) - Project Overview
+# CraftLane (ClappN) - Project Overview
 
-**Last Updated**: March 14, 2026  
-**Status**: Production-Ready Core Features + Active Development  
-**Version**: 2.0
+**Last Updated**: 28 Sep 2026 (status refresh from live backend code)  
+**Status**: Core multi-store ops backend ~85–90%; production readiness ~65–70%  
+**Version**: 0.0.1-SNAPSHOT (Spring Boot 3.1.4 / Java 17)  
+**Living backend scorecard**: [BACKEND_STATUS.md](./BACKEND_STATUS.md) · Root [PROJECT_ASSESSMENT_REPORT.md](../../PROJECT_ASSESSMENT_REPORT.md)
 
 ---
 
-## 🎯 Project at a Glance
+## Project at a Glance
 
-**CraftLane (ClappN)** is a comprehensive **full-stack e-commerce and business management platform** designed for small to medium enterprises (SMEs), service providers, and multi-vendor marketplaces.
+**CraftLane (ClappN)** is a **multi-tenant business/store operations platform** (POS, catalog, inventory, orders, invoices, payments) with a Spring Boot API and React dashboard.
 
-### Core Purpose
+### Core purpose (honest status)
 Enable businesses to:
-- ✅ Manage products, inventory, and services
-- ✅ Process online and offline orders through POS
-- ✅ Offer discounts and run marketing campaigns
-- ✅ Accept payments through multiple gateways
-- ✅ Track analytics and business metrics
-- ✅ Manage teams with role-based permissions
-- ✅ Integrate with suppliers and vendors
+- Manage products, inventory, and services (master = BusinessType; store offerings assign to stores — **business-owned catalog still a gap**)
+- Process orders through POS-oriented APIs
+- Accept payments (Stripe/Razorpay code path; staging keys required)
+- Manage teams with JWT + hierarchical RBAC + membership store scope
+- Coupons / marketing / vendor marketplace: **not backend-complete** (scaffold or FE mock)
 
-### Key Statistics
-- **Backend**: Java Spring Boot microservices architecture
-- **Frontend**: React 18 + TypeScript with Vite
-- **Database**: MySQL with Flyway migrations
-- **APIs**: 100+ RESTful endpoints
-- **Components**: 40+ reusable React components
-- **Custom Hooks**: 20+ feature-specific hooks
-- **Permissions**: 100+ granular permission types
-- **User Roles**: 15+ predefined roles
+### Key statistics (live)
+- **Backend**: Monolith Spring Boot **3.1.4**, Java **17**, port **9090**
+- **Frontend**: React + TypeScript (Vite) — `clapp-dashboard`
+- **Database**: MySQL + Flyway **V1–V16**
+- **Security**: Authenticated by default; JWT + UserScopeFilter + `@RequirePermission`
+- **Permissions / roles**: ~200 permissions seeded; SCREAMING_SNAKE role names (e.g. `BUSINESS_OWNER`)
+- **Tests**: ~80+ Java test classes under `ClappN/src/test`
 
 ---
 

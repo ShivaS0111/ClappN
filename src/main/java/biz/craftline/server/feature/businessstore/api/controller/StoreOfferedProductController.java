@@ -6,6 +6,7 @@ import biz.craftline.server.feature.businessstore.api.dto.StoreItemPriceDTO;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreOfferedProductDTOMapper;
 import biz.craftline.server.feature.businessstore.api.mapper.StoreItemPriceDTOMapper;
 import biz.craftline.server.feature.businessstore.api.request.AddNewStoreOfferedProductRequest;
+import biz.craftline.server.feature.businessstore.api.request.AssignCatalogToStoresRequest;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedProduct;
 import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businessstore.domain.service.ProductsOfferedByStoreService;
@@ -119,6 +120,54 @@ public class StoreOfferedProductController {
                 "Products added to store successfully",
                 HttpStatus.CREATED
         );
+    }
+
+    /**
+     * Assign a business catalog product to selected stores, or all stores under the business.
+     */
+    @PostMapping("/assign")
+    @RequirePermission("store_product.create")
+    public ResponseEntity<APIResponse<List<StoreOfferedProductDTO>>> assign(
+            @RequestBody AssignCatalogToStoresRequest req) {
+        List<StoreOfferedProduct> created = storeOfferedProductService.assignToStores(
+                req.getBusinessId(),
+                req.getCatalogItemId(),
+                req.getStoreIds(),
+                req.isAllStores(),
+                req.getAliasName(),
+                req.getDescription(),
+                req.getStatus());
+        return APIResponse.success(
+                created.stream().map(productMapper::toDTO).toList(),
+                "Product assigned to stores successfully",
+                HttpStatus.CREATED);
+    }
+
+    @PostMapping("/unassign")
+    @RequirePermission("store_product.delete")
+    public ResponseEntity<APIResponse<Integer>> unassign(@RequestBody AssignCatalogToStoresRequest req) {
+        int removed = storeOfferedProductService.unassignFromStores(
+                req.getBusinessId(),
+                req.getCatalogItemId(),
+                req.getStoreIds(),
+                req.isAllStores());
+        return APIResponse.success(removed, "Product unassigned from " + removed + " store(s)");
+    }
+
+    @PutMapping("/{productId}")
+    @RequirePermission("store_product.update")
+    public ResponseEntity<APIResponse<StoreOfferedProductDTO>> update(
+            @PathVariable("productId") Long productId,
+            @RequestBody AddNewStoreOfferedProductRequest req) {
+        StoreOfferedProduct product = storeOfferedProductService.update(productId, productMapper.toDomain(req));
+        return APIResponse.success(productMapper.toDTO(product), "Store product updated successfully");
+    }
+
+    @DeleteMapping("/{productId}")
+    @RequirePermission("store_product.delete")
+    public ResponseEntity<APIResponse<String>> delete(@PathVariable("productId") Long productId) {
+        storeOfferedProductService.deleteStoreProductById(productId);
+        return APIResponse.success("Deleted successfully", "Store product removed");
     }
 
     @GetMapping("/product-price-list/{productId}")

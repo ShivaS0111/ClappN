@@ -61,6 +61,14 @@ public class BusinessServiceController {
         return APIResponse.success(convertToDTOList(list));
     }
 
+    @GetMapping("/listByBusiness/{businessId}")
+    @RequirePermission("service.read")
+    public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> listByBusiness(
+            @PathVariable Long businessId) {
+        List<BusinessService> list = service.findByBusinessId(businessId);
+        return APIResponse.success(convertToDTOList(list));
+    }
+
     @PostMapping("/search")
     @RequirePermission("service.read")
     public ResponseEntity<APIResponse<List<BusinessServiceDTO>>> search(

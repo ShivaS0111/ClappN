@@ -21,6 +21,8 @@ public class BusinessServiceDTO {
 
     private Integer status;
 
+    private Long businessId;
+
     private BusinessTypeDTO businessType;
 
     private float amount;

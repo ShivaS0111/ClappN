@@ -23,5 +23,7 @@ public interface BusinessServicesService {
 
     List<BusinessService> findByBusinessTypeId(Long businessTypeId);
 
+    List<BusinessService> findByBusinessId(Long businessId);
+
     BusinessService update(BusinessService domain);
 }

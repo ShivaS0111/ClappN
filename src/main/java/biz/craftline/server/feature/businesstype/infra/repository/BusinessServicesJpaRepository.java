@@ -48,6 +48,16 @@ public interface BusinessServicesJpaRepository extends JpaRepository<BusinessSer
     // Method 1: Using the business type's ID
     List<BusinessServiceEntity> findByBusinessType_Id(Long businessTypeId);
 
+    List<BusinessServiceEntity> findByBusinessId(Long businessId);
+
+    boolean existsByBusinessIdAndServiceNameIgnoreCase(Long businessId, String serviceName);
+
+    boolean existsByBusinessIdIsNullAndServiceNameIgnoreCase(String serviceName);
+
+    boolean existsByBusinessIdAndServiceNameIgnoreCaseAndIdNot(Long businessId, String serviceName, Long id);
+
+    boolean existsByBusinessIdIsNullAndServiceNameIgnoreCaseAndIdNot(String serviceName, Long id);
+
     // (Optional) Method 2: Using the BusinessTypeEntity directly
     List<BusinessServiceEntity> findByBusinessType(BusinessTypeEntity businessType);
 

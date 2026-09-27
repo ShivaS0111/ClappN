@@ -21,4 +21,14 @@ public interface BusinessProductJpaRepository extends JpaRepository<BusinessProd
     // Method 1: Using the business type's ID
     List<BusinessProductEntity> findByBusinessType_Id(Long businessTypeId);
 
+    List<BusinessProductEntity> findByBusinessId(Long businessId);
+
+    boolean existsByBusinessIdAndNameIgnoreCase(Long businessId, String name);
+
+    boolean existsByBusinessIdIsNullAndNameIgnoreCase(String name);
+
+    boolean existsByBusinessIdAndNameIgnoreCaseAndIdNot(Long businessId, String name, Long id);
+
+    boolean existsByBusinessIdIsNullAndNameIgnoreCaseAndIdNot(String name, Long id);
+
 }

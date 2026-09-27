@@ -27,47 +27,48 @@ public class BusinessServiceDTOMapper {
     @Autowired
     CategoryService categoryService;
 
-
     public BusinessServiceDTO toDTO(BusinessService domain) {
-        return new BusinessServiceDTO(
-                domain.getId(),
-                domain.getServiceName(),
-                domain.getDescription(),
-                domain.getStatus() != null ? domain.getStatus() : 0,
-                businessTypeDTOMapper.toDTO(domain.getBusinessType()),
-                domain.getAmount(),
-                domain.getCurrency(),
-                domain.getCategories() != null ? domain.getCategories()
-                        .stream().map(c ->{
+        return BusinessServiceDTO.builder()
+                .id(domain.getId())
+                .name(domain.getServiceName())
+                .desc(domain.getDescription())
+                .status(domain.getStatus() != null ? domain.getStatus() : 0)
+                .businessId(domain.getBusinessId())
+                .businessType(businessTypeDTOMapper.toDTO(domain.getBusinessType()))
+                .amount(domain.getAmount() != null ? domain.getAmount() : 0f)
+                .currency(domain.getCurrency())
+                .categories(domain.getCategories() != null ? domain.getCategories()
+                        .stream().map(c -> {
                             CategoryDTO c1 = categoryDTOMapper.toDTO(c);
                             c1.setChildren(null);
                             return c1;
-                        }).toList() : List.of(),
-                domain.getDuration(),
-                domain.getThumbnailUrl(),
-                domain.getGalleryUrls()
-        );
+                        }).toList() : List.of())
+                .duration(domain.getDuration())
+                .thumbnailUrl(domain.getThumbnailUrl())
+                .galleryUrls(domain.getGalleryUrls())
+                .build();
     }
 
     public BusinessService toDomain(BusinessServiceDTO dto) {
-        return new BusinessService(
-                dto.getId(),
-                dto.getName(),
-                dto.getDesc(),
-                dto.getStatus() != null ? dto.getStatus() : 0,
-                businessTypeDTOMapper.toDomain(dto.getBusinessType()),
-                dto.getAmount(),
-                dto.getCurrency(),
-                dto.getCategories() != null ? dto.getCategories()
+        return BusinessService.builder()
+                .id(dto.getId())
+                .serviceName(dto.getName())
+                .description(dto.getDesc())
+                .status(dto.getStatus() != null ? dto.getStatus() : 0)
+                .businessId(dto.getBusinessId())
+                .businessType(businessTypeDTOMapper.toDomain(dto.getBusinessType()))
+                .amount(dto.getAmount())
+                .currency(dto.getCurrency())
+                .categories(dto.getCategories() != null ? dto.getCategories()
                         .stream().map(c -> {
                             Category c1 = categoryDTOMapper.toDomain(c);
                             c1.setChildren(null);
                             return c1;
-                        }).toList() : List.of(),
-                dto.getDuration(),
-                dto.getThumbnailUrl(),
-                dto.getGalleryUrls()
-        );
+                        }).toList() : List.of())
+                .duration(dto.getDuration())
+                .thumbnailUrl(dto.getThumbnailUrl())
+                .galleryUrls(dto.getGalleryUrls())
+                .build();
     }
 
     public BusinessService toDomain(AddNewBusinessServiceRequest dto) {
@@ -86,9 +87,9 @@ public class BusinessServiceDTOMapper {
                 : List.of();
 
         return BusinessService.builder()
-                //.id(dto.getId())
                 .serviceName(dto.getName())
                 .description(dto.getDesc())
+                .businessId(dto.getBusinessId())
                 .amount(dto.getAmount())
                 .businessType(BusinessType.builder().id(dto.getBusinessTypeId()).build())
                 .currency(dto.getCurrency())

@@ -21,13 +21,17 @@ public class BusinessProductEntity {
     @Column(nullable = false)
     private Long id;
 
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description")
     private String description;
 
     private int status;
+
+    /** Owning tenant business; null = platform/shared template. */
+    @Column(name = "business_id")
+    private Long businessId;
 
     @ManyToOne
     @JoinColumn(name = "business_type", referencedColumnName = "id")

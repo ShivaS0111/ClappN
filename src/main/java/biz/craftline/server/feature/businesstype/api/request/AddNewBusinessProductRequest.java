@@ -21,6 +21,9 @@ public class AddNewBusinessProductRequest {
 
     private int status;
 
+    /** Tenant that owns this catalog item. Required for non–SYSTEM_ADMIN creators. */
+    private Long businessId;
+
     private Long businessTypeId;
     private Long brandId;
 

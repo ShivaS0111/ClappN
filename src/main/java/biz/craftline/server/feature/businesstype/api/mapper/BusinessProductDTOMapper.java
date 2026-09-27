@@ -17,43 +17,46 @@ public class BusinessProductDTOMapper {
     BusinessTypeDTOMapper businessTypeDTOMapper;
 
     public BusinessProductDTO toDTO(BusinessProduct domain) {
-        return new BusinessProductDTO(
-                domain.getId(),
-                domain.getName(),
-                domain.getDescription(),
-                domain.getStatus(),
-                businessTypeDTOMapper.toDTO(domain.getBusinessType()),
-                domain.getCategories(),
-                domain.getAmount(),
-                domain.getCurrency(),
-                domain.getBrand(),
-                domain.getThumbnailUrl(),
-                domain.getGalleryUrls()
-        );
+        return BusinessProductDTO.builder()
+                .id(domain.getId())
+                .name(domain.getName())
+                .desc(domain.getDescription())
+                .status(domain.getStatus())
+                .businessId(domain.getBusinessId())
+                .businessType(businessTypeDTOMapper.toDTO(domain.getBusinessType()))
+                .categories(domain.getCategories())
+                .amount(domain.getAmount() != null ? domain.getAmount() : 0f)
+                .currency(domain.getCurrency())
+                .brand(domain.getBrand())
+                .thumbnailUrl(domain.getThumbnailUrl())
+                .galleryUrls(domain.getGalleryUrls())
+                .build();
     }
 
     public BusinessProduct toDomain(BusinessProductDTO dto) {
-        return new BusinessProduct(
-                dto.getId(),
-                dto.getName(),
-                dto.getDesc(),
-                dto.getStatus(),
-                businessTypeDTOMapper.toDomain(dto.getBusinessType()),
-                dto.getCategories(),
-                dto.getAmount(),
-                dto.getCurrency(),
-                dto.getBrand(),
-                dto.getThumbnailUrl(),
-                dto.getGalleryUrls()
-        );
+        return BusinessProduct.builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .description(dto.getDesc())
+                .status(dto.getStatus())
+                .businessId(dto.getBusinessId())
+                .businessType(businessTypeDTOMapper.toDomain(dto.getBusinessType()))
+                .categories(dto.getCategories())
+                .amount(dto.getAmount())
+                .currency(dto.getCurrency())
+                .brand(dto.getBrand())
+                .thumbnailUrl(dto.getThumbnailUrl())
+                .galleryUrls(dto.getGalleryUrls())
+                .build();
     }
 
     public BusinessProduct toDomain(AddNewBusinessProductRequest dto) {
         return BusinessProduct.builder()
-                //.id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDesc())
-                .businessType(dto.getBusinessTypeId() != null ? BusinessType.builder().id(dto.getBusinessTypeId()).build() : null)
+                .businessId(dto.getBusinessId())
+                .businessType(dto.getBusinessTypeId() != null
+                        ? BusinessType.builder().id(dto.getBusinessTypeId()).build() : null)
                 .brand(dto.getBrandId() != null ? Brand.builder().id(dto.getBrandId()).build() : null)
                 .categories((dto.getCategories() != null ? dto.getCategories() : List.<Long>of()).stream()
                         .map(catId -> Category.builder().id(catId).build()).toList())

@@ -13,6 +13,12 @@ public interface ServicesOfferedByStoreRepository extends JpaRepository<StoreOff
 
     void deleteStoreServiceById(Long id);
 
+    boolean existsByStoreIdAndBusinessServiceId(Long storeId, Long businessServiceId);
+
+    Optional<StoreOfferedServiceEntity> findByStoreIdAndBusinessServiceId(Long storeId, Long businessServiceId);
+
+    void deleteByStoreIdAndBusinessServiceId(Long storeId, Long businessServiceId);
+
     Optional<List<StoreOfferedServiceEntity>> findByBusinessId(Long businessId);
     Optional<List<StoreOfferedServiceEntity>> findByStoreId(Long id);
 

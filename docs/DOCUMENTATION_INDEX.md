@@ -1,23 +1,26 @@
-# 📚 CraftLane (ClappN) - Complete Documentation Index
+# CraftLane (ClappN) - Documentation Index
 
-**Last Updated**: March 14, 2026  
-**Project**: CraftLane Full-Stack E-Commerce Platform  
-**Repository**: ClappN (Backend) + clapp-dashboard (Frontend)
+**Last Updated**: 28 Sep 2026  
+**Project**: CraftLane — Spring Boot API (`ClappN`) + React dashboard (`clapp-dashboard`)
 
 ---
 
-## 🗺️ Navigation Guide
+## Navigation guide
 
-This is your master reference for all project documentation. Start here to find what you need.
+Start here for current status, then dive into architecture/APIs.
 
-### 📖 Core Documentation
+### Core documentation
 | Document | Purpose | Audience | Read Time |
 |----------|---------|----------|-----------|
+| [BACKEND_STATUS.md](BACKEND_STATUS.md) | **Current backend status from live code** | Everyone / PMs / eng | 10 min |
 | [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) | High-level project summary | Everyone | 10 min |
-| [ARCHITECTURE_GUIDE.md](ARCHITECTURE_GUIDE.md) | Detailed technical architecture | Developers | 30 min |
-| [API_REFERENCE.md](API_REFERENCE.md) | Complete API endpoints & methods | Backend/Full-stack devs | 45 min |
-| [DEVELOPER_SETUP_GUIDE.md](DEVELOPER_SETUP_GUIDE.md) | Environment setup & workflow | New developers | 20 min |
-| [AI_CONTEXT.md](AI_CONTEXT.md) | Comprehensive AI/LLM context | AI assistants | 60 min |
+| [CREATION_FLOW_DIAGRAMS.md](CREATION_FLOW_DIAGRAMS.md) | Business/store/catalog/employee create flows | Backend / FE | 15 min |
+| [API_CATALOG_SAMPLES.md](API_CATALOG_SAMPLES.md) | Sample API request bodies | FE / QA | 20 min |
+| [ARCHITECTURE_GUIDE.md](ARCHITECTURE_GUIDE.md) | Technical architecture | Developers | 30 min |
+| [API_REFERENCE.md](API_REFERENCE.md) | API endpoints & methods | Backend/Full-stack | 45 min |
+| [DEVELOPER_SETUP_GUIDE.md](DEVELOPER_SETUP_GUIDE.md) | Environment setup | New developers | 20 min |
+| [AI_CONTEXT.md](AI_CONTEXT.md) | AI/LLM context (may lag status) | AI assistants | 60 min |
+| [../../PROJECT_ASSESSMENT_REPORT.md](../../PROJECT_ASSESSMENT_REPORT.md) | Project-wide assessment (refreshed 28 Sep 2026) | Leadership / eng | 15 min |
 
 ### 📋 Feature-Specific Documentation
 

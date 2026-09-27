@@ -2,7 +2,6 @@ package biz.craftline.server.feature.businesstype.infra.mapper;
 
 import biz.craftline.server.feature.businesstype.domain.model.BusinessProduct;
 import biz.craftline.server.feature.businesstype.infra.entity.BusinessProductEntity;
-import biz.craftline.server.feature.businesstype.infra.entity.BusinessTypeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -28,6 +27,7 @@ public class BusinessProductEntityMapper {
         entity.setName(domain.getName());
         entity.setDescription(domain.getDescription());
         entity.setStatus(domain.getStatus());
+        entity.setBusinessId(domain.getBusinessId());
         entity.setAmount(domain.getAmount());
         entity.setCategories(domain.getCategories() != null
                 ? domain.getCategories().stream().map(mapper::toEntity).toList()
@@ -39,20 +39,22 @@ public class BusinessProductEntityMapper {
     }
 
     public BusinessProduct toDomain(BusinessProductEntity entity) {
-        return new BusinessProduct(
-                entity.getId(),
-                entity.getName(),
-                entity.getDescription(),
-                entity.getStatus(),
-                entity.getBusinessType()!=null? businessTypeEntityMapper.toDomain(entity.getBusinessType()):null,
-                entity.getCategories() != null
+        return BusinessProduct.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .businessId(entity.getBusinessId())
+                .businessType(entity.getBusinessType() != null
+                        ? businessTypeEntityMapper.toDomain(entity.getBusinessType()) : null)
+                .categories(entity.getCategories() != null
                         ? entity.getCategories().stream().map(mapper::toDomain).toList()
-                        : List.of(),
-                entity.getAmount(),
-                entity.getCurrency(),
-                entity.getBrand()!=null? brandEntityMapper.toDomain(entity.getBrand()):null,
-                entity.getThumbnailUrl(),
-                entity.getGalleryUrls()
-        );
+                        : List.of())
+                .amount(entity.getAmount())
+                .currency(entity.getCurrency())
+                .brand(entity.getBrand() != null ? brandEntityMapper.toDomain(entity.getBrand()) : null)
+                .thumbnailUrl(entity.getThumbnailUrl())
+                .galleryUrls(entity.getGalleryUrls())
+                .build();
     }
 }

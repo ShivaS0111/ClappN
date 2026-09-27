@@ -16,6 +16,8 @@ public class BusinessProduct {
     private String name;
     private String description;
     private int status;
+    /** Owning tenant business; null = platform/shared template. */
+    private Long businessId;
     private BusinessType businessType;
     private List<Category> categories;
     private Float amount;

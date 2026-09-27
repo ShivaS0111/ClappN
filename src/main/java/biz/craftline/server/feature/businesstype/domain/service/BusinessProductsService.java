@@ -24,5 +24,7 @@ public interface BusinessProductsService {
 
     List<BusinessProduct> findByBusinessTypeId(Long businessTypeId);
 
+    List<BusinessProduct> findByBusinessId(Long businessId);
+
     BusinessProduct update(BusinessProduct businessProduct);
 }

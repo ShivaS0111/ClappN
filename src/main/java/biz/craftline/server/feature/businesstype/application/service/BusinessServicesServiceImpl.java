@@ -40,51 +40,52 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
     @Autowired
     CategoryJpaRepository categoryJpaRepository;
 
+    @Autowired
+    CatalogBusinessOwnership catalogOwnership;
+
     @Override
     public List<BusinessService> findAll() {
-        return repository.findAll().stream().map(mapper::toDomain).toList();
+        return repository.findAll().stream()
+                .map(mapper::toDomain)
+                .filter(s -> catalogOwnership.isVisibleToCaller(s.getBusinessId()))
+                .toList();
     }
 
     @Override
     public void deleteServiceById(Long id) {
         BusinessServiceEntity bs = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Business Service not found, id: %d".formatted(id)));
+        catalogOwnership.assertCanMutate(bs.getBusinessId());
         bs.setStatus(Status.DELETED.getCode());
         repository.save(bs);
     }
 
     @Override
     public Optional<BusinessService> findById(Long id) {
-        return repository.findById(id).map(mapper::toDomain);
+        return repository.findById(id).map(mapper::toDomain).map(s -> {
+            catalogOwnership.assertCanRead(s.getBusinessId());
+            return s;
+        });
     }
 
     @Override
     public BusinessService save(BusinessService businessService) {
+        businessService.setBusinessId(
+                catalogOwnership.resolveBusinessIdForCreate(businessService.getBusinessId()));
+        assertUniqueServiceName(businessService.getBusinessId(), businessService.getServiceName(), null);
         BusinessServiceEntity entity = getBusinessServiceEntity(businessService);
         return mapper.toDomain(repository.save(entity));
     }
 
     @Override
     public List<BusinessService> save(List<BusinessService> businessServices) {
-        List<BusinessServiceEntity> serviceEntities = businessServices
-                .stream()
-                .map(this::getBusinessServiceEntity).toList();
-        List<BusinessService> list = new ArrayList<>();
-        for (BusinessServiceEntity entity : serviceEntities) {
-            try {
-                BusinessServiceEntity savedEntity = repository.save(entity);
-                list.add(mapper.toDomain(savedEntity));
-            } catch (Exception e) {
-                //throw new RuntimeException(e);
-                log.error("{}, ==>  {}", e.getMessage(), mapper.toDomain(entity));
-            }
-        }
-        return list;
+        return businessServices.stream().map(this::save).toList();
     }
 
 
     private BusinessServiceEntity getBusinessServiceEntity(BusinessService service) {
         BusinessServiceEntity entity = mapper.toEntity(service);
+        entity.setBusinessId(service.getBusinessId());
 
         List<CategoryEntity> categoryList = getCategoryList(service.getCategories());
         entity.setCategories(categoryList != null ? categoryList : new ArrayList<>());
@@ -121,27 +122,42 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
         return repository.searchByKeywordAndBusinessType(keyword, businessTypeId)
                 .stream()
                 .map(mapper::toDomain)
+                .filter(s -> catalogOwnership.isVisibleToCaller(s.getBusinessId()))
                 .toList();
     }
 
     @Override
     public List<BusinessService> findBySearch(String keyword) {
-        //return repository.searchByKeyword(keyword).stream().map(mapper::toDomain).toList();
-        return repository.findAll().stream().map(mapper::toDomain).toList();
+        return repository.findAll().stream()
+                .map(mapper::toDomain)
+                .filter(s -> catalogOwnership.isVisibleToCaller(s.getBusinessId()))
+                .toList();
     }
 
     @Override
     public List<BusinessService> findByBusinessTypeId(Long businessTypeId) {
-        return repository.findByBusinessType_Id(businessTypeId).stream().map(mapper::toDomain).toList();
+        return repository.findByBusinessType_Id(businessTypeId).stream()
+                .map(mapper::toDomain)
+                .filter(s -> catalogOwnership.isVisibleToCaller(s.getBusinessId()))
+                .toList();
+    }
+
+    @Override
+    public List<BusinessService> findByBusinessId(Long businessId) {
+        catalogOwnership.assertCanRead(businessId);
+        return repository.findByBusinessId(businessId).stream().map(mapper::toDomain).toList();
     }
 
     @Override
     public BusinessService update(BusinessService businessService) {
         BusinessServiceEntity service = repository.findById(businessService.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Business Type ID: " + businessService.getId()));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Business Service ID: " + businessService.getId()));
+        catalogOwnership.assertCanMutate(service.getBusinessId());
 
-        if (businessService.getServiceName() != null)
+        if (businessService.getServiceName() != null) {
+            assertUniqueServiceName(service.getBusinessId(), businessService.getServiceName(), service.getId());
             service.setServiceName(businessService.getServiceName());
+        }
 
         if (businessService.getDescription() != null)
             service.setDescription(businessService.getDescription());
@@ -187,6 +203,20 @@ public class BusinessServicesServiceImpl implements BusinessServicesService {
         }
 
         return mapper.toDomain(repository.save(service));
+    }
+
+    private void assertUniqueServiceName(Long businessId, String name, Long excludeId) {
+        boolean duplicate;
+        if (excludeId == null) {
+            duplicate = businessId == null
+                    ? repository.existsByBusinessIdIsNullAndServiceNameIgnoreCase(name)
+                    : repository.existsByBusinessIdAndServiceNameIgnoreCase(businessId, name);
+        } else {
+            duplicate = businessId == null
+                    ? repository.existsByBusinessIdIsNullAndServiceNameIgnoreCaseAndIdNot(name, excludeId)
+                    : repository.existsByBusinessIdAndServiceNameIgnoreCaseAndIdNot(businessId, name, excludeId);
+        }
+        catalogOwnership.assertUniqueName("Service", name, duplicate);
     }
 }
 

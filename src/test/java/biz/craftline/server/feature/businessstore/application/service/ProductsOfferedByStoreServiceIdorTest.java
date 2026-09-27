@@ -31,6 +31,7 @@ class ProductsOfferedByStoreServiceIdorTest {
     @Mock private StoreService storeService;
     @Mock private UserService userService;
     @Mock private SecurityContextService securityContextService;
+    @Mock private StoreOfferingAssignSupport assignSupport;
 
     @InjectMocks
     private ProductsOfferedByStoreServiceImpl service;
@@ -71,6 +72,6 @@ class ProductsOfferedByStoreServiceIdorTest {
                 .when(securityContextService).validateStoreAccess(50L);
 
         assertThrows(AccessDeniedException.class, () -> service.deleteStoreProductById(7L));
-        verify(productsOfferedByStoreRepository, never()).deleteStoreProductById(anyLong());
+        verify(productsOfferedByStoreRepository, never()).deleteById(anyLong());
     }
 }

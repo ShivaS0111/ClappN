@@ -15,11 +15,14 @@ import biz.craftline.server.feature.businesstype.infra.repository.BusinessProduc
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessTypeJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.CategoryJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class BusinessProductServiceImplTest {
 
     @Mock private BusinessProductJpaRepository repository;
@@ -38,9 +42,18 @@ class BusinessProductServiceImplTest {
     @Mock private BrandJpaRepository brandJpaRepository;
     @Mock private CategoryJpaRepository categoryJpaRepository;
     @Mock private BusinessProductEntityMapper mapper;
+    @Mock private CatalogBusinessOwnership catalogOwnership;
 
     @InjectMocks
     private BusinessProductServiceImpl service;
+
+    @BeforeEach
+    void stubOwnership() {
+        when(catalogOwnership.isVisibleToCaller(any())).thenReturn(true);
+        when(catalogOwnership.resolveBusinessIdForCreate(any())).thenAnswer(inv -> inv.getArgument(0));
+        doNothing().when(catalogOwnership).assertCanRead(any());
+        doNothing().when(catalogOwnership).assertCanMutate(any());
+    }
 
     @Test
     void findAll_mapsEntities() {
@@ -164,13 +177,12 @@ class BusinessProductServiceImplTest {
     }
 
     @Test
-    void save_list_skipsFailures() {
+    void save_list_propagatesFailures() {
         BusinessProduct p = BusinessProduct.builder().name("P").build();
         BusinessProductEntity entity = new BusinessProductEntity();
         when(mapper.toEntity(p)).thenReturn(entity);
         when(repository.save(entity)).thenThrow(new RuntimeException("dup"));
-        when(mapper.toDomain(entity)).thenReturn(p);
 
-        assertTrue(service.save(List.of(p)).isEmpty());
+        assertThrows(RuntimeException.class, () -> service.save(List.of(p)));
     }
 }

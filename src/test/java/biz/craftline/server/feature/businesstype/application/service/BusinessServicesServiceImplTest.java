@@ -12,11 +12,14 @@ import biz.craftline.server.feature.businesstype.infra.repository.BusinessServic
 import biz.craftline.server.feature.businesstype.infra.repository.BusinessTypeJpaRepository;
 import biz.craftline.server.feature.businesstype.infra.repository.CategoryJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +31,25 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class BusinessServicesServiceImplTest {
 
     @Mock private BusinessServicesJpaRepository repository;
     @Mock private BusinessTypeJpaRepository businessTypeJpaRepository;
     @Mock private BusinessServiceEntityMapper mapper;
     @Mock private CategoryJpaRepository categoryJpaRepository;
+    @Mock private CatalogBusinessOwnership catalogOwnership;
 
     @InjectMocks
     private BusinessServicesServiceImpl service;
+
+    @BeforeEach
+    void stubOwnership() {
+        when(catalogOwnership.isVisibleToCaller(any())).thenReturn(true);
+        when(catalogOwnership.resolveBusinessIdForCreate(any())).thenAnswer(inv -> inv.getArgument(0));
+        doNothing().when(catalogOwnership).assertCanRead(any());
+        doNothing().when(catalogOwnership).assertCanMutate(any());
+    }
 
     @Test
     void findAll() {

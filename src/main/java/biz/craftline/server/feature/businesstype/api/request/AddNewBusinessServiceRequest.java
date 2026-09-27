@@ -21,6 +21,9 @@ public class AddNewBusinessServiceRequest {
 
     private Integer status;
 
+    /** Tenant that owns this catalog item. Required for non–SYSTEM_ADMIN creators. */
+    private Long businessId;
+
     @NotNull(message = "businessType should not be null")
     private long businessTypeId;
 

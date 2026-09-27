@@ -47,11 +47,15 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
     @Autowired
     BusinessProductEntityMapper mapper;
 
+    @Autowired
+    CatalogBusinessOwnership catalogOwnership;
+
     @Override
     public List<BusinessProduct> findAll() {
         return repository.findAll()
                 .stream()
                 .map(mapper::toDomain)
+                .filter(p -> catalogOwnership.isVisibleToCaller(p.getBusinessId()))
                 .toList();
     }
 
@@ -59,17 +63,23 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
     public void deleteProductById(Long id) {
         BusinessProductEntity bs = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Business Product not found, id: %d".formatted(id)));
+        catalogOwnership.assertCanMutate(bs.getBusinessId());
         bs.setStatus(Status.DELETED.getCode());
         repository.save(bs);
     }
 
     @Override
     public Optional<BusinessProduct> findById(Long id) {
-        return repository.findById(id).map(mapper::toDomain);
+        return repository.findById(id).map(mapper::toDomain).map(p -> {
+            catalogOwnership.assertCanRead(p.getBusinessId());
+            return p;
+        });
     }
 
     @Override
     public BusinessProduct save(BusinessProduct product) {
+        product.setBusinessId(catalogOwnership.resolveBusinessIdForCreate(product.getBusinessId()));
+        assertUniqueProductName(product.getBusinessId(), product.getName(), null);
         BusinessProductEntity entity = getBusinessEntity(product);
         return mapper.toDomain(repository.save(entity));
     }
@@ -82,9 +92,12 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Business Product not found, id: " + businessProduct.getId()
                 ));
+        catalogOwnership.assertCanMutate(product.getBusinessId());
 
-        if (businessProduct.getName() != null)
+        if (businessProduct.getName() != null) {
+            assertUniqueProductName(product.getBusinessId(), businessProduct.getName(), product.getId());
             product.setName(businessProduct.getName());
+        }
 
         if (businessProduct.getDescription() != null)
             product.setDescription(businessProduct.getDescription());
@@ -164,6 +177,7 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
 
     private BusinessProductEntity getBusinessEntity(BusinessProduct product) {
         BusinessProductEntity entity = mapper.toEntity(product);
+        entity.setBusinessId(product.getBusinessId());
 
         List<CategoryEntity> categoryList = getCategoryList(product.getCategories());
         entity.setCategories(categoryList != null ? categoryList : new ArrayList<>());
@@ -186,40 +200,54 @@ public class BusinessProductServiceImpl implements BusinessProductsService {
 
     @Override
     public List<BusinessProduct> save(List<BusinessProduct> products) {
-        List<BusinessProductEntity> productEntities = products
-                .stream()
-                .map(this::getBusinessEntity)
-                .toList();
-        List<BusinessProduct> list = new ArrayList<>();
-        for (BusinessProductEntity entity : productEntities) {
-            try {
-                BusinessProductEntity savedEntity = repository.save(entity);
-                list.add(mapper.toDomain(savedEntity));
-            } catch (Exception e) {
-                log.error("Failed to save Product: {}", mapper.toDomain(entity));
-            }
-        }
-        return list;
+        return products.stream().map(this::save).toList();
     }
 
 
     @Override
     public List<BusinessProduct> findByBusinessTypeIdAndSearch(Long businessTypeId, String keyword) {
-        //return repository.findByBusinessId(id).stream().map(mapper::toDomain).toList();
-        //return repository.searchByKeywordAndBusinessTypeId(keyword, id).stream().map(mapper::toDomain).toList();
-        return repository.searchByKeyword(keyword).stream().map(mapper::toDomain).toList();
-
+        return repository.searchByKeyword(keyword).stream()
+                .map(mapper::toDomain)
+                .filter(p -> catalogOwnership.isVisibleToCaller(p.getBusinessId()))
+                .filter(p -> p.getBusinessType() == null
+                        || businessTypeId.equals(p.getBusinessType().getId()))
+                .toList();
     }
 
     @Override
     public List<BusinessProduct> findBySearch(String keyword) {
-        //return repository.searchByKeyword(keyword).stream().map(mapper::toDomain).toList();
-        return repository.findAll().stream().map(mapper::toDomain).toList();
+        return repository.searchByKeyword(keyword).stream()
+                .map(mapper::toDomain)
+                .filter(p -> catalogOwnership.isVisibleToCaller(p.getBusinessId()))
+                .toList();
     }
 
     @Override
     public List<BusinessProduct> findByBusinessTypeId(Long businessTypeId) {
-        return repository.findByBusinessType_Id(businessTypeId).stream().map(mapper::toDomain).toList();
+        return repository.findByBusinessType_Id(businessTypeId).stream()
+                .map(mapper::toDomain)
+                .filter(p -> catalogOwnership.isVisibleToCaller(p.getBusinessId()))
+                .toList();
+    }
+
+    @Override
+    public List<BusinessProduct> findByBusinessId(Long businessId) {
+        catalogOwnership.assertCanRead(businessId);
+        return repository.findByBusinessId(businessId).stream().map(mapper::toDomain).toList();
+    }
+
+    private void assertUniqueProductName(Long businessId, String name, Long excludeId) {
+        boolean duplicate;
+        if (excludeId == null) {
+            duplicate = businessId == null
+                    ? repository.existsByBusinessIdIsNullAndNameIgnoreCase(name)
+                    : repository.existsByBusinessIdAndNameIgnoreCase(businessId, name);
+        } else {
+            duplicate = businessId == null
+                    ? repository.existsByBusinessIdIsNullAndNameIgnoreCaseAndIdNot(name, excludeId)
+                    : repository.existsByBusinessIdAndNameIgnoreCaseAndIdNot(businessId, name, excludeId);
+        }
+        catalogOwnership.assertUniqueName("Product", name, duplicate);
     }
 }
 

@@ -22,13 +22,17 @@ public class BusinessServiceEntity {
     @Column(nullable = false)
     private Long id;
 
-    @Column(name = "service_name", unique = true, nullable = false)
+    @Column(name = "service_name", nullable = false)
     private String serviceName;
 
     @Column(name = "description")
     private String description;
 
     private int status;
+
+    /** Owning tenant business; null = platform/shared template. */
+    @Column(name = "business_id")
+    private Long businessId;
 
     @ManyToOne
     @JoinColumn(name = "business_type", nullable = false)

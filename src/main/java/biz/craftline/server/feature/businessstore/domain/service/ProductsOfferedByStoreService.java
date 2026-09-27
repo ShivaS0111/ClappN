@@ -25,8 +25,20 @@ public interface ProductsOfferedByStoreService {
 
     List<StoreOfferedProduct> save(List<StoreOfferedProduct> domains);
 
+    StoreOfferedProduct update(Long id, StoreOfferedProduct domain);
+
     StoreOfferedProduct findById(Long id);
 
     Optional<List<StoreOfferedProduct>> findProductsByBusinessId(Long businessId);
+
+    /**
+     * Assign a master catalog product to selected stores (or all stores of the business).
+     */
+    List<StoreOfferedProduct> assignToStores(Long businessId, Long businessProductId,
+                                             List<Long> storeIds, boolean allStores,
+                                             String aliasName, String description, int status);
+
+    /** Remove catalog product from selected stores (or all stores of the business). Returns removed count. */
+    int unassignFromStores(Long businessId, Long businessProductId, List<Long> storeIds, boolean allStores);
 }
 
