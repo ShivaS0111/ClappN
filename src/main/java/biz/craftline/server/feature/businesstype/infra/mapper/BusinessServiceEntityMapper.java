@@ -24,7 +24,7 @@ public class BusinessServiceEntityMapper {
         entity.setDescription(domain.getDescription());
         entity.setStatus(domain.getStatus() != null ? domain.getStatus() : 0);
         entity.setBusinessId(domain.getBusinessId());
-        entity.setAmount(domain.getAmount());
+        entity.setAmount(domain.getAmount()); // null = no business default price
         entity.setBusinessType(mapper.toEntity(domain.getBusinessType()));
         entity.setCurrency(domain.getCurrency());
         List<CategoryEntity> categoryEntityList = domain.getCategories() != null ?

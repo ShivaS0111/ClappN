@@ -29,7 +29,8 @@ public class AddNewBusinessServiceRequest {
 
     private List<Long> categoryIds;
 
-    private float amount;
+    /** Optional business default price; omit if unset. */
+    private Float amount;
 
     private Long currency;
     private Long duration;//in minutes

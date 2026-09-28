@@ -25,7 +25,7 @@ public class BusinessProductDTOMapper {
                 .businessId(domain.getBusinessId())
                 .businessType(businessTypeDTOMapper.toDTO(domain.getBusinessType()))
                 .categories(domain.getCategories())
-                .amount(domain.getAmount() != null ? domain.getAmount() : 0f)
+                .amount(domain.getAmount())
                 .currency(domain.getCurrency())
                 .brand(domain.getBrand())
                 .thumbnailUrl(domain.getThumbnailUrl())

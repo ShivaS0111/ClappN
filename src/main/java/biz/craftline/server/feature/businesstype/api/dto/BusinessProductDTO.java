@@ -30,7 +30,8 @@ public class BusinessProductDTO {
 
     private List<Category> categories;
 
-    private float amount;
+    /** Optional business default price; omit/null if unset. Store may override. */
+    private Float amount;
 
     private Long currency;
 

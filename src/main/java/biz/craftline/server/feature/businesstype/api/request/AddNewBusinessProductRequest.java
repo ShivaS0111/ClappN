@@ -30,7 +30,8 @@ public class AddNewBusinessProductRequest {
     //@NotNull(message = "categories should not be null")
     private List<Long> categories;
 
-    private float amount;
+    /** Optional business default price; omit if unset. */
+    private Float amount;
 
     private Long currency;
 

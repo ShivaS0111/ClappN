@@ -3,6 +3,7 @@ package biz.craftline.server.feature.businessstore.application.service;
 import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.enums.Item;
 import biz.craftline.server.feature.businessstore.domain.model.Store;
+import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedService;
 import biz.craftline.server.feature.businessstore.domain.service.ServicesOfferedByStoreService;
 import biz.craftline.server.feature.businessstore.domain.service.StoreService;
@@ -231,6 +232,9 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
             storeItemPriceService.findByServiceId(s.getId()).ifPresent(s::setPrice);
         } catch (Exception ignore) {
         }
+        if (s.getPrice() == null) {
+            applyBusinessDefaultPrice(s);
+        }
         return s;
     }
 
@@ -250,7 +254,48 @@ public class ServicesOfferedByStoreServiceImpl implements ServicesOfferedByStore
                         svc.setPrice(price);
                     }
                 });
+        applyBusinessDefaultPrices(services);
         return services;
+    }
+
+    private void applyBusinessDefaultPrices(List<StoreOfferedService> services) {
+        List<Long> masterIds = services.stream()
+                .filter(s -> s.getPrice() == null && s.getBusinessServiceId() != null)
+                .map(StoreOfferedService::getBusinessServiceId)
+                .distinct()
+                .toList();
+        if (masterIds.isEmpty()) {
+            return;
+        }
+        Map<Long, BusinessServiceEntity> masters = new HashMap<>();
+        businessServicesJpaRepository.findAllById(masterIds).forEach(m -> masters.put(m.getId(), m));
+        for (StoreOfferedService s : services) {
+            if (s.getPrice() != null || s.getBusinessServiceId() == null) {
+                continue;
+            }
+            applyBusinessDefaultFromMaster(s, masters.get(s.getBusinessServiceId()));
+        }
+    }
+
+    private void applyBusinessDefaultPrice(StoreOfferedService s) {
+        if (s.getBusinessServiceId() == null) {
+            return;
+        }
+        businessServicesJpaRepository.findById(s.getBusinessServiceId())
+                .ifPresent(master -> applyBusinessDefaultFromMaster(s, master));
+    }
+
+    private void applyBusinessDefaultFromMaster(StoreOfferedService s, BusinessServiceEntity master) {
+        if (master == null || master.getAmount() == null) {
+            return;
+        }
+        s.setPrice(StoreItemPrice.builder()
+                .itemId(s.getId())
+                .itemType(Item.SERVICE.getType())
+                .price(master.getAmount().doubleValue())
+                .currency(master.getCurrency())
+                .status(1)
+                .build());
     }
 
     private void prepareForAssign(StoreOfferedService domain, Long existingOfferingId) {

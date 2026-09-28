@@ -2,6 +2,7 @@ package biz.craftline.server.feature.businessstore.application.service;
 
 import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.enums.Item;
+import biz.craftline.server.feature.businessstore.domain.model.StoreItemPrice;
 import biz.craftline.server.feature.businessstore.domain.model.StoreOfferedProduct;
 import biz.craftline.server.feature.businessstore.domain.service.ProductsOfferedByStoreService;
 import biz.craftline.server.feature.businessstore.domain.model.Store;
@@ -248,7 +249,38 @@ public class ProductsOfferedByStoreServiceImpl implements ProductsOfferedByStore
                         product.setPrice(price);
                     }
                 });
+        // Fallback: optional business default (amount) when store has no override
+        applyBusinessDefaultPrices(products);
         return products;
+    }
+
+    private void applyBusinessDefaultPrices(List<StoreOfferedProduct> products) {
+        List<Long> masterIds = products.stream()
+                .filter(p -> p.getPrice() == null && p.getBusinessProductId() != null)
+                .map(StoreOfferedProduct::getBusinessProductId)
+                .distinct()
+                .toList();
+        if (masterIds.isEmpty()) {
+            return;
+        }
+        Map<Long, BusinessProductEntity> masters = new HashMap<>();
+        businessProductJpaRepository.findAllById(masterIds).forEach(m -> masters.put(m.getId(), m));
+        for (StoreOfferedProduct p : products) {
+            if (p.getPrice() != null || p.getBusinessProductId() == null) {
+                continue;
+            }
+            BusinessProductEntity master = masters.get(p.getBusinessProductId());
+            if (master == null || master.getAmount() == null) {
+                continue;
+            }
+            p.setPrice(StoreItemPrice.builder()
+                    .itemId(p.getId())
+                    .itemType(Item.PRODUCT.getType())
+                    .price(master.getAmount().doubleValue())
+                    .currency(master.getCurrency())
+                    .status(1)
+                    .build());
+        }
     }
 
     private void prepareForAssign(StoreOfferedProduct domain, Long existingOfferingId) {

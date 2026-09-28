@@ -70,13 +70,23 @@ Store         →  store_offered_* assign (businessId + storeId + catalog id)
 **Gap 3 (done):** `POST .../assign` (`allStores` or `storeIds`).  
 **Gap 4 (done):** `POST .../unassign` + per-business (case-insensitive) catalog name uniqueness.
 
+### Pricing model
+
+```
+business_product/service.amount  →  optional default (nullable, not required)
+store_item_price                 →  store override (wins when present)
+store list APIs                  →  override else business default else no price
+```
+
+Flyway **`V18`**: `amount` columns nullable.
+
 ---
 
 ## Flyway
 
 Classpath migrations present:
 
-`V1`–`V16` as before · **`V17` catalog `business_id` ownership** (drop global unique names).
+`V1`–`V16` as before · **`V17` catalog `business_id` ownership** · **`V18` optional business default `amount`**.
 
 Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean envs should rely on classpath V1–V17.
 

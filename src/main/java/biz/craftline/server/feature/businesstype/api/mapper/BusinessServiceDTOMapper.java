@@ -35,7 +35,7 @@ public class BusinessServiceDTOMapper {
                 .status(domain.getStatus() != null ? domain.getStatus() : 0)
                 .businessId(domain.getBusinessId())
                 .businessType(businessTypeDTOMapper.toDTO(domain.getBusinessType()))
-                .amount(domain.getAmount() != null ? domain.getAmount() : 0f)
+                .amount(domain.getAmount())
                 .currency(domain.getCurrency())
                 .categories(domain.getCategories() != null ? domain.getCategories()
                         .stream().map(c -> {

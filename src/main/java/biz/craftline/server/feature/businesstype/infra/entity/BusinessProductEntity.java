@@ -49,7 +49,8 @@ public class BusinessProductEntity {
     )
     private List<CategoryEntity> categories = new ArrayList<>();
 
-    private float amount;
+    /** Optional business default sell price; store may override via store_item_price. Null = unset. */
+    private Float amount;
 
     private Long currency;
 
