@@ -1,5 +1,6 @@
 package biz.craftline.server.config;
 
+import biz.craftline.server.config.security.AuthRateLimitFilter;
 import biz.craftline.server.config.security.JsonAccessDeniedHandler;
 import biz.craftline.server.config.security.JsonAuthenticationEntryPoint;
 import biz.craftline.server.config.security.JwtAuthenticationFilter;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final AuthRateLimitFilter authRateLimitFilter;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserScopeFilter userScopeFilter;
     private final JsonAuthenticationEntryPoint authenticationEntryPoint;
@@ -83,6 +85,7 @@ public class SecurityConfig {
 
                     auth.anyRequest().authenticated();
                 })
+                .addFilterBefore(authRateLimitFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(userScopeFilter, JwtAuthenticationFilter.class);
 

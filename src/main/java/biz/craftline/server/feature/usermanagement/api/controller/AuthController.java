@@ -213,10 +213,17 @@ public class AuthController {
         try {
             var tokenOpt = refreshTokenRepository.findByToken(logoutRequest.getRefreshToken());
             tokenOpt.ifPresent(t -> {
+                // Revoke presented token and all other refresh tokens for that user
                 t.setRevoked(true);
                 refreshTokenRepository.save(t);
+                refreshTokenRepository.findAllByUsername(t.getUsername()).forEach(other -> {
+                    if (!other.isRevoked()) {
+                        other.setRevoked(true);
+                        refreshTokenRepository.save(other);
+                    }
+                });
+                log.info("User logged out; all refresh tokens revoked for {}", t.getUsername());
             });
-            log.info("User logged out successfully");
             return APIResponse.success("Logged out successfully");
         } catch (Exception e) {
             log.error("Logout failed", e);

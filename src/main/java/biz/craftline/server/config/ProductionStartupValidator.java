@@ -31,6 +31,12 @@ public class ProductionStartupValidator implements ApplicationRunner {
     @Value("${app.cors.allowed-origins:}")
     private String corsOrigins;
 
+    @Value("${app.mail.mode:log}")
+    private String mailMode;
+
+    @Value("${spring.mail.host:}")
+    private String mailHost;
+
     public ProductionStartupValidator(Environment environment) {
         this.environment = environment;
     }
@@ -50,7 +56,11 @@ public class ProductionStartupValidator implements ApplicationRunner {
                 throw new IllegalStateException(
                         "APP_CORS_ORIGINS must be set to explicit frontend origin(s) when strong secrets are required.");
             }
-            log.info("Production secret checks passed (JWT + CORS)");
+            if ("smtp".equalsIgnoreCase(mailMode) && !StringUtils.hasText(mailHost)) {
+                throw new IllegalStateException(
+                        "APP_MAIL_MODE=smtp but SPRING_MAIL_HOST is empty. Set SMTP host or use APP_MAIL_MODE=log.");
+            }
+            log.info("Production secret checks passed (JWT + CORS + mail mode={})", mailMode);
         } else if (WEAK_DEFAULT.equals(jwtSecret)) {
             log.warn("Using default JWT secret — acceptable for local/dev only");
         }

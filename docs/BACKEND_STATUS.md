@@ -109,14 +109,14 @@ Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean 
 |------|--------|
 | Authz / tenant scope | **Strong** for core paths |
 | Observability | Actuator + request logging present |
-| Payments | **Blocked on real secrets** + webhook verify in prod (`PaymentStartupValidator`) |
-| Mail | Log mode by default; SMTP when configured |
+| Payments | Env secrets via `.env.example` / `PRODUCTION.md`; prod fail-fast (`PaymentStartupValidator`) |
+| Mail | Dev = log; **prod default SMTP** (`APP_MAIL_MODE=smtp` + `SPRING_MAIL_*`) |
 | Catalog multi-tenant | **Supported** (`businessId` on masters + scoped assign) |
-| Coupons / reports / approvals / vendor | **Not backend-complete** |
-| Local runtime | Requires JDK 17 + MySQL; not running at last check |
+| Coupons / reports / approvals / vendor | **Not backend-complete** (out of core POS bar) |
+| Ops guide | [`PRODUCTION.md`](./PRODUCTION.md) |
 
 **Overall backend (existing modules, excl. keys/coupons/tax):** ~**98–99%**  
-**Production readiness (ops + gaps):** ~**70–75%**  
+**Production readiness (ops):** ~**75%**; **target 90%+** once real keys + SMTP + staging smoke are verified  
 **Full platform (incl. marketing modules):** ~**72–78%**
 
 ---
@@ -127,11 +127,12 @@ Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean 
 2. ~~Business-owned catalog~~ **Done**
 3. ~~Multi-store assign / unassign~~ **Done**
 4. ~~Per-business catalog name uniqueness~~ **Done**
-5. **Payment staging smoke** with real Stripe/Razorpay keys *(excluded from 99% bar)*
+5. **Payment + SMTP env + staging smoke** — see [PRODUCTION.md](./PRODUCTION.md) *(ops; target for prod 90%+)*
 6. **couponmanagement** — empty *(excluded)*
 7. Tax engine depth *(excluded)*
-8. SMTP + rate-limit / token revoke (nice-to-have)
-9. ~~Membership REST API~~ **Done** (`/api/memberships`)
+8. ~~Rate-limit / logout revoke-all~~ **Done** (`AuthRateLimitFilter` + logout revokes all refresh tokens)
+9. ~~Membership REST API~~ **Done**
+10. ~~Optional business default price~~ **Done** (`amount` + store override)
 
 ---
 
