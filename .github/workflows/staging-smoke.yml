@@ -1,0 +1,39 @@
+name: Staging Smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "API base URL"
+        required: false
+        default: "https://staging-api.craftlane.com"
+      skip_order:
+        description: "Skip order placement step"
+        required: false
+        default: "false"
+
+jobs:
+  smoke:
+    name: Staging smoke test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+
+      - name: Run staging smoke
+        env:
+          STAGING_BASE_URL: ${{ inputs.base_url }}
+          STAGING_EMAIL: ${{ secrets.STAGING_EMAIL }}
+          STAGING_PASSWORD: ${{ secrets.STAGING_PASSWORD }}
+          STAGING_STORE_ID: ${{ secrets.STAGING_STORE_ID }}
+          STAGING_BUSINESS_ID: ${{ secrets.STAGING_BUSINESS_ID }}
+          STAGING_SKIP_ORDER: ${{ inputs.skip_order }}
+        run: ./mvnw -B test -Pstaging-smoke -Dtest=StagingSmokeIT

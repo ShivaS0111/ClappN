@@ -44,7 +44,7 @@
 | Module | Controllers / surface | Status | ~% |
 |--------|----------------------|--------|----|
 | **usermanagement** | Auth, User, Role, Permission, MeContext, Navigation | Strong — JWT, refresh DB, mail on forgot-password, RBAC seed | **92%** |
-| **membership** | Entities/repos only (used by employee/scope) | Membership + EmployeeProfile; soft-deactivate | **88%** |
+| **membership** | `/api/memberships` list/get/by-business/by-user + create/update/activate/deactivate | Tenancy access API (roles + store scopes); HR stays on employees | **95%** |
 | **employeemanagement** | `/api/employees` CRUD + GET by id + deactivate | Membership-based; store scope replace; soft delete | **92%** |
 | **businessstore** | Business, Store, store-product/service, packages, pricing, files | CRUD + metrics + packages; hardened assign + PUT/DELETE + **`/assign` multi-store** | **95%** |
 | **businesstype** | Types, categories, brands, business-product/service | Master catalog with **tenant `businessId`** + scoped CRUD + `listByBusiness` | **92%** |
@@ -121,6 +121,7 @@ Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean 
 6. **couponmanagement** — empty *(excluded)*
 7. Tax engine depth *(excluded)*
 8. SMTP + rate-limit / token revoke (nice-to-have)
+9. ~~Membership REST API~~ **Done** (`/api/memberships`)
 
 ---
 
@@ -138,6 +139,7 @@ Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean 
 | Invoices | `/api/invoices`, `/generate`, `/{id}/void`, `/{id}/pdf`, `/{id}/email` |
 | Payments | `/api/payments/initiate`, `/order/{orderId}`, `/status/{id}`, `/{id}/confirm`, `/{id}/refund`, `/api/payments/webhook/{stripe\|razorpay}` |
 | Employees | `/api/employees`, `/{id}`, `/{id}/deactivate` |
+| Memberships | `/api/memberships`, `/business/{id}`, `/user/{id}`, `/{id}/activate\|deactivate` |
 | Actuator | `/actuator/health`, `/actuator/info` (metrics auth’d) |
 
 ---
