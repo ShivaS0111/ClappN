@@ -32,21 +32,19 @@ public class BusinessTypeController {
     private BusinessTypeDTOMapper mapper;
 
     @GetMapping("/list")
-    @RequirePermission("business.read")
     public ResponseEntity<APIResponse<List<BusinessTypeDTO>>> list() {
         List<BusinessType> list = service.findAll();
         return APIResponse.success(list.stream().map(mapper::toDTO).toList());
     }
 
     @GetMapping("/search")
-    @RequirePermission("business.read")
     public ResponseEntity<APIResponse<List<BusinessTypeDTO>>> search(@RequestBody SearchRequest keyword) {
         List<BusinessType> list = service.findByNameContaining(keyword.keyword());
         return APIResponse.success(list.stream().map(mapper::toDTO).toList());
     }
 
     @PostMapping("/add")
-    @RequirePermission("business.create")
+    @RequirePermission("businesstype.create")
     public ResponseEntity<APIResponse<BusinessTypeDTO>> add(@RequestBody AddNewBusinessTypeRequest request) {
         System.out.println("===>BusinessType: " + request + ", name:"
                 + request.getBusinessName() + ", desc:" + request.getDescription());
@@ -59,7 +57,7 @@ public class BusinessTypeController {
     }
 
     @PutMapping("/update/{id}")
-    @RequirePermission("business.update")
+    @RequirePermission("businesstype.update")
     public ResponseEntity<APIResponse<BusinessTypeDTO>> update(@PathVariable("id") Long id,
                                                                @RequestBody AddNewBusinessTypeRequest request) {
         BusinessType existing = service.findById(id).orElseThrow();
@@ -75,7 +73,7 @@ public class BusinessTypeController {
     }
 
     @PostMapping("/add-all")
-    @RequirePermission("business.create")
+    @RequirePermission("businesstype.create")
     public ResponseEntity<APIResponse<List<BusinessTypeDTO>>> addAll(@RequestBody List<AddNewBusinessTypeRequest> requests) {
         var list =requests.stream().map( request-> {
             System.out.println("===>BusinessType: " + request + ", name:" + request.getBusinessName()
@@ -90,7 +88,6 @@ public class BusinessTypeController {
     }
 
    @GetMapping("/details/{id}")
-   @RequirePermission("business.read")
     public ResponseEntity<APIResponse<BusinessTypeDTO>> details(@PathVariable("id") String id) {
         BusinessType businessType = service.findById(Long.valueOf(id)).orElseThrow();
         List<BusinessService> services =  businessService.findByBusinessTypeId(businessType.getId());
@@ -99,7 +96,7 @@ public class BusinessTypeController {
     }
 
    @DeleteMapping("/{id}")
-   @RequirePermission("business.delete")
+   @RequirePermission("businesstype.delete")
     public ResponseEntity<APIResponse<String>> delete(@PathVariable("id") String id) {
         service.deleteBusinessTypeById(Long.valueOf(id));
         return APIResponse.success("Deleted successfully");

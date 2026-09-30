@@ -48,6 +48,7 @@ public class HttpRequestObservabilityFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         long start = System.nanoTime();
         try {
+            log.trace("[2-HttpRequestObservabilityFilter] ENTER: method={} path={}", request.getMethod(), request.getRequestURI());
             filterChain.doFilter(request, response);
         } finally {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -60,6 +61,9 @@ public class HttpRequestObservabilityFilter extends OncePerRequestFilter {
             String path = normalizePath(request.getRequestURI());
             String method = request.getMethod();
             int status = response.getStatus();
+
+            log.trace("[2-HttpRequestObservabilityFilter] EXIT: method={} path={} status={} durationMs={} authenticated={}", 
+                method, path, status, tookMs, auth != null && auth.isAuthenticated());
 
             Timer.builder("clappn.http.server.requests")
                     .description("ClappN HTTP request latency")

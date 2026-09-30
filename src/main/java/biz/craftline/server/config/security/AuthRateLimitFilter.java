@@ -74,6 +74,9 @@ public class AuthRateLimitFilter extends OncePerRequestFilter {
         long now = Instant.now().getEpochSecond();
         long windowStart = now - (now % windowSeconds);
 
+        log.trace("[1-AuthRateLimitFilter] ENTER: method={} path={} ip={} enabled={}", 
+            request.getMethod(), path, ip, enabled);
+
         Window window = windows.compute(key, (k, existing) -> {
             if (existing == null || existing.windowStart != windowStart) {
                 return new Window(windowStart, new AtomicInteger(0));
@@ -83,13 +86,15 @@ public class AuthRateLimitFilter extends OncePerRequestFilter {
 
         int count = window.counter.incrementAndGet();
         if (count > maxRequests) {
-            log.warn("Auth rate limit exceeded ip={} path={} count={}", ip, path, count);
+            log.warn("[1-AuthRateLimitFilter] BLOCKED: Auth rate limit exceeded ip={} path={} count={}", ip, path, count);
             response.setStatus(429);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write(
                     "{\"success\":false,\"message\":\"Too many requests. Try again later.\",\"statusCode\":429}");
             return;
         }
+
+        log.trace("[1-AuthRateLimitFilter] PASS: count={}/{}", count, maxRequests);
 
         // Opportunistic cleanup of stale windows
         if (windows.size() > 10_000) {

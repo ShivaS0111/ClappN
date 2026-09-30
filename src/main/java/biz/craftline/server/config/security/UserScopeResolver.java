@@ -47,17 +47,29 @@ public class UserScopeResolver {
 
     @Transactional(readOnly = true)
     public UserScopeContext resolve(String email, Long activeStoreId, Long activeBusinessId) {
+        log.trace("[4-UserScopeResolver] ENTER: resolve email={} storeId={} businessId={}", email, activeStoreId, activeBusinessId);
+        
         UserEntity user = userRepository.findByEmailWithRolesAndPermissions(email)
                 .or(() -> userRepository.findByEmail(email))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+                .orElseThrow(() -> {
+                    log.error("[4-UserScopeResolver] ERROR: User not found in database: {}", email);
+                    return new UsernameNotFoundException("User not found: " + email);
+                });
+
+        log.trace("[4-UserScopeResolver] FOUND: userId={} user_roles={}", user.getId(), 
+            user.getRoles() != null ? user.getRoles().stream().map(RoleEntity::getName).toList() : "NONE");
 
         List<MembershipEntity> memberships = membershipRepository
                 .findByUserIdAndStatus(user.getId(), MembershipEntity.STATUS_ACTIVE);
+
+        log.trace("[4-UserScopeResolver] MEMBERSHIPS: count={}", memberships.size());
 
         boolean unrestricted = user.getRoles() != null && user.getRoles().stream()
                 .map(RoleEntity::getName)
                 .filter(Objects::nonNull)
                 .anyMatch(ROLE_SYSTEM_ADMIN::equalsIgnoreCase);
+
+        log.trace("[4-UserScopeResolver] UNRESTRICTED: {}", unrestricted);
 
         // Memberships relevant to this request (optional active business / store filter for roles)
         List<MembershipEntity> roleMemberships = memberships;
@@ -66,6 +78,7 @@ public class UserScopeResolver {
                     .filter(m -> Objects.equals(m.getBusinessId(), activeBusinessId))
                     .toList();
             if (roleMemberships.isEmpty()) {
+                log.error("[4-UserScopeResolver] ERROR: No memberships for business: {}", activeBusinessId);
                 throw new AccessDeniedException("You do not have access to business: " + activeBusinessId);
             }
         }
@@ -152,8 +165,8 @@ public class UserScopeResolver {
             }
         }
 
-        log.debug("Resolved membership scope for {}: unrestricted={}, stores={}, businesses={}, roles={}",
-                email, unrestricted, accessibleStoreIds, accessibleBusinessIds, roleNames);
+        log.trace("[4-UserScopeResolver] RETURN: unrestricted={} roles={} perms_count={} stores={} businesses={}",
+                unrestricted, roleNames, permissions.size(), accessibleStoreIds, accessibleBusinessIds);
 
         return UserScopeContext.builder()
                 .userId(user.getId())

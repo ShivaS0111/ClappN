@@ -26,7 +26,11 @@ public class RequirePermissionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        String path = request.getRequestURI();
+        log.trace("[5-RequirePermissionInterceptor] ENTER: path={} handler={}", path, handler.getClass().getSimpleName());
+        
         if (!(handler instanceof HandlerMethod handlerMethod)) {
+            log.trace("[5-RequirePermissionInterceptor] SKIP: Not a HandlerMethod");
             return true;
         }
 
@@ -35,23 +39,27 @@ public class RequirePermissionInterceptor implements HandlerInterceptor {
             requirePermission = handlerMethod.getBeanType().getAnnotation(RequirePermission.class);
         }
         if (requirePermission == null) {
+            log.trace("[5-RequirePermissionInterceptor] SKIP: No @RequirePermission annotation on {}", handlerMethod.getMethod().getName());
             return true;
         }
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated()
                 || "anonymousUser".equals(String.valueOf(auth.getPrincipal()))) {
-            log.warn("Unauthenticated access attempt requiring permission: {}", requirePermission.value());
+            log.warn("[5-RequirePermissionInterceptor] DENIED: Unauthenticated access attempt requiring permission: {}", requirePermission.value());
             throw new AccessDeniedException("Authentication required");
         }
 
         String required = requirePermission.value();
+        log.trace("[5-RequirePermissionInterceptor] CHECK: user={} required={}", auth.getName(), required);
+        
         if (!rbacService.currentUserHasPermission(required)) {
-            log.warn("User '{}' denied access requiring permission: {}", auth.getName(), required);
+            log.warn("[5-RequirePermissionInterceptor] DENIED: User '{}' lacks permission: {}", auth.getName(), required);
             throw new AccessDeniedException(
                     String.format("Access denied. Required permission: %s", required));
         }
 
+        log.trace("[5-RequirePermissionInterceptor] PASS: user={} has permission={}", auth.getName(), required);
         return true;
     }
 }

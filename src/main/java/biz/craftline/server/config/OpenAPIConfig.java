@@ -1,7 +1,10 @@
 package biz.craftline.server.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,7 +15,15 @@ import org.springframework.context.annotation.Configuration;
         title = "ClappN API",
         version = "1.0",
         description = "API Documentation for ClappN Application"
-    )
+    ),
+    security = @SecurityRequirement(name = "bearerAuth")
+)
+@SecurityScheme(
+    name = "bearerAuth",
+    type = SecuritySchemeType.HTTP,
+    scheme = "bearer",
+    bearerFormat = "JWT",
+    description = "Paste the JWT. Swagger UI sends it as 'Authorization: Bearer <token>' on every request."
 )
 public class OpenAPIConfig {
 }

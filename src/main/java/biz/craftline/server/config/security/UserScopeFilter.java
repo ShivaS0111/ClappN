@@ -68,6 +68,9 @@ public class UserScopeFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@Nonnull HttpServletRequest request,
                                     @Nonnull HttpServletResponse response,
                                     @Nonnull FilterChain filterChain) throws ServletException, IOException {
+        String path = request.getRequestURI();
+        log.trace("[4-UserScopeFilter] ENTER: path={}", path);
+        
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth != null && auth.isAuthenticated()
@@ -78,8 +81,13 @@ public class UserScopeFilter extends OncePerRequestFilter {
                 Long activeStoreId = parseLongHeader(request.getHeader(HEADER_STORE_ID));
                 Long activeBusinessId = parseLongHeader(request.getHeader(HEADER_BUSINESS_ID));
 
+                log.trace("[4-UserScopeFilter] RESOLVE: email={} storeId={} businessId={}", email, activeStoreId, activeBusinessId);
+
                 UserScopeContext scope = userScopeResolver.resolve(email, activeStoreId, activeBusinessId);
                 UserScopeContextHolder.set(scope);
+
+                log.trace("[4-UserScopeFilter] RESOLVED: roles={} unrestricted={} perms_count={}", 
+                    scope.getRoles(), scope.isUnrestricted(), scope.getPermissions().size());
 
                 List<SimpleGrantedAuthority> authorities = scope.getPermissions().stream()
                         .map(SimpleGrantedAuthority::new)
@@ -95,21 +103,26 @@ public class UserScopeFilter extends OncePerRequestFilter {
                 );
                 scopedAuth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(scopedAuth);
+                
+                log.trace("[4-UserScopeFilter] SET: ScopedAuthenticationToken created");
+            } else {
+                log.trace("[4-UserScopeFilter] SKIP: No authenticated user in context");
             }
 
             filterChain.doFilter(request, response);
         } catch (org.springframework.security.access.AccessDeniedException ex) {
-            log.warn("Scope access denied: {}", ex.getMessage());
+            log.warn("[4-UserScopeFilter] DENIED: Scope access denied: {}", ex.getMessage());
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setContentType("application/json");
             response.getWriter().write("{\"success\":false,\"message\":\"" + sanitize(ex.getMessage()) + "\",\"status\":403}");
         } catch (Exception ex) {
-            log.error("Failed to resolve user scope for request", ex);
+            log.error("[4-UserScopeFilter] ERROR: Failed to resolve user scope for request", ex);
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType("application/json");
             response.getWriter().write("{\"success\":false,\"message\":\"Unable to resolve user scope\",\"status\":401}");
         } finally {
             UserScopeContextHolder.clear();
+            log.trace("[4-UserScopeFilter] EXIT: Context cleared");
         }
     }
 

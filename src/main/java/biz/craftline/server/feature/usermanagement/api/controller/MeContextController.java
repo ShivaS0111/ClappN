@@ -5,6 +5,7 @@ import biz.craftline.server.config.security.UserScopeContextHolder;
 import biz.craftline.server.feature.usermanagement.api.dto.MeContextResponse;
 import biz.craftline.server.util.APIResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/me")
+@Slf4j
 public class MeContextController {
 
     @GetMapping("/context")
     @Operation(summary = "Get current user scope context for this request")
     public ResponseEntity<APIResponse<MeContextResponse>> getContext() {
+        log.trace("[6-MeContextController] ENTER: /api/me/context");
+        
         UserScopeContext scope = UserScopeContextHolder.require();
+        log.trace("[6-MeContextController] SCOPE: userId={} email={} roles={} unrestricted={}", 
+            scope.getUserId(), scope.getEmail(), scope.getRoles(), scope.isUnrestricted());
+        
         MeContextResponse body = MeContextResponse.builder()
                 .userId(scope.getUserId())
                 .email(scope.getEmail())
@@ -33,6 +40,8 @@ public class MeContextController {
                 .activeBusinessId(scope.getActiveBusinessId())
                 .unrestricted(scope.isUnrestricted())
                 .build();
+        
+        log.trace("[6-MeContextController] RETURN: Success");
         return APIResponse.success(body, "Current user context");
     }
 }
