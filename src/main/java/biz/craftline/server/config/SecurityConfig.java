@@ -68,6 +68,7 @@ public class SecurityConfig {
                                     "/api/auth/forgot-password",
                                     "/api/auth/reset-password"
                             ).permitAll()
+                            //.requestMatchers("/api/business").permitAll()
                             .requestMatchers("/api/auth/refresh").permitAll()
                             .requestMatchers("/api/payments/webhook/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/payment/callback").permitAll()

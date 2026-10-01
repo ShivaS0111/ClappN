@@ -157,6 +157,15 @@ public class EmployeeController {
         return APIResponse.ok(EmployeeMapper.toResponse(deactivated));
     }
 
+    @GetMapping("/{id}/history")
+    @RequirePermission("user.read")
+    public ResponseEntity<APIResponse<biz.craftline.server.feature.membership.api.dto.MembershipHistoryResponse>> getEmployeeHistory(
+            @PathVariable Long id) {
+        EmployeeService.EmployeeHistory history = employeeService.getEmployeeHistory(id);
+        return APIResponse.ok(biz.craftline.server.feature.membership.api.mapper.MembershipMapper.toHistoryResponse(
+                history.membershipId(), history.statusHistory(), history.roleAssignmentHistory()));
+    }
+
     @DeleteMapping("/{id}")
     @RequirePermission("user.delete")
     public ResponseEntity<APIResponse<EmployeeResponse>> deleteEmployee(@PathVariable Long id) {

@@ -5,12 +5,16 @@ import biz.craftline.server.feature.businessstore.infra.entity.StoreEntity;
 import biz.craftline.server.feature.businessstore.infra.repository.StoreRepository;
 import biz.craftline.server.feature.employeemanagement.api.mapper.EmployeeMapper;
 import biz.craftline.server.feature.employeemanagement.domain.model.Employee;
+import biz.craftline.server.feature.membership.domain.service.MembershipHistoryService;
 import biz.craftline.server.feature.membership.infra.entity.EmployeeProfileEntity;
 import biz.craftline.server.feature.membership.infra.entity.MembershipEntity;
+import biz.craftline.server.feature.membership.infra.entity.MembershipRoleAssignmentHistoryEntity;
+import biz.craftline.server.feature.membership.infra.entity.MembershipStatusHistoryEntity;
 import biz.craftline.server.feature.membership.infra.repository.MembershipRepository;
 import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
 import biz.craftline.server.feature.usermanagement.infra.repository.RoleRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,7 @@ import java.util.stream.Collectors;
  * Employee API facade over Membership (tenancy/roles/scopes) + EmployeeProfile (HR).
  * Response id = membership id.
  */
+@Slf4j
 @Service
 public class EmployeeService {
 
@@ -41,6 +46,9 @@ public class EmployeeService {
 
     @Autowired
     private SecurityContextService securityContextService;
+
+    @Autowired
+    private MembershipHistoryService membershipHistoryService;
 
     @Transactional(readOnly = true)
     public List<Employee> getAllEmployees() {
@@ -102,22 +110,29 @@ public class EmployeeService {
 
     @Transactional
     public Employee createEmployee(Employee employee) {
+        return createEmployee(employee, true);
+
+    }
+
+    @Transactional
+    public Employee createEmployee(Employee employee, boolean isCheckForAccess) {
         if (employee == null) {
             throw new IllegalArgumentException("Employee request is required");
         }
         Long businessId = resolveBusinessId(employee);
+        employee.setBusinessId(businessId);
         if (businessId == null) {
             throw new IllegalArgumentException("businessId or storeId is required");
         }
         if (employee.getUserId() == null) {
             throw new IllegalArgumentException("userId is required");
         }
-
-        securityContextService.validateBusinessAccess(businessId);
-        if (employee.getStoreId() != null) {
-            securityContextService.validateStoreAccess(employee.getStoreId());
+        if (isCheckForAccess) {
+            securityContextService.validateBusinessAccess(businessId);
+            if (employee.getStoreId() != null) {
+                securityContextService.validateStoreAccess(employee.getStoreId());
+            }
         }
-
         MembershipEntity membership = membershipRepository
                 .findByUserIdAndBusinessId(employee.getUserId(), businessId)
                 .orElseGet(() -> MembershipEntity.builder()
@@ -127,6 +142,11 @@ public class EmployeeService {
                         .roles(new HashSet<>())
                         .storeScopes(new HashSet<>())
                         .build());
+
+        // Brand-new membership: previous state is null so history reflects the initial grant
+        // instead of a no-op ACTIVE->ACTIVE entry.
+        boolean isNewMembership = membership.getId() == null;
+        String previousStatus = isNewMembership ? null : membership.getStatus();
 
         if (employee.getStatus() != null && !employee.getStatus().isBlank()) {
             membership.setStatus(employee.getStatus());
@@ -139,7 +159,11 @@ public class EmployeeService {
         applyProfile(membership, employee);
 
         MembershipEntity saved = membershipRepository.save(membership);
+        recordHistory(saved, previousStatus);
         return EmployeeMapper.fromMembership(saved);
+    }
+
+    private void validateCreateEmployeeRequest(Employee employee) {
     }
 
     @Transactional
@@ -147,6 +171,8 @@ public class EmployeeService {
         MembershipEntity membership = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Employee (membership) not found: " + id));
         assertCanAccessMembership(membership);
+
+        String previousStatus = membership.getStatus();
 
         if (updates.getBusinessId() != null
                 && !Objects.equals(updates.getBusinessId(), membership.getBusinessId())) {
@@ -165,7 +191,9 @@ public class EmployeeService {
         }
         applyProfile(membership, updates);
 
-        return EmployeeMapper.fromMembership(membershipRepository.save(membership));
+        MembershipEntity saved = membershipRepository.save(membership);
+        recordHistory(saved, previousStatus);
+        return EmployeeMapper.fromMembership(saved);
     }
 
     @Transactional
@@ -178,8 +206,41 @@ public class EmployeeService {
         MembershipEntity membership = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Employee (membership) not found: " + id));
         assertCanAccessMembership(membership);
+        String previousStatus = membership.getStatus();
         membership.setStatus(MembershipEntity.STATUS_INACTIVE);
-        return EmployeeMapper.fromMembership(membershipRepository.save(membership));
+        MembershipEntity saved = membershipRepository.save(membership);
+        membershipHistoryService.recordStatusChange(saved.getId(), previousStatus, saved.getStatus());
+        return EmployeeMapper.fromMembership(saved);
+    }
+
+    /**
+     * Full change history (status + role-at-scope assignments) for an employee's membership.
+     * Starting/leave dates still come from employee_profile; "start/end" of an employment
+     * period can be derived from the ACTIVE/INACTIVE transitions in status history.
+     */
+    @Transactional(readOnly = true)
+    public EmployeeHistory getEmployeeHistory(Long id) {
+        MembershipEntity membership = membershipRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Employee (membership) not found: " + id));
+        assertCanAccessMembership(membership);
+        return new EmployeeHistory(
+                id,
+                membershipHistoryService.getStatusHistory(id),
+                membershipHistoryService.getRoleAssignmentHistory(id));
+    }
+
+    private void recordHistory(MembershipEntity saved, String previousStatus) {
+        membershipHistoryService.recordStatusChange(saved.getId(), previousStatus, saved.getStatus());
+        membershipHistoryService.recordRoleAssignmentChanges(
+                saved.getId(), saved.getUserId(), saved.getBusinessId(),
+                saved.getRoles(), saved.getStoreScopes());
+    }
+
+    /** Simple aggregate holder for employee/membership change history. */
+    public record EmployeeHistory(
+            Long membershipId,
+            List<MembershipStatusHistoryEntity> statusHistory,
+            List<MembershipRoleAssignmentHistoryEntity> roleAssignmentHistory) {
     }
 
     private void assertCanAccessMembership(MembershipEntity m) {

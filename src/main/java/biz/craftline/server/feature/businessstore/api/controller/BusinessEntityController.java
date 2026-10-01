@@ -95,7 +95,7 @@ public class BusinessEntityController {
     @Operation(summary = "Add new business", description = "Creates a new business.")
     @ApiResponse(responseCode = "200", description = "Business created successfully.")
     @PostMapping
-    @RequirePermission("business.create")
+    //@RequirePermission("business.create")
     @Transactional
     public ResponseEntity<APIResponse<BusinessDTO>> addBusiness(
             @Valid @RequestBody AddNewBusinessRequest request) {

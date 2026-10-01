@@ -5,6 +5,7 @@ import biz.craftline.server.feature.businessstore.infra.entity.BusinessEntity;
 import biz.craftline.server.feature.businessstore.infra.entity.StoreEntity;
 import biz.craftline.server.feature.businessstore.infra.repository.StoreRepository;
 import biz.craftline.server.feature.employeemanagement.domain.model.Employee;
+import biz.craftline.server.feature.membership.domain.service.MembershipHistoryService;
 import biz.craftline.server.feature.membership.infra.entity.MembershipEntity;
 import biz.craftline.server.feature.membership.infra.repository.MembershipRepository;
 import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
@@ -34,6 +35,7 @@ class EmployeeServiceTest {
     @Mock private RoleRepository roleRepository;
     @Mock private StoreRepository storeRepository;
     @Mock private SecurityContextService securityContextService;
+    @Mock private MembershipHistoryService membershipHistoryService;
 
     @InjectMocks
     private EmployeeService employeeService;

@@ -104,4 +104,17 @@ public class MembershipController {
             return APIResponse.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/{id}/history")
+    @RequirePermission("user.read")
+    public ResponseEntity<APIResponse<biz.craftline.server.feature.membership.api.dto.MembershipHistoryResponse>> getHistory(
+            @PathVariable Long id) {
+        try {
+            MembershipService.MembershipHistory history = membershipService.getHistory(id);
+            return APIResponse.ok(MembershipMapper.toHistoryResponse(
+                    history.membershipId(), history.statusHistory(), history.roleAssignmentHistory()));
+        } catch (EntityNotFoundException e) {
+            return APIResponse.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }

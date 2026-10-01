@@ -125,9 +125,11 @@ public class UserScopeResolver {
                 if (!scopes.isEmpty()) {
                     storeIds.addAll(scopes);
                 } else if (businessLevel) {
-                    storeRepository.findByBusinessId(m.getBusinessId()).stream()
-                            .map(StoreEntity::getId)
-                            .forEach(storeIds::add);
+                    storeIds.addAll(
+                            storeRepository.findByBusinessId(m.getBusinessId()).stream()
+                                    .map(StoreEntity::getId)
+                                    .toList()
+                    );
                 }
             }
             accessibleStoreIds = storeIds.stream().distinct().toList();

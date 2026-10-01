@@ -30,6 +30,7 @@ class MembershipServiceTest {
     @Mock MembershipRepository membershipRepository;
     @Mock RoleRepository roleRepository;
     @Mock SecurityContextService securityContextService;
+    @Mock MembershipHistoryService membershipHistoryService;
 
     @InjectMocks MembershipService membershipService;
 

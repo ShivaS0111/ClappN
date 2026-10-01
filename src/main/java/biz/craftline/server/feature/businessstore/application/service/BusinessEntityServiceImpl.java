@@ -14,6 +14,8 @@ import biz.craftline.server.feature.usermanagement.domain.service.UserService;
 import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
 import biz.craftline.server.feature.usermanagement.infra.repository.RoleRepository;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 @Repository
 public class BusinessEntityServiceImpl implements BusinessEntityService {
 
+    private static final Logger log = LoggerFactory.getLogger(BusinessEntityServiceImpl.class);
     @Autowired
     BusinessEntityMapper mapper;
 
@@ -98,21 +101,25 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
         Business savedBusiness = save(business);
 
         // Check if user already exists
-        userService.getUserByEmail(ownerEmail).ifPresent(u -> {
-            throw new RuntimeException("Owner email already exists: " + ownerEmail);
-        });
+        Optional<User> existingUser = userService.getUserByEmail(ownerEmail);
 
-        User ownerUser = new User();
-        ownerUser.setFullName(ownerName);
-        ownerUser.setEmail(ownerEmail);
-        ownerUser.setPassword(ownerPassword);
-        ownerUser.setEnabled(true);
-        // Owner should be verified by server-side business creation flow
-        ownerUser.setVerified(1);
-        ownerUser.setAccountNonExpired(true);
-        ownerUser.setAccountNonLocked(true);
-        ownerUser.setCredentialsNonExpired(true);
-        User savedOwner = userService.createUserWithHashedPassword(ownerUser);
+        User savedOwner;
+        if(existingUser.isPresent()) {
+            log.info("Owner email already exists: {}. Assigning BUSINESS_OWNER role and creating employee record.", ownerEmail);
+            savedOwner = existingUser.get();
+        }else {
+            User ownerUser = new User();
+            ownerUser.setFullName(ownerName);
+            ownerUser.setEmail(ownerEmail);
+            ownerUser.setPassword(ownerPassword);
+            ownerUser.setEnabled(true);
+            // Owner should be verified by server-side business creation flow
+            ownerUser.setVerified(1);
+            ownerUser.setAccountNonExpired(true);
+            ownerUser.setAccountNonLocked(true);
+            ownerUser.setCredentialsNonExpired(true);
+            savedOwner = userService.createUserWithHashedPassword(ownerUser);
+        }
 
         // Assign BUSINESS_OWNER role
         Long ownerRoleId = roleService.getRoleByName("BUSINESS_OWNER")
@@ -128,7 +135,7 @@ public class BusinessEntityServiceImpl implements BusinessEntityService {
         ownerEmployee.setEmail(ownerEmail);
         ownerEmployee.setPhone(ownerPhone);
         ownerEmployee.setEmployeeCode("OWNER-" + savedBusiness.getId());
-        employeeService.createEmployee(ownerEmployee);
+        employeeService.createEmployee(ownerEmployee,false);
 
         return savedBusiness;
     }

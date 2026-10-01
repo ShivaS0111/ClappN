@@ -73,7 +73,7 @@ public class BusinessEntityMapper {
                 .latitude(business.getLatitude())
                 .longitude(business.getLongitude())
                 .bannerUrl(business.getBannerUrl())
-                .galleryUrls(business.getGalleryUrls())
+                .galleryUrls(business.getGalleryUrls()!=null  && !business.getGalleryUrls().trim().isEmpty() ? business.getGalleryUrls() : "[]")
                 .createdBy(business.getCreatedBy())
                 .build();
     }

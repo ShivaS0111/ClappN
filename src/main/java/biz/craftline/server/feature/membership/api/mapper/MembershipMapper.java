@@ -1,12 +1,16 @@
 package biz.craftline.server.feature.membership.api.mapper;
 
+import biz.craftline.server.feature.membership.api.dto.MembershipHistoryResponse;
 import biz.craftline.server.feature.membership.api.dto.MembershipRequest;
 import biz.craftline.server.feature.membership.api.dto.MembershipResponse;
 import biz.craftline.server.feature.membership.domain.model.Membership;
 import biz.craftline.server.feature.membership.infra.entity.MembershipEntity;
+import biz.craftline.server.feature.membership.infra.entity.MembershipRoleAssignmentHistoryEntity;
+import biz.craftline.server.feature.membership.infra.entity.MembershipStatusHistoryEntity;
 import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public final class MembershipMapper {
@@ -53,5 +57,23 @@ public final class MembershipMapper {
             m.setStoreIds(new HashSet<>(req.getStoreIds()));
         }
         return m;
+    }
+
+    public static MembershipHistoryResponse toHistoryResponse(
+            Long membershipId,
+            List<MembershipStatusHistoryEntity> statusHistory,
+            List<MembershipRoleAssignmentHistoryEntity> roleAssignmentHistory) {
+        MembershipHistoryResponse response = new MembershipHistoryResponse();
+        response.setMembershipId(membershipId);
+        response.setStatusHistory(statusHistory.stream()
+                .map(h -> new MembershipHistoryResponse.StatusChange(
+                        h.getOldStatus(), h.getNewStatus(), h.getChangedByUserId(), h.getChangedAt()))
+                .collect(Collectors.toList()));
+        response.setRoleAssignmentHistory(roleAssignmentHistory.stream()
+                .map(h -> new MembershipHistoryResponse.RoleAssignmentChange(
+                        h.getScope(), h.getStoreId(), h.getRoleId(), h.getRoleName(),
+                        h.getValidFrom(), h.getValidTo(), h.getChangedByUserId(), h.getChangedAt()))
+                .collect(Collectors.toList()));
+        return response;
     }
 }

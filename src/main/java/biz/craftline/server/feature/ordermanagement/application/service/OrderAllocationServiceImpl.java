@@ -26,7 +26,12 @@ public class OrderAllocationServiceImpl {
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private LocalDate parseOrMax(String date) {
-        return date == null ? LocalDate.MAX : LocalDate.parse(date, DATE_FORMATTER);
+        if (date == null || date.isBlank()) {
+            return LocalDate.MAX;
+        }
+        // Stored values may carry a time part (yyyy-MM-ddTHH:mm:ss)
+        String day = date.length() > 10 ? date.substring(0, 10) : date;
+        return LocalDate.parse(day, DATE_FORMATTER);
     }
 
     /**
@@ -34,7 +39,8 @@ public class OrderAllocationServiceImpl {
      */
     @Transactional
     public List<OrderAllocatedLot> allocate(Long storeId, Long productId, int quantity, Long orderItemId) {
-        List<ProductLot> lots = productLotService.findByStoreIdAndProductIdAndActiveTrue(storeId, productId);
+        List<ProductLot> lots = new ArrayList<>(
+                productLotService.findByStoreIdAndProductIdAndActiveTrue(storeId, productId));
 
         // sort by expiry (nulls last)
         lots.sort(Comparator.comparing(

@@ -4,6 +4,8 @@ import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.membership.api.mapper.MembershipMapper;
 import biz.craftline.server.feature.membership.domain.model.Membership;
 import biz.craftline.server.feature.membership.infra.entity.MembershipEntity;
+import biz.craftline.server.feature.membership.infra.entity.MembershipRoleAssignmentHistoryEntity;
+import biz.craftline.server.feature.membership.infra.entity.MembershipStatusHistoryEntity;
 import biz.craftline.server.feature.membership.infra.repository.MembershipRepository;
 import biz.craftline.server.feature.usermanagement.infra.entity.RoleEntity;
 import biz.craftline.server.feature.usermanagement.infra.repository.RoleRepository;
@@ -30,6 +32,7 @@ public class MembershipService {
     private final MembershipRepository membershipRepository;
     private final RoleRepository roleRepository;
     private final SecurityContextService securityContextService;
+    private final MembershipHistoryService membershipHistoryService;
 
     @Transactional(readOnly = true)
     public List<Membership> listAccessible() {
@@ -110,7 +113,11 @@ public class MembershipService {
         applyRoles(entity, request.getRoleIds());
         applyStoreScopes(entity, request.getStoreIds());
 
-        return MembershipMapper.fromEntity(membershipRepository.save(entity));
+        MembershipEntity saved = membershipRepository.save(entity);
+        // Brand-new membership: previous status is null so history reflects the initial grant
+        // instead of a no-op ACTIVE->ACTIVE entry.
+        recordHistory(saved, null);
+        return MembershipMapper.fromEntity(saved);
     }
 
     @Transactional
@@ -118,6 +125,8 @@ public class MembershipService {
         MembershipEntity entity = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Membership not found: " + id));
         assertCanAccess(entity);
+
+        String previousStatus = entity.getStatus();
 
         if (updates.getBusinessId() != null
                 && !Objects.equals(updates.getBusinessId(), entity.getBusinessId())) {
@@ -137,7 +146,9 @@ public class MembershipService {
             validateStoreScopes(updates.getStoreIds());
             applyStoreScopes(entity, updates.getStoreIds());
         }
-        return MembershipMapper.fromEntity(membershipRepository.save(entity));
+        MembershipEntity saved = membershipRepository.save(entity);
+        recordHistory(saved, previousStatus);
+        return MembershipMapper.fromEntity(saved);
     }
 
     @Transactional
@@ -145,8 +156,11 @@ public class MembershipService {
         MembershipEntity entity = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Membership not found: " + id));
         assertCanAccess(entity);
+        String previousStatus = entity.getStatus();
         entity.setStatus(MembershipEntity.STATUS_INACTIVE);
-        return MembershipMapper.fromEntity(membershipRepository.save(entity));
+        MembershipEntity saved = membershipRepository.save(entity);
+        membershipHistoryService.recordStatusChange(saved.getId(), previousStatus, saved.getStatus());
+        return MembershipMapper.fromEntity(saved);
     }
 
     @Transactional
@@ -154,8 +168,37 @@ public class MembershipService {
         MembershipEntity entity = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Membership not found: " + id));
         assertCanAccess(entity);
+        String previousStatus = entity.getStatus();
         entity.setStatus(MembershipEntity.STATUS_ACTIVE);
-        return MembershipMapper.fromEntity(membershipRepository.save(entity));
+        MembershipEntity saved = membershipRepository.save(entity);
+        membershipHistoryService.recordStatusChange(saved.getId(), previousStatus, saved.getStatus());
+        return MembershipMapper.fromEntity(saved);
+    }
+
+    /** Full change history (status + role-at-scope assignments) for a membership. */
+    @Transactional(readOnly = true)
+    public MembershipHistory getHistory(Long id) {
+        MembershipEntity entity = membershipRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Membership not found: " + id));
+        assertCanAccess(entity);
+        return new MembershipHistory(
+                id,
+                membershipHistoryService.getStatusHistory(id),
+                membershipHistoryService.getRoleAssignmentHistory(id));
+    }
+
+    private void recordHistory(MembershipEntity saved, String previousStatus) {
+        membershipHistoryService.recordStatusChange(saved.getId(), previousStatus, saved.getStatus());
+        membershipHistoryService.recordRoleAssignmentChanges(
+                saved.getId(), saved.getUserId(), saved.getBusinessId(),
+                saved.getRoles(), saved.getStoreScopes());
+    }
+
+    /** Simple aggregate holder for membership change history. */
+    public record MembershipHistory(
+            Long membershipId,
+            List<MembershipStatusHistoryEntity> statusHistory,
+            List<MembershipRoleAssignmentHistoryEntity> roleAssignmentHistory) {
     }
 
     private void applyRoles(MembershipEntity entity, Set<Long> roleIds) {

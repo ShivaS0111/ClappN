@@ -223,7 +223,7 @@ public class StoreController {
     public ResponseEntity<APIResponse<StoreDTO>> addStore(@RequestBody AddNewStoreRequest request) {
         Business business = null;
         if (request.getBusinessId() != null) {
-            business = businessService.findById(request.getBusinessId()).orElse(null);
+            business = businessService.findById(request.getBusinessId()).orElseThrow(() -> new RuntimeException("Business not found"));
         }
         Store store = mapper.toDomain(request);
         store.setBusiness(business);

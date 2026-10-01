@@ -119,9 +119,7 @@ public class StoreServiceImpl implements StoreService {
         StoreEntity entity = storeEntityMapper.toEntity(domain);
         if (domain.getBusiness() != null) {
             Optional<BusinessEntity> businessEntity = businessRepository.findById(domain.getBusiness().getId());
-            if (businessEntity.isPresent()) {
-                entity.setBusiness(businessEntity.get());
-            }
+            businessEntity.ifPresent(entity::setBusiness);
         }
         entity.setCreatedBy(loggedUserId);
         StoreEntity storeEntity = storeRepository.save(entity);
