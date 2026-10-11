@@ -3,6 +3,7 @@ package biz.craftline.server.feature.membership.domain.service;
 import biz.craftline.server.config.security.SecurityContextService;
 import biz.craftline.server.feature.membership.api.mapper.MembershipMapper;
 import biz.craftline.server.feature.membership.domain.model.Membership;
+import biz.craftline.server.feature.membership.infra.entity.EmployeeProfileHistoryEntity;
 import biz.craftline.server.feature.membership.infra.entity.MembershipEntity;
 import biz.craftline.server.feature.membership.infra.entity.MembershipRoleAssignmentHistoryEntity;
 import biz.craftline.server.feature.membership.infra.entity.MembershipStatusHistoryEntity;
@@ -153,38 +154,60 @@ public class MembershipService {
 
     @Transactional
     public Membership deactivate(Long id) {
+        return deactivate(id, null);
+    }
+
+    @Transactional
+    public Membership deactivate(Long id, String reason) {
         MembershipEntity entity = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Membership not found: " + id));
         assertCanAccess(entity);
         String previousStatus = entity.getStatus();
         entity.setStatus(MembershipEntity.STATUS_INACTIVE);
         MembershipEntity saved = membershipRepository.save(entity);
-        membershipHistoryService.recordStatusChange(saved.getId(), previousStatus, saved.getStatus());
+        membershipHistoryService.recordStatusChange(
+                saved.getId(), previousStatus, saved.getStatus(), reason);
+        // Close access periods in history; current role rows on membership stay for rehire.
+        membershipHistoryService.closeOpenRoleAssignments(saved.getId());
         return MembershipMapper.fromEntity(saved);
     }
 
     @Transactional
     public Membership activate(Long id) {
+        return activate(id, null);
+    }
+
+    @Transactional
+    public Membership activate(Long id, String reason) {
         MembershipEntity entity = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Membership not found: " + id));
         assertCanAccess(entity);
         String previousStatus = entity.getStatus();
         entity.setStatus(MembershipEntity.STATUS_ACTIVE);
         MembershipEntity saved = membershipRepository.save(entity);
-        membershipHistoryService.recordStatusChange(saved.getId(), previousStatus, saved.getStatus());
+        membershipHistoryService.recordStatusChange(
+                saved.getId(), previousStatus, saved.getStatus(), reason);
+        // Re-open role-assignment history from current membership roles/scopes.
+        membershipHistoryService.recordRoleAssignmentChanges(
+                saved.getId(), saved.getUserId(), saved.getBusinessId(),
+                saved.getRoles(), saved.getStoreScopes());
         return MembershipMapper.fromEntity(saved);
     }
 
-    /** Full change history (status + role-at-scope assignments) for a membership. */
+    /** Full change history (status + roles + profile + derived employment periods). */
     @Transactional(readOnly = true)
     public MembershipHistory getHistory(Long id) {
         MembershipEntity entity = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Membership not found: " + id));
         assertCanAccess(entity);
+        List<MembershipStatusHistoryEntity> statusHistory =
+                membershipHistoryService.getStatusHistory(id);
         return new MembershipHistory(
                 id,
-                membershipHistoryService.getStatusHistory(id),
-                membershipHistoryService.getRoleAssignmentHistory(id));
+                statusHistory,
+                membershipHistoryService.getRoleAssignmentHistory(id),
+                membershipHistoryService.getProfileHistory(id),
+                MembershipHistoryService.deriveEmploymentPeriods(statusHistory));
     }
 
     private void recordHistory(MembershipEntity saved, String previousStatus) {
@@ -194,11 +217,13 @@ public class MembershipService {
                 saved.getRoles(), saved.getStoreScopes());
     }
 
-    /** Simple aggregate holder for membership change history. */
+    /** Aggregate holder for membership/employee change history. */
     public record MembershipHistory(
             Long membershipId,
             List<MembershipStatusHistoryEntity> statusHistory,
-            List<MembershipRoleAssignmentHistoryEntity> roleAssignmentHistory) {
+            List<MembershipRoleAssignmentHistoryEntity> roleAssignmentHistory,
+            List<EmployeeProfileHistoryEntity> profileHistory,
+            List<MembershipHistoryService.EmploymentPeriod> employmentPeriods) {
     }
 
     private void applyRoles(MembershipEntity entity, Set<Long> roleIds) {

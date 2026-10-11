@@ -36,6 +36,10 @@ public class MembershipStatusHistoryEntity {
     @Column(name = "changed_by_user_id")
     private Long changedByUserId;
 
+    /** Optional human-readable reason (exit, rehire, transfer, etc.). */
+    @Column(length = 512)
+    private String reason;
+
     @CreationTimestamp
     @Column(name = "changed_at", updatable = false)
     private Timestamp changedAt;

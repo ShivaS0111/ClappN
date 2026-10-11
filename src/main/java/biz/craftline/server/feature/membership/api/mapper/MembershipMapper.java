@@ -4,6 +4,8 @@ import biz.craftline.server.feature.membership.api.dto.MembershipHistoryResponse
 import biz.craftline.server.feature.membership.api.dto.MembershipRequest;
 import biz.craftline.server.feature.membership.api.dto.MembershipResponse;
 import biz.craftline.server.feature.membership.domain.model.Membership;
+import biz.craftline.server.feature.membership.domain.service.MembershipHistoryService;
+import biz.craftline.server.feature.membership.infra.entity.EmployeeProfileHistoryEntity;
 import biz.craftline.server.feature.membership.infra.entity.MembershipEntity;
 import biz.craftline.server.feature.membership.infra.entity.MembershipRoleAssignmentHistoryEntity;
 import biz.craftline.server.feature.membership.infra.entity.MembershipStatusHistoryEntity;
@@ -63,16 +65,36 @@ public final class MembershipMapper {
             Long membershipId,
             List<MembershipStatusHistoryEntity> statusHistory,
             List<MembershipRoleAssignmentHistoryEntity> roleAssignmentHistory) {
+        return toHistoryResponse(membershipId, statusHistory, roleAssignmentHistory, List.of(),
+                MembershipHistoryService.deriveEmploymentPeriods(statusHistory));
+    }
+
+    public static MembershipHistoryResponse toHistoryResponse(
+            Long membershipId,
+            List<MembershipStatusHistoryEntity> statusHistory,
+            List<MembershipRoleAssignmentHistoryEntity> roleAssignmentHistory,
+            List<EmployeeProfileHistoryEntity> profileHistory,
+            List<MembershipHistoryService.EmploymentPeriod> employmentPeriods) {
         MembershipHistoryResponse response = new MembershipHistoryResponse();
         response.setMembershipId(membershipId);
-        response.setStatusHistory(statusHistory.stream()
+        response.setStatusHistory(statusHistory == null ? List.of() : statusHistory.stream()
                 .map(h -> new MembershipHistoryResponse.StatusChange(
-                        h.getOldStatus(), h.getNewStatus(), h.getChangedByUserId(), h.getChangedAt()))
+                        h.getOldStatus(), h.getNewStatus(), h.getChangedByUserId(),
+                        h.getReason(), h.getChangedAt()))
                 .collect(Collectors.toList()));
-        response.setRoleAssignmentHistory(roleAssignmentHistory.stream()
+        response.setRoleAssignmentHistory(roleAssignmentHistory == null ? List.of() : roleAssignmentHistory.stream()
                 .map(h -> new MembershipHistoryResponse.RoleAssignmentChange(
                         h.getScope(), h.getStoreId(), h.getRoleId(), h.getRoleName(),
                         h.getValidFrom(), h.getValidTo(), h.getChangedByUserId(), h.getChangedAt()))
+                .collect(Collectors.toList()));
+        response.setProfileHistory(profileHistory == null ? List.of() : profileHistory.stream()
+                .map(h -> new MembershipHistoryResponse.ProfileChange(
+                        h.getFieldName(), h.getOldValue(), h.getNewValue(),
+                        h.getChangedByUserId(), h.getChangedAt()))
+                .collect(Collectors.toList()));
+        response.setEmploymentPeriods(employmentPeriods == null ? List.of() : employmentPeriods.stream()
+                .map(p -> new MembershipHistoryResponse.EmploymentPeriod(
+                        p.startedAt(), p.endedAt(), p.startStatus(), p.endStatus()))
                 .collect(Collectors.toList()));
         return response;
     }

@@ -7,6 +7,7 @@ import biz.craftline.server.feature.employeemanagement.api.mapper.EmployeeMapper
 import biz.craftline.server.feature.employeemanagement.domain.model.Employee;
 import biz.craftline.server.feature.membership.domain.service.MembershipHistoryService;
 import biz.craftline.server.feature.membership.infra.entity.EmployeeProfileEntity;
+import biz.craftline.server.feature.membership.infra.entity.EmployeeProfileHistoryEntity;
 import biz.craftline.server.feature.membership.infra.entity.MembershipEntity;
 import biz.craftline.server.feature.membership.infra.entity.MembershipRoleAssignmentHistoryEntity;
 import biz.craftline.server.feature.membership.infra.entity.MembershipStatusHistoryEntity;
@@ -20,8 +21,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -147,11 +150,26 @@ public class EmployeeService {
         // instead of a no-op ACTIVE->ACTIVE entry.
         boolean isNewMembership = membership.getId() == null;
         String previousStatus = isNewMembership ? null : membership.getStatus();
+        Long previousBusinessId = membership.getBusinessId();
+        Map<String, String> beforeProfile = MembershipHistoryService.withBusinessId(
+                MembershipHistoryService.snapshotProfile(membership.getProfile()), previousBusinessId);
 
         if (employee.getStatus() != null && !employee.getStatus().isBlank()) {
             membership.setStatus(employee.getStatus());
-        } else if (membership.getStatus() == null) {
+        } else if (membership.getStatus() == null
+                || MembershipEntity.STATUS_INACTIVE.equalsIgnoreCase(membership.getStatus())
+                || MembershipEntity.STATUS_SUSPENDED.equalsIgnoreCase(membership.getStatus())) {
+            // New hire or rehire via create: default to ACTIVE (do not leave prior INACTIVE stuck).
             membership.setStatus(MembershipEntity.STATUS_ACTIVE);
+        }
+
+        boolean rehiring = !isNewMembership
+                && MembershipEntity.STATUS_ACTIVE.equalsIgnoreCase(membership.getStatus())
+                && previousStatus != null
+                && !MembershipEntity.STATUS_ACTIVE.equalsIgnoreCase(previousStatus);
+        if (rehiring && membership.getProfile() != null
+                && (employee.getLeaveDate() == null || employee.getLeaveDate().isBlank())) {
+            membership.getProfile().setLeaveDate(null);
         }
 
         applyRole(membership, employee.getRoleId());
@@ -159,7 +177,11 @@ public class EmployeeService {
         applyProfile(membership, employee);
 
         MembershipEntity saved = membershipRepository.save(membership);
-        recordHistory(saved, previousStatus);
+        recordHistory(saved, previousStatus, beforeProfile, previousBusinessId);
+        if (MembershipEntity.STATUS_INACTIVE.equalsIgnoreCase(saved.getStatus())
+                || MembershipEntity.STATUS_SUSPENDED.equalsIgnoreCase(saved.getStatus())) {
+            membershipHistoryService.closeOpenRoleAssignments(saved.getId());
+        }
         return EmployeeMapper.fromMembership(saved);
     }
 
@@ -173,6 +195,9 @@ public class EmployeeService {
         assertCanAccessMembership(membership);
 
         String previousStatus = membership.getStatus();
+        Long previousBusinessId = membership.getBusinessId();
+        Map<String, String> beforeProfile = MembershipHistoryService.withBusinessId(
+                MembershipHistoryService.snapshotProfile(membership.getProfile()), previousBusinessId);
 
         if (updates.getBusinessId() != null
                 && !Objects.equals(updates.getBusinessId(), membership.getBusinessId())) {
@@ -192,55 +217,140 @@ public class EmployeeService {
         applyProfile(membership, updates);
 
         MembershipEntity saved = membershipRepository.save(membership);
-        recordHistory(saved, previousStatus);
+        recordHistory(saved, previousStatus, beforeProfile, previousBusinessId);
+
+        // Exit via update: close role-assignment periods in history (roles retained on membership).
+        if ((MembershipEntity.STATUS_INACTIVE.equalsIgnoreCase(saved.getStatus())
+                || MembershipEntity.STATUS_SUSPENDED.equalsIgnoreCase(saved.getStatus()))
+                && previousStatus != null
+                && !previousStatus.equalsIgnoreCase(saved.getStatus())) {
+            membershipHistoryService.closeOpenRoleAssignments(saved.getId());
+        }
         return EmployeeMapper.fromMembership(saved);
     }
 
     @Transactional
     public void deleteEmployee(Long id) {
-        deactivateEmployee(id);
+        deactivateEmployee(id, null);
     }
 
     @Transactional
     public Employee deactivateEmployee(Long id) {
+        return deactivateEmployee(id, null);
+    }
+
+    @Transactional
+    public Employee deactivateEmployee(Long id, String reason) {
         MembershipEntity membership = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Employee (membership) not found: " + id));
         assertCanAccessMembership(membership);
         String previousStatus = membership.getStatus();
+        Long previousBusinessId = membership.getBusinessId();
+        Map<String, String> beforeProfile = MembershipHistoryService.withBusinessId(
+                MembershipHistoryService.snapshotProfile(membership.getProfile()), previousBusinessId);
+
         membership.setStatus(MembershipEntity.STATUS_INACTIVE);
+        if (membership.getProfile() == null) {
+            membership.setProfile(EmployeeProfileEntity.builder()
+                    .userId(membership.getUserId())
+                    .membership(membership)
+                    .build());
+        }
+        if (membership.getProfile().getLeaveDate() == null
+                || membership.getProfile().getLeaveDate().isBlank()) {
+            membership.getProfile().setLeaveDate(LocalDate.now().toString());
+        }
+
         MembershipEntity saved = membershipRepository.save(membership);
-        membershipHistoryService.recordStatusChange(saved.getId(), previousStatus, saved.getStatus());
+        membershipHistoryService.recordStatusChange(
+                saved.getId(), previousStatus, saved.getStatus(), reason);
+        membershipHistoryService.closeOpenRoleAssignments(saved.getId());
+        membershipHistoryService.recordProfileFieldChanges(
+                saved.getId(),
+                beforeProfile,
+                MembershipHistoryService.withBusinessId(
+                        MembershipHistoryService.snapshotProfile(saved.getProfile()),
+                        saved.getBusinessId()));
+        return EmployeeMapper.fromMembership(saved);
+    }
+
+    @Transactional
+    public Employee activateEmployee(Long id) {
+        return activateEmployee(id, null);
+    }
+
+    @Transactional
+    public Employee activateEmployee(Long id, String reason) {
+        MembershipEntity membership = membershipRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Employee (membership) not found: " + id));
+        assertCanAccessMembership(membership);
+        String previousStatus = membership.getStatus();
+        Long previousBusinessId = membership.getBusinessId();
+        Map<String, String> beforeProfile = MembershipHistoryService.withBusinessId(
+                MembershipHistoryService.snapshotProfile(membership.getProfile()), previousBusinessId);
+
+        membership.setStatus(MembershipEntity.STATUS_ACTIVE);
+        if (membership.getProfile() != null) {
+            membership.getProfile().setLeaveDate(null);
+        }
+
+        MembershipEntity saved = membershipRepository.save(membership);
+        membershipHistoryService.recordStatusChange(
+                saved.getId(), previousStatus, saved.getStatus(), reason);
+        membershipHistoryService.recordRoleAssignmentChanges(
+                saved.getId(), saved.getUserId(), saved.getBusinessId(),
+                saved.getRoles(), saved.getStoreScopes());
+        membershipHistoryService.recordProfileFieldChanges(
+                saved.getId(),
+                beforeProfile,
+                MembershipHistoryService.withBusinessId(
+                        MembershipHistoryService.snapshotProfile(saved.getProfile()),
+                        saved.getBusinessId()));
         return EmployeeMapper.fromMembership(saved);
     }
 
     /**
-     * Full change history (status + role-at-scope assignments) for an employee's membership.
-     * Starting/leave dates still come from employee_profile; "start/end" of an employment
-     * period can be derived from the ACTIVE/INACTIVE transitions in status history.
+     * Full change history for an employee's membership: status, roles, profile fields,
+     * and derived employment periods.
      */
     @Transactional(readOnly = true)
     public EmployeeHistory getEmployeeHistory(Long id) {
         MembershipEntity membership = membershipRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Employee (membership) not found: " + id));
         assertCanAccessMembership(membership);
+        List<MembershipStatusHistoryEntity> statusHistory =
+                membershipHistoryService.getStatusHistory(id);
         return new EmployeeHistory(
                 id,
-                membershipHistoryService.getStatusHistory(id),
-                membershipHistoryService.getRoleAssignmentHistory(id));
+                statusHistory,
+                membershipHistoryService.getRoleAssignmentHistory(id),
+                membershipHistoryService.getProfileHistory(id),
+                MembershipHistoryService.deriveEmploymentPeriods(statusHistory));
     }
 
-    private void recordHistory(MembershipEntity saved, String previousStatus) {
+    private void recordHistory(MembershipEntity saved, String previousStatus,
+                               Map<String, String> beforeProfile, Long previousBusinessId) {
         membershipHistoryService.recordStatusChange(saved.getId(), previousStatus, saved.getStatus());
         membershipHistoryService.recordRoleAssignmentChanges(
                 saved.getId(), saved.getUserId(), saved.getBusinessId(),
                 saved.getRoles(), saved.getStoreScopes());
+        membershipHistoryService.recordProfileFieldChanges(
+                saved.getId(),
+                beforeProfile != null
+                        ? beforeProfile
+                        : MembershipHistoryService.withBusinessId(Map.of(), previousBusinessId),
+                MembershipHistoryService.withBusinessId(
+                        MembershipHistoryService.snapshotProfile(saved.getProfile()),
+                        saved.getBusinessId()));
     }
 
-    /** Simple aggregate holder for employee/membership change history. */
+    /** Aggregate holder for employee/membership change history. */
     public record EmployeeHistory(
             Long membershipId,
             List<MembershipStatusHistoryEntity> statusHistory,
-            List<MembershipRoleAssignmentHistoryEntity> roleAssignmentHistory) {
+            List<MembershipRoleAssignmentHistoryEntity> roleAssignmentHistory,
+            List<EmployeeProfileHistoryEntity> profileHistory,
+            List<MembershipHistoryService.EmploymentPeriod> employmentPeriods) {
     }
 
     private void assertCanAccessMembership(MembershipEntity m) {

@@ -87,9 +87,11 @@ public class MembershipController {
 
     @PostMapping("/{id}/deactivate")
     @RequirePermission("user.update")
-    public ResponseEntity<APIResponse<MembershipResponse>> deactivate(@PathVariable Long id) {
+    public ResponseEntity<APIResponse<MembershipResponse>> deactivate(
+            @PathVariable Long id,
+            @RequestParam(required = false) String reason) {
         try {
-            return APIResponse.ok(MembershipMapper.toResponse(membershipService.deactivate(id)));
+            return APIResponse.ok(MembershipMapper.toResponse(membershipService.deactivate(id, reason)));
         } catch (EntityNotFoundException e) {
             return APIResponse.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -97,9 +99,11 @@ public class MembershipController {
 
     @PostMapping("/{id}/activate")
     @RequirePermission("user.update")
-    public ResponseEntity<APIResponse<MembershipResponse>> activate(@PathVariable Long id) {
+    public ResponseEntity<APIResponse<MembershipResponse>> activate(
+            @PathVariable Long id,
+            @RequestParam(required = false) String reason) {
         try {
-            return APIResponse.ok(MembershipMapper.toResponse(membershipService.activate(id)));
+            return APIResponse.ok(MembershipMapper.toResponse(membershipService.activate(id, reason)));
         } catch (EntityNotFoundException e) {
             return APIResponse.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -112,7 +116,11 @@ public class MembershipController {
         try {
             MembershipService.MembershipHistory history = membershipService.getHistory(id);
             return APIResponse.ok(MembershipMapper.toHistoryResponse(
-                    history.membershipId(), history.statusHistory(), history.roleAssignmentHistory()));
+                    history.membershipId(),
+                    history.statusHistory(),
+                    history.roleAssignmentHistory(),
+                    history.profileHistory(),
+                    history.employmentPeriods()));
         } catch (EntityNotFoundException e) {
             return APIResponse.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }

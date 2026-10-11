@@ -152,9 +152,20 @@ public class EmployeeController {
 
     @PostMapping("/{id}/deactivate")
     @RequirePermission("user.update")
-    public ResponseEntity<APIResponse<EmployeeResponse>> deactivateEmployee(@PathVariable Long id) {
-        Employee deactivated = employeeService.deactivateEmployee(id);
+    public ResponseEntity<APIResponse<EmployeeResponse>> deactivateEmployee(
+            @PathVariable Long id,
+            @RequestParam(required = false) String reason) {
+        Employee deactivated = employeeService.deactivateEmployee(id, reason);
         return APIResponse.ok(EmployeeMapper.toResponse(deactivated));
+    }
+
+    @PostMapping("/{id}/activate")
+    @RequirePermission("user.update")
+    public ResponseEntity<APIResponse<EmployeeResponse>> activateEmployee(
+            @PathVariable Long id,
+            @RequestParam(required = false) String reason) {
+        Employee activated = employeeService.activateEmployee(id, reason);
+        return APIResponse.ok(EmployeeMapper.toResponse(activated));
     }
 
     @GetMapping("/{id}/history")
@@ -163,14 +174,20 @@ public class EmployeeController {
             @PathVariable Long id) {
         EmployeeService.EmployeeHistory history = employeeService.getEmployeeHistory(id);
         return APIResponse.ok(biz.craftline.server.feature.membership.api.mapper.MembershipMapper.toHistoryResponse(
-                history.membershipId(), history.statusHistory(), history.roleAssignmentHistory()));
+                history.membershipId(),
+                history.statusHistory(),
+                history.roleAssignmentHistory(),
+                history.profileHistory(),
+                history.employmentPeriods()));
     }
 
     @DeleteMapping("/{id}")
     @RequirePermission("user.delete")
-    public ResponseEntity<APIResponse<EmployeeResponse>> deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<APIResponse<EmployeeResponse>> deleteEmployee(
+            @PathVariable Long id,
+            @RequestParam(required = false) String reason) {
         // Soft-delete: deactivate membership instead of hard delete
-        Employee deactivated = employeeService.deactivateEmployee(id);
+        Employee deactivated = employeeService.deactivateEmployee(id, reason);
         return APIResponse.ok(EmployeeMapper.toResponse(deactivated));
     }
 }

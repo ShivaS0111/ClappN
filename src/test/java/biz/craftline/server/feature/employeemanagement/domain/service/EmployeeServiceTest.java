@@ -199,6 +199,76 @@ class EmployeeServiceTest {
         verify(membershipRepository).save(m);
         assertEquals(MembershipEntity.STATUS_INACTIVE, m.getStatus());
         verify(membershipRepository, never()).delete(any());
+        verify(membershipHistoryService).closeOpenRoleAssignments(1L);
+        assertNotNull(m.getProfile().getLeaveDate());
+    }
+
+    @Test
+    void deactivateEmployee_recordsReasonAndLeaveDate() {
+        MembershipEntity m = membership(1L, 9L, 2L);
+        when(membershipRepository.findById(1L)).thenReturn(Optional.of(m));
+        when(membershipRepository.save(any(MembershipEntity.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        Employee result = employeeService.deactivateEmployee(1L, "contract ended");
+        assertEquals(MembershipEntity.STATUS_INACTIVE, result.getStatus());
+        assertNotNull(result.getLeaveDate());
+        verify(membershipHistoryService).recordStatusChange(1L, MembershipEntity.STATUS_ACTIVE,
+                MembershipEntity.STATUS_INACTIVE, "contract ended");
+        verify(membershipHistoryService).closeOpenRoleAssignments(1L);
+    }
+
+    @Test
+    void activateEmployee_clearsLeaveDateAndReopensRoles() {
+        MembershipEntity m = membership(1L, 9L, 2L);
+        m.setStatus(MembershipEntity.STATUS_INACTIVE);
+        m.setProfile(biz.craftline.server.feature.membership.infra.entity.EmployeeProfileEntity.builder()
+                .userId(9L)
+                .membership(m)
+                .leaveDate("2026-01-01")
+                .build());
+        when(membershipRepository.findById(1L)).thenReturn(Optional.of(m));
+        when(membershipRepository.save(any(MembershipEntity.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        Employee result = employeeService.activateEmployee(1L, "rehire");
+        assertEquals(MembershipEntity.STATUS_ACTIVE, result.getStatus());
+        assertNull(result.getLeaveDate());
+        verify(membershipHistoryService).recordStatusChange(1L, MembershipEntity.STATUS_INACTIVE,
+                MembershipEntity.STATUS_ACTIVE, "rehire");
+        verify(membershipHistoryService).recordRoleAssignmentChanges(eq(1L), eq(9L), eq(2L), any(), any());
+    }
+
+    @Test
+    void createEmployee_existingInactive_reactivatesByDefault() {
+        Employee e = new Employee();
+        e.setUserId(9L);
+        e.setBusinessId(2L);
+        e.setJobTitle("Cashier");
+        MembershipEntity existing = membership(50L, 9L, 2L);
+        existing.setStatus(MembershipEntity.STATUS_INACTIVE);
+        when(membershipRepository.findByUserIdAndBusinessId(9L, 2L)).thenReturn(Optional.of(existing));
+        when(membershipRepository.save(any(MembershipEntity.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        Employee result = employeeService.createEmployee(e);
+        assertEquals(MembershipEntity.STATUS_ACTIVE, result.getStatus());
+        assertEquals(50L, result.getId());
+    }
+
+    @Test
+    void getEmployeeHistory_includesProfileAndPeriods() {
+        MembershipEntity m = membership(1L, 9L, 2L);
+        when(membershipRepository.findById(1L)).thenReturn(Optional.of(m));
+        when(membershipHistoryService.getStatusHistory(1L)).thenReturn(List.of(
+                biz.craftline.server.feature.membership.infra.entity.MembershipStatusHistoryEntity.builder()
+                        .newStatus("ACTIVE")
+                        .changedAt(java.sql.Timestamp.valueOf("2026-01-01 00:00:00"))
+                        .build()));
+        when(membershipHistoryService.getRoleAssignmentHistory(1L)).thenReturn(List.of());
+        when(membershipHistoryService.getProfileHistory(1L)).thenReturn(List.of());
+
+        EmployeeService.EmployeeHistory history = employeeService.getEmployeeHistory(1L);
+        assertEquals(1L, history.membershipId());
+        assertEquals(1, history.employmentPeriods().size());
+        assertNull(history.employmentPeriods().get(0).endedAt());
     }
 
     @Test
@@ -276,6 +346,7 @@ class EmployeeServiceTest {
         Employee result = employeeService.createEmployee(e);
         assertEquals("INACTIVE", result.getStatus());
         assertEquals(50L, result.getId());
+        verify(membershipHistoryService).closeOpenRoleAssignments(50L);
     }
 
     @Test

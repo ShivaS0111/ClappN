@@ -103,7 +103,8 @@ class EmployeeControllerTest {
         when(employeeService.updateEmployee(eq(1L), any())).thenReturn(updated);
         assertNotNull(controller.updateEmployee(1L, req).getBody().getData());
 
-        controller.deleteEmployee(1L);
-        verify(employeeService).deleteEmployee(1L);
+        when(employeeService.deactivateEmployee(1L, null)).thenReturn(updated);
+        assertNotNull(controller.deleteEmployee(1L, null).getBody().getData());
+        verify(employeeService).deactivateEmployee(1L, null);
     }
 }
