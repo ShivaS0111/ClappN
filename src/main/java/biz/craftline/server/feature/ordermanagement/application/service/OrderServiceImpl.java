@@ -115,22 +115,34 @@ public class OrderServiceImpl implements OrderService {
 
         BigDecimal total = BigDecimal.ZERO;
         for (var it : request.getItems()) {
-            // Prefer store override → business default; keep client price only if none configured
-            orderCatalogPriceResolver.resolveUnitPrice(request.getStoreId(), it)
-                    .ifPresent(it::setPrice);
+            if (it.getItemIId() == null) {
+                throw new IllegalArgumentException("itemId is required on each order line");
+            }
+            if (it.getQuantity() <= 0) {
+                throw new IllegalArgumentException("quantity must be positive for itemId=" + it.getItemIId());
+            }
+            // Price is server-owned only — ignore any client-sent amount
+            double unitPrice = orderCatalogPriceResolver.resolveUnitPrice(request.getStoreId(), it)
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "No sell price configured for itemType=" + it.getItemType()
+                                    + " itemId=" + it.getItemIId()
+                                    + " at store=" + request.getStoreId()
+                                    + ". Set store_item_price or business catalog amount."));
+            it.setPrice(unitPrice);
             var itemEnt = OrderItemEntityMapper.toEntity(it);
             itemEnt.setOrder(saved);
+            itemEnt.setPrice(unitPrice);
             // Default item status to PENDING for new orders (POS walk-in, etc.)
             if (itemEnt.getStatus() == null) {
                 itemEnt.setStatus(OrderItemStatus.PENDING);
             }
             var savedItem = orderItemRepository.save(itemEnt);
-            total = total.add(BigDecimal.valueOf(it.getPrice() * it.getQuantity()));
+            total = total.add(BigDecimal.valueOf(unitPrice * it.getQuantity()));
 
             // Allocate inventory for physical products (itemType 1 = PRODUCT)
-            if(it.getItemType() != null && it.getItemType() == 1) {
+            if (it.getItemType() != null && it.getItemType() == 1) {
                 // allocate lots FEFO (partial allowed)
-                allocationService.allocate( request.getStoreId(), it.getItemIId(), it.getQuantity(), savedItem.getId());
+                allocationService.allocate(request.getStoreId(), it.getItemIId(), it.getQuantity(), savedItem.getId());
             }
         }
 

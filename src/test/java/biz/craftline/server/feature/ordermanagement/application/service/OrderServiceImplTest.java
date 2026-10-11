@@ -101,11 +101,11 @@ class OrderServiceImplTest {
         item.setItemType(1L);
         item.setItemIId(10L);
         item.setQuantity(2);
-        item.setPrice(5.0);
         Order order = new Order();
         order.setStoreId(1L);
         order.setItems(List.of(item));
 
+        when(orderCatalogPriceResolver.resolveUnitPrice(eq(1L), any())).thenReturn(Optional.of(5.0));
         OrderEntity saved = entity(1L, 1L);
         OrderItemEntity itemEntity = new OrderItemEntity();
         itemEntity.setId(100L);
@@ -117,23 +117,22 @@ class OrderServiceImplTest {
         Order result = orderService.placeOrder(order);
         assertNotNull(result);
         verify(allocationService).allocate(1L, 10L, 2, 100L);
+        assertEquals(5.0, item.getPrice(), 0.001);
     }
 
     @Test
-    void placeOrder_overwritesClientPriceFromCatalog() {
+    void placeOrder_usesServerPriceIgnoresClient() {
         OrderItem item = new OrderItem();
         item.setItemType(1L);
         item.setItemIId(10L);
         item.setQuantity(1);
-        item.setPrice(1.0);
+        item.setPrice(1.0); // client attempt — must be ignored
         Order order = new Order();
         order.setStoreId(1L);
         order.setItems(List.of(item));
 
         when(orderCatalogPriceResolver.resolveUnitPrice(eq(1L), any())).thenReturn(Optional.of(99.0));
         OrderEntity saved = entity(1L, 1L);
-        OrderItemEntity itemEntity = new OrderItemEntity();
-        itemEntity.setId(100L);
         when(repository.save(any())).thenReturn(saved);
         when(orderItemRepository.save(any())).thenAnswer(inv -> {
             OrderItemEntity e = inv.getArgument(0);
@@ -141,11 +140,29 @@ class OrderServiceImplTest {
             e.setId(100L);
             return e;
         });
-        when(orderItemRepository.findByOrder_Id(1L)).thenReturn(List.of(itemEntity));
+        when(orderItemRepository.findByOrder_Id(1L)).thenReturn(List.of());
         doNothing().when(securityContextService).validateStoreAccess(1L);
 
         orderService.placeOrder(order);
         assertEquals(99.0, item.getPrice(), 0.001);
+    }
+
+    @Test
+    void placeOrder_failsWhenNoCatalogPrice() {
+        OrderItem item = new OrderItem();
+        item.setItemType(1L);
+        item.setItemIId(10L);
+        item.setQuantity(1);
+        item.setPrice(50.0);
+        Order order = new Order();
+        order.setStoreId(1L);
+        order.setItems(List.of(item));
+
+        when(orderCatalogPriceResolver.resolveUnitPrice(eq(1L), any())).thenReturn(Optional.empty());
+        doNothing().when(securityContextService).validateStoreAccess(1L);
+        when(repository.save(any())).thenReturn(entity(1L, 1L));
+
+        assertThrows(IllegalArgumentException.class, () -> orderService.placeOrder(order));
     }
 
     @Test

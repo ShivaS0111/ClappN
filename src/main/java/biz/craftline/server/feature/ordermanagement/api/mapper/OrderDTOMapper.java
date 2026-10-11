@@ -202,7 +202,8 @@ public class OrderDTOMapper {
         item.setItemType(dto.getItemType());
         item.setItemIId(dto.getItemId());
         item.setQuantity(dto.getQuantity());
-        item.setPrice(dto.getPrice());
+        // Price is resolved server-side on placeOrder — do not trust client
+        item.setPrice(0);
         // Item details & pricing
         item.setItemName(dto.getItemName());
         item.setGstPercentage(dto.getGstPercentage());

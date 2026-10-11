@@ -20,8 +20,11 @@ public class OrderItemDTO {
     private Long itemId;
     /** Quantity of the item */
     private int quantity;
-    /** Price of the item */
-    private double price;
+    /**
+     * Unit price — ignored on place-order (server resolves from store/business catalog).
+     * Populated on responses.
+     */
+    private Double price;
 
     // Item details & pricing
     private String itemName;

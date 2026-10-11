@@ -62,20 +62,16 @@ if (-not $products.success -or -not $products.data -or $products.data.Count -lt 
     throw "No store products. Assign catalog first. Response: $productsRaw"
 }
 $p = $products.data | Select-Object -First 1
-$unitPrice = 100.0
-if ($p.price -and $p.price.price) { $unitPrice = [double]$p.price.price }
 $itemId = if ($p.businessProductId) { $p.businessProductId } else { $p.id }
 
-Write-Host "== place order =="
+Write-Host "== place order (price resolved server-side) =="
 $orderBody = @{
-    storeId     = [long]$storeId
-    totalAmount = $unitPrice
-    items       = @(
+    storeId = [long]$storeId
+    items   = @(
         @{
             itemType = 1
             itemId   = [long]$itemId
             quantity = 1
-            price    = $unitPrice
             itemName = "smoke-item"
         }
     )
@@ -88,7 +84,7 @@ if (-not $order.success) { throw "order failed: $orderRaw" }
 $orderId = $order.data.id
 $charged = [double]$order.data.totalAmount
 $amountMinor = [long][math]::Round($charged * 100)
-Write-Host "orderId=$orderId amountMinor=$amountMinor"
+Write-Host "orderId=$orderId charged=$charged amountMinor=$amountMinor"
 
 if ([string]::IsNullOrWhiteSpace($gateway)) {
     Write-Host "No STAGING_PAYMENT_GATEWAY — smoke complete (auth+order)."

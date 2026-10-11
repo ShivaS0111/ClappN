@@ -107,24 +107,21 @@ class StagingSmokeIT {
             }
         }
         assertNotNull(product, "could not pick a store product");
-        if (unitPrice <= 0) {
-            unitPrice = 100.0; // fallback major units when master default missing
-        }
+        Assumptions.assumeTrue(unitPrice > 0 || product.path("businessProductId").isNumber(),
+                "Pick a product that has store/business price configured");
 
         long itemId = product.path("id").asLong();
         long businessProductId = product.path("businessProductId").asLong(itemId);
 
-        // 4) place order
+        // 4) place order — no client price
         Map<String, Object> item = new LinkedHashMap<>();
         item.put("itemType", 1L);
         item.put("itemId", businessProductId > 0 ? businessProductId : itemId);
         item.put("quantity", 1);
-        item.put("price", unitPrice);
         item.put("itemName", product.path("aliasName").asText(product.path("name").asText("smoke-item")));
 
         Map<String, Object> order = new LinkedHashMap<>();
         order.put("storeId", Long.parseLong(storeId));
-        order.put("totalAmount", unitPrice);
         order.put("items", List.of(item));
 
         HttpResponse<String> orderRes = postJson(base + "/api/orders/new", order, token, storeId, businessId);
@@ -134,7 +131,8 @@ class StagingSmokeIT {
         long orderId = orderJson.path("data").path("id").asLong(0);
         assertTrue(orderId > 0, "order id missing: " + orderRes.body());
 
-        double charged = orderJson.path("data").path("totalAmount").asDouble(unitPrice);
+        double charged = orderJson.path("data").path("totalAmount").asDouble(0);
+        assertTrue(charged > 0, "server totalAmount must be > 0");
         long amountMinor = BigDecimal.valueOf(charged)
                 .movePointRight(2)
                 .setScale(0, RoundingMode.HALF_UP)

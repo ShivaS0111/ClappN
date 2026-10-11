@@ -31,7 +31,8 @@ public class OrderItemDTOMapper {
         entity.setItemType(dto.getItemType());
         entity.setItemIId(dto.getItemId());
         entity.setQuantity(dto.getQuantity());
-        entity.setPrice(dto.getPrice());
+        // Price resolved server-side on placeOrder
+        entity.setPrice(0);
         entity.setDeliveryInfo(deliveryInfoDTOMapper.fromDTO(dto.getDeliveryInfo()));
         // Add mapping for nested objects if needed
         return entity;
