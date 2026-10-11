@@ -34,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderAllocatedLotRepository allocatedLotRepository;
     private final ProductLotService productLotService;
     private final SecurityContextService securityContextService;
+    private final OrderCatalogPriceResolver orderCatalogPriceResolver;
 
     @Override
     public List<Order> getAllOrders() {
@@ -114,6 +115,9 @@ public class OrderServiceImpl implements OrderService {
 
         BigDecimal total = BigDecimal.ZERO;
         for (var it : request.getItems()) {
+            // Prefer store override → business default; keep client price only if none configured
+            orderCatalogPriceResolver.resolveUnitPrice(request.getStoreId(), it)
+                    .ifPresent(it::setPrice);
             var itemEnt = OrderItemEntityMapper.toEntity(it);
             itemEnt.setOrder(saved);
             // Default item status to PENDING for new orders (POS walk-in, etc.)

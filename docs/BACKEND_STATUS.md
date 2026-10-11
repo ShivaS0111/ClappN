@@ -76,6 +76,8 @@ Store         →  store_offered_* assign (businessId + storeId + catalog id)
 business_product/service.amount  →  optional default (nullable, not required)
 store_item_price                 →  store override (wins when present)
 store list APIs                  →  override else business default else no price
+placeOrder                       →  same resolve via OrderCatalogPriceResolver
+                                   (client price kept only if catalog has none)
 ```
 
 Flyway **`V18`**: `amount` columns nullable.

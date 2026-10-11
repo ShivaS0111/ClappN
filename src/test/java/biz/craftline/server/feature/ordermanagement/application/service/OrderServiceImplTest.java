@@ -12,6 +12,7 @@ import biz.craftline.server.feature.ordermanagement.infra.mapper.OrderItemEntity
 import biz.craftline.server.feature.ordermanagement.infra.repository.OrderAllocatedLotRepository;
 import biz.craftline.server.feature.ordermanagement.infra.repository.OrderItemRepository;
 import biz.craftline.server.feature.ordermanagement.infra.repository.OrderRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,9 +38,16 @@ class OrderServiceImplTest {
     @Mock private OrderAllocatedLotRepository allocatedLotRepository;
     @Mock private ProductLotService productLotService;
     @Mock private SecurityContextService securityContextService;
+    @Mock private OrderCatalogPriceResolver orderCatalogPriceResolver;
 
     @InjectMocks
     private OrderServiceImpl orderService;
+
+    @BeforeEach
+    void stubCatalogPrice() {
+        lenient().when(orderCatalogPriceResolver.resolveUnitPrice(any(), any()))
+                .thenReturn(Optional.empty());
+    }
 
     @Test
     void getAllOrders_adminAndEmptyScope() {
@@ -109,6 +117,35 @@ class OrderServiceImplTest {
         Order result = orderService.placeOrder(order);
         assertNotNull(result);
         verify(allocationService).allocate(1L, 10L, 2, 100L);
+    }
+
+    @Test
+    void placeOrder_overwritesClientPriceFromCatalog() {
+        OrderItem item = new OrderItem();
+        item.setItemType(1L);
+        item.setItemIId(10L);
+        item.setQuantity(1);
+        item.setPrice(1.0);
+        Order order = new Order();
+        order.setStoreId(1L);
+        order.setItems(List.of(item));
+
+        when(orderCatalogPriceResolver.resolveUnitPrice(eq(1L), any())).thenReturn(Optional.of(99.0));
+        OrderEntity saved = entity(1L, 1L);
+        OrderItemEntity itemEntity = new OrderItemEntity();
+        itemEntity.setId(100L);
+        when(repository.save(any())).thenReturn(saved);
+        when(orderItemRepository.save(any())).thenAnswer(inv -> {
+            OrderItemEntity e = inv.getArgument(0);
+            assertEquals(99.0, e.getPrice(), 0.001);
+            e.setId(100L);
+            return e;
+        });
+        when(orderItemRepository.findByOrder_Id(1L)).thenReturn(List.of(itemEntity));
+        doNothing().when(securityContextService).validateStoreAccess(1L);
+
+        orderService.placeOrder(order);
+        assertEquals(99.0, item.getPrice(), 0.001);
     }
 
     @Test
