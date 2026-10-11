@@ -69,6 +69,13 @@ public class StoreEntity {
     @Column(name = "gallery_urls", columnDefinition = "JSON")
     private String galleryUrls;
 
+    /**
+     * When non-null, store-level override for accepting lower-than-entitled client discounts.
+     * Null = not configured (inherit business, then global default).
+     */
+    @Column(name = "accept_lower_client_discount")
+    private Boolean acceptLowerClientDiscount;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "store_services",
             joinColumns = @JoinColumn(name = "store_id"),

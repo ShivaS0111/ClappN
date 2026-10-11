@@ -74,6 +74,9 @@ public class BusinessDTOMapper {
         if(businessUpdator.getBannerUrl()!=null ) old.setBannerUrl(businessUpdator.getBannerUrl());
         if(businessUpdator.getGalleryUrls()!=null ) old.setGalleryUrls(businessUpdator.getGalleryUrls());
         if(businessUpdator.getCreatedBy()!=null ) old.setCreatedBy(businessUpdator.getCreatedBy());
+        if(businessUpdator.getAcceptLowerClientDiscount()!=null ) {
+            old.setAcceptLowerClientDiscount(businessUpdator.getAcceptLowerClientDiscount());
+        }
         return old;
     }
 
@@ -90,6 +93,7 @@ public class BusinessDTOMapper {
                 .longitude(dto.getLongitude())
                 .bannerUrl(dto.getBannerUrl())
                 .galleryUrls(dto.getGalleryUrls())
+                .acceptLowerClientDiscount(dto.getAcceptLowerClientDiscount())
                 .createdBy(dto.getCreatedBy())
                 .status(dto.getStatus())
                 .createdAt(dto.getCreatedAt())
@@ -119,6 +123,7 @@ public class BusinessDTOMapper {
                 .longitude(business.getLongitude())
                 .bannerUrl(business.getBannerUrl())
                 .galleryUrls(business.getGalleryUrls())
+                .acceptLowerClientDiscount(business.getAcceptLowerClientDiscount())
                 .createdBy(business.getCreatedBy())
                 .status(business.getStatus())
                 .createdAt(business.getCreatedAt())

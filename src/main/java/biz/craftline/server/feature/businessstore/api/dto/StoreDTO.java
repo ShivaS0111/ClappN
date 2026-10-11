@@ -44,6 +44,9 @@ public class StoreDTO {
 
     private String galleryUrls;
 
+    /** Null = not configured; true/false overrides business / global default for this store. */
+    private Boolean acceptLowerClientDiscount;
+
     @Builder.Default
     private Set<StoreOfferedServiceDTO> services = new HashSet<>();
 

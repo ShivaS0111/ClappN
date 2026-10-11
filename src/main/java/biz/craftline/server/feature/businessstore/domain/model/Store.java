@@ -47,6 +47,9 @@ public class Store {
 
     private String galleryUrls;
 
+    /** Null = not configured at store level (inherit business / default). */
+    private Boolean acceptLowerClientDiscount;
+
     @Builder.Default
     private Set<StoreOfferedService> services = new HashSet<>();
 

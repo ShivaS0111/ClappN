@@ -45,7 +45,19 @@
 |--------|----------------------|--------|----|
 | **usermanagement** | Auth, User, Role, Permission, MeContext, Navigation | Strong — JWT, refresh DB, mail on forgot-password, RBAC seed | **92%** |
 | **membership** | `/api/memberships` list/get/by-business/by-user + create/update/activate/deactivate | Tenancy access API (roles + store scopes); HR stays on employees | **95%** |
-| **employeemanagement** | `/api/employees` CRUD + GET by id + deactivate | Membership-based; store scope replace; soft delete | **92%** |
+| **employeemanagement** | `/api/employees` CRUD + activate/deactivate + `/{id}/history` | Membership-based; profile + employment-period history (V20); soft delete | **95%** |
+
+**Employee HR letters — later (not in current bar):** can add after core hire/exit/history is stable:
+
+| Feature | Intent |
+|---------|--------|
+| Generate offer | Create / PDF / email offer letter on hire |
+| Offer revoke | Withdraw pending offer before join |
+| Relieve letter | Exit / relieving letter on deactivate |
+| Role change letter | Letter when role/store assignment changes |
+| Service letter | Employment / experience certificate on request |
+
+Hook points already in place: employee activate/deactivate + history (`reason`, employment periods, profile/role history). Templates, PDF, and approval workflow are out of scope for now.
 | **businessstore** | Business, Store, store-product/service, packages, pricing, files | CRUD + metrics + packages; hardened assign + PUT/DELETE + **`/assign` multi-store** | **95%** |
 | **businesstype** | Types, categories, brands, business-product/service | Master catalog with **tenant `businessId`** + scoped CRUD + `listByBusiness` | **92%** |
 | **customermanagement** | `/api/customers` | Scoped CRUD; businessId list; require store/business on create | **92%** |
@@ -54,7 +66,7 @@
 | **ordermanagement** | Orders, items, bookings, delivery, virtual products | Lifecycle + enum status; delivery/virtual admin-only standalone writes | **90%** |
 | **invoicemanagement** | Generate (idempotent), void, list, **PDF**, **email** | Usable; tax engine light | **88%** |
 | **paymentmanagement** | Initiate (amount vs order), by-order, status, **confirm**, **refund**, webhooks | Code complete; needs real keys + staging smoke | **90%** code / **~60%** ops |
-| **couponmanagement** | Package folders only — **no Java sources** | Scaffold only; RBAC names may exist | **5%** |
+| **couponmanagement** | `/api/promotions` CRUD, preview, usage; place-order apply | MVP: LINE/CART percent+fixed, code, business/store/user/catalog targets (V21) | **70%** |
 
 ### Catalog model (important)
 
@@ -82,15 +94,28 @@ placeOrder                       →  **server price only** via OrderCatalogPric
 
 Flyway **`V18`**: `amount` columns nullable.
 
+### Accept lower client discount
+
+When client claims less discount than entitled, server may auto-accept without 409 ack.
+
+Resolution order (first non-null wins):
+
+1. `placeOrder.acceptLowerClientDiscount`
+2. `store.acceptLowerClientDiscount`
+3. `business.acceptLowerClientDiscount`
+4. `app.orders.accept-lower-client-discount-default` (**true**)
+
+Flyway **`V22`**: nullable columns on `store` / `business`.
+
 ---
 
 ## Flyway
 
 Classpath migrations present:
 
-`V1`–`V16` as before · **`V17` catalog `business_id` ownership** · **`V18` optional business default `amount`**.
+`V1`–`V16` as before · **`V17` catalog `business_id` ownership** · **`V18` optional business default `amount`** · **`V19` membership history** · **`V20` profile history + status reason** · **`V21` promotions MVP** · **`V22` accept-lower settings**.
 
-Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean envs should rely on classpath V1–V17.
+Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean envs should rely on classpath V1–V22.
 
 ---
 
@@ -130,7 +155,7 @@ Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean 
 3. ~~Multi-store assign / unassign~~ **Done**
 4. ~~Per-business catalog name uniqueness~~ **Done**
 5. **Payment + SMTP env** — set secrets (see [PRODUCTION.md](./PRODUCTION.md)); **staging smoke** available: `StagingSmokeIT` + `smoke/staging-smoke.ps1`
-6. **couponmanagement** — empty *(excluded)*
+6. ~~**couponmanagement**~~ **MVP done** — gift/BOGO/geo/platform campaigns still deferred
 7. Tax engine depth *(excluded)*
 8. ~~Rate-limit / logout revoke-all~~ **Done** (`AuthRateLimitFilter` + logout revokes all refresh tokens)
 9. ~~Membership REST API~~ **Done**
@@ -149,9 +174,10 @@ Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean 
 | Store offerings | `/api/store-product`, `/api/store-service` (+ `/assign`, `/unassign`, PUT/DELETE `/{id}`), packages |
 | Inventory | `/api/store-inventory`, lots APIs |
 | Orders / bookings | `/api/orders` (+ item/booking/delivery controllers) |
+| Promotions | `/api/promotions`, `/business/{id}`, `/store/{id}`, `/{id}/usage`, `/{id}/activate\|pause`, `/preview` |
 | Invoices | `/api/invoices`, `/generate`, `/{id}/void`, `/{id}/pdf`, `/{id}/email` |
 | Payments | `/api/payments/initiate`, `/order/{orderId}`, `/status/{id}`, `/{id}/confirm`, `/{id}/refund`, `/api/payments/webhook/{stripe\|razorpay}` |
-| Employees | `/api/employees`, `/{id}`, `/{id}/deactivate` |
+| Employees | `/api/employees`, `/{id}`, `/{id}/activate\|deactivate`, `/{id}/history` (HR letters: later — see note above) |
 | Memberships | `/api/memberships`, `/business/{id}`, `/user/{id}`, `/{id}/activate\|deactivate` |
 | Actuator | `/actuator/health`, `/actuator/info` (metrics auth’d) |
 

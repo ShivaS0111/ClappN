@@ -32,6 +32,9 @@ public class Business {
 
     private String galleryUrls;
 
+    /** Null = not configured at business level. */
+    private Boolean acceptLowerClientDiscount;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

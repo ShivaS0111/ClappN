@@ -37,6 +37,9 @@ public class BusinessDTO {
 
     private String galleryUrls;
 
+    /** Null = not configured; true/false overrides global default for this business. */
+    private Boolean acceptLowerClientDiscount;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

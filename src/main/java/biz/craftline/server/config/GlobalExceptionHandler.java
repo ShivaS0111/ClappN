@@ -1,5 +1,7 @@
 package biz.craftline.server.config;
 
+import biz.craftline.server.feature.ordermanagement.api.dto.DiscountMismatchDetails;
+import biz.craftline.server.feature.ordermanagement.application.service.DiscountMismatchException;
 import biz.craftline.server.util.APIResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -122,6 +124,15 @@ public class GlobalExceptionHandler {
         return APIResponse.error(ex.getMostSpecificCause() != null
                 ? ex.getMostSpecificCause().getMessage()
                 : ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DiscountMismatchException.class)
+    public ResponseEntity<APIResponse<DiscountMismatchDetails>> handleDiscountMismatch(DiscountMismatchException ex) {
+        log.warn("Discount mismatch: {}", ex.getMessage());
+        return APIResponse.errorWithData(
+                ex.getMessage() != null ? ex.getMessage() : "Discount mismatch — confirmation required",
+                HttpStatus.CONFLICT,
+                ex.getDetails());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

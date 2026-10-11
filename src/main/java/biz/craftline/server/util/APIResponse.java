@@ -81,6 +81,17 @@ public class APIResponse<T> {
         return new ResponseEntity<>(body, status);
     }
 
+    /** Error with structured {@code data} payload (e.g. discount mismatch options). */
+    public static <T> ResponseEntity<APIResponse<T>> errorWithData(String message, HttpStatus status, T data) {
+        APIResponse<T> body = new APIResponse<>();
+        body.setSuccess(false);
+        body.setMessage(message);
+        body.setStatusCode(status.value());
+        body.setTimestamp(LocalDateTime.now());
+        body.setData(data);
+        return new ResponseEntity<>(body, status);
+    }
+
     // --- Pagination inner class ---
 
     @Getter

@@ -38,6 +38,12 @@ public class Order {
     private Double billDiscount;
     private String billDiscountType;
     private String couponCode;
+    /** APPLY_SERVER_FULL | APPLY_CLIENT_CLAIMED — confirms how to resolve a discount mismatch. */
+    private String discountResolution;
+    /**
+     * Skip acknowledge for proceedable lower client claim — apply client amounts directly.
+     */
+    private Boolean acceptLowerClientDiscount;
     private String notes;
 
     /** List of order items */

@@ -183,6 +183,8 @@ public class OrderDTOMapper {
         order.setBillDiscount(dto.getBillDiscount());
         order.setBillDiscountType(dto.getBillDiscountType());
         order.setCouponCode(dto.getCouponCode());
+        order.setDiscountResolution(dto.getDiscountResolution());
+        order.setAcceptLowerClientDiscount(dto.getAcceptLowerClientDiscount());
         order.setNotes(dto.getNotes());
         if (dto.getItems() != null) {
             order.setItems(dto.getItems().stream().map(OrderDTOMapper::fromItemDTO).collect(Collectors.toList()));

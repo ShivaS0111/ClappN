@@ -36,6 +36,17 @@ public class OrderDTO {
     private Double billDiscount;
     private String billDiscountType;
     private String couponCode;
+    /**
+     * After a discount mismatch (409), re-submit with one of:
+     * {@code APPLY_SERVER_FULL} or {@code APPLY_CLIENT_CLAIMED} (only if proceedable).
+     */
+    private String discountResolution;
+    /**
+     * When true and client claimed a <b>lower</b> discount than entitled (store discretion),
+     * place-order proceeds with the client claim immediately — no 409 / acknowledge step.
+     * Ignored if the claim is higher than entitled (still requires reconfigure).
+     */
+    private Boolean acceptLowerClientDiscount;
     private String notes;
 
     /** List of order items */

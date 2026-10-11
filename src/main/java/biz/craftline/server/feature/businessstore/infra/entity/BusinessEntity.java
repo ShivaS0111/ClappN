@@ -49,6 +49,13 @@ public class BusinessEntity {
     @Column(name = "gallery_urls", columnDefinition = "JSON")
     private String galleryUrls;
 
+    /**
+     * When non-null, controls accepting lower-than-entitled client discounts on place-order.
+     * Null = not configured (inherit global default).
+     */
+    @Column(name = "accept_lower_client_discount")
+    private Boolean acceptLowerClientDiscount;
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Timestamp createdAt;

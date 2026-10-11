@@ -48,6 +48,7 @@ public class BusinessEntityMapper {
                 .longitude(entity.getLongitude())
                 .bannerUrl(entity.getBannerUrl())
                 .galleryUrls(entity.getGalleryUrls())
+                .acceptLowerClientDiscount(entity.getAcceptLowerClientDiscount())
                 //.stores(new HashSet<>(stores))
                 .createdBy(entity.getCreatedBy())
                 .createdAt(entity.getCreatedAt() != null ? entity.getCreatedAt().toLocalDateTime() : null)
@@ -74,6 +75,7 @@ public class BusinessEntityMapper {
                 .longitude(business.getLongitude())
                 .bannerUrl(business.getBannerUrl())
                 .galleryUrls(business.getGalleryUrls()!=null  && !business.getGalleryUrls().trim().isEmpty() ? business.getGalleryUrls() : "[]")
+                .acceptLowerClientDiscount(business.getAcceptLowerClientDiscount())
                 .createdBy(business.getCreatedBy())
                 .build();
     }
