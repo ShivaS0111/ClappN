@@ -127,7 +127,7 @@ Legacy/helper SQL also under `ClappN/db/`. Prod uses validate-on-migrate; clean 
 2. ~~Business-owned catalog~~ **Done**
 3. ~~Multi-store assign / unassign~~ **Done**
 4. ~~Per-business catalog name uniqueness~~ **Done**
-5. **Payment + SMTP env + staging smoke** — see [PRODUCTION.md](./PRODUCTION.md) *(ops; target for prod 90%+)*
+5. **Payment + SMTP env** — set secrets (see [PRODUCTION.md](./PRODUCTION.md)); **staging smoke** available: `StagingSmokeIT` + `smoke/staging-smoke.ps1`
 6. **couponmanagement** — empty *(excluded)*
 7. Tax engine depth *(excluded)*
 8. ~~Rate-limit / logout revoke-all~~ **Done** (`AuthRateLimitFilter` + logout revokes all refresh tokens)

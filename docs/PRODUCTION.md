@@ -68,8 +68,31 @@ Tune: `APP_RATE_LIMIT_AUTH_MAX` (prod default 15 / 60s), `APP_RATE_LIMIT_ENABLED
 2. Copy `.env.example` → set real values (never commit `.env`)
 3. `SPRING_PROFILES_ACTIVE=prod`
 4. Start app; confirm logs: `Payment secret checks passed` and `Production secret checks passed`
-5. Smoke: login → place order → initiate payment → webhook confirm → invoice PDF/email
+5. Run staging smoke (below)
 
-## 5. Out of scope for this production bar
+## 6. Staging smoke
+
+Against a **running** API (local or staging):
+
+```powershell
+$env:STAGING_BASE_URL = "http://localhost:9090"
+$env:STAGING_EMAIL = "owner@example.com"
+$env:STAGING_PASSWORD = "..."
+$env:STAGING_STORE_ID = "1"
+$env:STAGING_BUSINESS_ID = "1"
+# optional:
+# $env:STAGING_PAYMENT_GATEWAY = "RAZORPAY"   # or STRIPE
+# $env:STAGING_SKIP_ORDER = "true"
+
+.\smoke\staging-smoke.ps1
+# or:
+.\mvnw.cmd -Pstaging-smoke "-Dtest=StagingSmokeIT" test
+```
+
+GitHub Actions: workflow `staging-smoke.yml` (manual dispatch) uses the same env/secrets.
+
+Flow covered: health → login → `/api/me/context` → store products → place order → (optional) payment initiate.
+
+## 7. Out of scope for this production bar
 
 Coupons, deep tax engine, marketing modules — product features, not ops blockers for core POS.
