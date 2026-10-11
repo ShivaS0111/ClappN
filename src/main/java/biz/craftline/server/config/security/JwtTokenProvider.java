@@ -143,16 +143,12 @@ public class JwtTokenProvider {
                 .parseClaimsJws(authToken);
             log.trace("[3-JwtTokenProvider] validateToken: SUCCESS - Token signature valid");
             return true;
-        } catch (MalformedJwtException ex) {
-            log.error("[3-JwtTokenProvider] validateToken: FAILED - Invalid JWT token: {}", ex.getMessage());
         } catch (ExpiredJwtException ex) {
-            log.error("[3-JwtTokenProvider] validateToken: FAILED - Expired JWT token, exp={}", ex.getMessage());
-        } catch (UnsupportedJwtException ex) {
-            log.error("[3-JwtTokenProvider] validateToken: FAILED - Unsupported JWT token");
-        } catch (IllegalArgumentException ex) {
-            log.error("[3-JwtTokenProvider] validateToken: FAILED - JWT claims string is empty");
-        } catch (io.jsonwebtoken.security.SignatureException ex) {
-            log.error("[3-JwtTokenProvider] validateToken: FAILED - Invalid JWT signature: {}", ex.getMessage());
+            // Expected client condition — not a server fault
+            log.debug("[3-JwtTokenProvider] validateToken: expired JWT");
+        } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException
+                 | io.jsonwebtoken.security.SignatureException ex) {
+            log.debug("[3-JwtTokenProvider] validateToken: rejected — {}", ex.getMessage());
         }
         return false;
     }

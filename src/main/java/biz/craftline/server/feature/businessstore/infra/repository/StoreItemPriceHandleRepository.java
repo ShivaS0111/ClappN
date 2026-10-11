@@ -35,7 +35,7 @@ public interface StoreItemPriceHandleRepository extends JpaRepository<StoreItemP
               AND p.status = 1
               AND (p.valid_from IS NULL OR p.valid_from <= CURRENT_TIMESTAMP)
               AND (p.valid_to IS NULL OR p.valid_to >= CURRENT_TIMESTAMP)
-            ORDER BY p.valid_from DESC NULLS LAST, p.created_at DESC
+            ORDER BY (p.valid_from IS NULL) ASC, p.valid_from DESC, p.created_at DESC
             """, nativeQuery = true)
     List<StoreItemPriceEntity> findActivePrices(
             @Param("itemType") Long itemType,
@@ -100,7 +100,7 @@ public interface StoreItemPriceHandleRepository extends JpaRepository<StoreItemP
           AND p.status = 1
           AND (p.validFrom IS NULL OR p.validFrom <= CURRENT_TIMESTAMP)
           AND (p.validTo IS NULL OR p.validTo >= CURRENT_TIMESTAMP)
-        ORDER BY p.validFrom DESC NULLS LAST, p.createdAt DESC
+        ORDER BY CASE WHEN p.validFrom IS NULL THEN 1 ELSE 0 END ASC, p.validFrom DESC, p.createdAt DESC
     """)
     List<StoreItemPriceEntity> findLatestPricesForItems(
             @Param("itemIds") List<Long> itemIds,
